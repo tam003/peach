@@ -23,7 +23,9 @@ _PAGE_HEAD = ('<!doctype html>\n<html lang="zh-CN"><head><meta charset="utf-8">'
 #: 手动选的深浅压过系统偏好，必须在第一次绘制前定下来，所以排在任何样式之前：`dark` 类给
 #: BoardUI 的色板，`data-theme` 记手动那一档，判据同 `web/index.html` 的预读脚本。
 _THEME_SCRIPT = ('<script>(()=>{try{'
-                 'const c=JSON.parse(localStorage.getItem("peach.settings.v1")||"{}").theme;'
+                 'const saved=JSON.parse(localStorage.getItem("peach.settings.v1")||"{}");'
+                 'document.documentElement.lang=saved.locale==="vi"?"vi":saved.locale==="en"?"en":"zh-CN";'
+                 'const c=saved.theme;'
                  'document.documentElement.classList.toggle("dark",c==="dark"||(c!=="light"&&matchMedia("(prefers-color-scheme: dark)").matches));'
                  'if(c==="light"||c==="dark")document.documentElement.dataset.theme=c;'
                  '}catch(e){}})();</script>')

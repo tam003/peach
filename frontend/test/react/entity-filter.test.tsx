@@ -190,7 +190,7 @@ describe('在线视图', () => {
   const head = (patch: Partial<EntityOnlineHead> = {}): EntityOnlineHead => ({
     media: 'videos', mediaCounts: { videos: 4, images: 9 }, photoLayout: 'masonry',
     photoLayouts: [['fixed', '固定比例', 'layout-grid'], ['masonry', '瀑布流', 'columns-2']], imagesOnly: false,
-    status: '', statuses: FOLLOW_FILTERS, provider: '', providers: [['rule34video', 'Rule34Video']],
+    status: '', statuses: FOLLOW_FILTERS(), provider: '', providers: [['rule34video', 'Rule34Video']],
     tags: [{ k: 'cum', label: 'cum', n: 3, selected: true, cat: 'general' }],
     sorts: [{ key: 'new', label: '更新时间', pressed: true, dir: 'desc', ariaLabel: '更新时间' }], ...patch,
   });

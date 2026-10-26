@@ -9,6 +9,7 @@
  * - `['links','prune']` 是删除那趟的状态，同样按 `running` 开关。
  * 合成一个键的话，每两秒的一轮轮询都会把上面那块只读统计重画一遍。 */
 import { apiGet, apiSend } from '../../api';
+import { phrase } from '../../i18n/phrase';
 
 export const LINKS_URL = '/api/links';
 export const LINK_CHECK_URL = '/api/links/check';
@@ -23,8 +24,8 @@ export const LINK_PRUNE_KEY = ['links', 'prune'] as const;
  *  `官网 · 事务所` 里的间隔点会和「按类型」那行的分隔点撞在一起，读出来是
  *  「社媒 373 · 官网 · 事务所 224」——分不清哪个数字属于哪一类，所以用斜杠。 */
 export const LINK_KINDS: Record<string, string> = {
-  official: '官网/事务所', social: '社交账号',
-  catalog: '作品资料站', source_reference: '资料出处',
+  get ['official']() { return phrase('官网/事务所'); }, get ['social']() { return phrase('社交账号'); },
+  get ['catalog']() { return phrase('作品资料站'); }, get ['source_reference']() { return phrase('资料出处'); },
 };
 
 export interface LinkStats {
@@ -72,7 +73,7 @@ export interface LinkPruneState {
 /** 这几条写端点拒绝时回的是 200 加 `ok:false`（清单过期、没有可重试的行），不是错误码。 */
 async function accepted<T>(request: Promise<T & { ok?: boolean; error?: string }>): Promise<T> {
   const result = await request;
-  if (result.ok === false) throw new Error(result.error || '操作未完成，请重试');
+  if (result.ok === false) throw new Error(result.error || phrase('操作未完成，请重试'));
   return result;
 }
 
@@ -99,12 +100,12 @@ const count = (value: number | undefined) => Number(value || 0).toLocaleString()
 
 /** 删完那一句。 */
 export const pruneText = (state: LinkPruneState) =>
-  `已删除 ${count(state.removed)} 条；${state.marked ? `已隐退女优的 ${count(state.marked)} 条留作不可点的记录；` : ''}`
-  + `保留 ${count(state.recovered)} 条未确认失效的链接。`;
+  phrase('已删除 {removed} 条；{text}', { removed: count(state.removed), text: state.marked ? phrase('已隐退女优的 {marked} 条留作不可点的记录；', { marked: count(state.marked) }) : '' })
+  + phrase('保留 {recovered} 条未确认失效的链接。', { recovered: count(state.recovered) });
 
 /** 检查推进到哪儿了。总量还没算出来时只说在做什么。 */
 export function checkLine(state: LinkCheckState): string {
   const retrying = state.scope === 'retry';
-  if (!state.total) return retrying ? '正在重验链接' : '正在检查链接';
-  return `${retrying ? '已重验' : '已检查'} ${count(state.checked)} / ${count(state.total)} 条链接`;
+  if (!state.total) return retrying ? phrase('正在重验链接') : phrase('正在检查链接');
+  return phrase('{value} {checked} / {total} 条链接', { value: retrying ? phrase('已重验') : phrase('已检查'), checked: count(state.checked), total: count(state.total) });
 }

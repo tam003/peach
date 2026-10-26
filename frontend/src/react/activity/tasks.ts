@@ -4,6 +4,7 @@
  * queryKey。首屏由 `prefetchTasks` 写进 Query 缓存，组件挂上去读的就是它。 */
 import { apiGet } from '../../api';
 import { queryClient } from '../query';
+import { phrase } from '../../i18n/phrase';
 
 export const TASKS_URL = '/api/tasks';
 /** 整页共用这一个键：三段是同一次响应的三个字段。 */
@@ -82,12 +83,12 @@ export async function prefetchTasks(signal: AbortSignal): Promise<void> {
 }
 
 export const TRIGGER_LABELS: Record<string, string> = {
-  manual: '手动', scheduled: '定时', startup: '启动', cli: '命令行',
+  get ['manual']() { return phrase('手动'); }, get ['scheduled']() { return phrase('定时'); }, get ['startup']() { return phrase('启动'); }, get ['cli']() { return phrase('命令行'); },
 };
 
 const STATUS_LABELS: Record<string, string> = {
-  pending: '排队中', running: '进行中', succeeded: '已完成',
-  failed: '失败', cancelled: '已取消', interrupted: '被打断',
+  get ['pending']() { return phrase('排队中'); }, get ['running']() { return phrase('进行中'); }, get ['succeeded']() { return phrase('已完成'); },
+  get ['failed']() { return phrase('失败'); }, get ['cancelled']() { return phrase('已取消'); }, get ['interrupted']() { return phrase('被打断'); },
 };
 
 /** 状态的中文名。表里的状态集是封闭的，认不出来只可能是表先改了，那就原样显示。 */
@@ -96,13 +97,13 @@ export const statusLabel = (status: string): string => STATUS_LABELS[status] || 
 /* 摘要里的键来自各域自己的状态字典，是英文标识；能认出来的翻成中文，认不出的原样
    显示——瞎猜一个中文名比留着英文键更难查。 */
 const SUMMARY_LABELS: Record<string, string> = {
-  checked: '已检查', total: '总数', scanned: '已扫描', identified: '已识别',
-  candidates: '资料结果', covers: '封面', changed: '已改动', operation: '操作',
-  ok: '取得', miss: '未取得', kept: '保留', planned: '计划', done: '已处理', added: '新增',
-  written: '已写入', removed: '已移除', exit_code: '退出码', issue_count: '问题',
-  followups: '派出后继', followups_duplicate: '已在排队', followups_truncated: '超上限未派',
-  followups_depth_exceeded: '超深度未派', outcome: '结果', name: '档案名称',
-  matched: '图库命中', size: '尺寸', source: '来源', cover_network: '封面连不上图片主机',
+  get ['checked']() { return phrase('已检查'); }, get ['total']() { return phrase('总数'); }, get ['scanned']() { return phrase('已扫描'); }, get ['identified']() { return phrase('已识别'); },
+  get ['candidates']() { return phrase('资料结果'); }, get ['covers']() { return phrase('封面'); }, get ['changed']() { return phrase('已改动'); }, get ['operation']() { return phrase('操作'); },
+  get ['ok']() { return phrase('取得'); }, get ['miss']() { return phrase('未取得'); }, get ['kept']() { return phrase('保留'); }, get ['planned']() { return phrase('计划'); }, get ['done']() { return phrase('已处理'); }, get ['added']() { return phrase('新增'); },
+  get ['written']() { return phrase('已写入'); }, get ['removed']() { return phrase('已移除'); }, get ['exit_code']() { return phrase('退出码'); }, get ['issue_count']() { return phrase('问题'); },
+  get ['followups']() { return phrase('派出后继'); }, get ['followups_duplicate']() { return phrase('已在排队'); }, get ['followups_truncated']() { return phrase('超上限未派'); },
+  get ['followups_depth_exceeded']() { return phrase('超深度未派'); }, get ['outcome']() { return phrase('结果'); }, get ['name']() { return phrase('档案名称'); },
+  get ['matched']() { return phrase('图库命中'); }, get ['size']() { return phrase('尺寸'); }, get ['source']() { return phrase('来源'); }, get ['cover_network']() { return phrase('封面连不上图片主机'); },
 };
 
 /** 把一批任务按 `parent_run_id` 归到各自的父任务下。没有父的那些留在外面。 */
@@ -159,7 +160,7 @@ export function followupDetail(row: TaskRunPayload): string {
   const item = label.startsWith(prefix) ? label.slice(prefix.length) : label === row.task_label ? '' : label;
   const total = row.progress_total || 0;
   const tail = errorHeadline(row.error) || summaryText(row.result_summary)
-    || (isActive(row) && total > 0 ? `${progressText(row.progress_current, total)} 项` : '');
+    || (isActive(row) && total > 0 ? phrase('{progress_current} 项', { progress_current: progressText(row.progress_current, total) }) : '');
   return [item, tail].filter(Boolean).join(' · ');
 }
 
@@ -167,12 +168,12 @@ export function followupDetail(row: TaskRunPayload): string {
 export function elapsedText(seconds: number | null | undefined): string {
   if (typeof seconds !== 'number' || !Number.isFinite(seconds) || seconds < 0) return '';
   const whole = Math.floor(seconds);
-  if (whole < 60) return `${whole} 秒`;
+  if (whole < 60) return phrase('{whole} 秒', { whole: whole });
   const minutes = Math.floor(whole / 60);
-  if (minutes < 60) return `${minutes} 分 ${whole % 60} 秒`;
+  if (minutes < 60) return phrase('{minutes} 分 {whole} 秒', { minutes: minutes, whole: whole % 60 });
   const hours = Math.floor(minutes / 60);
-  if (hours < 48) return `${hours} 小时 ${minutes % 60} 分`;
-  return `${Math.floor(hours / 24).toLocaleString()} 天 ${hours % 24} 小时`;
+  if (hours < 48) return phrase('{hours} 小时 {minutes} 分', { hours: hours, minutes: minutes % 60 });
+  return phrase('{hours} 天 {hours2} 小时', { hours: Math.floor(hours / 24).toLocaleString(), hours2: hours % 24 });
 }
 
 /** 进度读数「已做 / 总数」：服务端偶尔报出超过总数的已做数，按总数封顶。 */

@@ -1,8 +1,10 @@
-/* 界面偏好的默认值、启动归一化与唯一 store（peach.settings.v1）。
- * Application、设置面板、侧栏与配色弹层通过共享源码读写同一个对象。
- * 首次 appSettingsStore() 从 localStorage 读取、归一化并创建实例，启动阶段同步就位。
- * 存量只接受形状与范围合法的值，单项非法时取该项默认值。 */
+/* Defaults, startup normalization, and the single store for interface preferences (`peach.settings.v1`).
+ * Application, the settings panel, the sidebar, and the color popover read and write the same object.
+ * The first `appSettingsStore()` reads localStorage, normalizes it, and creates the instance before startup continues.
+ * Stored values are kept only when their shape and range are valid. An invalid field takes that field's default. */
 import { api } from '@peach/legacy/core';
+
+import { normalizeLocale } from '../i18n/locale';
 
 import { normalizeJavPreferences } from '../jav-artwork';
 import { boundedPreference } from '../number-setting';
@@ -12,17 +14,17 @@ import { SORT_ALIASES, SORT_KEYS } from '../sort-preferences';
 import { DEFAULT_ACCENT, DEFAULT_HOME_GLOW, normalizeAccent, normalizeHomeGlow, type HomeGlow } from './home-glow';
 
 export const SETTINGS_KEY = 'peach.settings.v1';
-/* 主题三档，键名与 <html> 上的 data-theme 同一套写法：web/css/01-base.css 的色板
-   已经按 `prefers-color-scheme` 和 `[data-theme]` 两条路径写好，这里只负责选哪一条。
-   跟随系统是默认档，选它等于不写属性。 */
+/* Three theme values. The keys match `data-theme` on <html>: the palettes in web/css/01-base.css
+   already follow `prefers-color-scheme` and `[data-theme]`. This list only chooses which path applies.
+   System is the default. Choosing it leaves the attribute unset. */
 export const THEME_CHOICES: readonly string[] = ['system', 'light', 'dark'];
-/** 关注首次采集往回取多少天；与数据库那一份同一张表。 */
+/** How many days the first follow fetch looks back. The same table lives in the database. */
 export const FOLLOW_INITIAL_DAYS: readonly number[] = [0, 7, 30, 90];
-/* 新作那一行收不收合集由服务端按数据库里的设置筛（列表、未读数、补封面同一份），这里只是
-   镜像：开关的真相在 `/api/settings`。默认收起大合集与切片、单人合集照列。 */
+/* The server filters compilations out of the new-works row from the database setting (the list, the unread count, and cover fill share it). This is
+   a mirror: the switch's value lives at `/api/settings`. Large compilations and excerpts are hidden by default. Solo compilations stay listed. */
 export const FEED_COMPILATION_KEYS = ['feedHideGroupCompilations', 'feedHideSoloCompilations', 'feedHideExcerpts'] as const;
 
-/** 归一化之后一定在的那几项。对象上还有别的字段（壳与各岛按需写入），这里不一一列出。 */
+/** Fields that are always present after normalization. The object has other fields the shell and islands write as needed. */
 export interface AppSettings {
   [key: string]: unknown;
   batchSize: number;
@@ -45,6 +47,7 @@ export interface AppSettings {
   miniplayer: boolean;
   theaterMode: boolean;
   theme: string;
+  locale: string;
   groupCollapse: boolean;
   detailAutoplay: boolean;
   uiSounds: boolean;
@@ -62,23 +65,23 @@ export const DEFAULT_SETTINGS = {
   batchSize: 60, defaultSort: 'seed', sortDefaultsVersion: 3, hoverDelaySeconds: 5, seekSeconds: 10,
   searchHistoryLimit: 10, relatedLimit: 20, javLayout: 'big', homeLayout: 'small', javImage: 'cover',
   followLayout: 'default', peopleLayout: 'big', photoSize: 'small', ambientMode: true, miniplayer: true,
-  theaterMode: false, theme: 'system', groupCollapse: true, sidebarOrder: [...DEFAULT_SIDEBAR_ORDER],
+  theaterMode: false, theme: 'system', locale: 'zh', groupCollapse: true, sidebarOrder: [...DEFAULT_SIDEBAR_ORDER],
   homeGlow: DEFAULT_HOME_GLOW, accent: DEFAULT_ACCENT,
 } as const;
 
-/** 白名单里的值原样给回，否则给 `fallback`。 */
+/** Return a value that is on the allow-list. Anything else becomes `fallback`. */
 export const allowedSetting = <T>(value: unknown, allowed: readonly T[], fallback: T): T =>
   allowed.includes(value as T) ? value as T : fallback;
 
-/** 读回的那份存量归一化成完整的偏好对象。`migrated` 为真表示改写了旧键，要落一次盘。 */
+/** Normalize stored preferences into a complete object. `migrated` means an old key was rewritten and must be saved. */
 export function normalizeAppSettings(raw: unknown): { settings: AppSettings; migrated: boolean } {
   const saved = raw && typeof raw === 'object' ? raw as Record<string, unknown> : {};
   const settings = { ...DEFAULT_SETTINGS, ...saved } as Record<string, unknown>;
   settings.followInitialDays = FOLLOW_INITIAL_DAYS.includes(+(settings.followInitialDays as number))
     ? +(settings.followInitialDays as number) : 30;
   delete settings.rotateMinutes;
-  /* 迁移只碰默认值本身：把界面上已经不存在的键换成当前键，用户主动选过的排序不动。
-     不迁移的话白名单会把它静默打回随机。 */
+  /* Migration rewrites only a stored default: a key the interface no longer has becomes the current key. A sort the user chose stays.
+     Without this, the allow-list would quietly turn that key into random. */
   let migrated = false;
   const version = +(settings.sortDefaultsVersion as number) || 0;
   if (version < 2 && settings.defaultSort === 'new') { settings.defaultSort = 'seed'; migrated = true }
@@ -105,22 +108,23 @@ export function normalizeAppSettings(raw: unknown): { settings: AppSettings; mig
   settings.relatedLimit = boundedPreference(+(settings.relatedLimit as number), 0, 60, 20);
   Object.assign(settings, normalizeJavPreferences(settings));
   settings.theme = allowedSetting(settings.theme, THEME_CHOICES, 'system');
+  settings.locale = normalizeLocale(settings.locale);
   settings.homeGlow = normalizeHomeGlow(settings.homeGlow);
   settings.accent = normalizeAccent(settings.accent);
   settings.sidebarOrder = normalizeSidebarOrder(settings.sidebarOrder);
   return { settings: settings as AppSettings, migrated };
 }
 
-/** 从 `storage` 读回并归一化；存的不是合法 JSON 时当作什么都没存。 */
+/** Read `storage` and normalize it. Invalid JSON is treated as an empty store. */
 export function readAppSettings(storage: Pick<Storage, 'getItem'>): { settings: AppSettings; migrated: boolean } {
   let raw: unknown = {};
-  try { raw = JSON.parse(storage.getItem(SETTINGS_KEY) || '{}') } catch { /* 坏掉的存量按空的算 */ }
+  try { raw = JSON.parse(storage.getItem(SETTINGS_KEY) || '{}') } catch { /* Broken JSON counts as empty. */ }
   return normalizeAppSettings(raw);
 }
 
 let store: SettingsStore<AppSettings> | null = null;
 
-/** 整页那一份偏好 store。第一次调用时读回、归一化；改写过旧键就当场落一次盘。 */
+/** The page-wide preference store. The first call reads and normalizes it, and saves immediately when an old key was rewritten. */
 export function appSettingsStore(): SettingsStore<AppSettings> {
   if (store) return store;
   const { settings, migrated } = readAppSettings(localStorage);
@@ -129,10 +133,10 @@ export function appSettingsStore(): SettingsStore<AppSettings> {
   return store;
 }
 
-/** 数据库那一份要求某个壳侧效果跟着做时报的名字（同设置面板的效果名）。 */
+/** Name of a shell effect the database copy asks the shell to run. Same names as the settings panel. */
 export type SyncedEffect = 'searchHistoryLimit';
 
-/** 搜索记录条数在 `/api/settings` 上的形状：还没定过时是 null。 */
+/** Search-history length as `/api/settings` returns it. Null means it has never been set. */
 export interface SyncedSettings {
   followInitialDays?: unknown;
   feedHideGroupCompilations?: unknown;
@@ -142,9 +146,8 @@ export interface SyncedSettings {
   sidebarOrder?: unknown;
 }
 
-/* 数据库那一份落进本地缓存。启动时壳取一次、设置面板每次打开再取一次，都交到这里；开着的面板与
-   侧栏经 store 通知跟上：侧栏顺序变了，它当场按新顺序重排。搜索记录条数变了要推给搜索岛，那一下
-   由 `changed` 交回壳。 */
+/* The database copy lands in the local cache. The shell fetches it at startup and the settings panel fetches it on each open. Both hand it here. An open panel and the
+   sidebar follow the store notification: a new sidebar order repaints immediately. A new search-history length is pushed to the search island by handing `changed` back to the shell. */
 export function applySyncedSettings(
   remote: SyncedSettings | null | undefined, changed: (effect: SyncedEffect) => void,
   target: SettingsStore<AppSettings> = appSettingsStore(),
@@ -156,7 +159,7 @@ export function applySyncedSettings(
     if (typeof remote?.[key] !== 'boolean' || remote[key] === settings[key]) continue;
     settings[key] = remote[key] as boolean; target.save();
   }
-  /* 数据库里还没有条数时，这台设备本地改过的那个数替所有访问端先定下来，只送这一次。 */
+  /* When the database has no length yet, this device's local number becomes the value for every client, and it is sent once. */
   const limit = remote && remote.searchHistoryLimit;
   if (Number.isInteger(limit) && (limit as number) >= 0 && (limit as number) <= 50) {
     if (limit !== settings.searchHistoryLimit) {
@@ -171,7 +174,7 @@ export function applySyncedSettings(
   target.save();
 }
 
-/** 把本地那个搜索记录条数送上数据库；失败不报，下次对账再送。 */
+/** Send the local search-history length to the database. A failure is quiet; the next reconcile sends it again. */
 export function postSearchHistoryLimit(target: SettingsStore<AppSettings> = appSettingsStore()): Promise<unknown> {
   return api('/api/settings', {
     method: 'POST', body: JSON.stringify({ searchHistoryLimit: target.value.searchHistoryLimit }),

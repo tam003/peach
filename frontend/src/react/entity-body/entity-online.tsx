@@ -17,6 +17,7 @@ import {
 } from '../follow-feed/follow-feed';
 import { useFollowWrite } from '../follow-feed/follow-feed-page';
 import type { PhotoLayout, PhotoSize } from './entity-body';
+import { phrase } from '../../i18n/phrase';
 
 export interface EntityOnlineProps {
   view: FollowView;
@@ -84,7 +85,7 @@ function Cards({ view, media, data, visible, context, photoSize, photoLayout, im
 
 function Empty({ searched }: { searched: boolean }) {
   const html = searched
-    ? emptyStateHtml('search-x', '当前筛选下没有更新', '切换媒体类型、状态、来源或标签后再试。')
-    : emptyStateHtml('rss', '还没有抓到更新', '关注页检查更新之后，这位创作者的新内容会出现在这里。');
+    ? emptyStateHtml('search-x', phrase('当前筛选下没有更新'), phrase('切换媒体类型、状态、来源或标签后再试。'))
+    : emptyStateHtml('rss', phrase('还没有抓到更新'), phrase('关注页检查更新之后，这位创作者的新内容会出现在这里。'));
   return <div data-follow-empty="" className="contents" dangerouslySetInnerHTML={{ __html: html }} />;
 }

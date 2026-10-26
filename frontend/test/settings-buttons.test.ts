@@ -10,13 +10,16 @@ const buttons = readdirSync(dir)
   .flatMap((name) => [...readFileSync(resolve(dir, name), 'utf8').matchAll(/<Button\b([\s\S]*?)<\/Button>/g)]
     .map(([, tag = '']) => ({ name, tag, label: tag.slice(tag.lastIndexOf('>') + 1).trim() })));
 
+const isSaveButton = (label: string) =>
+  label === '保存配置' || label === "{phrase('保存配置')}" || label.startsWith('保存');
+
 it('保存键一律叫「保存配置」', () => {
-  const saves = buttons.filter((button) => button.label.startsWith('保存'));
+  const saves = buttons.filter((button) => isSaveButton(button.label));
   expect(saves.length).toBeGreaterThan(0);
-  expect(saves.filter((button) => button.label !== '保存配置').map((button) => `${button.name}: ${button.label}`)).toEqual([]);
+  expect(saves.filter((button) => button.label !== '保存配置' && button.label !== "{phrase('保存配置')}").map((button) => `${button.name}: ${button.label}`)).toEqual([]);
 });
 
 it('保存配置使用主按钮', () => {
-  const saves = buttons.filter((button) => button.label === '保存配置');
+  const saves = buttons.filter((button) => button.label === '保存配置' || button.label === "{phrase('保存配置')}");
   expect(saves.filter((button) => /\bvariant=/.test(button.tag)).map((button) => button.name)).toEqual([]);
 });

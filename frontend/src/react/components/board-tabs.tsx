@@ -3,6 +3,7 @@ import { useLayoutEffect, useRef, type KeyboardEvent } from 'react';
 
 import { spriteGlyph } from './sprite-glyph';
 import { useHorizontalScroller } from './use-horizontal-scroller';
+import { phrase } from '../../i18n';
 
 export interface BoardTab<V extends string> {
   value: V;
@@ -73,7 +74,7 @@ export function BoardTabs<V extends string>(
             tabIndex={selected ? 0 : -1} className={TAB}
             onClick={() => { if (!selected) onChange(tab.value) }}>
             {Glyph ? <Glyph className="mr-1.5 size-4" /> : null}
-            {tab.label}
+            {phrase(tab.label)}
           </button>
         );
       })}

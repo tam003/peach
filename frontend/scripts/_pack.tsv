@@ -1,0 +1,2598 @@
+/云下载	/Cloud downloads	/Tải đám mây
+1 个	1 item	1 mục
+115 目标目录	115 Target Directory	Thư mục đích 115
+115 离线配额	115 Offline Quota	Hạn mức tải offline 115
+115（没有则留最大）	115 (otherwise keep the largest)	115 (không có thì giữ bản lớn nhất)
+15–40 分钟	15–40 min	15–40 phút
+1–2 个	1–2 items	1–2 mục
+2 个起步	2+ items	Từ 2 mục trở lên
+5–15 分钟	5–15 min	5–15 phút
+<5 分钟	<5 min	<5 phút
+<a class="geist-button primary" href="/subscriptions?tab=add">添加关注</a>	<a class="geist-button primary" href="/subscriptions?tab=add">Add a follow</a>	<a class="geist-button primary" href="/subscriptions?tab=add">Thêm theo dõi</a>
+<div class="geist-note geist-note-error fwarn" role="alert">{icon}<span>{count} 个来源上次检查失败，去<button type="button" class="flink" data-follow-manage>管理关注</button>看原因。</span></div>	<div class="geist-note geist-note-error fwarn" role="alert">{icon}<span>{count} sources failed the last check. Open <button type="button" class="flink" data-follow-manage>Manage follows</button> for the reason.</span></div>	<div class="geist-note geist-note-error fwarn" role="alert">{icon}<span>{count} nguồn lần kiểm tra trước thất bại. Mở <button type="button" class="flink" data-follow-manage>Quản lý theo dõi</button> để xem lý do.</span></div>
+<span class="favatar none" title="没有可用头像">{initial}</span>	<span class="favatar none" title="No avatar available">{initial}</span>	<span class="favatar none" title="Chưa có ảnh đại diện">{initial}</span>
+<span data-follow-seealso="" title="另见 {value}"><span data-follow-seealso-label="">另见</span> {marks}</span>	<span data-follow-seealso="" title="See also {value}"><span data-follow-seealso-label="">See also</span> {marks}</span>	<span data-follow-seealso="" title="Xem thêm {value}"><span data-follow-seealso-label="">Xem thêm</span> {marks}</span>
+>40 分钟	>40 min	>40 phút
+Buffer Cache 占内存，磁盘缓存和文件夹缓存占硬盘，改一个管不住另外两个。	Buffer Cache uses RAM, disk and folder caches use disk; changing one does not affect the others.	Buffer Cache chiếm RAM, đệm đĩa và thư mục chiếm ổ cứng; chỉnh một mục không kiểm soát được hai mục kia.
+Chrome：在	Chrome: at 	Chrome: tại
+CloudDrive · 115	CloudDrive · 115	CloudDrive · 115
+CloudDrive · PikPak	CloudDrive · PikPak	CloudDrive · PikPak
+CloudDrive 设置帮助	CloudDrive Setup Help	Trợ giúp cài đặt CloudDrive
+CloudDrive2 API 令牌	CloudDrive2 API Token	API Token CloudDrive2
+CloudDrive2 地址	CloudDrive2 Address	Địa chỉ CloudDrive2
+CloudDrive2 配置	CloudDrive2 Configuration	Cấu hình CloudDrive2
+Cloudflare Zero Trust 里指向这台电脑的主机名。	Hostname in Cloudflare Zero Trust pointing to this computer.	Tên máy chủ trong Cloudflare Zero Trust trỏ tới máy tính này.
+Cloudflare 公网入口	Cloudflare Public Tunnel	Đường vào công khai Cloudflare
+Cookie 已保存；登录是否有效要到抓取时才知道。	The cookie is saved. Whether the login works is only known at scrape time.	Đã lưu cookie. Đăng nhập có hiệu lực hay không chỉ biết lúc thu thập.
+Cookie 已撤销	Cookie revoked	Đã thu hồi cookie
+Cookie 文件未读取，请重新选择	The cookie file was not read. Choose it again.	Chưa đọc được tệp cookie. Hãy chọn lại.
+Cookie 文本超过 256 KiB	The cookie text is over 256 KiB	Chữ cookie vượt 256 KiB
+FC2 评论标记	FC2 comment marks	Đánh dấu bình luận FC2
+FC2 跨号相似	FC2 cross-code similarity	Tương đồng chéo mã FC2
+FFmpeg 缺少 AV1 软件解码器	FFmpeg lacks AV1 software decoder	FFmpeg thiếu bộ giải mã phần mềm AV1
+FFmpeg／OpenSSL	FFmpeg / OpenSSL	FFmpeg / OpenSSL
+ISO 原盘	ISO Disc Image	Đĩa gốc ISO
+JAV	JAV	JAV
+JAV 与新作	JAV & New releases	JAV & Bản phát hành mới
+JAV 作品	JAV title	Tác phẩm JAV
+JAV 分区	JAV sections	Phần JAV
+JAV 卡片版式	JAV card layout	Bố cục thẻ JAV
+JAV 订阅	JAV follows	Theo dõi JAV
+JAV 订阅列表	JAV follow list	Danh sách theo dõi JAV
+JAV 订阅源	JAV feeds	Nguồn đăng ký JAV
+JSON 接口地址	JSON API address	Địa chỉ API JSON
+JavDB 上没有搜到这个名字。	No match for this name on JavDB.	Không tìm thấy tên này trên JavDB.
+JavDB 上的演员卡	Performer card on JavDB	Thẻ diễn viên trên JavDB
+NVMe SSD，内存 16 GB 以上	NVMe SSD, 16+ GB RAM	NVMe SSD, RAM từ 16 GB trở lên
+Netscape Cookie 文件（.txt）	Netscape cookie file (.txt)	Tệp cookie Netscape (.txt)
+OneDrive	OneDrive	OneDrive
+Peach {version} 将在重启后安装。	Peach {version} will install upon restart.	Peach {version} sẽ được cài đặt sau khi khởi động lại.
+Peach · 蜜桃	Peach	Peach
+Peach · 设置完成	Peach · setup complete	Peach · thiết lập xong
+Peach 代理	Peach proxy	Proxy Peach
+Peach 内部	Inside Peach	Nội bộ Peach
+Peach 口味维度	Peach taste facets	Khía cạnh khẩu vị Peach
+Peach 地址	Peach Address	Địa chỉ Peach
+Peach 正在重新启动。	Peach is restarting. 	Peach đang khởi động lại.
+Peach 正在重新启动。稍后自动跳转，或点击	Peach is restarting. Redirecting shortly, or click 	Peach đang khởi động lại. Hệ thống sẽ tự chuyển trang sau giây lát, hoặc nhấp
+Peach 版本、操作系统类型；每天最多一次，不含安装标识。	Peach version, operating system type; at most once a day, does not contain installation identifiers.	Phiên bản Peach, loại hệ điều hành; tối đa một lần mỗi ngày, không bao gồm mã định danh cài đặt.
+Peach 版本、系统类型、Python 版本、CPU 架构、故障环节、异常链、Peach 代码文件名/函数名/行号、结构化错误码、媒体工具故障类别、HTTP 方法/路由模板/关联错误编号、同类故障次数与统计日期；首次立即上传，重复次数每小时或退出时合并，每天最多 20 批。	Peach version, system type, Python version, CPU architecture, failure phase, exception chain, code file/function/line number, error code, tool error category, HTTP method/route/error ID, occurrence count and date; uploaded immediately on first occurrence, batched hourly or on exit, max 20 batches per day.	Phiên bản Peach, loại hệ thống, phiên bản Python, kiến trúc CPU, khâu sự cố, chuỗi ngoại lệ, tên tệp/tên hàm/dòng mã, mã lỗi có cấu trúc, loại lỗi công cụ media, phương thức/mẫu tuyến đường HTTP/mã lỗi liên quan, số lần lỗi cùng loại và ngày thống kê; tải lên ngay lần đầu, gộp số lần lặp mỗi giờ hoặc khi thoát, tối đa 20 đợt mỗi ngày.
+Peach 看过	Watched in Peach	Đã xem trong Peach
+Peach 观看	Peach watches	Lượt xem Peach
+Peach 配置	Peach settings	Cài đặt Peach
+Peach 重启后自动恢复。	Automatically resumes when Peach restarts.	Tự động khôi phục khi Peach khởi động lại.
+PikPak 根目录	PikPak Root Directory	Thư mục gốc PikPak
+PikPak 根目录对应的媒体目录	Media directory for PikPak root	Thư mục media tương ứng với gốc PikPak
+PikPak 目标目录	PikPak Target Directory	Thư mục đích PikPak
+PikPak 账号	PikPak Account	Tài khoản PikPak
+PikPak（没有则留最大）	PikPak (otherwise keep the largest)	PikPak (không có thì giữ bản lớn nhất)
+SATA SSD，内存 8–16 GB	SATA SSD, 8–16 GB RAM	SATA SSD, RAM 8–16 GB
+Webhook 配置	Webhook Configuration	Cấu hình Webhook
+Windows 桌面版粘贴后显示「无效」时，把这段存成 .toml 文件，放进 %LOCALAPPDATA%\\CloudDrive.WinUI\\webhooks\\ 目录。	If Windows app shows "Invalid" on paste, save this as a .toml file into %LOCALAPPDATA%\\CloudDrive.WinUI\\webhooks\\.	Nếu bản Windows hiển thị "Không hợp lệ" khi dán, hãy lưu đoạn này thành tệp .toml và đặt vào thư mục %LOCALAPPDATA%\\CloudDrive.WinUI\\webhooks\\.
+amane 桥已重建	The amane bridge was rebuilt	Đã dựng lại cầu amane
+favicon 刷新	Favicon Refresh	Làm mới biểu tượng trang
+sha1 一致	SHA1 matches	Khớp SHA1
+{agency} 官方资料	Official data from {agency}	Dữ liệu chính thức của {agency}
+{bad} 个失败	{bad} failed	{bad} thất bại
+{cause}（已移除 {done} 个别名，还有 {length} 个未移除）	{cause} (removed {done} aliases, {length} left)	{cause} (đã gỡ {done} bí danh, còn {length})
+{cause}（还有 {length} 组没有合并）	{cause} ({length} groups still unmerged)	{cause} (còn {length} nhóm chưa gộp)
+{change} 个文件会改名或移动，{unchanged} 个已经就是目标名字	{change} files will be renamed or moved. {unchanged} already have the target name.	{change} tệp sẽ đổi tên hoặc chuyển. {unchanged} đã đúng tên đích.
+{checked} 项	{checked} items	{checked} mục
+{code} 封面	{code} Cover	Bìa {code}
+{code} 样张 {i}	Sample {i} for {code}	Ảnh mẫu {i} của {code}
+{code} 的正封取景框	Front-cover frame for {code}	Khung bìa chính của {code}
+{code} 预览 {n}	{code} Preview {n}	Xem trước {code} {n}
+{conflicts} 个同名冲突交回人工	{conflicts} same-name conflicts need a decision	{conflicts} trùng tên cần quyết định
+{context} 条	{context} entries	{context} mục
+{copies} 个来源	{copies} sources	{copies} nguồn
+{count} 个 · 可回收 {reclaimable}	{count} · {reclaimable} reclaimable	{count} · có thể thu hồi {reclaimable}
+{count} 个来源需要凭证。	{count} sources require credentials.	{count} nguồn cần thông tin xác thực.
+{count} 个版本	{count} versions	{count} phiên bản
+{count} 个视频	{count} videos	{count} video
+{count} 人	{count} people	{count} người
+{count} 卷	{count} parts	{count} tập/phần
+{count} 项	{count} items	{count} mục
+{count} 项更新	{count} updates	{count} bản cập nhật
+{dirErrors} 个文件夹没有删除	{dirErrors} folders were not deleted	{dirErrors} thư mục chưa xóa
+{duration} 分钟	{duration} min	{duration} phút
+{empty} 个	{empty}	{empty}
+{entity} 的{label}	{label} for {entity}	{label} của {entity}
+{exhausted} 个没有更多内容	{exhausted} have nothing more	{exhausted} không còn nội dung
+{exports} 份私有导出 · {bytes}	{exports} private exports · {bytes}	{exports} bản xuất riêng · {bytes}
+{failed} 个失败	{failed} failed	{failed} thất bại
+{failed} 张头像未取得	{failed} avatars unavailable	{failed} ảnh đại diện chưa có
+{failed} 行未能处理	{failed} rows were not processed	{failed} dòng chưa xử lý
+{fieldName}的来源	Source of {fieldName}	Nguồn của {fieldName}
+{files} 个	{files}	{files}
+{files} 个文件 · 可回收 {reclaimable}	{files} files · {reclaimable} reclaimable	{files} tệp · có thể thu hồi {reclaimable}
+{getValue} 条	{getValue}	{getValue}
+{history_sources} 个数据源	{history_sources} data sources	{history_sources} nguồn dữ liệu
+{hours} 天	{hours} days	{hours} ngày
+{hours} 天 {hours2} 小时	{hours} d {hours2} h	{hours} ngày {hours2} giờ
+{hours} 小时	{hours} h	{hours} giờ
+{hours} 小时 {minutes} 分	{hours} h {minutes} min	{hours} giờ {minutes} phút
+{item} · {length} 个媒体	{item} · {length} media	{item} · {length} phương tiện
+{k} 覆盖视频	Videos covered by {k}	Video được {k} phủ
+{label} {count} 部	{label} {count} works	{label} {count} tác phẩm
+{label} 卷	Part {label}	Phần {label}
+{label} 地址	{label} URL	Địa chỉ {label}
+{label} 的头像取景框	Avatar frame for {label}	Khung ảnh đại diện của {label}
+{label}分页	{label} pages	Trang {label}
+{label}可选图标	Available icons for {label}	Biểu tượng khả dụng cho {label}
+{label}字段路径	{label} field path	Đường dẫn trường {label}
+{label}改为{direction}	Sort {label} {direction}	Sắp {label} {direction}
+{label}空间使用率	{label} space used	Mức dùng chỗ của {label}
+{label}：{cast} 人合演，先找到她自己的脸，再拖动方框选一块。	{label}: {cast} people. Find her face, then drag the box.	{label}: {cast} người. Tìm mặt cô ấy, rồi kéo khung.
+{label}：{value} 条线索	{label}: {value} clues	{label}: {value} manh mối
+{label}：拖动方框选一块，滚轮或角上那枚方块改大小。	{label}: drag the box. Scroll or use the corner handle to resize.	{label}: kéo khung. Lăn chuột hoặc kéo ô góc để đổi cỡ.
+{length} 个不公开来源	{length} private sources	{length} nguồn riêng
+{length} 个别名	{length} aliases	{length} bí danh
+{length} 个待配置	{length} to configure	{length} cần cấu hình
+{length} 个来源{text}	{length} sources{text}	{length} nguồn{text}
+{length} 个来源检查失败	{length} sources failed the check	{length} nguồn kiểm tra thất bại
+{length} 个标签	{length} tags	{length} thẻ
+{length} 个缓存没有清理	{length} caches were not cleared	{length} bộ nhớ đệm chưa dọn
+{length} 个订阅源 · {unread} 条未看	{length} feeds · {unread} unseen	{length} nguồn đăng ký · {unread} chưa xem
+{length} 条没有写入：{value}	{length} were not written: {value}	{length} chưa ghi: {value}
+{length} 条订阅源拉取失败	{length} feeds failed to fetch	{length} nguồn đăng ký tải thất bại
+{length} 条记录没有删除（{names}）	{length} records were not deleted ({names})	{length} bản ghi chưa xóa ({names})
+{length} 组	{length} groups	{length} nhóm
+{length} 部	{length} works	{length} tác phẩm
+{length}/{length2} 个来源未更新：{error}	{length}/{length2} sources were not updated: {error}	{length}/{length2} nguồn chưa cập nhật: {error}
+{minutes} 分 {whole} 秒	{minutes} min {whole} s	{minutes} phút {whole} giây
+{missing_tool} 部缺索引的片子要装上 untrunc 才修得了，下载入口在配置页的「运行信息」里。	{missing_tool} works need untrunc before their missing index can be repaired. The download is under Runtime info in configuration.	{missing_tool} tác phẩm thiếu chỉ mục cần untrunc mới sửa được. Chỗ tải nằm ở Thông tin chạy trong cấu hình.
+{missing} 项	{missing} items	{missing} mục
+{name} 的关注来源	Follow sources for {name}	Nguồn theo dõi của {name}
+{name} 的文件又回到盘上，没有删除；下一次扫描会把它接回在库	The file for {name} is back on disk and was not deleted. The next scan will link it into the library.	Tệp của {name} đã về đĩa và chưa bị xóa. Lần quét sau sẽ gắn lại vào thư viện.
+{name}：{value} 条线索	{name}: {value} clues	{name}: {value} manh mối
+{name}：图库里按{named}{more}找到的。	{name}: found in the gallery by {named}{more}.	{name}: tìm trong thư viện ảnh theo {named}{more}.
+{name}：换上的那张留在本机，随时能换回来。	{name}: the replacement stays on this machine and can be swapped back.	{name}: ảnh vừa đổi nằm trên máy này, có thể đổi lại.
+{name}：还没有备选图片，可输入番号、图片地址或从本机选择。	{name}: no alternate images yet. Enter a code, an image URL, or pick a local file.	{name}: chưa có ảnh dự phòng. Nhập mã, địa chỉ ảnh, hoặc chọn tệp trên máy.
+{n} 分钟	{n} mins	{n} phút
+{n} 张	{n} images	{n} ảnh
+{n} 星	{n} stars	{n} sao
+{n} 秒	{n}s	{n} giây
+{n} 项更新	{n} updates	{n} cập nhật
+{online} 个卷	{online} volumes	{online} ổ
+{path} 不存在	{path} does not exist	{path} không tồn tại
+{path} 不支持离线下载	{path} does not support offline download	{path} không hỗ trợ tải offline
+{path} 可以离线下载	{path} supports offline download	{path} có thể tải offline
+{pending_total} 个待判断	{pending_total} to judge	{pending_total} chờ phân loại
+{primary} · {length} 个视频	{primary} · {length} videos	{primary} · {length} video
+{progress_current} 项	{progress_current} items	{progress_current} mục
+{quiet} 个来源没有更新	{quiet} sources had no updates	{quiet} nguồn không có cập nhật
+{reattached} 条的记录已接到库里的另一个版本。	Records for {reattached} items were attached to another copy in the library.	Bản ghi của {reattached} mục đã gắn sang bản khác trong thư viện.
+{release_date} 发售	Released {release_date}	Phát hành {release_date}
+{rest} 项待补	{rest} items still to fill	{rest} mục còn thiếu
+{scan} 项	{scan} items	{scan} mục
+{seconds} 分钟	{seconds} min	{seconds} phút
+{seeders} 个做种	{seeders} seeders	{seeders} seeder
+{shared_fields} 是从共享副本回填的，本机没有单独存。清除会把两边一起删。	{shared_fields} were filled from the shared copy and are not stored separately on this machine. Clearing removes both.	{shared_fields} được điền từ bản dùng chung, máy này không lưu riêng. Xóa sẽ gỡ cả hai.
+{shown}/{length} 个来源	{shown}/{length} sources	{shown}/{length} nguồn
+{site_label} 样张	{site_label} samples	Ảnh mẫu {site_label}
+{size} · {n} 请求	{size} · {n} requests	{size} · {n} yêu cầu
+{source}评分 {score} / 5	{source} rating {score} / 5	Điểm {source}: {score} / 5
+{stars} 星	{stars} stars	{stars} sao
+{start}–{end} / {total} 条	{start}–{end} / {total}	{start}–{end} / {total}
+{summary}{rest}，重新检查后可再试。	{summary}{rest}. Check again to retry.	{summary}{rest}. Kiểm tra lại để thử lần nữa.
+{text}方括号里的内容在字段为空时整段省略。	{text}Text in brackets is omitted when the field is empty.	{text}Phần trong ngoặc được bỏ khi trường trống.
+{title} · {total} 张	{title} · {total} images	{title} · {total} ảnh
+{title}索引版式	{title} index layout	Bố cục danh mục {title}
+{total} 个	{total}	{total}
+{total} 个别名	{total} aliases	{total} bí danh
+{total} 个待升级	{total} waiting for a better copy	{total} chờ bản tốt hơn
+{total} 个符合 · 显示 {shown}	{total} match · showing {shown}	{total} phù hợp · hiển thị {shown}
+{total} 张	{total} images	{total} ảnh
+{total} 条待复核	{total} to review	{total} chờ duyệt
+{total} 组	{total} groups	{total} nhóm
+{total} 组 · {files} 个文件	{total} groups · {files} files	{total} nhóm · {files} tệp
+{total} 组 · {files} 个文件 · 可回收 {reclaimable}	{total} groups · {files} files · {reclaimable} reclaimable	{total} nhóm · {files} tệp · có thể thu hồi {reclaimable}
+{total} 部作品	{total} works	{total} tác phẩm
+{total} 项在回收站	{total} in the trash	{total} trong thùng rác
+{total} 项更新 · 显示 {length}	{total} updates · showing {length}	{total} cập nhật · đang hiện {length}
+{unreadable} 个目录读取失败，已跳过	{unreadable} folders could not be read and were skipped	{unreadable} thư mục không đọc được và đã bỏ qua
+{value} {checked} / {total} 条链接	{value} {checked} / {total} links	{value} {checked} / {total} liên kết
+{value} {name} 的来源	Source of {value} {name}	Nguồn của {value} {name}
+{value} 分钟	{value} min	{value} phút
+{value} 天	{value} days	{value} ngày
+{value} 小时	{value} h	{value} giờ
+{value}{cup} 罩杯	{value}{cup} cup	Cup {value}{cup}
+{value}：已完成 {checked}/{total} 个来源	{value}: finished {checked}/{total} sources	{value}: xong {checked}/{total} nguồn
+{vanished} 条带个人记录的已标为已消失，可在孤儿记录里处理。	{vanished} items with personal records were marked gone. Handle them under orphan records.	{vanished} mục có ghi chép cá nhân được đánh dấu đã mất. Xử lý trong bản ghi mồ côi.
+{vanish} 条带个人记录的标为已消失，记录留着，可在孤儿记录里接到新文件或彻底删除。	{vanish} items with personal records were marked gone. The records stay and can be attached to a new file or deleted under orphan records.	{vanish} mục có ghi chép cá nhân được đánh dấu đã mất. Ghi chép còn, có thể gắn tệp mới hoặc xóa hẳn trong bản ghi mồ côi.
+{vanish} 项	{vanish} items	{vanish} mục
+{vanish} 项带个人记录	{vanish} items with personal records	{vanish} mục có ghi chép cá nhân
+{video_count} 条作品还没有可用预览；批准后仍会按所选资料写入标签。	{video_count} works still have no preview. Approving still writes tags from the chosen data.	{video_count} tác phẩm chưa có xem trước. Duyệt vẫn ghi thẻ theo dữ liệu đã chọn.
+{want} 回到待找	{want} back to looking	{want} về chờ tìm
+{want} 已经在想要里	{want} is already in Wants	{want} đã có trong Muốn xem
+{whole} 秒	{whole} s	{whole} giây
+{works} 部作品	{works} works	{works} tác phẩm
+· {age} 岁	· age {age}	· {age} tuổi
+· {cast} 人合演	· {cast} cast	· {cast} người đóng
+· {elapsed_s} 秒	· {elapsed_s} s	· {elapsed_s} giây
+· {new} 条未看	· {new} unseen	· {new} chưa xem
+· 官方优先	· official first	· ưu tiên chính thức
+· 已等待 {waited_seconds}	· waited {waited_seconds}	· đã chờ {waited_seconds}
+· 已选 {picked} 个标签	· {picked} tags selected	· đã chọn {picked} thẻ
+· 待确认	 · Pending	 · Chờ xác nhận
+· 按「{found_by}」找到	· matched “{found_by}”	· khớp “{found_by}”
+· 晚于现在	· later than now	· muộn hơn hiện tại
+– 至今	– present	– nay
+、下载资料并生成视频预览	, download metadata, and make video previews	, tải dữ liệu và tạo xem trước video
+。可在下方调整搜索优先项；完整度与水印需要逐条复核。	. Search priorities can be adjusted below; completeness and watermarks need manual review.	. Có thể điều chỉnh ưu tiên tìm kiếm bên dưới; độ trọn vẹn và watermark cần rà soát từng mục.
+。和	. And 	. Và
+「{alias}」归入「{canonical}」	File “{alias}” under “{canonical}”	Gộp “{alias}” vào “{canonical}”
+「{chosen}」将成为这份档案显示的名称，「{current}」留作别名。作品上的署名、搜索和标签都会跟着改写。	“{chosen}” becomes the name on this profile. “{current}” stays as an alias. Credits, search, and tags on works are rewritten to match.	“{chosen}” thành tên hiện trên hồ sơ này. “{current}” giữ làm bí danh. Tên trên tác phẩm, tìm kiếm và thẻ được viết lại theo.
+「{genre}」收录成的中文标签	Chinese tag saved for “{genre}”	Thẻ tiếng Trung đã lưu cho “{genre}”
+上一个视频	Previous video	Video trước
+上一张	Previous	Ảnh trước
+上一页	Previous page	Trang trước
+上传数据预览	Upload Data Preview	Xem trước dữ liệu tải lên
+上传服务未配置。	Upload service not configured.	Dịch vụ tải lên chưa được cấu hình.
+上传版本、系统信息、故障类型、代码位置与发生次数。	Upload version, OS info, error types, code locations, and occurrence counts.	Tải lên phiên bản, thông tin hệ điều hành, loại lỗi, vị trí mã nguồn và số lần phát sinh.
+上传馆藏与口味明细	Upload library and taste details	Tải lên chi tiết bộ sưu tập và khẩu vị
+上次拉取	Last fetch	Lần tải trước
+上次新增	Last new items	Lần có mục mới trước
+上次检查	Last check	Lần kiểm trước
+上次解析成功	Last successful parse	Lần phân tích thành công trước
+上游最新版本	Latest upstream version	Bản mới nhất ở upstream
+上移	Move up	Di chuyển lên
+上移 {label}	Move {label} up	Di chuyển {label} lên trên
+下一个视频	Next video	Video tiếp theo
+下一张	Next	Ảnh tiếp
+下一页	Next page	Trang sau
+下移	Move down	Di chuyển xuống
+下移 {label}	Move {label} down	Di chuyển {label} xuống dưới
+下载 FFmpeg	Download FFmpeg	Tải FFmpeg
+下载 M3U 播放列表	Download M3U playlist	Tải danh sách phát M3U
+下载 untrunc	Download untrunc	Tải untrunc
+下载 {name}	Download {name}	Tải xuống {name}
+下载 → 校验 → 解压 → 准备安装 · {message}	Download → Verify → Extract → Prepare · {message}	Tải xuống → Kiểm tra → Giải nén → Chuẩn bị cài đặt · {message}
+下载内容	Download Contents	Nội dung tải xuống
+下载到	Download to	Tải về
+下载到 {label}	Download to {label}	Tải về {label}
+下载到本地	Download locally	Tải về máy
+下载完成后在这里确认重启安装。	Confirm restart here after download completes.	Sau khi tải xong, hãy xác nhận khởi động lại tại đây để cài đặt.
+下载完整预览	Download Full Preview	Tải bản xem trước đầy đủ
+下载并安装	Download & Install	Tải xuống và cài đặt
+下载渠道	Download channels	Kênh tải xuống
+下载渠道设置	Download channel settings	Cài đặt kênh tải
+下载诊断报告	Download diagnostic report	Tải báo cáo chẩn đoán
+下载配置未取得	Download settings are unavailable	Chưa có cấu hình tải
+不可通过	Cannot approve	Không duyệt được
+不合口味	Not to taste	Không hợp khẩu vị
+不合口味 · 降低推荐权重	Not my taste · Lower recommendation weight	Không hợp gu · Giảm tỷ trọng gợi ý
+不喜欢	Dislike	Không thích
+不是内容	Not content	Không phải nội dung
+不是垃圾	Not junk	Không phải rác
+不能连接	Cannot connect	Không kết nối được
+不限	Unlimited	Không giới hạn
+不限时间	All time	Toàn thời gian
+不需要	Not needed	Không cần
+不需要凭据	No credentials needed	Không cần thông tin đăng nhập
+丝带	Ribbon	Ruy băng
+两次输入的密码不一致	Passwords do not match	Hai mật khẩu nhập không khớp
+个作品	works	tác phẩm
+个作品有内部行为证据	works have internal behavior evidence	tác phẩm có bằng chứng hành vi nội bộ
+个作品有播放记录	works with play history	tác phẩm có lịch sử phát
+个卷已取得容量	volumes with a known size	ổ đã có dung lượng
+个厂牌	studios	hãng
+个媒体	media	phương tiện
+个条目	entries	mục
+个来源	sources	nguồn
+个视频	videos	video
+个订阅源	feeds	nguồn đăng ký
+中字	Chinese subs	Phụ đề Trung
+中文	Chinese	Tiếng Trung
+中文字幕	Chinese subtitles	Phụ đề tiếng Trung
+中文字幕由 SubtitleCat 提供，可能包含机翻	Subtitles provided by SubtitleCat, may include machine translation	Phụ đề cung cấp bởi SubtitleCat, có thể bao gồm dịch máy
+中文标签	Chinese tag	Thẻ tiếng Trung
+临时链接	Quick tunnel	Liên kết tạm thời
+临时预览用，地址随机，重启后会变。启动前要先设置访问密码。	For temporary preview with random URL that changes on restart. Set access password first.	Dùng để xem trước tạm thời, địa chỉ ngẫu nhiên và sẽ đổi khi khởi động lại. Cần đặt mật khẩu truy cập trước.
+为什么喜欢？	Why did you like it?	Vì sao bạn thích?
+为你推荐	For you	Gợi ý cho bạn
+为本地视频生成九宫格与时间轴预览；关闭后仍按入库规则探测时长与分辨率。	Generate 9-frame and timeline previews for local videos; turning off still detects duration and resolution.	Tạo ảnh lưới 9 khung và xem trước dòng thời gian cho video cục bộ; nếu tắt vẫn phát hiện thời lượng và độ phân giải khi nhập kho.
+主要口味维度	Primary taste facets	Khía cạnh khẩu vị chính
+主要站点	Primary sites	Trang chính
+主题	Theme	Chủ đề
+书签 {bookmarks}	{bookmarks} bookmarks	{bookmarks} dấu trang
+事务所	Agencies	Công ty đại diện
+云下载	Cloud download	Tải đám mây
+云下载只在允许修改数据库的设备上可用。	Cloud download is only available on devices allowed to edit the database.	Tải đám mây chỉ khả dụng trên thiết bị được phép sửa cơ sở dữ liệu.
+云端路径前缀	Cloud Path Prefix	Tiền tố đường dẫn đám mây
+云端路径前缀 {index}	Cloud path prefix {index}	Tiền tố đường dẫn đám mây {index}
+产地	Origin	Xuất xứ
+亲密	Intimate	Thân mật
+人	people	người
+人工复核	Manual review	Duyệt tay
+人机验证由本机浏览器自动完成；需要点击时窗口会弹出。这台机器上不需要 Cookie。	Captcha is completed automatically by the local browser; a window pops up if a click is needed. Cookies are not needed on this machine.	Xác thực người máy do trình duyệt cục bộ tự hoàn thành; cửa sổ sẽ bật lên khi cần nhấp. Máy này không cần cookie.
+人物关系	Relationships	Quan hệ nhân vật
+人物名册	People roster	Danh sách nhân vật
+仅同步已入库影片	Sync works already in the library	Chỉ đồng bộ tác phẩm đã có trong thư viện
+仅扫描文件	Scan files only	Chỉ quét tệp
+仅显示图片	Images only	Chỉ ảnh
+仅生成视频预览	Video previews only	Chỉ tạo xem trước video
+仅补全资料	Metadata only	Chỉ bổ sung dữ liệu
+仍在学习	Still learning	Vẫn đang học
+仍无法读取 · 刷新	Still unreadable · Refresh	Vẫn không đọc được · Làm mới
+从低到高	Low to high	Thấp đến cao
+从多到少	Most to least	Nhiều đến ít
+从大到小	Largest to smallest	Lớn đến nhỏ
+从小到大	Smallest to largest	Nhỏ đến lớn
+从少到多	Least to most	Ít đến nhiều
+从新到旧	New to old	Mới đến cũ
+从旧到新	Old to new	Cũ đến mới
+从本机选图片	Choose image from device	Chọn ảnh từ máy
+从此视频隐藏该标签	Hide this tag from this video	Ẩn thẻ này khỏi video này
+从短到长	Short to long	Ngắn đến dài
+从近到远	Recent to old	Gần đến xa
+从这台电脑的浏览器导入口味分析记录。	Import taste analysis records from this computer's browser.	Nhập bản ghi phân tích sở thích từ trình duyệt của máy này.
+从远到近	Old to recent	Xa đến gần
+从长到短	Long to short	Dài đến ngắn
+从高到低	High to low	Cao đến thấp
+代理地址	Proxy Address	Địa chỉ proxy
+代理流量保护	Metered / Proxy Traffic Protection	Bảo vệ lưu lượng proxy
+以 / 开头的网盘路径	Drive path starting with /	Đường dẫn ổ đĩa bắt đầu bằng /
+任务中心	Activity	Trung tâm tác vụ
+任务明细 · {length} 项	Task details · {length}	Chi tiết tác vụ · {length}
+任务状态	Task status	Trạng thái tác vụ
+任务详情	Task details	Chi tiết tác vụ
+优先寻找	Look first	Tìm trước
+会登记到「{holder}」名下	It will be filed under “{holder}”	Sẽ ghi dưới tên “{holder}”
+会登记到数据库里的「{name}」名下	It will be filed under “{name}” in the database	Sẽ ghi dưới tên “{name}” trong cơ sở dữ liệu
+位	people	người
+位创作者	creators	nhà sáng tạo
+位艺人	performers	nghệ sĩ
+低占用	Low effort	Nhẹ
+体积	Size	Dung lượng
+体积未取得	Size unavailable	Chưa có dung lượng
+作品	Work	Tác phẩm
+作品 #{id}	Work #{id}	Tác phẩm #{id}
+作品列表	Work list	Danh sách tác phẩm
+作品列表工具栏	Work list toolbar	Thanh công cụ danh sách tác phẩm
+作品列表未取得	Work list not retrieved	Chưa lấy được danh sách tác phẩm
+作品封面	Work cover	Bìa tác phẩm
+作品未取得	Work unavailable	Chưa lấy được tác phẩm
+作品来源	Work source	Nguồn tác phẩm
+作品清单	Work list	Danh sách tác phẩm
+作品画面	Work image	Hình tác phẩm
+作品详情	Work Details	Chi tiết tác phẩm
+作品资料 {completed} / {total} 部	Work data {completed} / {total}	Dữ liệu tác phẩm {completed} / {total}
+作品资料未取得	Work data unavailable	Chưa có dữ liệu tác phẩm
+作品资料站	Metadata sites	Trang thông tin tác phẩm
+作品资料站点	Metadata Sites	Trang thông tin tác phẩm
+使用你在 Cloudflare 绑定的固定域名。启动前要先设置访问密码。	Use your fixed domain configured in Cloudflare. Set access password first.	Sử dụng tên miền cố định liên kết trên Cloudflare. Cần đặt mật khẩu truy cập trước.
+使用已有数据目录	Use an existing data folder	Dùng thư mục dữ liệu có sẵn
+使用此目录	Use this folder	Dùng thư mục này
+使用空间	Space used	Dung lượng sử dụng
+依据	Basis	Căn cứ
+保存	Save	Lưu
+保存 Mix 或新建列表后，会在这里按自己的顺序继续播放。	After saving a Mix or creating a playlist, playback will continue here in custom order.	Sau khi lưu Mix hoặc tạo danh sách mới, nội dung sẽ tiếp tục phát ở đây theo thứ tự riêng.
+保存 Mix，按自己的顺序继续播放。	Save Mix to continue playback in your own order.	Lưu Mix để tiếp tục phát theo thứ tự của bạn.
+保存中…	Saving…	Đang lưu…
+保存为播放列表	Save as Playlist	Lưu thành danh sách phát
+保存别名	Save alias	Lưu bí danh
+保存到数据库	Save to the database	Lưu vào cơ sở dữ liệu
+保存名称	Save name	Lưu tên
+保存后 Peach 会重启，并跳转到新地址。	Peach will restart and redirect to the new address after saving.	Sau khi lưu, Peach sẽ khởi động lại và chuyển sang địa chỉ mới.
+保存后 Peach 会重新启动。	Peach will restart after saving.	Peach sẽ khởi động lại sau khi lưu.
+保存后扫描并补全资料	Scan and complete metadata after saving	Quét và bổ sung thông tin sau khi lưu
+保存后，能连接到 Peach 的设备将直接访问馆藏。	After saving, devices that can connect to Peach will directly access the library.	Sau khi lưu, các thiết bị kết nối được tới Peach sẽ truy cập thẳng vào bộ sưu tập.
+保存喜欢偏好	Save Like Preferences	Lưu sở thích yêu thích
+保存失败 · 请重试	Save failed · Please retry	Lưu thất bại · Vui lòng thử lại
+保存密码，登录过期时自动重新登录	Save password, automatically relogin when expired	Lưu mật khẩu, tự động đăng nhập lại khi hết hạn
+保存当前筛选	Save this filter	Lưu bộ lọc này
+保存待确认资料	Save data waiting for confirmation	Lưu dữ liệu chờ xác nhận
+保存来源	Save source	Lưu nguồn
+保存的筛选	Saved filters	Bộ lọc đã lưu
+保存配置	Save settings	Lưu cấu hình
+保持登录	Stay signed in	Duy trì đăng nhập
+保留	Keep	Giữ
+保留 {recovered} 条未确认失效的链接。	Kept {recovered} links that are not confirmed dead.	Giữ {recovered} liên kết chưa xác nhận hỏng.
+保留来源根目录	Keep the source root folder	Giữ thư mục gốc của nguồn
+修复 {where} · {message}	Repair {where} · {message}	Sửa {where} · {message}
+修复媒体库	Repair the library	Sửa thư viện
+修复媒体库「{name}」	Repair library “{name}”	Sửa thư viện “{name}”
+修复进度	Repair progress	Tiến độ sửa
+修好 {repaired} 部	Repaired {repaired}	Đã sửa {repaired}
+修好 {repaired} 部，{failed} 部修不了	Repaired {repaired}. {failed} cannot be repaired.	Đã sửa {repaired}. {failed} không sửa được.
+修改凭据	Edit credentials	Sửa thông tin đăng nhập
+修缺时间戳表（播放卡顿）和缺索引（打不开）的 MP4。常看的片子先修。	Fix MP4 files lacking timecode tables (playback stutter) or lacking index (cannot open). Fix frequently watched videos first.	Sửa tệp MP4 thiếu bảng mã thời gian (phát bị giật) và thiếu chỉ mục (không mở được). Ưu tiên sửa phim thường xem trước.
+倒序	Descending	Giảm dần
+值得看看	Worth a look	Đáng xem
+做种未取得	Seeders unavailable	Chưa có số seeder
+停止	Stop	Dừng
+停止公网入口	Stop Public Tunnel	Dừng đường vào công khai
+停止读取	Stop reading	Dừng đọc
+停止读取 {name}	Stop reading {name}	Dừng đọc {name}
+停用	Off	Tắt
+健身	Fitness	Thể hình
+元数据	Metadata	Dữ liệu đặc tả
+元数据字段	Metadata fields	Trường siêu dữ liệu
+元数据接口返回	Metadata API response	Phản hồi API siêu dữ liệu
+元数据来源配置	Metadata source settings	Cấu hình nguồn siêu dữ liệu
+先在「媒体库与入库」添加 PikPak 挂载文件夹。	Add PikPak mounted folder in "Libraries & Import" first.	Trước tiên hãy thêm thư mục mount PikPak trong "Thư viện & Nhập kho".
+先将 CloudDrive2 或 OpenList 中的网盘挂载为本机文件夹，再在这里选择。	Mount drives in CloudDrive2 or OpenList as local folders first, then select here.	Hãy mount ổ đĩa trong CloudDrive2 hoặc OpenList thành thư mục máy cục bộ trước rồi chọn tại đây.
+先新建这个目录，或填写已有目录。	Create this directory first, or enter an existing one.	Hãy tạo thư mục này trước hoặc điền thư mục đã có.
+先给它一个中文标签	Give it a Chinese tag first	Hãy đặt một thẻ tiếng Trung trước
+光晕配色	Sidebar glow	Màu vầng sáng
+光鸭云盘	Guangya Cloud	Đám mây Guangya
+兔女郎	Bunny girl	Thỏ ngọc
+入库于 {acquired_at}	Added {acquired_at}	Nhập kho {acquired_at}
+入库时间	Added	Ngày thêm
+全不选	Deselect all	Bỏ chọn tất cả
+全屏	Full Screen	Toàn màn hình
+全选	Select all	Chọn tất cả
+全选已保存别名	Select saved aliases	Chọn bí danh đã lưu
+全选当前分类	Select this category	Chọn mục này
+全选待合并别名	Select aliases to merge	Chọn bí danh chờ gộp
+全选本组	Select this group	Chọn nhóm này
+全选本页	Select this page	Chọn trang này
+全选本页来源	Select sources on this page	Chọn nguồn trên trang này
+全速	Full speed	Hết tốc
+全部	All	Tất cả
+全部优先 {item}	Prefer {item} for all	Ưu tiên {item} cho tất cả
+全部保留最大	Keep all largest	Giữ lại tất cả tệp lớn nhất
+全部保留最长	Keep all longest	Giữ lại tất cả tệp dài nhất
+全部分类	All categories	Tất cả danh mục
+全部合并（{length}）	Merge all ({length})	Gộp tất cả ({length})
+全部媒体库	All libraries	Tất cả thư viện
+全部媒体库均可访问	All media libraries accessible	Tất cả thư viện media đều có thể truy cập
+全部展开	Expand all	Mở hết
+全部待复核	All to review	Mọi mục chờ duyệt
+全部忽略	Ignore all	Bỏ qua tất cả
+全部收起	Collapse all	Thu hết
+全部时间	All time	Toàn bộ thời gian
+全部来源	All sources	Mọi nguồn
+全部标签	All Tags	Tất cả thẻ
+全部标记已看	Mark all as watched	Đánh dấu tất cả đã xem
+全部清除	Clear all	Xóa sạch tất cả
+全部照片	All photos	Tất cả ảnh
+全部重试（{length}）	Retry all ({length})	Thử lại tất cả ({length})
+全部链接均可访问。	All links are accessible.	Mọi liên kết đều truy cập được.
+全部页面都已显示	All pages are shown	Tất cả các trang đã hiển thị
+公司名称	Company name	Tên công ty
+公司成立	Founded	Thành lập
+公司类型	Company type	Loại công ty
+公开主机名	Public Hostname	Tên máy chủ công khai
+公开列表不需要登录；帖子详情被 FANBOX 验证页拦住时，可用浏览器会话取得正文、多图和外部资源链接。	Public lists do not require login; when post details are blocked by FANBOX verification, browser sessions can fetch text, images, and external resource links.	Danh sách công khai không cần đăng nhập; khi chi tiết bài viết bị trang xác minh FANBOX chặn, có thể dùng phiên trình duyệt để lấy nội dung, ảnh và liên kết ngoài.
+公网入口已停止	Public tunnel stopped	Đường vào công khai đã dừng
+公网入口已启动	Public tunnel started	Đường vào công khai đã khởi động
+公网入口的形态（二选一）	Public tunnel mode (choose one)	Chế độ đường vào công khai (chọn một)
+公网地址	Public Address	Địa chỉ công khai
+关注	Follow	Theo dõi
+关注 · {from}	Follow · {from}	Theo dõi · {from}
+关注列表	Follow list	Danh sách theo dõi
+关注列表排序	Follow list sort	Sắp danh sách theo dõi
+关注列表版式	Follow list layout	Bố cục danh sách theo dõi
+关注创作者	Followed creators	Nhà sáng tạo đang theo dõi
+关注条目 {follow_item_id}	Follow item {follow_item_id}	Mục theo dõi {follow_item_id}
+关注来源	Follow source	Nguồn theo dõi
+关注来源及其检查状态会显示在这里。	Followed sources and their check status will appear here.	Nguồn theo dõi và trạng thái kiểm tra sẽ hiển thị ở đây.
+关注来源批量操作	Bulk follow-source actions	Thao tác hàng loạt nguồn theo dõi
+关注标签	Followed tags	Thẻ theo dõi
+关注概览	Follow overview	Tổng quan theo dõi
+关注筛选	Follow filters	Lọc theo dõi
+关注管理	Manage follows	Quản lý theo dõi
+关注管理区域	Follow management	Khu quản lý theo dõi
+关注采集	Follow Syncing	Thu thập theo dõi
+关注里有同名作者 {name}	A followed author already uses the name {name}	Theo dõi đã có tác giả trùng tên {name}
+关注页检查更新之后，这位创作者的新内容会出现在这里。	After Follow checks for updates, this creator’s new items show up here.	Sau khi Theo dõi kiểm tra cập nhật, nội dung mới của nhà sáng tạo này hiện ở đây.
+关联账号	Linked account	Tài khoản liên kết
+关闭	Close	Đóng
+关闭任务提示	Close task notice	Đóng thông báo tác vụ
+关闭字幕	Turn off subtitles	Tắt phụ đề
+关闭小窗	Close mini player	Đóng cửa sổ nhỏ
+关闭我的收藏	Close My collection	Đóng Bộ sưu tập
+关闭提示	Close notice	Đóng thông báo
+关闭浏览器添加	Disable browser extension adding	Tắt thêm từ trình duyệt
+关闭访问密码	Disable access password	Tắt mật khẩu truy cập
+关闭访问密码时无需填写。	Leave empty when disabling access password.	Để trống khi tắt mật khẩu truy cập.
+关闭资源面板	Close the resource panel	Đóng bảng tài nguyên
+其他	Other	Khác
+其他内容	Other content	Nội dung khác
+其他已挂载网盘	Other mounted cloud drive	Ổ đĩa đám mây khác đã mount
+其他检查 · {length} 项	Other checks · {length}	Kiểm tra khác · {length}
+其他浏览器：用	Other browsers: use 	Trình duyệt khác: dùng
+其余 {count} 个网站	{count} more sites	{count} trang nữa
+其余 {count} 位创作者	{count} more creators	{count} nhà sáng tạo nữa
+其余 {length} 项	{length} more items	{length} mục nữa
+其余 {rest}	{rest} more	{rest} nữa
+其它	Other	Khác
+其它文件	Other file	Tệp khác
+兽耳	Animal ears	Tai thú
+内容图片 {what}	Content image {what}	Ảnh nội dung {what}
+内容显示	Content display	Hiển thị nội dung
+内容标签	Content tags	Thẻ nội dung
+内容标签覆盖	Content tag coverage	Mức phủ thẻ nội dung
+内置站点	Built-in sites	Trang tích hợp
+再点一次取消评分	Click again to remove rating	Nhấp lại lần nữa để hủy đánh giá
+写入端暂时不可达，显示 {fetched_at} 的缓存	The writer is unreachable. Showing the cache from {fetched_at}.	Không tới được phía ghi. Đang hiện bộ nhớ đệm lúc {fetched_at}.
+写真	Gravure	Ảnh nghệ thuật
+冷却截止	Cooldown until	Hết chờ lúc
+准备中	Preparing	Đang chuẩn bị
+凭据文件	Credential file	Tệp thông tin đăng nhập
+凭据文件权限过宽	The credential file is too open	Quyền tệp thông tin đăng nhập quá rộng
+出了点问题	Something went wrong	Có lỗi
+出演者	Cast / Performers	Diễn viên / Người tham gia
+出道	Debut	Ra mắt
+分卷	Parts	Phân đoạn
+分卷与版本	Parts & Versions	Phân đoạn & Phiên bản
+分布在 {entities} 个女优、厂牌与系列	Spread across {entities} performers, studios, and series	Nằm trên {entities} diễn viên, hãng và sê-ri
+分析范围	Analysis range	Phạm vi phân tích
+分钟	min	phút
+切换中…	Switching…	Đang chuyển…
+切换分卷或版本	Switch part or version	Chuyển phân đoạn hoặc phiên bản
+切换媒体类型、创作者、来源、时长或标签后再试。	Try another media type, creator, source, duration, or tag.	Thử loại phương tiện, nhà sáng tạo, nguồn, thời lượng hoặc thẻ khác.
+切换媒体类型、状态、来源或标签后再试。	Try another media type, status, source, or tag.	Thử loại phương tiện, trạng thái, nguồn hoặc thẻ khác.
+切换状态或来源筛选后再试。	Try another status or source filter.	Thử trạng thái hoặc bộ lọc nguồn khác.
+切换视频	Switch video	Chuyển video
+切换页面或重新打开后会再检查一次。	Will check again after switching pages or reopening.	Sẽ kiểm tra lại sau khi chuyển trang hoặc mở lại.
+列表	List	Danh sách
+创作者	Creator	Nhà sáng tạo
+创作者 · 线索占比	Creator · Clue share	Nhà sáng tạo · Tỷ lệ manh mối
+创作者别名	Creator aliases	Bí danh nhà sáng tạo
+创作者头像	Creator avatar	Ảnh đại diện nhà sáng tạo
+创作者未取得	Creator unavailable	Chưa có nhà sáng tạo
+创作者标签	Creator tags	Thẻ người sáng tạo
+创作者线索来源	Creator clue sources	Nguồn manh mối người sáng tạo
+删掉的内容会先到这里；确认不再需要后再清空。	Deleted items go here first; empty only after confirming they are no longer needed.	Nội dung đã xóa sẽ chuyển vào đây trước; chỉ dọn sạch sau khi chắc chắn không còn cần nữa.
+删除	Delete	Xóa
+删除 {length} 个关注来源	Delete {length} follow sources	Xóa {length} nguồn theo dõi
+删除 {length} 条失效链接	Delete {length} dead links	Xóa {length} liên kết hỏng
+删除 {name}	Delete {name}	Xóa {name}
+删除「{name}」后，采集将不再查询这个来源。	After “{name}” is deleted, scrapes will not query this source.	Sau khi xóa “{name}”, thu thập sẽ không hỏi nguồn này.
+删除前会逐条重验一次；此操作不可撤销。	Each item is checked again before deletion. This cannot be undone.	Từng mục được kiểm lại trước khi xóa. Không hoàn tác được.
+删除失效链接	Delete dead links	Xóa liên kết hỏng
+删除所选来源	Delete selected sources	Xóa nguồn đã chọn
+删除所选（{length}）	Delete selected ({length})	Xóa mục đã chọn ({length})
+删除播放列表	Delete playlist	Xóa danh sách phát
+删除来源	Delete source	Xóa nguồn
+删除标签	Delete Tag	Xóa thẻ
+删除标签 {name}	Delete tag {name}	Xóa thẻ {name}
+删除浏览器来源	Delete browser source	Xóa nguồn trình duyệt
+删除筛选{name}	Delete filter {name}	Xóa bộ lọc {name}
+删除自定义来源	Delete custom source	Xóa nguồn tùy chỉnh
+删除这个来源的已导入记录，原始文件保留。若浏览器仍启用，下次读取会再次导入。	Delete this source’s imported records. The original files stay. If the browser is still on, the next read imports them again.	Xóa bản ghi đã nhập của nguồn này. Tệp gốc được giữ. Nếu trình duyệt vẫn bật, lần đọc sau sẽ nhập lại.
+别名	Alias	Bí danh
+刮削或手动打标之后，这里会显示每个来源覆盖了多少视频。	After a scrape or manual tags, each source’s video coverage shows up here.	Sau khi cào hoặc gắn thẻ tay, mức phủ video của từng nguồn hiện ở đây.
+制服	Uniform	Đồng phục
+刷新挂载状态	Refresh Mount Status	Làm mới trạng thái mount
+刷新状态	Refresh status	Làm mới trạng thái
+刷新评论	Refresh comments	Làm mới bình luận
+前往写入端复核	Go to writer instance to review	Đi đến máy ghi để rà soát
+前往写入端管理关注	Go to writer instance to manage follows	Đi đến máy ghi để quản lý theo dõi
+前缀 {index} 对应的媒体根	Media root for prefix {index}	Gốc media cho tiền tố {index}
+前进 {step} 秒	Fast-forward {step}s	Tiến lên {step} giây
+剩余 {left}，总时长 {total}；点击显示已播放时间	Remaining: {left}, Total: {total}; click to show elapsed time	Còn lại: {left}, Tổng: {total}; nhấp để hiện thời gian đã phát
+加入播放列表	Add to Playlist	Thêm vào danh sách phát
+加载中…	Loading…	Đang tải…
+加载内容…	Loading content…	Đang tải nội dung…
+加载字幕文件	Load subtitle file	Tải tệp phụ đề
+加载更多	Load more	Tải thêm
+加载更早	Load earlier	Tải cũ hơn
+加载速度	Load Speed	Tốc độ tải
+动画作者	Animators	Tác giả hoạt hình
+勾选她的演员卡；有碼与無碼两条记录都是她的话，两张都勾。	Select her performer cards. If both censored and uncensored records are hers, select both.	Chọn thẻ diễn viên của cô ấy. Nếu cả bản che và không che đều là cô ấy, chọn cả hai.
+匿名处理后上传馆藏与各类偏好明细。	Upload collection and preference details anonymously.	Tải lên chi tiết bộ sưu tập và các loại tùy chọn sau khi ẩn danh hóa.
+单一来源	Single source	Một nguồn
+卖家	Sellers	Người bán
+占用 {bytes}	Using {bytes}	Đang dùng {bytes}
+占用多	High usage	Chiếm nhiều
+占用少	Low usage	Chiếm ít
+卡片	Cards	Thẻ
+卧室	Bedroom	Phòng ngủ
+卸载 Peach	Uninstall Peach	Gỡ cài đặt Peach
+卸载移除 Peach 程序本身，原始媒体文件保留。	Uninstalling removes Peach program itself, original media files are kept.	Gỡ cài đặt chỉ xóa bản thân chương trình Peach, tệp media gốc vẫn được giữ nguyên.
+厂牌	Studio	Hãng
+厂牌 Logo	Studio logo	Logo hãng
+历史与书签 · {profiles} 个资料	History and bookmarks · {profiles} profiles	Lịch sử và dấu trang · {profiles} hồ sơ
+压缩包	Archive	Tệp nén
+原图未取回，先显示缩略图：上游拦下了这一次请求。	Original image not retrieved, showing thumbnail: upstream blocked this request.	Chưa lấy được ảnh gốc, hiện ảnh thu nhỏ trước: máy chủ nguồn đã chặn yêu cầu này.
+原大小	Original size	Kích thước gốc
+原标题	Original title	Tiêu đề gốc
+原样	As is	Giữ nguyên
+原画	Original	Chất lượng gốc
+原视频	Original video	Video gốc
+去掉连字符	Remove hyphens	Bỏ gạch ngang
+去看更新	View updates	Xem cập nhật
+发布者	Publisher	Người phát hành
+发现	Discover	Khám phá
+发现更新不需要登录；只有取附件和 masked 下载链接才需要会话。	Discovering updates does not require login; sessions are only needed to fetch attachments and masked download links.	Phát hiện cập nhật không cần đăng nhập; chỉ khi lấy tệp đính kèm và liên kết tải ẩn mới cần phiên đăng nhập.
+发现筛选与排序	Discover filters and sort	Lọc và sắp khám phá
+发现范围与标签	Discover scope and tags	Phạm vi khám phá và thẻ
+发行商	Publisher	Nhà phát hành
+发行日期	Release date	Ngày phát hành
+发行时间	Released	Ngày phát hành
+发送版本统计与错误诊断（推荐）	Send version stats & error diagnostics (Recommended)	Gửi thống kê phiên bản & chẩn đoán lỗi (Khuyến nghị)
+发送至 Sentry。不上报错误原文、完整日志、诊断 ZIP、媒体名称、路径、网址、观看记录或凭据。接收服务会接触连接 IP；关闭后停止新发送，已发送的信息无法撤回。	Sent to Sentry. Does not report original error text, full logs, diagnostic ZIPs, media names, paths, URLs, viewing history, or credentials. Receiving servers can see connection IPs; turning this off stops future sends, but previously sent info cannot be retracted.	Gửi tới Sentry. Không báo cáo nguyên văn lỗi, nhật ký đầy đủ, tệp ZIP chẩn đoán, tên tệp media, đường dẫn, URL, lịch sử xem hoặc thông tin đăng nhập. Dịch vụ tiếp nhận sẽ nhìn thấy IP kết nối; tắt sẽ dừng gửi mới, thông tin đã gửi không thể thu hồi.
+取封面来框	Crop from cover	Lấy bìa để cắt khung
+取得	Fetched	Đã lấy
+取消	Cancel	Hủy
+取消全选	Clear selection	Bỏ chọn tất cả
+取消关注来源	Unfollow source	Bỏ theo dõi nguồn
+取消喜欢	Unlike	Bỏ thích
+取消想要	Remove from Wants	Bỏ khỏi Muốn xem
+取消收藏	Remove from saved	Bỏ lưu
+取消收藏{name}	Remove {name} from saved	Bỏ lưu {name}
+取消订阅新作	Stop following new works	Ngừng theo dõi tác phẩm mới
+取消评分（当前 {n} 星）	Remove rating (currently {n} stars)	Hủy đánh giá (hiện tại {n} sao)
+取消选择	Deselect	Hủy chọn
+取消静音	Unmute	Bật tiếng
+口味	Taste	Khẩu vị
+口味 {taste_score}	Taste {taste_score}	Khẩu vị {taste_score}
+口味分析读取失败	Could not read the taste analysis	Không đọc được phân tích khẩu vị
+口味总结	Taste summary	Tóm tắt khẩu vị
+口味维度	Taste dimensions	Tiêu chí sở thích
+口味维度排名	Taste facet ranking	Xếp hạng khía cạnh khẩu vị
+口味网站访问	Taste-site visits	Lượt vào trang khẩu vị
+口味证据来源	Taste evidence sources	Nguồn bằng chứng khẩu vị
+另外 {rest} 个别名	{rest} more aliases	{rest} bí danh nữa
+另外 {rest} 个标签	{rest} more tags	{rest} thẻ nữa
+另有 {length} 部对照作品	{length} more comparison works	{length} tác phẩm đối chiếu nữa
+只列出前 8 行，完整计划在计划 CSV 里。	Only the first 8 rows are listed. The full plan is in the plan CSV.	Chỉ liệt kê 8 dòng đầu, kế hoạch đầy đủ có trong CSV kế hoạch.
+只启动托盘，不打开网页	Start in system tray only, do not open web browser	Chỉ chạy khay hệ thống, không mở trình duyệt
+只读	Read-only	Chỉ đọc
+可不填	Optional	Có thể để trống
+可以查找番号，或更新关注来源。	Look up a code, or refresh follow sources.	Tra mã, hoặc cập nhật nguồn theo dõi.
+可切换分类查看其他待确认资料。	Switch categories to view other pending metadata.	Có thể chuyển danh mục để xem dữ liệu chờ xác nhận khác.
+可回收 {reclaimable}	{reclaimable} reclaimable	Có thể thu hồi {reclaimable}
+可清理的缓存	Cache that can be cleared	Bộ nhớ đệm có thể dọn
+可用	Available	Khả dụng
+可用 {free} · 共 {total}	{free} free · {total} total	Trống {free} · tổng {total}
+可访问	Reachable	Truy cập được
+可连接	Connected	Kết nối được
+可选	Optional	Tùy chọn
+可选图标	Available Icons	Biểu tượng khả dụng
+可配置凭据	Credentials can be set	Có thể đặt thông tin đăng nhập
+合并	Merge	Gộp
+合并全部创作者别名	Merge all creator aliases	Gộp mọi bí danh nhà sáng tạo
+合并全部别名	Merge all aliases	Gộp mọi bí danh
+合并所选创作者别名	Merge selected creator aliases	Gộp bí danh nhà sáng tạo đã chọn
+合并所选别名	Merge selected aliases	Gộp bí danh đã chọn
+合并所选（{length}）	Merge selected ({length})	Gộp mục đã chọn ({length})
+同一人	Same person	Cùng một người
+同台艺人	Co-stars	Diễn cùng
+同意并开启上传	Agree and Enable Upload	Đồng ý và Bật tải lên
+同时删除设置、本地数据库、观看记录、凭据和缓存	Also delete settings, local database, watch history, credentials, and cache	Đồng thời xóa cài đặt, cơ sở dữ liệu cục bộ, lịch sử xem, xác thực và bộ nhớ đệm
+同时处理视频	Concurrent video tasks	Xử lý video đồng thời
+同步删除	Sync deletions	Đồng bộ xóa
+同步媒体库	Sync the library	Đồng bộ thư viện
+同步文件与影片资料，按设置生成本地视频预览。下拉菜单可选择只扫描文件、同步已入库影片、生成预览或补全资料。	Sync files and media metadata, and generate local video previews according to settings. Use the dropdown to scan files only, sync imported videos, generate previews, or complete metadata.	Đồng bộ hóa tệp và thông tin phim, tạo bản xem trước video cục bộ theo cài đặt. Trình đơn thả xuống cho phép chọn chỉ quét tệp, đồng bộ phim đã nhập kho, tạo bản xem trước hoặc hoàn thiện thông tin.
+同步方式	Sync method	Cách đồng bộ
+同步这些影片	Sync these works	Đồng bộ các tác phẩm này
+同番号短版本	Shorter cut of the same code	Bản ngắn cùng mã
+名字与别名	Names and aliases	Tên và bí danh
+名字可能拼错了，或者已经合并到别的名字下；回列表里重新找。	The name might be misspelled or merged into another entity; search again from the list.	Tên có thể bị sai chính tả hoặc đã được hợp nhất vào tên khác; vui lòng tìm lại trong danh sách.
+名称	Name	Tên
+后台任务	Background tasks	Tác vụ nền
+后台扫描失败	The background scan failed	Quét nền thất bại
+后台调度服务正常	Background scheduler service is healthy	Dịch vụ điều phối tác vụ nền bình thường
+后退 {step} 秒	Rewind {step}s	Lùi lại {step} giây
+含 WIP	Include WIP	Gồm bản đang làm
+启动	Startup	Lúc khởi động
+启动公网入口	Start Public Tunnel	Khởi động đường vào công khai
+启动项属于另一份 Peach 安装	Startup shortcut belongs to another Peach installation	Mục khởi động thuộc về một bản cài đặt Peach khác
+启用	On	Bật
+启用 {label}	Turn on {label}	Bật {label}
+启用 {original}	Turn on {original}	Bật {original}
+启用并生成令牌	Enable & Generate Token	Bật & Tạo token
+启用来源	Turn the source on	Bật nguồn
+命令行	Command line	Dòng lệnh
+命名隧道	Named tunnel	Đường hầm có tên cố định
+品牌启动	Brand launch	Ra mắt thương hiệu
+喜欢	Like	Thích
+喜欢 · 记录口味偏好	Like · Record taste preference	Thích · Ghi lại sở thích khẩu vị
+喜欢与理由	Likes and reasons	Thích và lý do
+喜爱理由	Reason for liking	Lý do yêu thích
+四〇四	404	404
+回到关注	Back to Follow	Về Theo dõi
+回到起点	Back to start	Về điểm xuất phát
+回收站	Trash	Thùng rác
+回收站中的全部文件和馆藏记录将永久删除，无法恢复。	All files and library records in trash will be permanently deleted and cannot be recovered.	Toàn bộ tệp và bản ghi bộ sưu tập trong thùng rác sẽ bị xóa vĩnh viễn, không thể khôi phục.
+回收站是空的	Trash is empty	Thùng rác trống
+回查 {probed} 条	Rechecked {probed}	Đã kiểm lại {probed}
+回滚上一批	Roll back last batch	Hoàn tác đợt trước
+回滚上一批整理	Roll back the last organize	Hoàn lại lần sắp gần nhất
+回滚整理	Roll back organize	Hoàn lại sắp xếp
+固定比例	Fixed ratio	Tỷ lệ cố định
+国产	Domestic	Trong nước
+国家／地区	Country / region	Quốc gia / vùng
+图库	Gallery	Thư viện ảnh
+图库命中	Gallery match	Khớp thư viện ảnh
+图库索引 {index_age_hours}没更新，新收的人像这里还查不到。	The gallery index has not updated for {index_age_hours}. Newly added portraits cannot be found here yet.	Chỉ mục thư viện ảnh chưa cập nhật {index_age_hours}. Chân dung mới nhận chưa tra được ở đây.
+图库索引还没取过，只能从用过的图里选。	The gallery index has never been fetched. You can only pick from images already used.	Chỉ mục thư viện ảnh chưa từng lấy. Chỉ chọn được từ ảnh đã dùng.
+图片	Image	Ảnh
+图片取不到	Image unavailable	Không lấy được hình ảnh
+图片地址	Image URL	Địa chỉ ảnh
+图片布局	Image layout	Bố cục ảnh
+图片浏览	Image Viewer	Trình xem ảnh
+图片详情	Image Details	Chi tiết hình ảnh
+图集	Photo collection	Bộ ảnh
+在 CloudDrive2「设置 → API 令牌」中生成	Generate in CloudDrive2 "Settings → API Token"	Tạo trong CloudDrive2 "Cài đặt → API Token"
+在 Cloudflare Zero Trust 的隧道详情页复制。	Copy from tunnel details page in Cloudflare Zero Trust.	Sao chép trong trang chi tiết đường hầm trên Cloudflare Zero Trust.
+在 Peach 里播放或评价作品后，这里会列出对应的创作者。	After you play or rate works in Peach, the matching creators show up here.	Sau khi phát hoặc đánh giá tác phẩm trong Peach, nhà sáng tạo tương ứng hiện ở đây.
+在 Peach 里播放或评价作品后，这里会列出对应的女优。	After playing or rating works in Peach, corresponding actresses will appear here.	Sau khi phát hoặc đánh giá tác phẩm trong Peach, các nữ diễn viên tương ứng sẽ được liệt kê ở đây.
+在 Peach 里播放或评价作品后，这里会列出对应的标签。	After playing or rating works in Peach, corresponding tags will appear here.	Sau khi phát hoặc đánh giá tác phẩm trong Peach, các thẻ tương ứng sẽ được liệt kê ở đây.
+在上面按女优名添加，或在人物页点「订阅新作」。	Add by performer name above, or click "Subscribe to new works" on the person's page.	Thêm theo tên diễn viên ở trên, hoặc bấm "Đăng ký tác phẩm mới" trên trang nhân vật.
+在文件管理器里打开源文件所在目录	Open source file directory in file explorer	Mở thư mục chứa tệp gốc trong trình quản lý tệp
+在本机修复配置文件	Fix configuration file on this machine	Sửa tệp cấu hình trên máy này
+在本机核对数据库迁移与备份	Verify database migrations and backups on this machine	Đối chiếu di chuyển cơ sở dữ liệu và bản sao lưu trên máy này
+在桌面创建快捷方式	Create desktop shortcut	Tạo lối tắt trên màn hình
+在浏览器里完成验证后，回到这里再点一次「登录」。	Complete verification in browser, then return and click "Log In" again.	Sau khi hoàn thành xác minh trong trình duyệt, quay lại đây bấm "Đăng nhập" lần nữa.
+在用	In use	Đang dùng
+在线	Online	Trực tuyến
+在线 · {total} 项更新	Online · {total} updates	Trực tuyến · {total} cập nhật
+在线作品	Online works	Tác phẩm trực tuyến
+在线图片	Online images	Ảnh trực tuyến
+在线媒体类型	Online media type	Loại phương tiện trực tuyến
+在线搜索字幕	Search subtitles online	Tìm phụ đề trực tuyến
+在线直接观看	Watch online	Xem trực tiếp
+在资料页或标签页收藏常用内容。	Save frequent items from a profile or tag page.	Lưu nội dung hay dùng từ trang hồ sơ hoặc trang thẻ.
+在资源管理器中显示	Show in File Explorer	Hiện trong Explorer
+在运行 Peach 的电脑上使用浏览器：点上面的「读取浏览器记录」。	On the computer running Peach, use the browser: choose Read browser history above.	Trên máy đang chạy Peach, dùng trình duyệt: bấm Đọc lịch sử trình duyệt ở trên.
+在馆藏页保存当前条件，随时打开。	Save current filters on the library page to open anytime.	Lưu điều kiện hiện tại trên trang thư viện để mở bất cứ lúc nào.
+地址	Address	Địa chỉ
+地址已失效	The address is dead	Địa chỉ đã hỏng
+坏原件改名成同目录的隐藏文件（.文件名.peach-original）留着。	The damaged original is renamed to a hidden file in the same folder (.name.peach-original) and kept.	Bản gốc hỏng được đổi tên thành tệp ẩn cùng thư mục (.tên.peach-original) và được giữ.
+垃圾文件	Junk files	Tệp rác
+垃圾文件分类	Junk categories	Loại tệp rác
+填写 Prowlarr 或 Jackett 提供的 Torznab 地址和 API key。	Enter Torznab URL and API key from Prowlarr or Jackett.	Điền địa chỉ Torznab và API key do Prowlarr hoặc Jackett cung cấp.
+填写公开 JSON 接口和响应字段路径，例如 data.title。番号字段用于核对作品身份。	Enter the public JSON endpoint and response field path, e.g. data.title. The code field verifies work identity.	Điền API JSON công khai và đường dẫn trường dữ liệu, ví dụ data.title. Trường mã số dùng để đối chiếu tác phẩm.
+填写凭据	Enter credentials	Nhập thông tin đăng nhập
+填写规范创作者名和平台别名以添加。	Enter standard creator name and platform alias to add.	Điền tên nhà sáng tạo chuẩn và bí danh nền tảng để thêm.
+处理会读取媒体文件{value}，可能让电脑变慢。需要同时使用电脑时，可选择低占用模式。	Handling reads media files{value} and can slow the computer. Choose low effort when you need the machine.	Xử lý đọc tệp phương tiện{value} và có thể làm máy chậm. Chọn mức nhẹ khi đang dùng máy.
+处理完成	Finished	Xong
+处理建议：	Suggested action: 	Hướng dẫn xử lý: 
+处理强度	Processing intensity	Cường độ xử lý
+处理未完成，请重试	Handling did not finish. Try again.	Xử lý chưa xong. Thử lại.
+处理模式	Handling mode	Chế độ xử lý
+处理步骤	Step	Bước xử lý
+处理记录 ·	Processing history ·	Lịch sử xử lý ·
+处理较慢	Slow	Chậm
+处理速度	Speed	Tốc độ
+处理速度：{label}	Speed: {label}	Tốc độ: {label}
+处理首次复核	Handle first review	Xử lý lần duyệt đầu tiên
+备选头像	Alternate avatars	Ảnh đại diện dự phòng
+复制专用令牌	Copy Dedicated Token	Sao chép token chuyên dụng
+复制失败，请手动复制地址栏	Copy failed, please copy address manually	Sao chép thất bại, vui lòng tự sao chép từ thanh địa chỉ
+复制当前时间的视频网址	Copy video URL at current time	Sao chép liên kết video tại thời điểm này
+复制当前清单	Copy this list	Sao chép danh sách này
+复制所选	Copy selected	Sao chép mục đã chọn
+复制磁力	Copy magnet	Sao chép magnet
+复制视频网址	Copy video URL	Sao chép liên kết video
+复制配置	Copy Configuration	Sao chép cấu hình
+复制链接	Copy link	Sao chép liên kết
+复核分类	Review categories	Phân loại duyệt
+复核分页	Review pages	Trang duyệt
+复核所选项目	Review the selected items	Duyệt mục đã chọn
+复核筛选	Review filters	Lọc duyệt
+复核资料	Review metadata	Rà soát dữ liệu
+复核队列读取失败	Could not read the review queue	Không đọc được hàng chờ duyệt
+外观与导航	Appearance & Navigation	Giao diện & Điều hướng
+外貌身材	Appearance & Physique	Ngoại hình & Vóc dáng
+外部播放器 / VR	External Player / VR	Trình phát ngoài / VR
+外部文件页	External file page	Trang tệp bên ngoài
+外部来源{parts}，7 天内不再问。	Outside sources {parts}. They will not be asked again for 7 days.	Nguồn bên ngoài {parts}. 7 ngày nữa mới hỏi lại.
+多媒体	Mixed media	Nhiều loại
+夜色	Night scene	Màn đêm
+大图 · 完整标识	Large · Full logo	Ảnh lớn · Logo đầy đủ
+大图 · 竖幅头像	Large · Portrait avatar	Ảnh lớn · Ảnh chân dung
+大小	Size	Dung lượng
+大小未知	Size unknown	Chưa rõ dung lượng
+大小（字节）	Size (bytes)	Dung lượng (byte)
+天	days	ngày
+失败	Failed	Thất bại
+头像刷新	Avatar Refresh	Làm mới ảnh đại diện
+女优	Actresses	Diễn viên nữ
+女优名	Performer name	Tên diễn viên
+女优头像	Actress portrait	Ảnh đại diện nữ diễn viên
+女性	Female	Nữ giới
+女王	Queen	Nữ hoàng
+媒体与关注筛选	Media and follow filters	Lọc phương tiện và theo dõi
+媒体与标签	Media and tags	Phương tiện và thẻ
+媒体修复	Media repair	Sửa phương tiện
+媒体加载中	Media loading…	Đang tải media…
+媒体工具可执行，AV1 软件解码器可用	Media tools executable, AV1 software decoder available	Công cụ media có thể thực thi, bộ giải mã phần mềm AV1 khả dụng
+媒体库	Library	Thư viện
+媒体库与入库	Libraries & Import	Thư viện & Nhập kho
+媒体库与挂载	Libraries & Mounts	Thư viện & Điểm gắn
+媒体库名称	Library Name	Tên thư viện
+媒体库名称 {index}	Library name {index}	Tên thư viện {index}
+媒体库图标 {index}	Library icon {index}	Biểu tượng thư viện {index}
+媒体库挂载	Media library mounts	Điểm gắn thư viện media
+媒体未取回：上游这一次没有返回内容，多半是站点限流，过一阵再打开。	Media not retrieved: upstream returned no content this time, likely rate-limited. Try again later.	Chưa lấy được media: nguồn không trả về nội dung lần này, có thể do trang giới hạn tần suất, hãy mở lại sau.
+媒体未取得：{error}	Media unavailable: {error}	Phương tiện chưa có: {error}
+媒体未取得：需要 F95 登录会话解析	Media unavailable: an F95 login session is required	Phương tiện chưa có: cần phiên đăng nhập F95
+媒体来源	Media source	Nguồn phương tiện
+媒体来源 {index}	Media source {index}	Nguồn media {index}
+媒体目录	Media Directories	Thư mục media
+媒体目录 {index}	Media directory {index}	Thư mục media {index}
+媒体目录无法访问	Media directory inaccessible	Không thể truy cập thư mục media
+媒体目录无法访问 · {reason}	Media directory inaccessible · {reason}	Không thể truy cập thư mục media · {reason}
+媒体目录路径	Media directory path	Đường dẫn thư mục media
+媒体类型	Media type	Loại phương tiện
+媒体记录	Media record	Bản ghi phương tiện
+媒体读取策略 {index}	Media read policy {index}	Chính sách đọc media {index}
+字幕	Subtitles	Phụ đề
+字幕加载失败	Subtitle load failed	Tải phụ đề thất bại
+字幕加载已取消	Subtitle loading cancelled	Đã hủy tải phụ đề
+字幕加载超时，请重试	Subtitle load timed out, please retry	Hết thời gian tải phụ đề, vui lòng thử lại
+字幕搜索失败	Subtitle search failed	Tìm kiếm phụ đề thất bại
+字幕文件未取得	Subtitle file not retrieved	Chưa lấy được tệp phụ đề
+字幕时间轴无法读取	Subtitle timeline unreadable	Không đọc được dòng thời gian phụ đề
+字幕选项	Subtitle Options	Tùy chọn phụ đề
+字母表	Alphabetical	Bảng chữ cái
+存在待执行迁移	Pending migrations exist	Có di chuyển đang chờ thực thi
+孤儿记录	Orphan records	Bản ghi mồ côi
+孤儿记录读取失败	Could not read orphan records	Không đọc được bản ghi mồ côi
+学生	Student	Học sinh
+安装	Install	Cài
+安装 Peach 用户脚本	Install Peach Userscript	Cài đặt Userscript Peach
+安装官方 cloudflared，或用设置文件的 tunnel.binary 与 PEACH_CLOUDFLARED 指定路径。	Install official cloudflared, or specify path via tunnel.binary or PEACH_CLOUDFLARED.	Cài đặt cloudflared chính thức hoặc chỉ định đường dẫn qua tunnel.binary hoặc PEACH_CLOUDFLARED.
+安装教程	Setup Tutorial	Hướng dẫn cài đặt
+安装方式	Installation Type	Phương thức cài đặt
+完全卸载	Complete Uninstall	Gỡ cài đặt hoàn toàn
+完成	Done	Xong
+完成 Peach 的安装教程	Complete Peach setup tutorial	Hoàn thành hướng dẫn cài đặt Peach
+完成设置	Complete setup	Hoàn tất cài đặt
+完成设置后	After setup is complete	Sau khi hoàn tất cài đặt
+完成设置后扫描并补全资料	After setup, scan and fill metadata	Sau thiết lập, quét và bổ sung dữ liệu
+完成设置后扫描并补全资料：{item}	After setup, scan and fill metadata: {item}	Sau thiết lập, quét và bổ sung dữ liệu: {item}
+完成设置后扫描这 {length} 个文件夹并补全资料	After setup, scan these {length} folders and fill metadata	Sau thiết lập, quét {length} thư mục này và bổ sung dữ liệu
+完成首次扫描	Complete first scan	Hoàn thành lần quét đầu tiên
+完成首次配置	Complete first-time setup	Hoàn tất cấu hình lần đầu
+完整记录：	Full log:	Nhật ký đầy đủ:
+完整配置与调优说明	Full Configuration & Tuning Guide	Hướng dẫn cấu hình & tinh chỉnh đầy đủ
+官方	Official	Chính thức
+官方样张	Official samples	Ảnh mẫu chính thức
+官网/事务所	Official / Agency	Trang web chính thức / Công ty đại diện
+定位源文件	Locate source file	Định vị tệp gốc
+定时	Scheduled	Định kỳ
+容量未取得	Capacity unavailable	Chưa có dung lượng
+密码	Password	Mật khẩu
+对照文件：{video_count}	Comparison files: {video_count}	Tệp đối chiếu: {video_count}
+寻找更好版本	Find a better copy	Tìm bản tốt hơn
+寻找高清、无水印或完整版	Find HD, watermark-free or complete version	Tìm bản HD, không đóng dấu hoặc bản đầy đủ
+导入书签文件	Import bookmarks file	Nhập tệp dấu trang
+导入历史文件	Import history file	Nhập tệp lịch sử
+导入失败（{status}）	Import failed ({status})	Nhập thất bại ({status})
+导入或读取浏览记录后，这里会列出已采集设备。	After history is imported or read, collected devices show up here.	Sau khi nhập hoặc đọc lịch sử duyệt, thiết bị đã thu hiện ở đây.
+导入文件	Import a file	Nhập tệp
+导入文件 · {host} · {visits} {value}	Imported file · {host} · {visits} {value}	Tệp đã nhập · {host} · {visits} {value}
+导入浏览器历史记录	Import browser history	Nhập lịch sử trình duyệt
+导出历史记录，再导入导出文件。	Export history, then import the exported file.	Xuất lịch sử, sau đó nhập tệp đã xuất.
+导演	Director	Đạo diễn
+封面	Cover	Bìa
+封面连不上图片主机	The cover host could not be reached	Không nối được máy chủ ảnh bìa
+封面采集完成	Cover fetch finished	Lấy bìa xong
+将删除 {length} 条失效链接。删除前会再次检查，删除后无法恢复。	Delete {length} dead links. They are checked again first. Deletion cannot be undone.	Xóa {length} liên kết hỏng. Sẽ kiểm lại trước khi xóa. Không hoàn tác được.
+将删除「{name}」这一条和它带的记录（{records}）。此操作不可撤销。	Delete “{name}” and its records ({records}). This cannot be undone.	Xóa “{name}” và bản ghi đi kèm ({records}). Không hoàn tác được.
+将删除以下 {length} 条作品和它们带的全部记录。此操作不可撤销。	Delete these {length} works and every record they carry. This cannot be undone.	Xóa {length} tác phẩm sau và mọi bản ghi đi kèm. Không hoàn tác được.
+将合并以下 {length} 组创作者：{map}。	Merge these {length} creator groups: {map}.	Gộp {length} nhóm nhà sáng tạo sau: {map}.
+将把 {length} 个重复文件的馆藏记录移入回收站，每组保留{label}。	Move library records for {length} duplicate files to the trash. Each group keeps {label}.	Chuyển bản ghi thư viện của {length} tệp trùng vào thùng rác. Mỗi nhóm giữ {label}.
+将把上一批整理动过的文件退回整理前的名字与位置，数据库路径跟着退回。	Move the files from the last organize back to their previous names and places. Database paths follow.	Đưa tệp của lần sắp gần nhất về tên và chỗ cũ. Đường dẫn trong cơ sở dữ liệu đi theo.
+将把当前未看作品标记为已忽略。	Mark the current unseen works as ignored.	Đánh dấu tác phẩm chưa xem hiện tại là đã bỏ qua.
+将把当前未看作品标记为已看。	Mark the current unseen works as watched.	Đánh dấu tác phẩm chưa xem hiện tại là đã xem.
+将按这两份模板改动「{name}」上的文件名与目录，目标已存在的行会整行跳过。	These two templates will rename and move files in “{name}”. Rows whose target already exists are skipped.	Hai mẫu này sẽ đổi tên và chuyển tệp trong “{name}”. Dòng đã có đích thì bỏ qua cả dòng.
+将标为已消失	Mark as gone	Đánh dấu đã mất
+将永久删除文件已不在盘上的 {scan} 条记录和 {empty} 个空文件夹，	Permanently delete {scan} records whose files are gone and {empty} empty folders,	Xóa hẳn {scan} bản ghi có tệp đã mất và {empty} thư mục trống,
+将永久删除文件已不在盘上的 {scan} 条记录（含回收站里的）、{empty} 个空文件夹，	Permanently delete {scan} records whose files are gone (including the trash) and {empty} empty folders,	Xóa hẳn {scan} bản ghi có tệp đã mất (kể cả trong thùng rác) và {empty} thư mục trống,
+将清除这个来源在本机和共享副本中的登录凭据。	Clear this source’s login credentials on this machine and in the shared copy.	Xóa thông tin đăng nhập của nguồn này trên máy này và bản dùng chung.
+将移除以下 {length} 个别名，对应来源恢复为独立创作者组。	Remove these {length} aliases. Those sources become their own creator groups again.	Gỡ {length} bí danh sau. Các nguồn đó trở lại nhóm nhà sáng tạo riêng.
+将移除别名「{alias}」，对应来源恢复为独立创作者组。	Remove the alias “{alias}”. Those sources become their own creator group again.	Gỡ bí danh “{alias}”. Các nguồn đó trở lại nhóm nhà sáng tạo riêng.
+将移除所选关注来源及其已抓取条目，媒体文件保留。	Remove the selected follow sources and the items already fetched. Media files stay.	Gỡ nguồn theo dõi đã chọn và mục đã tải. Tệp phương tiện được giữ.
+将移除所选订阅源，之后不再拉取它们的新作；已经拉到的新作保留。	Remove the selected feeds. Their new works will not be fetched. Works already fetched stay.	Gỡ nguồn đăng ký đã chọn. Sẽ không tải tác phẩm mới từ chúng. Tác phẩm đã tải được giữ.
+将移除订阅源「{one}」，之后不再拉取它的新作；已经拉到的新作保留。	Remove the feed “{one}”. New works from it will not be fetched. Works already fetched stay.	Gỡ nguồn đăng ký “{one}”. Sẽ không tải tác phẩm mới từ đó. Tác phẩm đã tải được giữ.
+将移除这个来源及已抓取的条目，媒体文件保留。	Remove this source and the items already fetched. Media files stay.	Gỡ nguồn này và mục đã tải. Tệp phương tiện được giữ.
+将退出 Peach 并移除程序、开机自启和桌面图标。设置、本地数据库、观看记录与缓存保留。	Will exit Peach and remove app, startup, and desktop icon. Settings, database, watch history, and cache preserved.	Sẽ thoát Peach và xóa chương trình, khởi động cùng máy và biểu tượng màn hình. Cài đặt, cơ sở dữ liệu, lịch sử xem và bộ đệm được giữ lại.
+将退出 Peach，移除程序、开机自启、桌面图标、设置、本地数据库、观看记录、凭据和缓存。原始媒体文件保留。	Will exit Peach and remove app, startup, desktop icon, settings, database, watch history, credentials, and cache. Original media files preserved.	Sẽ thoát Peach và xóa chương trình, khởi động cùng máy, biểu tượng màn hình, cài đặt, cơ sở dữ liệu, lịch sử xem, xác thực và bộ đệm. Tệp media gốc được giữ nguyên.
+小写	Lowercase	Chữ thường
+小时	hours	giờ
+小窗播放	Mini Player	Phát cửa sổ nhỏ
+尚无主维度	No primary facet yet	Chưa có khía cạnh chính
+尚无成功记录	No successful record yet	Chưa có lần thành công
+尚无记录	No record yet	Chưa có bản ghi
+尚未完成首次配置	First-time setup not completed	Chưa hoàn tất cấu hình lần đầu
+尚未检查	Not checked yet	Chưa kiểm
+尚未连接到 Peach，请检查托盘后刷新页面。	Not connected to Peach yet. Check tray and refresh.	Chưa kết nối tới Peach, vui lòng kiểm tra khay hệ thống rồi tải lại trang.
+尚未配置下载渠道。	No download channels configured yet.	Chưa cấu hình kênh tải về.
+尚未采集浏览记录	Browsing history has not been collected	Chưa thu lịch sử duyệt
+尺寸	Size	Kích thước
+展开	Expand	Mở
+展开任务详情	Show task details	Hiện chi tiết tác vụ
+展开侧栏	Expand sidebar	Mở rộng thanh bên
+展开全部	Expand all	Mở rộng tất cả
+展开全部{title}	Expand all {title}	Mở rộng tất cả {title}
+展开到详情	Expand to details	Mở rộng ra chi tiết
+展开到详情：{title}	Expand to details: {title}	Mở rộng ra chi tiết: {title}
+展开安装教程	Expand setup tutorial	Mở rộng hướng dẫn cài đặt
+展开完整标题	Expand full title	Mở rộng toàn bộ tiêu đề
+展开控件	Expand controls	Mở rộng điều khiển
+展开标题	Expand title	Mở rộng tiêu đề
+工具	Tools	Công cụ
+工具路径已找到	Tool path found	Đã tìm thấy đường dẫn công cụ
+已{value} {length} 项	{value} {length} items	Đã {value} {length} mục
+已{word} {length} 个关注来源	{word} {length} follow sources	Đã {word} {length} nguồn theo dõi
+已下载	Downloaded	Đã tải xuống
+已为 {count} 个采集来源保存凭证。	Saved credentials for {count} scraping sources.	Đã lưu thông tin xác thực cho {count} nguồn thu thập.
+已于 {retired_year} 年隐退	Retired in {retired_year}	Giải nghệ năm {retired_year}
+已保存	Saved	Đã lưu
+已保存创作者别名	Saved creator aliases	Bí danh nhà sáng tạo đã lưu
+已保存别名	Saved aliases	Bí danh đã lưu
+已保存别名批量操作	Bulk actions for saved aliases	Thao tác hàng loạt bí danh đã lưu
+已保存到数据库	Saved to the database	Đã lưu vào cơ sở dữ liệu
+已保存喜欢偏好	Like preferences saved	Đã lưu sở thích yêu thích
+已保存来源	Source saved	Đã lưu nguồn
+已保存来源凭据	Source credentials saved	Đã lưu thông tin đăng nhập nguồn
+已保存索引器	Indexers saved	Đã lưu chỉ mục tìm kiếm
+已保存诊断选项	Diagnostic options saved	Đã lưu tùy chọn chẩn đoán
+已保存配置	Settings saved	Đã lưu cấu hình
+已保存馆藏与口味上传选项	Library and taste upload options saved	Đã lưu tùy chọn tải lên bộ sưu tập và khẩu vị
+已保存首次采集范围	Initial follow range saved	Đã lưu phạm vi thu thập lần đầu
+已保存，留空不改	Saved, leave blank to keep unchanged	Đã lưu, để trống nếu không đổi
+已保存，留空不改。	Saved, leave blank to keep unchanged.	Đã lưu, để trống nếu không đổi.
+已保存，留空保留	Saved, leave blank to keep	Đã lưu, để trống để giữ nguyên
+已保存，留空表示不改	Saved. Leave blank to keep it.	Đã lưu. Để trống nếu không đổi.
+已保存，登录过期时自动重新登录	Saved; automatically re-authenticates when login expires	Đã lưu, tự động đăng nhập lại khi hết hạn
+已停止读取	Stopped reading	Đã dừng đọc
+已停用	Off	Đã tắt
+已停用来源	Source turned off	Đã tắt nguồn
+已入库	In the library	Đã nhập kho
+已入库 {count} 个文件	{count} files imported	Đã nhập kho {count} tệp
+已关联现有下载：{name}	Linked the existing download: {name}	Đã gắn lượt tải có sẵn: {name}
+已关闭浏览器添加	Browser extension adding disabled	Đã tắt tính năng thêm từ trình duyệt
+已关闭视频预览生成	Video preview generation disabled	Đã tắt tạo bản xem trước video
+已关闭访问密码	Access password disabled	Đã tắt mật khẩu truy cập
+已写入	Written	Đã ghi
+已删除 {removed} 条；{text}	Deleted {removed}; {text}	Đã xóa {removed}; {text}
+已删除播放列表	Playlist deleted	Đã xóa danh sách phát
+已删除来源	Source deleted	Đã xóa nguồn
+已删除标签「{name}」	Deleted tag "{name}"	Đã xóa thẻ "{name}"
+已判定的产地；打开同产地的作品	Confirmed origin; open works from same origin	Xuất xứ đã xác định; mở tác phẩm cùng xuất xứ
+已加入想要	Added to Wants	Đã thêm vào Muốn xem
+已加入想要：{want}	Added to Wants: {want}	Đã thêm vào Muốn xem: {want}
+已加入稍后看	Added to Watch Later	Đã thêm vào xem sau
+已加载 {name}	Loaded {name}	Đã tải {name}
+已发现 {scanned} 个文件	Found {scanned} files	Đã thấy {scanned} tệp
+已取消	Cancelled	Đã hủy
+已取消不合口味	Removed from not my taste	Đã hủy đánh dấu không hợp gu
+已取消关注来源	Unfollowed the source	Đã bỏ theo dõi nguồn
+已取消喜欢	Unliked	Đã bỏ thích
+已取消寻找更好版本	Cancelled seeking better version	Đã hủy tìm bản tốt hơn
+已取消想要	Removed from Wants	Đã bỏ khỏi Muốn xem
+已取消看过	Removed from watched	Đã hủy đánh dấu đã xem
+已取消订阅新作	Stopped following new works	Đã ngừng theo dõi tác phẩm mới
+已取消评分	Rating removed	Đã hủy đánh giá
+已合并 {done} 组创作者别名	Merged {done} creator-alias groups	Đã gộp {done} nhóm bí danh nhà sáng tạo
+已启用	On	Đã bật
+已启用 {count} 个来源。	Enabled {count} sources.	Đã bật {count} nguồn.
+已启用来源	Source turned on	Đã bật nguồn
+已在「{name}」名下	Already filed under “{name}”	Đã nằm dưới tên “{name}”
+已在排队	Already queued	Đã trong hàng
+已在资源管理器中显示	Revealed in File Explorer	Đã hiển thị trong File Explorer
+已填入磁力	Magnet filled in	Đã điền magnet
+已处理	Handled	Đã xử lý
+已处理 {completed}/{total} 项。	{completed}/{total} items completed.	Đã xử lý {completed}/{total} mục.
+已复制 CloudDrive2 配置	CloudDrive2 configuration copied	Đã sao chép cấu hình CloudDrive2
+已复制专用令牌	Dedicated token copied	Đã sao chép token chuyên dụng
+已复制当前时间的视频网址	Video URL at current time copied	Đã sao chép liên kết video tại thời điểm này
+已复制清单	List copied	Đã sao chép danh sách
+已复制磁力	Magnet copied	Đã sao chép magnet
+已复制视频网址	Video URL copied	Đã sao chép liên kết video
+已复制链接	Link copied	Đã sao chép liên kết
+已安装	Installed	Đã cài
+已安装版本	Installed version	Bản đã cài
+已安装版本：	Installed version: 	Phiên bản đã cài:
+已安装版本：{version}。amane（{license}）提供这些内置站点的解析能力。重新安装会使用 Peach 内置的 {builtin} 版本，不随上游自动升级。	Installed: {version}. amane ({license}) parses these built-in sources. Reinstall reuses Peach built-in {builtin} without upstream auto-updates.	Đã cài đặt: {version}. amane ({license}) cung cấp khả năng phân giải cho các nguồn tích hợp này. Cài đặt lại sẽ dùng bản {builtin} tích hợp sẵn trong Peach.
+已完成	Finished	Đã xong
+已完成 {done} 项，{left} 项没有处理	Finished {done}. {left} were not handled.	Đã xong {done}. {left} chưa xử lý.
+已完成：	Finished:	Đã xong:
+已导入 {count} 份浏览器历史。	Imported {count} browser histories.	Đã nhập {count} bản ghi lịch sử trình duyệt.
+已导入口味数据	Taste data imported	Đã nhập dữ liệu khẩu vị
+已导入的历史与书签仍用于口味分析。	Imported history and bookmarks still feed the taste analysis.	Lịch sử và dấu trang đã nhập vẫn dùng cho phân tích khẩu vị.
+已开启视频预览生成	Video preview generation enabled	Đã bật tạo bản xem trước video
+已彻底删除 {name}	Permanently deleted {name}	Đã xóa hẳn {name}
+已彻底删除 {purged} 条记录{text}	Permanently deleted {purged} records{text}	Đã xóa hẳn {purged} bản ghi{text}
+已忽略	Ignored	Đã bỏ qua
+已忽略 {dismissed_total}	Ignored {dismissed_total}	Đã bỏ qua {dismissed_total}
+已恢复显示	Shown again	Đã hiện lại
+已恢复未看	Marked unseen	Đã đánh dấu chưa xem
+已扫描	Scanned	Đã quét
+已扫描 {completed_sources}/{total_sources} 个来源	Scanned {completed_sources}/{total_sources} sources	Đã quét {completed_sources}/{total_sources} nguồn
+已扫描 {scanned} 个文件，识别 {identified} 个番号，	Scanned {scanned} files, recognized {identified} codes,	Đã quét {scanned} tệp, nhận {identified} mã,
+已批量标记 {length} 项	Marked {length} items	Đã đánh dấu {length} mục
+已把 {length} 项移入回收站	Moved {length} items to the trash	Đã chuyển {length} mục vào thùng rác
+已把「{genre}」判为非内容标签	Marked “{genre}” as not a content tag	Đã coi “{genre}” không phải thẻ nội dung
+已把「{genre}」收录为标签「{tag}」	Adopted “{genre}” as the tag “{tag}”	Đã nhận “{genre}” thành thẻ “{tag}”
+已把关注里的 {author} 记到 {canonical_name} 名下	Filed followed author {author} under {canonical_name}	Đã ghi {author} trong theo dõi dưới tên {canonical_name}
+已把统称更改为 {canonical_name}	Display name is now {canonical_name}	Tên hiển thị giờ là {canonical_name}
+已抓到第 {shallowest}–{deepest} 页	Fetched pages {shallowest}–{deepest}	Đã lấy trang {shallowest}–{deepest}
+已抽帧	Frames sampled	Đã lấy khung hình
+已拒绝资料	Data rejected	Đã từ chối dữ liệu
+已按推送发现填入 {path}	Filled {path} from push discovery	Đã điền {path} theo đẩy phát hiện
+已探测时长	Duration probed	Đã dò thời lượng
+已接入的站点及其凭据状态会显示在这里。	Connected sites and their credential status will appear here.	Các trang đã kết nối và trạng thái xác thực sẽ hiện ở đây.
+已提交离线下载，进度在任务中心	Offline download submitted. Progress is in the task center.	Đã gửi tải ngoại tuyến. Tiến độ ở trung tâm tác vụ.
+已播放 {current}，总时长 {total}；点击显示剩余时间	Elapsed: {current}, Total: {total}; click to show remaining time	Đã phát: {current}, Tổng: {total}; nhấp để hiện thời gian còn lại
+已改动	Changed	Đã đổi
+已整理 {done} 个文件{text}。	Organized {done} files{text}.	Đã sắp {done} tệp{text}.
+已新建「{entity_name}」并订阅她的新作	Created “{entity_name}” and followed her new works	Đã tạo “{entity_name}” và theo dõi tác phẩm mới của cô ấy
+已新建播放列表	Playlist created	Đã tạo danh sách phát
+已新建目录	Directory created	Đã tạo thư mục mới
+已是最新测试版。	Already on the latest beta.	Đã là phiên bản thử nghiệm mới nhất.
+已显示 {count} 条评论，其余评论可在 JavDB 查看。	Showing {count} comments, view more on JavDB.	Đã hiển thị {count} bình luận, phần còn lại có thể xem trên JavDB.
+已暂停	Paused	Đã tạm dừng
+已暂停，继续后更新预估	Paused. The estimate updates after you continue.	Đã tạm dừng. Ước lượng cập nhật khi tiếp tục.
+已更换共享密钥	Shared secret rotated	Đã đổi khóa bí mật dùng chung
+已更新关注状态	Follow status updated	Đã cập nhật trạng thái theo dõi
+已更新口味分析	Taste analysis updated	Đã cập nhật phân tích khẩu vị
+已有数据目录	Existing data folder	Thư mục dữ liệu có sẵn
+已有来源的代理地址不同，请选择公共连接方式。	Existing sources have different proxy addresses, please choose a unified connection mode.	Các nguồn hiện tại có địa chỉ proxy khác nhau, vui lòng chọn phương thức kết nối chung.
+已标记	Marked	Đã đánh dấu
+已标记不合口味	Marked as not my taste	Đã đánh dấu không hợp gu
+已标记为不是垃圾	Marked as not junk	Đã đánh dấu không phải tệp rác
+已标记寻找更好版本	Marked for better version	Đã đánh dấu tìm bản tốt hơn
+已标记已看	Marked watched	Đã đánh dấu đã xem
+已标记看过	Marked watched	Đã đánh dấu đã xem
+已检查	Checked	Đã kiểm
+已检查 {length} 个来源：{bits}	Checked {length} sources: {bits}	Đã kiểm {length} nguồn: {bits}
+已检查可访问的来源，没有待清理的记录、空文件夹或缓存。	Checked accessible sources; no records, empty folders, or cache to clean.	Đã kiểm tra các nguồn truy cập được, không có bản ghi, thư mục trống hay bộ nhớ đệm cần dọn.
+已永久删除 {count} 项	Permanently deleted {count} items	Đã xóa vĩnh viễn {count} mục
+已永久删除 {purged} 条失效记录和 {dirs_removed} 个空文件夹，	Permanently deleted {purged} dead records and {dirs_removed} empty folders,	Đã xóa hẳn {purged} bản ghi hỏng và {dirs_removed} thư mục trống,
+已永久删除 {purged} 项；{blocked} 项未能删除，仍在回收站：\n	Permanently deleted {purged} items; {blocked} items could not be deleted and remain in trash:\n	Đã xóa vĩnh viễn {purged} mục; {blocked} mục không thể xóa, vẫn nằm trong thùng rác:\n
+已消失 · 文件已不在盘上	Vanished · File no longer on disk	Đã biến mất · Tệp không còn trên đĩa
+已添加	Added	Đã thêm
+已添加 {length} 个关注来源	Added {length} follow sources	Đã thêm {length} nguồn theo dõi
+已添加下载：{name}	Download added: {name}	Đã thêm tải: {name}
+已添加标签「{name}」	Added tag "{name}"	Đã thêm thẻ "{name}"
+已清理失效条目	Dead items cleaned	Đã dọn mục hỏng
+已清除来源凭据	Source credentials cleared	Đã xóa thông tin đăng nhập nguồn
+已生成 {previews} 部视频预览。	Made {previews} video previews.	Đã tạo {previews} xem trước video.
+已生成专用令牌	Dedicated token generated	Đã tạo token chuyên dụng
+已用 {used}	{used} used	Đã dùng {used}
+已登出 PikPak	Logged out of PikPak	Đã đăng xuất PikPak
+已登录	Logged In	Đã đăng nhập
+已登录 PikPak	Logged into PikPak	Đã đăng nhập PikPak
+已看	Watched	Đã xem
+已移入回收站	Moved to trash	Đã chuyển vào thùng rác
+已移出回收站	Restored from trash	Đã khôi phục khỏi thùng rác
+已移出播放列表	Removed from playlist	Đã xóa khỏi danh sách phát
+已移出稍后看	Removed from Watch Later	Đã xóa khỏi xem sau
+已移除	Removed	Đã gỡ
+已移除 {done} 条订阅源	Removed {done} feeds	Đã gỡ {done} nguồn đăng ký
+已移除创作者别名	Creator alias removed	Đã gỡ bí danh nhà sáng tạo
+已移除口味数据源	Taste data source removed	Đã gỡ nguồn dữ liệu khẩu vị
+已移除订阅源「{source}」	Removed feed “{source}”	Đã gỡ nguồn đăng ký “{source}”
+已移除：{want}	Removed: {want}	Đã gỡ: {want}
+已经关注	Already following	Đã theo dõi
+已经导入 {count} 项馆藏。	Imported {count} items.	Đã nhập {count} mục bộ sưu tập.
+已缓冲 {n} 秒	Buffered {n}s	Đã đệm {n} giây
+已订阅「{entity_name}」的新作	Following new works from “{entity_name}”	Đang theo dõi tác phẩm mới của “{entity_name}”
+已订阅新作	Following new releases	Đang theo dõi tác phẩm mới
+已订阅新作，点击取消订阅	Following new works. Click to stop.	Đang theo dõi tác phẩm mới. Bấm để ngừng.
+已记录	Recorded	Đã ghi
+已记录一次高潮	Recorded a climax	Đã ghi nhận một lần cao trào
+已设置密码。新设备需要登录，登录时勾选「保持登录」可保持 30 天。	Password is set. New devices must log in; check "Remember me" to keep for 30 days.	Đã đặt mật khẩu. Thiết bị mới cần đăng nhập; tích chọn "Duy trì đăng nhập" để lưu trong 30 ngày.
+已设置访问密码	Access password set	Đã đặt mật khẩu truy cập
+已评 {n} 星	Rated {n} stars	Đã đánh giá {n} sao
+已识别	Recognized	Đã nhận
+已调整播放顺序	Play order adjusted	Đã điều chỉnh thứ tự phát
+已跑 {elapsed}	Ran for {elapsed}	Đã chạy {elapsed}
+已跳过「{label}」	Skipped "{label}"	Đã bỏ qua "{label}"
+已跳过资料	Data skipped	Đã bỏ qua dữ liệu
+已载入	Loaded	Đã tải
+已载入 {loaded} / {total} 项	Loaded {loaded} / {total}	Đã tải {loaded} / {total}
+已还原	Restored	Đã khôi phục
+已连接已有数据目录。	Connected to the existing data folder.	Đã nối thư mục dữ liệu có sẵn.
+已退回 {done} 个文件{text}。	Reverted {done} files{text}.	Đã hoàn {done} tệp{text}.
+已选	Selected	Đã chọn
+已选 {count} 个标签	{count} tags selected	Đã chọn {count} thẻ
+已选 {count} 项	{count} selected	Đã chọn {count} mục
+已选 {length} 个别名	{length} aliases selected	Đã chọn {length} bí danh
+已选 {length} 个来源	{length} sources selected	Đã chọn {length} nguồn
+已选 {length} 条订阅源	{length} feeds selected	Đã chọn {length} nguồn đăng ký
+已选 {length} 组	{length} groups selected	Đã chọn {length} nhóm
+已选 {size} / {length}	{size} / {length} selected	Đã chọn {size} / {length}
+已选 {size} 项	{size} selected	Đã chọn {size} mục
+已选择 {source}，点击通过所选采用。	{source} is selected. Approve the selection to adopt it.	Đã chọn {source}. Bấm duyệt để nhận.
+已通过资料	Data approved	Đã duyệt dữ liệu
+已配置	Configured	Đã cấu hình
+已配置当前来源需要的凭证。	Credentials required for current sources configured.	Đã định cấu hình thông tin xác thực cần thiết cho nguồn hiện tại.
+已重命名播放列表	Playlist renamed	Đã đổi tên danh sách phát
+已重新加入垃圾判断	Re-added to junk evaluation	Đã thêm lại vào đánh giá tệp rác
+已重新打开安装教程	Setup tutorial reopened	Đã mở lại hướng dẫn cài đặt
+已重验	Checked again	Đã kiểm lại
+已隐藏	Hidden	Đã ẩn
+已隐藏这张图	This image is hidden	Đã ẩn ảnh này
+已隐退女优的 {marked} 条留作不可点的记录；	{marked} retired performers stay as records that cannot be opened;	{marked} mục của diễn viên đã giải nghệ giữ làm bản ghi không bấm được;
+带个人记录，记录留着	Has personal records; the records stay	Có ghi chép cá nhân; ghi chép được giữ
+带的记录	Attached records	Bản ghi đi kèm
+常访问网站	Frequently visited sites	Trang thường truy cập
+平台别名	Platform alias	Bí danh nền tảng
+并下载资料	and download metadata	và tải dữ liệu
+并清理 {files} 个闲置缓存。{scan}{scan2}	and clear {files} idle caches. {scan}{scan2}	và dọn {files} bộ nhớ đệm nhàn rỗi. {scan}{scan2}
+并清理 {files} 个闲置缓存。来源根目录保留。{scan}{scan2}	and clear {files} idle caches. The source root stays. {scan}{scan2}	và dọn {files} bộ nhớ đệm nhàn rỗi. Giữ thư mục gốc nguồn. {scan}{scan2}
+幻想	Fantasy	Ảo tưởng
+广泛匹配	Broad match	Khớp mở rộng
+库健康	Library health	Sức khỏe thư viện
+库外发现	Found outside the library	Tìm ngoài thư viện
+应位于自动入库的云端路径前缀内。	Should be within cloud path prefix for auto import.	Nên nằm trong tiền tố đường dẫn đám mây tự động nhập kho.
+应用	Apply	Áp dụng
+应用与工具	Application & Tools	Ứng dụng & Công cụ
+应用与维护	App & Maintenance	Ứng dụng & Bảo trì
+应用更新包	Application Update Package	Gói cập nhật ứng dụng
+应用更新包复用已安装工具；工具缺失、损坏或版本变化时会另行下载所需工具包。	Application update reuses installed tools; tool packages are downloaded separately if missing, damaged or updated.	Gói cập nhật ứng dụng tái sử dụng các công cụ đã cài; nếu công cụ bị thiếu, lỗi hoặc đổi phiên bản sẽ tải thêm.
+底图	Base image	Ảnh nền
+开启后匹配任一所选标签；关闭后必须同时包含全部标签。	When enabled, matches any selected tag; when disabled, must contain all tags.	Bật để khớp với bất kỳ thẻ nào đã chọn; tắt để yêu cầu chứa tất cả các thẻ.
+开启后，访问 Peach 需要先登录。	When enabled, accessing Peach requires signing in first.	Khi bật, truy cập Peach sẽ yêu cầu đăng nhập trước.
+开启字幕	Turn on subtitles	Bật phụ đề
+开始修复	Start repair	Bắt đầu sửa
+开始播放后，这里会显示播放落在一周的哪些时段。	After playback starts, this shows which hours of the week you play.	Sau khi bắt đầu phát, chỗ này hiện các khung giờ trong tuần bạn xem.
+开始播放后，这里会显示最近的真实观看证据。	After playback starts, recent real watch evidence shows up here.	Sau khi bắt đầu phát, bằng chứng xem thật gần đây hiện ở đây.
+开始播放后，这里会显示每个作品播了几次。	After playback starts, this shows how many times each work was played.	Sau khi bắt đầu phát, chỗ này hiện mỗi tác phẩm được phát bao nhiêu lần.
+开机后启动 Peach	Start Peach on system startup	Khởi chạy Peach khi bật máy
+开机自启	Launch on Startup	Khởi động cùng hệ thống
+张	photos	ảnh
+张可选	available	tùy chọn
+张图片	images	ảnh
+强烈推荐	Strongly recommended	Rất đáng xem
+归属	Affiliation	Quy thuộc
+当前 / 最佳分辨率	Current / Optimal Resolution	Độ phân giải hiện tại / Tối ưu
+当前仅显示筛选结果	Currently showing filter results only	Hiện chỉ hiển thị kết quả lọc
+当前作品没有可用于搜索的番号或片名	No code or title available for subtitle search	Tác phẩm hiện tại không có mã số hoặc tên để tìm kiếm
+当前使用系统生成的访问口令。改设自己的密码，或关闭登录要求。	Currently using system-generated access token. Change to your own password or disable login requirement.	Hiện đang dùng mã truy cập hệ thống tạo tự động. Hãy đổi sang mật khẩu riêng hoặc tắt yêu cầu đăng nhập.
+当前信息	Current info	Thông tin hiện tại
+当前关注来源不需要凭证。	Current followed sources do not require credentials.	Các nguồn theo dõi hiện tại không cần thông tin xác thực.
+当前分类没有待检查文件。	This category has no files to check.	Mục này không có tệp chờ kiểm.
+当前可连续播放 {n} 秒	Buffered for continuous {n}s playback	Hiện có thể phát liên tục {n} giây
+当前步骤耗时较长，正在等待进展	Current step is taking longer, waiting for progress	Bước hiện tại mất nhiều thời gian, đang đợi tiến trình
+当前版本	Current Version	Phiên bản hiện tại
+当前画质	Current Quality	Chất lượng hiện tại
+当前筛选下没有可直接播放的内容	No directly playable content under current filter	Bộ lọc hiện tại không có nội dung nào phát được trực tiếp
+当前筛选下没有更新	No updates for this filter	Không có cập nhật với bộ lọc này
+当前访问密码	Current Access Password	Mật khẩu truy cập hiện tại
+当前阶段 ·	Current phase ·	Giai đoạn hiện tại ·
+当前阶段完成率	Progress of the current step	Mức xong của bước hiện tại
+当前预览包含 {count} 部有编号作品、{uncoded} 条无编号馆藏的汇总，约 {size} KiB。不含账号、设备、文件路径和浏览器历史记录等个人数据。	Current preview contains summary of {count} coded works and {uncoded} uncoded items (~{size} KiB). Excludes personal data like accounts, devices, paths, and history.	Bản xem trước hiện gồm {count} tác phẩm có mã và {uncoded} mục không mã (~{size} KiB). Không chứa dữ liệu cá nhân như tài khoản, thiết bị, đường dẫn hay lịch sử web.
+当前：	Current:	Hiện tại:
+当前：{current_asset_name} · {action}{waited}	Current: {current_asset_name} · {action}{waited}	Hiện tại: {current_asset_name} · {action}{waited}
+影片	Video	Phim
+影片属性	Video attributes	Thuộc tính video
+影院模式	Theater Mode	Chế độ rạp chiếu
+彻底删除	Delete permanently	Xóa hẳn
+彻底删除所选记录	Delete the selected records permanently	Xóa hẳn bản ghi đã chọn
+彻底删除所选（{length}）	Delete selected permanently ({length})	Xóa hẳn mục đã chọn ({length})
+待升级	Upgrades pending	Chờ nâng cấp
+待合并	Pending merge	Chờ gộp
+待合并创作者别名	Creator aliases to merge	Bí danh nhà sáng tạo chờ gộp
+待合并别名批量操作	Bulk actions for aliases to merge	Thao tác hàng loạt bí danh chờ gộp
+待处理：	To handle:	Cần xử lý:
+待复查	Recheck	Kiểm lại
+待复核	To review	Chờ duyệt
+待找	Looking	Đang tìm
+待找磁链筛选	Magnet filter	Lọc magnet
+待核番号	Code to check	Mã chờ kiểm
+待永久删除	Pending permanent delete	Chờ xóa hẳn
+待确认	Pending	Chờ xác nhận
+待确认人物：{babepedia_name}	Person to confirm: {babepedia_name}	Người chờ xác nhận: {babepedia_name}
+循环播放	Loop	Lặp lại
+微醺	Tipsy	Hơi men
+心动	Heartbeat	Rung động
+快进扫过	Skipped through	Tua lướt
+忽略	Ignore	Bỏ qua
+性交体位	Positions	Tư thế
+总数	Total	Tổng
+恢复显示 {name}	Show {name} again	Hiện lại {name}
+恢复未看	Mark unseen	Đánh dấu chưa xem
+恢复默认	Restore defaults	Khôi phục mặc định
+情侣	Couples	Cặp đôi
+情境场所	Places	Bối cảnh & Địa điểm
+想要	Wants	Muốn xem
+想要清单读取失败	Could not read the wants list	Không đọc được danh sách muốn xem
+我已查看上传预览，同意上传馆藏与口味明细	I have reviewed the preview and agree to upload library and taste details	Tôi đã xem bản xem trước và đồng ý tải lên chi tiết bộ sưu tập & khẩu vị
+我的收藏	My collection	Bộ sưu tập
+截图	Screenshots	Ảnh chụp
+所勾的卡分属数据库里不同的人：{value}，先去合并再订	The selected cards are different people in the database: {value}. Merge them before pinning.	Các thẻ đã chọn là những người khác nhau trong cơ sở dữ liệu: {value}. Hãy gộp trước khi ghim.
+所在地	Location	Nơi ở
+所属	Belongs to	Thuộc
+所属集团	Group	Tập đoàn
+所有来源之间没有检测到内容相同的文件。扫描新来源后，这里会自动更新。	No duplicate files detected across sources. Updates automatically after scanning new sources.	Không phát hiện tệp trùng lặp giữa các nguồn. Sẽ tự động cập nhật sau khi quét nguồn mới.
+所选标签操作	Selected tags	Thao tác với thẻ đã chọn
+所选项目操作	Selected Items Actions	Thao tác mục đã chọn
+所选项目无共同来源	The selected items have no source in common	Các mục đã chọn không có nguồn chung
+手动	Manual	Thủ công
+手动播放列表	Manual playlist	Danh sách phát thủ công
+手动添加	Add manually	Thêm tay
+手动添加别名	Manually add alias	Thêm bí danh thủ công
+手部	Hands	Bàn tay
+打不开订阅源	Cannot open the feed	Không mở được nguồn đăng ký
+打开 PikPak 验证页	Open PikPak verification page	Mở trang xác minh PikPak
+打开 {item}	Open {item}	Mở {item}
+打开 {name}	Open {name}	Mở {name}
+打开 {name} 的文件位置	Show {name} in the file manager	Mở vị trí tệp của {name}
+打开 {title} 详情	Open details for {title}	Mở chi tiết {title}
+打开{section}	Open {section}	Mở {section}
+打开位置	Open location	Mở vị trí
+打开创作者页：{name}	Open creator page: {name}	Mở trang nhà sáng tạo: {name}
+打开原来源	Open the original source	Mở nguồn gốc
+打开原视频	Open original video	Mở video gốc
+打开原视频 {name}	Open the original video {name}	Mở video gốc {name}
+打开女优页：{name}	Open performer page: {name}	Mở trang diễn viên: {name}
+打开媒体库与入库	Open Libraries & Import	Mở Thư viện & Nhập kho
+打开已保存关注	Open saved follow	Mở theo dõi đã lưu
+打开播放列表 {name}	Open playlist {name}	Mở danh sách phát {name}
+打开未归属：馆藏里没有署名人的作品	Open unattributed: works without tagged performers in library	Mở mục chưa quy thuộc: các tác phẩm chưa gán người tham gia
+打开来源和凭证	Open sources and credentials	Mở nguồn và thông tin đăng nhập
+打开来源页面	Open the source page	Mở trang nguồn
+打开相关页面	Open relevant page	Mở trang liên quan
+打开维护与更新	Open Maintenance & Updates	Mở Bảo trì & Cập nhật
+打开网络与访问	Open Network & Access	Mở Mạng & Truy cập
+打开详情	Open Details	Mở chi tiết
+打开资料	Open Profile	Mở hồ sơ
+执行整理	Run organization	Thực hiện sắp xếp
+扫描	Scan	Quét
+扫描、追更检查、批量操作和命令行批处理跑起来之后，这里会显示它们的进度与结果。	Progress and results will appear here once scans, follow checks, batch actions, or CLI batches run.	Tiến độ và kết quả sẽ hiển thị ở đây sau khi quét, kiểm tra theo dõi, thao tác hàng loạt hoặc lệnh lô chạy.
+扫描与资料采集已完成：识别 {identified} 个番号，	Scan and metadata scrape finished: {identified} codes recognized,	Quét và thu dữ liệu xong: nhận {identified} mã,
+扫描与资料采集未完成	Scan and metadata scrape did not finish	Quét và thu dữ liệu chưa xong
+扫描与采集	Scan and scrape	Quét và thu thập
+扫描与采集已暂停	Scan and scrape is paused	Quét và thu thập đã tạm dừng
+扫描中	Scanning	Đang quét
+扫描任务	Scan task	Tác vụ quét
+扫描失败	Scan failed	Quét thất bại
+扫描媒体文件	Scan media files	Quét tệp phương tiện
+扫描完成后，这里会列出需要复核的资料。	After scanning completes, items needing review will appear here.	Sau khi quét xong, dữ liệu cần duyệt sẽ được liệt kê tại đây.
+扫描文件	Scan files	Quét tệp
+批量保留	Batch preserve	Giữ lại hàng loạt
+批量更新 {length}/{length2} 项未完成	Bulk update {length}/{length2} did not finish	Cập nhật hàng loạt {length}/{length2} chưa xong
+找不到 cloudflared	cloudflared not found	Không tìm thấy cloudflared
+找不到文件 · 共 {total} 项	File not found · {total} items	Không thấy tệp · {total} mục
+找不到这个{title}	{title} not found	Không tìm thấy {title} này
+找到 {count} 条中文字幕	Found {count} Chinese subtitles	Tìm thấy {count} phụ đề tiếng Trung
+把 {name} 的记录接到哪个文件	Which file should receive the records for {name}	Gắn bản ghi của {name} vào tệp nào
+把媒体目录归进媒体库后，这里会按库显示视频数。	After folders are assigned to libraries, video counts show up here per library.	Sau khi gắn thư mục vào thư viện, số video hiện ở đây theo từng thư viện.
+抓取中	Fetching	Đang lấy
+抓取中…	Scraping…	Đang cào…
+抓取历史	Fetch history	Lịch sử lấy
+抓取封面	Scrape cover	Cào ảnh bìa
+抓更早的一页	Fetch an older page	Lấy trang cũ hơn
+折叠安装教程	Collapse setup tutorial	Thu gọn hướng dẫn cài đặt
+护士	Nurse	Y tá
+拉取 {original}	Fetch {original}	Tải {original}
+拉取失败	Fetch failed	Tải thất bại
+拒绝	Reject	Từ chối
+拒绝所选	Reject selected	Từ chối mục đã chọn
+拖动浏览 · Shift + 滚轮横移	Drag to pan · Shift + scroll to pan horizontally	Kéo để duyệt · Shift + cuộn chuột để di chuyển ngang
+挂载帮助	Mounting Help	Trợ giúp mount
+挂载状态	Mount Status	Trạng thái mount
+按{label}{dir}排序	Sort by {label}{dir}	Sắp theo {label}{dir}
+按{label}{item}排序	Sort by {label}{item}	Sắp theo {label}{item}
+按{label}排序	Sort by {label}	Sắp theo {label}
+按发行日期排序	Sort by release date	Sắp theo ngày phát hành
+按口味匹配排序	Sort by taste match	Sắp theo độ khớp khẩu vị
+按字段	By field	Theo trường
+按所选间隔抽帧，仅处理本机磁盘上的视频。	Extract frames at selected interval, processes local disk videos only.	Trích xuất khung hình theo khoảng thời gian đã chọn, chỉ xử lý video trên đĩa cục bộ.
+按挂载工具实际配置选择；代理流量保护会限制自动媒体读取。	Choose based on mount tool config; metered protection limits automated media reads.	Chọn theo cấu hình thực tế của công cụ mount; bảo vệ lưu lượng sẽ hạn chế đọc media tự động.
+按推送发现填入 {path}，保存配置后生效	Filled {path} from push discovery, takes effect after saving	Đã điền {path} theo đẩy phát hiện, có hiệu lực sau khi lưu
+按时长排序	Sort by duration	Sắp theo thời lượng
+按来源	By source	Theo nguồn
+按来源数量	By source count	Theo số nguồn
+按来源评分排序	Sort by source score	Sắp theo điểm nguồn
+按模板整理	Organize by template	Sắp theo mẫu
+按模板整理文件	Organize files by template	Sắp tệp theo mẫu
+按模板给文件改名并归入目录。先预览，确认后执行；执行过的一批可以整批退回。	Rename and organize files into folders by template. Preview first, confirm and execute; a processed batch can be rolled back entirely.	Đổi tên và sắp xếp tệp vào thư mục theo mẫu. Xem trước, xác nhận rồi thực thi; đợt đã thực thi có thể hoàn tác toàn bộ.
+按番号或厂牌推断的产地，批量判定后不再变；打开同产地的作品	Inferred origin by code/studio; open works from same origin	Xuất xứ suy đoán theo mã/hãng; mở tác phẩm cùng xuất xứ
+按番号排序	Sort by code	Sắp theo mã
+按番号查找资源	Find resources by code	Tìm tài nguyên theo mã
+按番号添加	Add by code	Thêm theo mã số
+按缓存所在硬盘分档	Profile by cache disk type	Phân hạng theo ổ đĩa đặt bộ nhớ đệm
+按题材筛选	Filter by theme	Lọc theo chủ đề
+按馆藏记录逐条查找本地磁盘与网盘上的文件，列出文件已不存在的记录、空文件夹，以及不再被引用的缓存。	Verify files on local disks and cloud drives against collection records, listing missing file records, empty folders, and orphaned cache.	Tìm kiếm tệp trên ổ đĩa cục bộ và ổ đám mây theo từng bản ghi bộ sưu tập, liệt kê bản ghi tệp không còn tồn tại, thư mục rỗng và bộ nhớ đệm không còn được dùng.
+按首字跳转	Jump by letter	Chuyển theo chữ cái
+换一批	Shuffle	Đổi lượt
+排序 {ranking_score}	Rank {ranking_score}	Hạng {ranking_score}
+排队中	Queued	Đang xếp hàng
+排除 {compilations} 个超大合集	Exclude {compilations} very large compilations	Loại {compilations} hợp tuyển rất lớn
+探测到 {address}，保存配置后生效	Detected {address}, takes effect after saving	Phát hiện {address}, có hiệu lực sau khi lưu
+探测时长后，这里会显示时长分布。	After duration is probed, the duration spread shows up here.	Sau khi dò thời lượng, phân bố thời lượng hiện ở đây.
+探测画质后，这里会显示画质分布。	After quality is probed, the quality spread shows up here.	Sau khi dò chất lượng, phân bố chất lượng hiện ở đây.
+探索	Explore	Khám phá
+接下来导入浏览器历史记录	Next, import browser history	Tiếp theo nhập lịch sử trình duyệt
+接不进来	Could not attach	Không gắn được
+接到与操作	Attach and act	Gắn và thao tác
+接到这个文件	Link to this file	Nối vào tệp này
+接口番号格式	API code format	Định dạng mã API
+接收 CloudDrive2 通知	Receive CloudDrive2 notifications	Nhận thông báo từ CloudDrive2
+推荐	Recommended	Gợi ý
+推荐分 {score}，{label}	Score {score}, {label}	Điểm {score}, {label}
+推荐未取得	Recommendation unavailable	Chưa có gợi ý
+推送发现	Push Discovery	Đẩy phát hiện
+提交	Submit	Gửi
+提交下载	Submit download	Gửi tải xuống
+提交中…	Submitting…	Đang gửi…
+提交喜爱理由	Submit Reason for Liking	Gửi lý do yêu thích
+提交没有成功。	Submit did not succeed.	Gửi không thành.
+提交没有成功：{reason}	Submit did not succeed: {reason}	Gửi không thành: {reason}
+提供 Cookie 的方式（二选一）	How to provide a cookie (pick one)	Cách đưa cookie (chọn một)
+插画	Illustration	Minh họa
+搜索与推荐	Search & Recommendations	Tìm kiếm & Gợi ý
+搜索中文字幕	Search Chinese subtitles	Tìm phụ đề tiếng Trung
+搜索作品	Search works	Tìm kiếm tác phẩm
+搜索或输入新标签	Search or enter new tag	Tìm hoặc nhập thẻ mới
+搜索播放墙	Search video wall	Tìm kiếm trên tường video
+搜索收藏	Search saved items	Tìm mục đã lưu
+搜索结果	Search Results	Kết quả tìm kiếm
+撤回判定	Revoke decision	Thu hồi phán đoán
+撤掉 {label}	Remove {label}	Gỡ {label}
+撤掉 {text}	Remove {text}	Gỡ {text}
+撤销 Cookie	Revoke cookie	Thu hồi cookie
+撤销移入回收站	Undo move to trash	Hoàn tác chuyển vào thùng rác
+播放	Play	Phát
+播放 {play_count} 次	Played {play_count} times	Phát {play_count} lần
+播放列表	Playlist	Danh sách phát
+播放列表名称不能为空	A playlist needs a name	Danh sách phát cần có tên
+播放列表操作：{name}	Playlist actions: {name}	Thao tác danh sách phát: {name}
+播放列表读取失败	Could not read playlists	Không đọc được danh sách phát
+播放器菜单	Player Menu	Menu trình phát
+播放器视图控制	Player View Controls	Điều khiển chế độ xem trình phát
+播放器设置	Player Settings	Cài đặt trình phát
+播放墙图片	Video Wall Images	Hình ảnh tường video
+播放墙工具	Video Wall Tools	Công cụ tường video
+播放墙，拖动或方向键浏览	Video wall, browse by dragging or arrow keys	Bức tường video, duyệt bằng cách kéo hoặc phím mũi tên
+播放时间	Play time	Thời gian phát
+播放次数	Plays	Số lần phát
+播放正片	Play full movie	Phát bản chính
+播放统计	Playback Stats	Thống kê phát
+播放请求已取消	Playback request cancelled	Yêu cầu phát đã bị hủy
+播放过	Played	Đã phát
+播放进度	Playback Progress	Tiến độ phát
+播放速度	Playback Speed	Tốc độ phát
+播放速度减 0.05	Decrease speed by 0.05	Giảm tốc độ 0.05
+播放速度加 0.05	Increase speed by 0.05	Tăng tốc độ 0.05
+操作	Actions	Thao tác
+操作失败	The action failed	Thao tác thất bại
+操作未完成	The action did not finish	Thao tác chưa xong
+操作未完成，请重试	The action did not finish. Try again.	Thao tác chưa xong. Thử lại.
+操作系统	Operating System	Hệ điều hành
+收录	Indexed	Thu thập
+收录日期	Indexed date	Ngày ghi nhận
+收藏	Saved	Đã lưu
+收藏作品清单	Saved works	Danh sách tác phẩm đã lưu
+收藏类型	Saved types	Loại đã lưu
+收起	Collapse	Thu
+收起{title}	Collapse {title}	Thu gọn {title}
+收起任务详情	Hide task details	Ẩn chi tiết tác vụ
+收起作品	Collapse work	Thu gọn tác phẩm
+收起侧栏	Collapse sidebar	Thu gọn thanh bên
+收起控件	Collapse controls	Thu gọn điều khiển
+收起标题	Collapse title	Thu gọn tiêu đề
+收起详情	Hide details	Ẩn chi tiết
+放大	Zoom in	Phóng to
+放大播放墙	Zoom in video wall	Phóng to tường video
+故事剧情	Plot & Story	Cốt truyện & Kịch bản
+数据上传	Data Uploads	Tải lên dữ liệu
+数据库	Database	Cơ sở dữ liệu
+数据库不存在	Database does not exist	Cơ sở dữ liệu không tồn tại
+数据库与迁移	Database & Migrations	Cơ sở dữ liệu & Di chuyển
+数据库中的当前统计 · 	Current statistics in database · 	Thống kê hiện tại trong cơ sở dữ liệu · 
+数据库中的当前统计 · {videos} 个视频 · {bytes}	Current database totals · {videos} videos · {bytes}	Thống kê hiện tại · {videos} video · {bytes}
+数据库可读取	Database readable	Cơ sở dữ liệu có thể đọc được
+数据库尚未准备好任务记录表	The task log table is not ready yet	Bảng nhật ký tác vụ chưa sẵn sàng
+数据库尚未初始化	Database not yet initialized	Cơ sở dữ liệu chưa được khởi tạo
+数据库无法读取	Database cannot be read	Không thể đọc cơ sở dữ liệu
+数据库结构无法读取	Database schema cannot be read	Không thể đọc cấu trúc cơ sở dữ liệu
+数据库迁移	Database migrations	Di chuyển cơ sở dữ liệu
+数据库里还没有「{q}」，会新建一位	“{q}” is not in the database yet. A new person will be created.	“{q}” chưa có trong cơ sở dữ liệu. Sẽ tạo người mới.
+数据源	Data source	Nguồn dữ liệu
+数据目录	Data Directories	Thư mục dữ liệu
+数据目录可读写	Data directory writable	Thư mục dữ liệu có thể đọc/ghi
+数据管理	Data cleanup	Quản lý dữ liệu
+整张使用	Use full image	Dùng trọn ảnh
+整理	Organize	Sắp xếp
+整理 {candidates} 组资料结果，自动保存 {auto_applied} 条	Organized {candidates} metadata results and auto-saved {auto_applied}	Đã sắp {candidates} kết quả dữ liệu, tự lưu {auto_applied}
+整理 {candidates} 组资料结果，自动保存 {auto_applied} 条。	Organized {candidates} metadata results and auto-saved {auto_applied}.	Đã sắp {candidates} kết quả dữ liệu, tự lưu {auto_applied}.
+整理哪个来源	Which source to organize	Sắp nguồn nào
+整理失败	Organize failed	Sắp thất bại
+整理文件	Organize files	Sắp tệp
+整理结果	Organize result	Kết quả sắp
+整理配置读取失败	Could not read organize settings	Không đọc được cấu hình sắp
+整组回收	Recycle entire group	Thu hồi cả nhóm
+文件与记录核对	File and record verification	Đối chiếu tệp và bản ghi
+文件位置	File location	Vị trí tệp
+文件共 {chosen}，记录可从回收站还原。	{chosen} files. Records can be restored from the trash.	{chosen} tệp. Bản ghi có thể khôi phục từ thùng rác.
+文件名	File name	Tên tệp
+文件名模板	Filename template	Mẫu tên tệp
+文件已不在盘上，不能播放	File no longer on disk, cannot play	Tệp không còn trên đĩa, không thể phát
+文件已不在盘上，含回收站	The file is gone from disk, including the trash	Tệp không còn trên đĩa, kể cả thùng rác
+文件已消失的作品	Works whose files are gone	Tác phẩm có tệp đã mất
+文件操作需要挂载工具和网盘账号授予写入权限。光鸭云盘的上传、建文件夹、改名和移动需要 CloudDrive2 v1.1.0 或更高版本，删除和复制暂不支持。	File operations require write permissions from mounting tool and cloud drive account.	Thao tác tệp cần công cụ mount và tài khoản ổ đĩa cấp quyền ghi.
+文件整理未完成	File organize did not finish	Sắp tệp chưa xong
+文件权限过宽。在运行 Peach 的 POSIX 主机上收紧为 0600。	The file is too open. On the POSIX host running Peach, tighten it to 0600.	Quyền tệp quá rộng. Trên máy POSIX đang chạy Peach, siết còn 0600.
+文件类型	File types	Loại tệp
+文件路径	File path	Đường dẫn tệp
+新增	New	Mới
+新增 {added} 条	{added} new	{added} mục mới
+新建	New	Tạo mới
+新建“{name}”	Create "{name}"	Tạo mới "{name}"
+新建失败	Could not create it	Không tạo được
+新建播放列表	Create playlist	Tạo danh sách phát
+新建这个目录	Create This Directory	Tạo thư mục này
+新播放列表	New playlist	Danh sách phát mới
+新文件落地就入库	Import new files immediately on arrival	Tệp mới hạ cánh là nhập kho ngay
+新片：查不到也一直留在待找	New works stay in Looking even when nothing is found	Phim mới: không thấy vẫn ở Đang tìm
+新访问密码	New Access Password	Mật khẩu truy cập mới
+无个人记录	No personal records	Không có ghi chép cá nhân
+无声版	Silent	Bản không tiếng
+无封面	No cover	Không có bìa
+无码	Uncensored	Không che
+无码破解	Uncensored leak	Bản gỡ che
+无预览	No preview	Không có xem trước
+日志目录	Log directory	Thư mục nhật ký
+日期	Date	Ngày
+日期未知	Date unknown	Chưa rõ ngày
+日本	Japan	Nhật Bản
+时长	Duration	Thời lượng
+时长推断	Duration estimate	Ước lượng thời lượng
+时长（秒）	Duration (seconds)	Thời lượng (giây)
+时间未取得	Time unavailable	Chưa có thời gian
+时间轴缩略图	Timeline Thumbnails	Hình thu nhỏ dòng thời gian
+时间轴预览	Timeline Preview	Xem trước dòng thời gian
+明暗主题	Theme	Chủ đề sáng tối
+明确不喜欢	Clearly disliked	Rõ ràng không thích
+是同一个人	Is the same person	Là cùng một người
+是同一个人吗？	Is this the same person?	Có phải cùng một người không?
+显示前 24,000 个字符，下载可查看完整内容。	Showing first 24,000 characters; download to view full content.	Hiển thị 24.000 ký tự đầu tiên; tải xuống để xem đầy đủ.
+显示前 {length} 条，共 {total} 条；处理掉这些后，其余的会补上来。	Showing the first {length} of {total}. After these are handled, more fill in.	Hiện {length} mục đầu, trong tổng {total}. Xử lý xong thì các mục khác hiện lên.
+显示前 {length} 部，共 {total} 部。	Showing the first {length} of {total} works.	Hiện {length} tác phẩm đầu, trong tổng {total}.
+显示剩余时间	Show remaining time	Hiển thị thời gian còn lại
+显示可回收最多的前 {length} 组，共 {total} 组；处理掉这些后，其余的会补上来。	Showing the {length} groups with the most to reclaim, out of {total}. After these are handled, more fill in.	Hiện {length} nhóm thu hồi được nhiều nhất, trong {total} nhóm. Xử lý xong thì các nhóm khác hiện lên.
+显示已播放时间	Show elapsed time	Hiển thị thời gian đã phát
+显示结果	Show results	Hiển thị kết quả
+暂不支持	Not supported yet	Chưa hỗ trợ
+暂停	Pause	Tạm dừng
+暂无匹配口味的作品	No works match this taste	Chưa có tác phẩm khớp khẩu vị
+暂无口味维度	No taste facets yet	Chưa có khía cạnh khẩu vị
+暂无可用来源	No sources available	Tạm không có nguồn khả dụng
+暂无待确认标签	No tags pending confirmation	Tạm không có thẻ chờ xác nhận
+暂无数据	No data available	Chưa có dữ liệu
+暂无本地作品样本，打开全部作品核对。	No local work sample, open all works to check.	Tạm không có mẫu tác phẩm cục bộ, hãy mở tất cả tác phẩm để đối chiếu.
+暂无符合条件的作品	No works match	Chưa có tác phẩm phù hợp
+暂无评论	No comments yet	Chưa có bình luận nào
+暂无足够证据	Not enough evidence yet	Chưa đủ bằng chứng
+暂无预览	No preview yet	Chưa có xem trước
+暂时放弃	Set aside	Tạm gác
+暂时无法检查安装进度	Unable to check installation progress right now	Tạm thời không thể kiểm tra tiến độ cài đặt
+暂时无法读取进度，正在重新连接…	Progress cannot be read right now. Reconnecting…	Tạm không đọc được tiến độ. Đang kết nối lại…
+暂未找到资源链接。	No resource links found yet.	Tạm chưa tìm thấy liên kết tài nguyên.
+更多取得浏览记录的方式	More ways to get browsing history	Cách khác để lấy lịch sử duyệt
+更多同步方式	More sync options	Thêm phương thức đồng bộ
+更多字幕	More Subtitles	Thêm phụ đề
+更多操作	More actions	Thao tác khác
+更多评论	More comments	Thêm bình luận
+更多资源（{length} 条）	More resources ({length})	Tài nguyên khác ({length})
+更换{name}的头像	Change the avatar for {name}	Đổi ảnh đại diện của {name}
+更换头像	Change avatar	Đổi ảnh đại diện
+更换密钥	Rotate Secret	Đổi khóa bí mật
+更改统称	Change the display name	Đổi tên hiển thị
+更新 {updated} 条	{updated} updated	{updated} đã cập nhật
+更新于 {updated_at}	Updated {updated_at}	Cập nhật {updated_at}
+更新关注状态	Update follow status	Cập nhật trạng thái theo dõi
+更新准备进度	Update preparation progress	Tiến độ chuẩn bị cập nhật
+更新反馈	Update Feedback	Phản hồi cập nhật
+更新媒体工具	Update media tools	Cập nhật công cụ media
+更新已准备好	Update Ready	Bản cập nhật đã sẵn sàng
+更新时间	Updated	Thời gian cập nhật
+更新渠道与令牌	Update Channel & Token	Cập nhật kênh & token
+更新版本需求	Update version demand	Cập nhật nhu cầu phiên bản
+更新稍后看	Update Watch Later	Cập nhật xem sau
+更新资料	Update data	Cập nhật dữ liệu
+更新通道	Update Channel	Kênh cập nhật
+最大	Largest	Lớn nhất
+最大体积（GiB）	Largest size (GiB)	Dung lượng lớn nhất (GiB)
+最大的一个	Largest	Bản lớn nhất
+最小体积（GiB）	Smallest size (GiB)	Dung lượng nhỏ nhất (GiB)
+最快	Fastest	Nhanh nhất
+最慢	Slowest	Chậm nhất
+最新版本	Latest Version	Phiên bản mới nhất
+最短时长（分钟）	Minimum duration (min)	Thời lượng tối thiểu (phút)
+最近 30 天	Last 30 days	30 ngày gần nhất
+最近 7 天	Last 7 days	7 ngày gần nhất
+最近 90 天	Last 90 days	90 ngày gần nhất
+最近一年	Last year	Một năm gần nhất
+最近一秒下载 {n} 秒	Last 1s downloaded {n}s	Giây vừa qua tải được {n} giây
+最近一秒下载 {size}	Last 1s download: {size}	Tải xuống giây vừa qua: {size}
+最近一秒网络活动 {size}	Last 1s network: {size}	Hoạt động mạng giây vừa qua: {size}
+最近使用	Recently Used	Dùng gần đây
+最近完成	Recently finished	Vừa xong
+最近看过	Recently watched	Xem gần đây
+最长	Longest	Dài nhất
+最长时长（分钟）	Maximum duration (min)	Thời lượng tối đa (phút)
+最长的一个	Longest	Bản dài nhất
+有创作者	Has a creator	Có nhà sáng tạo
+有厂牌	Has a studio	Có hãng
+有可用更新	Update Available	Có bản cập nhật mới
+有标签	Has tags	Có thẻ
+有番号	Has a code	Có mã
+有码	Censored	Có che
+有磁链	Has a magnet	Có magnet
+有身份	Has an identity	Có danh tính
+服务端拒绝了这次判定	The server rejected this decision	Máy chủ từ chối quyết định này
+服务端拒绝了这次收录	The server rejected this adoption	Máy chủ từ chối lần ghi này
+服务端未采用该项	The server did not adopt this item	Máy chủ không nhận mục này
+未保存，登录过期后需要回到这里重新登录	Not saved, requires logging in again when expired	Chưa lưu, cần quay lại đây đăng nhập lại khi hết hạn
+未发售	Unreleased	Chưa phát hành
+未取得	Unavailable	Chưa có
+未取得来源图片	Source image not retrieved	Chưa lấy được ảnh nguồn
+未取得统计数据，请刷新页面重试。	Stats are unavailable. Refresh and try again.	Chưa có thống kê. Tải lại trang rồi thử.
+未取得配置，请刷新页面重试。	Could not retrieve configuration. Please refresh and try again.	Chưa lấy được cấu hình, vui lòng tải lại trang để thử lại.
+未取得重复文件列表，请刷新页面重试。	The duplicate list is unavailable. Refresh and try again.	Chưa có danh sách trùng. Tải lại trang rồi thử.
+未取得高清版目标，请刷新页面重试。	HD targets are unavailable. Refresh and try again.	Chưa có mục tiêu HD. Tải lại trang rồi thử.
+未启用	Disabled	Chưa bật
+未命名作品	Untitled work	Tác phẩm chưa đặt tên
+未命名内容	Untitled	Chưa đặt tên
+未命名图片	Untitled image	Hình ảnh chưa đặt tên
+未命名播放列表	Untitled playlist	Danh sách phát chưa đặt tên
+未命名视频	Untitled Video	Video chưa đặt tên
+未命名资源	Untitled resource	Tài nguyên chưa đặt tên
+未在冷却	Not cooling down	Không trong thời gian chờ
+未填写	Not filled in	Chưa điền
+未安装	Not installed	Chưa cài
+未安装；MP4 可直接播放，转码和缩略图需要安装 FFmpeg。	Not installed; MP4 plays directly, transcoding and thumbnails require FFmpeg.	Chưa cài đặt; MP4 phát trực tiếp được, chuyển mã và ảnh thu nhỏ cần cài đặt FFmpeg.
+未安装；缺索引的 MP4 需要它才修得了。	Not installed; needed to repair MP4s with missing index.	Chưa cài đặt; cần thiết để sửa các tệp MP4 bị thiếu chỉ mục.
+未安装；缺索引的 MP4 需要它才修得了。解压到 {path}。	Not installed; needed to repair MP4 files lacking index. Extract to {path}.	Chưa cài đặt; cần thiết để sửa chữa tệp MP4 thiếu chỉ mục. Giải nén vào {path}.
+未归属	Unassigned	Chưa ghi danh
+未找到 FFmpeg、ffprobe；转码、媒体信息与缩略图需要 FFmpeg 工具包。	FFmpeg and ffprobe not found; transcoding, media info, and thumbnails require the FFmpeg toolkit.	Không tìm thấy FFmpeg, ffprobe; chuyển mã, thông tin tệp media và ảnh thu nhỏ cần bộ công cụ FFmpeg.
+未找到 FFmpeg；转码、媒体信息与缩略图需要 FFmpeg 工具包。	FFmpeg not found; transcoding, media info, and thumbnails require the FFmpeg toolkit.	Không tìm thấy FFmpeg; chuyển mã, thông tin tệp media và ảnh thu nhỏ cần bộ công cụ FFmpeg.
+未找到 ffprobe；转码、媒体信息与缩略图需要 FFmpeg 工具包。	ffprobe not found; media info and thumbnails require the FFmpeg toolkit.	Không tìm thấy ffprobe; thông tin tệp media và ảnh thu nhỏ cần bộ công cụ FFmpeg.
+未找到 {items}；转码、媒体信息与缩略图需要 FFmpeg 工具包。	Missing {items}; transcoding, media info and thumbnails require FFmpeg package.	Không tìm thấy {items}; chuyển mã, thông tin đa phương tiện và ảnh thu nhỏ cần bộ công cụ FFmpeg.
+未收录 genre	Genre not adopted	Thể loại chưa nhận
+未收录 genre · {length}	Genres not adopted · {length}	Thể loại chưa nhận · {length}
+未映射	Unmapped	Chưa ánh xạ
+未标注	Unlabeled	Chưa gắn nhãn
+未标注字段	Unlabeled fields	Trường chưa gắn nhãn
+未标注来源	Unlabeled source	Nguồn chưa gắn nhãn
+未检查	Not checked	Chưa kiểm
+未检测到 {name}。	{name} not detected.	Chưa phát hiện {name}.
+未看	Unseen	Chưa xem
+未看 {new} · 已看 {seen} · 已保存 {saved} · 已忽略 {ignored}	Unseen {new} · watched {seen} · saved {saved} · ignored {ignored}	Chưa xem {new} · đã xem {seen} · đã lưu {saved} · đã bỏ qua {ignored}
+未看 {unread} · 已启用 {length} / {length2}	Unseen {unread} · on {length} / {length2}	Chưa xem {unread} · đang bật {length} / {length2}
+未看新作	Unseen new works	Tác phẩm mới chưa xem
+未看更新	Unseen updates	Cập nhật chưa xem
+未知	Unknown	Không rõ
+未设置密码时，能连接到 Peach 的设备可直接进入。	When no password is set, devices that reach Peach can enter directly.	Khi chưa đặt mật khẩu, thiết bị kết nối được tới Peach có thể vào trực tiếp.
+未设置访问密码	Access Password Not Set	Chưa đặt mật khẩu truy cập
+未设置访问密码，请设置密码或限制为本机连接	No access password set; please set a password or limit to local connections	Chưa đặt mật khẩu truy cập, vui lòng đặt mật khẩu hoặc giới hạn kết nối cục bộ
+未评分	Unrated	Chưa đánh giá
+未识别	Unrecognized	Không nhận ra
+未说明原因	No reason given	Không nêu lý do
+未选	Not selected	Chưa chọn
+未选择文件	No file selected	Chưa chọn tệp
+未配置	Not configured	Chưa cấu hình
+未配置挂载点	No mount point configured	Chưa cấu hình điểm mount
+本地	Local	Cục bộ
+本地作品样本	Local work sample	Mẫu tác phẩm cục bộ
+本地图片	Local image	Ảnh trên máy
+本地磁盘	Local disk	Ổ đĩa cục bộ
+本月还剩 {left} 条，共 {total} 条	{left} left this month, total {total}	Tháng này còn {left} lượt, tổng cộng {total} lượt
+本机	This machine	Máy này
+本机只能浏览	This machine can only browse	Máy này chỉ xem được
+本机访问端口	Local Access Port	Cổng truy cập cục bộ
+本次更新包含媒体工具。	This update includes media tools.	Bản cập nhật này bao gồm các công cụ media.
+本次未访问成功	This visit did not succeed	Lần truy cập này không thành
+机械硬盘，或内存 8 GB 以内	HDD, or under 8 GB RAM	Ổ cứng cơ HDD, hoặc RAM dưới 8 GB
+条	entries	mục
+条作品	works	tác phẩm
+条历史	history entries	mục lịch sử
+条历史 ·	history entries ·	mục lịch sử ·
+条标签	tags	thẻ
+条目	Items	Mục
+条目已保存，但这次未保存来源的原始响应：{evidence}	The item was saved, but the source’s raw response was not kept this time: {evidence}	Mục đã lưu, nhưng lần này không giữ phản hồi gốc của nguồn: {evidence}
+条线索	clues	manh mối
+条链接	links	liên kết
+来源	Source	Nguồn
+来源 · {label}	Source · {label}	Nguồn · {label}
+来源与订阅	Sources & Feeds	Nguồn & Đăng ký
+来源与订阅设置	Source & subscription settings	Cài đặt nguồn và đăng ký
+来源会话	Source sessions	Phiên nguồn
+来源写法：{source_name}	Source spelling: {source_name}	Cách nguồn ghi: {source_name}
+来源凭据	Source credentials	Thông tin đăng nhập nguồn
+来源凭据未取得	Source credentials unavailable	Chưa lấy được thông tin xác thực nguồn
+来源只返回了部分评论，资源链接可能不完整。	The source returned only some comments. Resource links may be incomplete.	Nguồn chỉ trả một phần bình luận. Liên kết tài nguyên có thể thiếu.
+来源名称	Source name	Tên nguồn
+来源和凭证	Sources and credentials	Nguồn và chứng thư
+来源大小：{size}	Source size: {size}	Dung lượng nguồn: {size}
+来源建议	Source suggestions	Gợi ý nguồn
+来源提供的备选图片	Alternate images from the source	Ảnh dự phòng từ nguồn
+来源时长	Source duration	Thời lượng nguồn
+来源未知	Unknown source	Nguồn không xác định
+来源正在冷却，截止	Source is cooling down, until 	Nguồn đang tạm nghỉ, đến
+来源筛选	Source filter	Lọc nguồn
+来源网站	Source site	Trang web nguồn
+来源网站与创作者线索	Source sites and creator clues	Trang nguồn và manh mối nhà sáng tạo
+来源设置已保存	Source settings saved	Đã lưu cài đặt nguồn
+来源评分	Source score	Điểm nguồn
+来源评分 {source_score} / 5	Source score {source_score} / 5	Điểm nguồn {source_score} / 5
+来源资料	Source metadata	Dữ liệu nguồn
+来源连接方式	How the source connects	Cách nguồn kết nối
+来源链接、名字或 id	Source link, name, or id	Liên kết, tên hoặc id nguồn
+来源页	Source page	Trang nguồn
+来源：{label}	Source: {label}	Nguồn: {label}
+来源：{provider_label}	Source: {provider_label}	Nguồn: {provider_label}
+来源：{providers}	Source: {providers}	Nguồn: {providers}
+来自共享，留空表示不改	From the shared copy. Leave blank to keep it.	Từ bản dùng chung. Để trống nếu không đổi.
+枚书签	bookmarks	dấu trang
+查找	Search	Tìm kiếm
+查找中…（首次按名字查要下载创作者索引，可能几十秒）	Searching… The first name lookup downloads the creator index and can take a while.	Đang tìm… Lần đầu theo tên phải tải chỉ mục nhà sáng tạo, có thể mất vài chục giây.
+查找中：{checked}/{total}	Searching: {checked}/{total}	Đang tìm: {checked}/{total}
+查找失败	Search failed	Tìm thất bại
+查找结果	Search results	Kết quả tìm kiếm
+查找资源	Find resources	Tìm tài nguyên
+查看 {author} 的作者页	Open {author}'s author page	Mở trang tác giả của {author}
+查看 {code} 详情	View details for {code}	Xem chi tiết {code}
+查看 {key} 的作者页	Open the author page for {key}	Mở trang tác giả của {key}
+查看任务	View tasks	Xem tác vụ
+查看全部 {works} 部作品	View all {works} works	Xem tất cả {works} tác phẩm
+查看全部内容	View all content	Xem tất cả nội dung
+查看全部视频	View all videos	Xem tất cả video
+查看内置站点	View built-in sites	Xem trang tích hợp
+查看发布页	View Release Page	Xem trang phát hành
+查看口味	View taste	Xem khẩu vị
+查看图片	View image	Xem hình ảnh
+查看处理详情	View handling details	Xem chi tiết xử lý
+查看并处理	Review and handle	Xem và xử lý
+查看来源图片	View the source image	Xem ảnh nguồn
+查看来源页	View source page	Xem trang nguồn
+查看版本	View versions	Xem phiên bản
+查看第 {n} 张图片	View image {n}	Xem hình ảnh thứ {n}
+查看详情	View details	Xem chi tiết
+查看配置	View Configuration	Xem cấu hình
+查询外部资料	Look up external data	Tra dữ liệu bên ngoài
+查过 {search_count} 次	Searched {search_count} times	Đã tìm {search_count} lần
+查过 {search_count} 次都没找到	Searched {search_count} times and found nothing	Đã tìm {search_count} lần mà không thấy
+标准	Standard	Chuẩn
+标签	Tag	Thẻ
+标签「{name}」已存在	Tag "{name}" already exists	Thẻ "{name}" đã tồn tại
+标签云	Tag cloud	Mây thẻ
+标签命中	Tag match	Khớp thẻ
+标签未删除	Tag not deleted	Chưa xóa thẻ
+标签来源	Tag sources	Nguồn thẻ
+标签筛选	Tag filters	Lọc thẻ
+标签类型	Tag categories	Loại thẻ
+标签视图	Tag view	Chế độ xem thẻ
+标签（文本数组）	Tags (text array)	Thẻ (mảng chữ)
+标记已忽略	Mark ignored	Đánh dấu đã bỏ qua
+标记已看	Mark watched	Đánh dấu đã xem
+标题	Title	Tiêu đề
+标题未取得	Title unavailable	Chưa có tiêu đề
+样张 {sample_total} 张 · {codeSets} 部作品	{sample_total} samples · {codeSets} works	{sample_total} ảnh mẫu · {codeSets} tác phẩm
+核对该目录：磁盘上已删除的移入 Peach 回收站，带个人记录的标为已消失	Verify directory: move deleted disk files to Peach trash, mark items with personal history as vanished	Đối soát thư mục này: tệp đã xóa trên đĩa sẽ chuyển vào thùng rác Peach, tệp có lịch sử cá nhân sẽ đánh dấu là đã biến mất
+框出头像那一块	Frame the face	Khoanh vùng mặt
+桌面快捷方式状态未取得	Desktop shortcut status could not be retrieved	Chưa lấy được trạng thái phím tắt trên màn hình chính
+档案名称	Profile name	Tên hồ sơ
+检查 {label} 的更新	Check updates for {label}	Kiểm tra cập nhật của {label}
+检查 {name} 的全部来源	Check every source for {name}	Kiểm tra mọi nguồn của {name}
+检查上游版本	Check upstream version	Kiểm tra phiên bản thượng nguồn
+检查中	Checking	Đang kiểm tra
+检查了 {length} 个来源：{bits}	Checked {length} sources: {bits}	Đã kiểm {length} nguồn: {bits}
+检查于 {time}	Checked at {time}	Kiểm tra lúc {time}
+检查全部	Check all	Kiểm tra tất cả
+检查失败	Check failed	Kiểm tra thất bại
+检查失败项	Check failed items	Kiểm tra mục lỗi
+检查所选	Check selected	Kiểm tra mục đã chọn
+检查文件	Check files	Kiểm tra tệp
+检查时按推送发现选	Select by push discovery during check	Chọn theo đẩy phát hiện khi kiểm tra
+检查更新	Check for updates	Kiểm tra cập nhật
+检查本机数据库与备份	Check local database and backups	Kiểm tra cơ sở dữ liệu cục bộ và bản sao lưu
+检查来源连接方式，并为需要登录的来源保存凭证。	Check source connection and save credentials for sources requiring login.	Kiểm tra kết nối nguồn và lưu thông tin xác thực cho nguồn cần đăng nhập.
+检查死链	Check dead links	Kiểm tra liên kết chết
+检查每个来源的更新	Check each source for updates	Kiểm tra cập nhật từng nguồn
+检查结果	Check result	Kết quả kiểm tra
+检查连接	Check connection	Kiểm tra kết nối
+检查配套文件	Check sidecar files	Kiểm tra tệp đi kèm
+检查频率	Check Frequency	Tần suất kiểm tra
+模板不可用	The template cannot be used	Không dùng được mẫu
+横屏	Landscape	Ngang
+樱桃	Cherry	Quả anh đào
+次访问	visits	lượt vào
+欢迎使用 Peach	Welcome to Peach	Chào mừng đến với Peach
+欧美	Western	Âu Mỹ
+正在估算剩余时间…	Estimating the time left…	Đang ước lượng thời gian còn lại…
+正在保存…	Saving…	Đang lưu…
+正在准备检查任务	Preparing the check	Đang chuẩn bị lượt kiểm
+正在加载图片	Loading the image	Đang tải ảnh
+正在加载字幕…	Loading subtitle…	Đang tải phụ đề…
+正在启动补全…	Starting the fill…	Đang bắt đầu bổ sung…
+正在启动馆藏。	Starting the library.	Đang khởi động thư viện.
+正在处理	Working	Đang xử lý
+正在处理 {at} / {length}	Working {at} / {length}	Đang xử lý {at} / {length}
+正在复核并清理…	Reviewing and cleaning…	Đang duyệt và dọn…
+正在复核并清理失效条目…	Reviewing and cleaning dead items…	Đang duyệt và dọn mục hỏng…
+正在定位	Locating	Đang định vị
+正在导入口味数据	Importing taste data	Đang nhập dữ liệu khẩu vị
+正在打开	Opening…	Đang mở…
+正在扫描来源	Scanning sources	Đang quét nguồn
+正在抓取封面	Fetching covers	Đang lấy bìa
+正在按模板算计划…	Planning from the template…	Đang tính kế hoạch theo mẫu…
+正在提交喜爱理由	Submitting reason…	Đang gửi lý do yêu thích…
+正在搜索字幕…	Searching subtitles…	Đang tìm phụ đề…
+正在搜索资源	Searching resources	Đang tìm kiếm tài nguyên
+正在播放 ·	Now Playing ·	Đang phát ·
+正在整理文件…	Organizing files…	Đang sắp tệp…
+正在显示写入端的实时复核队列	Showing the live review queue from the writer	Đang hiện hàng chờ duyệt trực tiếp từ phía ghi
+正在暂停	Pausing	Đang tạm dừng
+正在暂停，当前步骤结束后暂停	Pausing after the current step	Đang tạm dừng, dừng sau bước hiện tại
+正在查找建议	Looking up suggestions	Đang tìm gợi ý
+正在查找资源链接…	Looking up resource links…	Đang tìm liên kết tài nguyên…
+正在核对目录…	Checking directory…	Đang đối soát thư mục…
+正在检查 CloudDrive2	Checking CloudDrive2…	Đang kiểm tra CloudDrive2…
+正在检查安装进度…	Checking installation progress…	Đang kiểm tra tiến độ cài đặt…
+正在检查来源更新…	Checking for source updates…	Đang kiểm tra cập nhật nguồn…
+正在检查链接	Checking links	Đang kiểm liên kết
+正在监视 {roots}	Watching {roots}	Đang theo dõi {roots}
+正在等待 cloudflared 连上 Cloudflare 边缘。	Waiting for cloudflared to connect to Cloudflare edge.	Đang chờ cloudflared kết nối tới máy chủ biên Cloudflare.
+正在给刚加入的番号取资料与封面。	Fetching metadata and covers for newly added codes.	Đang lấy dữ liệu và ảnh bìa cho mã số vừa thêm.
+正在缓冲	Buffering…	Đang tải đệm…
+正在试查来源	Trying the source	Đang thử nguồn
+正在试查来源…	Checking source…	Đang kiểm tra thử nguồn…
+正在读取作品	Loading works…	Đang tải tác phẩm…
+正在读取作品列表	Loading work list	Đang tải danh sách tác phẩm
+正在读取作品详情	Reading work details…	Đang đọc chi tiết tác phẩm…
+正在读取作品资料 · {completed} / {total} 部	Reading work data · {completed} / {total}	Đang đọc dữ liệu tác phẩm · {completed} / {total}
+正在读取垃圾文件	Reading junk files…	Đang đọc tệp rác…
+正在读取复核队列	Loading review queue	Đang tải hàng đợi duyệt
+正在读取字幕文件…	Reading subtitle file…	Đang đọc tệp phụ đề…
+正在读取想要	Reading wants	Đang đọc muốn xem
+正在读取推荐	Reading recommendations	Đang đọc gợi ý
+正在读取数据管理状态	Loading data management status	Đang đọc trạng thái quản lý dữ liệu
+正在读取来源凭据	Reading source credentials…	Đang đọc thông tin xác thực nguồn…
+正在读取样图	Loading sample images…	Đang tải ảnh mẫu…
+正在读取浏览器添加设置	Reading browser extension settings…	Đang đọc cài đặt thêm từ trình duyệt…
+正在读取浏览记录并更新口味分析	Reading browsing history and updating the taste analysis	Đang đọc lịch sử duyệt và cập nhật phân tích khẩu vị
+正在读取版本	Reading versions…	Đang đọc các phiên bản…
+正在读取系统诊断	Loading system diagnostics	Đang đọc chẩn đoán hệ thống
+正在读取评论	Reading comments…	Đang tải bình luận…
+正在读取资源搜索设置	Reading resource search settings…	Đang đọc cài đặt tìm kiếm tài nguyên…
+正在读取采集来源	Loading scraping sources	Đang tải nguồn thu thập
+正在读取页面	Loading page	Đang tải trang
+正在读订阅源。	Reading subscription feeds.	Đang đọc nguồn đăng ký.
+正在进行	In progress	Đang chạy
+正在连接	Connecting	Đang kết nối
+正在连接数据目录…	Connecting to the data folder…	Đang nối thư mục dữ liệu…
+正在采集，进度在活动页查看。	Extracting, check progress on Activity page.	Đang trích xuất, xem tiến độ tại trang Hoạt động.
+正在重建运行环境	Rebuilding the runtime	Đang dựng lại môi trường chạy
+正在重验并删除失效链接…	Rechecking and deleting dead links…	Đang kiểm lại và xóa liên kết hỏng…
+正在重验链接	Rechecking links	Đang kiểm lại liên kết
+正常	OK	Bình thường
+正常观看	Watched through	Xem bình thường
+正常读取	Normal Read	Đọc bình thường
+正序	Ascending	Tăng dần
+正片	Full Movie	Bản chính
+此分类没有待复核项目	Nothing in this category is waiting for review	Mục này không có gì chờ duyệt
+此系统未提供桌面快捷方式	Desktop shortcut is not supported on this system	Hệ thống này không cung cấp phím tắt trên màn hình chính
+此系统未提供登录自启入口	Login startup is not supported on this system	Hệ thống này không cung cấp mục tự khởi động khi đăng nhập
+此设备的外部播放器	External player on this device	Trình phát ngoài trên thiết bị này
+母公司	Parent company	Công ty mẹ
+每 10 秒一张	Every 10 seconds	Mỗi 10 giây một ảnh
+每 3 个月	Every 3 months	Mỗi 3 tháng
+每 30 秒一张	Every 30 seconds	Mỗi 30 giây một ảnh
+每 6 小时	Every 6 hours	Mỗi 6 giờ
+每 {value} 分钟	Every {value} min	Mỗi {value} phút
+每 {value} 天	Every {value} days	Mỗi {value} ngày
+每 {value} 小时	Every {value} h	Mỗi {value} giờ
+每个来源都只抓了第 1 页	Every source was fetched for page 1 only	Mỗi nguồn chỉ lấy trang 1
+每个来源都抓到第 {deepest} 页	Every source was fetched through page {deepest}	Mỗi nguồn đã lấy tới trang {deepest}
+每周	Weekly	Mỗi tuần
+每天	Daily	Mỗi ngày
+每年	Every year	Hàng năm
+每提交一次扣一条离线配额，重新提交也算。	Each submission uses one offline quota, including resubmissions.	Mỗi lần gửi trừ một hạn ngạch ngoại tuyến, gửi lại cũng tính.
+每日播放	Daily plays	Lượt phát mỗi ngày
+每日活跃	Daily activity	Hoạt động hàng ngày
+氛围模式	Ambient Mode	Chế độ ánh sáng môi trường
+永久删除回收站内容	Permanently delete trash contents	Xóa vĩnh viễn nội dung trong thùng rác
+沉浸模式	Immerse	Chế độ chìm
+没有任何更新	No updates at all	Không có cập nhật nào
+没有任务在跑。	No tasks running.	Không có tác vụ nào đang chạy.
+没有保存	Not saved	Chưa lưu
+没有匹配的收藏	No saved items match	Không có mục đã lưu phù hợp
+没有可用头像	No avatar available	Chưa có ảnh đại diện
+没有可用预览	No preview available	Không có bản xem trước khả dụng
+没有可配置的来源	No sources to configure	Không có nguồn để cấu hình
+没有可采用的资料，只能拒绝或跳过	No data can be adopted. Reject or skip.	Không có dữ liệu để nhận. Từ chối hoặc bỏ qua.
+没有填写内容	Nothing was entered	Chưa nhập nội dung
+没有封面	No cover	Không có bìa
+没有已排除的文件	No excluded files	Không có tệp đã loại
+没有待判断的垃圾文件	No junk files waiting for a decision	Không có tệp rác chờ phân loại
+没有找到当前作品的中文字幕	No Chinese subtitles found for this work	Không tìm thấy phụ đề tiếng Trung cho tác phẩm này
+没有找到重复文件	No duplicate files found	Không thấy tệp trùng
+没有更多	Nothing more	Không còn nữa
+没有更新	No updates	Không có cập nhật
+没有标记中的高清版目标	No HD targets are marked	Không có mục tiêu HD đang đánh dấu
+没有番号或文件名对得上的文件	No file matching code or filename	Không có tệp khớp mã số hoặc tên tệp
+没有符合条件的作品	No works match	Không có tác phẩm phù hợp
+没有符合条件的内容	No matching content	Không có nội dung phù hợp
+没有符合条件的推荐	No recommendations match	Không có gợi ý phù hợp
+没有符合条件的更新	No updates match	Không có cập nhật phù hợp
+没有符合条件的视频	No videos match	Không có video phù hợp
+没有符合条件的资源。	No matching resources.	Không có tài nguyên phù hợp.
+没有符合的作品	No matching works	Không có tác phẩm phù hợp
+没有要修的	Nothing to repair	Không có gì cần sửa
+没有要改的文件。{text}	No files to change. {text}	Không có tệp cần đổi. {text}
+没有读到订阅源	No feeds were read	Không đọc được nguồn đăng ký
+没有资料	No metadata	Không có dữ liệu
+没有运行	Not running	Không chạy
+没有重复内容	No duplicate content	Không có nội dung trùng
+没有需要处理的作品。	No works need handling.	Không có tác phẩm cần xử lý.
+没看过	Unseen	Chưa xem
+没磁链	No magnet	Không có magnet
+没能使用此数据目录	Could not use this data folder	Không dùng được thư mục dữ liệu này
+没能完成设置	Setup did not finish	Thiết lập chưa xong
+没能打开文件夹对话框	Could not open the folder dialog	Không mở được hộp chọn thư mục
+没能读取{title}	Couldn't load {title}	Không thể tải {title}
+没能读取设置题目	Could not read the setup questions	Không đọc được câu hỏi thiết lập
+派出后继	Queued the follow-up	Đã xếp việc tiếp theo
+浅色主题	Light theme	Chủ đề sáng
+测试版	Beta	Bản thử nghiệm
+浏览 {visits}	{visits} visits	{visits} lượt xem
+浏览与播放	Browsing & Playback	Duyệt & Phát
+浏览历史里出现 {visits} 次{text}	Seen {visits} times in browsing history{text}	Xuất hiện {visits} lần trong lịch sử duyệt{text}
+浏览器书签	Browser bookmarks	Dấu trang trình duyệt
+浏览器历史记录	Browser history	Lịch sử trình duyệt
+浏览器历史记录导入指南	Browser history import guide	Hướng dẫn nhập lịch sử trình duyệt
+浏览器口味维度	Browser taste facets	Khía cạnh khẩu vị từ trình duyệt
+浏览器名称	Browser name	Tên trình duyệt
+浏览器添加 JAV	Add JAV from Browser	Thêm JAV từ trình duyệt
+浏览器添加专用令牌	Dedicated Token for Browser	Token chuyên dụng cho trình duyệt
+浏览器添加的下载渠道	Download channel for browser adding	Kênh tải xuống khi thêm từ trình duyệt
+浏览器画像	Browser persona	Chân dung trình duyệt
+浏览器登录，由 Peach 续期	Browser login, renewed by Peach	Đăng nhập bằng trình duyệt, Peach tự động gia hạn
+浏览器记录	Browser history	Lịch sử trình duyệt
+浏览活跃时间	Active browsing hours	Giờ duyệt sôi nổi
+浏览线索	Browsing clues	Manh mối duyệt
+浏览记录	Browsing history	Lịch sử duyệt
+浏览馆藏	Browse library	Duyệt thư viện
+浴室	Bathroom	Phòng tắm
+海报	Poster	Áp phích
+深色主题	Dark theme	Chủ đề tối
+添加	Add	Thêm
+添加 JAV 订阅	Add JAV subscription	Thêm đăng ký JAV
+添加一个关注来源	Add a followed source	Thêm một nguồn theo dõi
+添加下载	Add download	Thêm tải xuống
+添加下载失败	Could not add the download	Không thêm được lượt tải
+添加中… {added}/{length}	Adding… {added}/{length}	Đang thêm… {added}/{length}
+添加关注	Add follow	Thêm theo dõi
+添加关注后，会按来源检查必要凭证。	After following, required credentials will be checked per source.	Sau khi theo dõi, sẽ kiểm tra thông tin xác thực cần thiết theo từng nguồn.
+添加关注来源并获取内容后，这里会显示来源上的{label}。	After adding sources and fetching content, {label} from those sources will appear here.	Sau khi thêm nguồn theo dõi và lấy nội dung, {label} từ nguồn sẽ xuất hiện ở đây.
+添加内容	Add content	Thêm nội dung
+添加内容并补充资料后，这里会显示对应信息。	After adding content and metadata, corresponding information will appear here.	Sau khi thêm nội dung và bổ sung dữ liệu, thông tin tương ứng sẽ hiển thị ở đây.
+添加创作者或订阅来源后，更新会集中显示在这里。	After you add a creator or a feed, updates show up here.	Sau khi thêm nhà sáng tạo hoặc nguồn đăng ký, cập nhật hiện tập trung ở đây.
+添加别名	Add alias	Thêm bí danh
+添加别名…	Add alias…	Thêm bí danh…
+添加前缀	Add Prefix	Thêm tiền tố
+添加媒体库	Add library	Thêm thư viện
+添加媒体库，开始整理馆藏。	Add a library and start organizing the collection.	Thêm thư viện và bắt đầu sắp bộ sưu tập.
+添加媒体目录	Add media folder	Thêm thư mục media
+添加媒体目录后，这里会显示存储空间。	After a media folder is added, storage space shows up here.	Sau khi thêm thư mục phương tiện, chỗ lưu hiện ở đây.
+添加媒体目录或关注来源后，这里会显示馆藏统计。	After a media folder or follow source is added, library stats show up here.	Sau khi thêm thư mục phương tiện hoặc nguồn theo dõi, thống kê thư viện hiện ở đây.
+添加媒体目录或关注来源，开始建立你的馆藏。	Add media directories or follow sources to start building your library.	Thêm thư mục media hoặc nguồn theo dõi để bắt đầu xây dựng bộ sưu tập của bạn.
+添加想持续追踪的创作者或来源。	Add creators or sources you want to follow.	Thêm người sáng tạo hoặc nguồn bạn muốn tiếp tục theo dõi.
+添加文件夹	Add Folder	Thêm thư mục
+添加来源	Add source	Thêm nguồn
+添加标签	Add Tag	Thêm thẻ
+添加浏览器	Add browser	Thêm trình duyệt
+添加索引器	Add Indexer	Thêm chỉ mục
+添加订阅（{size}）	Add follows ({size})	Thêm theo dõi ({size})
+添加选中（{length}）	Add selected ({length})	Thêm mục đã chọn ({length})
+清单为空	The list is empty	Danh sách trống
+清单未取得，请重新检查。	The list is unavailable. Check again.	Chưa có danh sách. Hãy kiểm tra lại.
+清晰度	Resolution	Độ phân giải
+清理 {cache_removed} 个缓存，释放 {bytes_reclaimed}。	Cleared {cache_removed} caches and freed {bytes_reclaimed}.	Đã dọn {cache_removed} bộ nhớ đệm, giải phóng {bytes_reclaimed}.
+清理内容	What to clean	Nội dung dọn
+清理失效条目	Clean dead items	Dọn mục hỏng
+清理失败	Cleanup failed	Dọn thất bại
+清理结果	Cleanup result	Kết quả dọn
+清空	Clear	Xóa rỗng
+清空回收站	Empty Trash	Dọn sạch thùng rác
+清空当前选择	Clear the selection	Bỏ chọn
+清空本组	Clear this group	Xóa nhóm này
+清除	Clear	Xóa
+清除已保存的 API key	Clear saved API key	Xóa API key đã lưu
+清除来源凭据	Clear source credentials	Xóa thông tin đăng nhập nguồn
+清除筛选	Clear filter	Xóa bộ lọc
+清除筛选后查看其他作品。	Clear the filter to see other works.	Xóa bộ lọc để xem tác phẩm khác.
+清除筛选后查看名下全部视频。	Clear filters to view all videos under this name.	Xóa bộ lọc để xem toàn bộ video thuộc tên này.
+清除筛选或搜索条件后查看全部内容。	Clear filters or search to view all content.	Xóa bộ lọc hoặc từ khóa tìm kiếm để xem tất cả nội dung.
+游戏	Game	Trò chơi
+湿润	Wet	Ẩm ướt
+源码安装请先关闭开机自启并退出托盘，再手动移除项目与数据目录	For source installations, please disable launch on startup and exit the tray before manually removing the project and data directories.	Cài đặt từ mã nguồn vui lòng tắt tự khởi động và thoát khay hệ thống, sau đó xóa thư mục dự án và dữ liệu theo cách thủ công.
+源码运行	Running from source	Chạy từ mã nguồn
+演员（文本数组）	Cast (text array)	Diễn viên (mảng chữ)
+瀑布流	Masonry	Thác
+点“不是垃圾”的资源会保留在这里，可随时重新判断。	Items marked “Not junk” stay here and can be judged again.	Mục đánh “Không phải rác” ở lại đây và có thể phân loại lại.
+点「检查更新」去各个来源取一遍；来源有新内容时会集中显示在这里。	Check for updates asks every source. New items from those sources show up here.	Kiểm tra cập nhật hỏi từng nguồn. Nội dung mới hiện tập trung ở đây.
+点此开始拉流 · {size}	Click to start stream · {size}	Nhấp để bắt đầu truyền luồng · {size}
+烟	Smoke	Khói thuốc
+热度	Heat	Độ nóng
+热情	Passionate	Nhiệt huyết
+照片	Photos	Ảnh
+照片 · {filter}	Photos · {filter}	Ảnh · {filter}
+片商	Maker	Hãng sản xuất
+片商与厂牌	Maker and studio	Hãng sản xuất và hãng
+片尾/出处证据	Ending/source evidence	Bằng chứng đoạn kết/nguồn
+版本	Versions	Phiên bản
+版本目标：	Version target: 	Mục tiêu phiên bản:
+版本统计与错误诊断	Version stats & diagnostics	Thống kê phiên bản và chẩn đoán lỗi
+版本，不随上游自动升级。	version, not automatically upgraded with upstream.	phiên bản, không tự động nâng cấp theo upstream.
+状态	Status	Trạng thái
+独立测试包	Standalone test package	Gói thử nghiệm độc lập
+猜你喜欢	Recommended for you	Có thể bạn thích
+现在不能这样做	That cannot be done right now	Hiện không làm được việc này
+现有版本都已满足条件，或还没有加入追踪。	Every current copy already meets the bar, or nothing is being tracked yet.	Bản hiện có đều đã đạt, hoặc chưa đưa vào theo dõi.
+甜心	Sweetheart	Ngọt ngào
+生成播放链接	Generate playback link	Tạo liên kết phát
+生成视频预览	Make video previews	Tạo xem trước video
+生成视频预览会读取视频并占用处理器，可能让电脑变慢。需要同时使用电脑时，可选择低占用模式。	Making video previews reads the video and uses the processor, which can slow the computer. Choose low effort when you need the machine.	Tạo xem trước đọc video và dùng bộ xử lý, có thể làm máy chậm. Chọn mức nhẹ khi đang dùng máy.
+生日	Birthday	Sinh nhật
+生涯	Career	Sự nghiệp
+用于展开 Gofile 文件页，取得其中的图片和视频列表；Gofile 当前要求 Premium 才能读取 contents API，不配置仍会保留文件页链接。	Used to expand Gofile folders and get images and video lists; Gofile currently requires Premium to read the contents API, links will still be kept without configuring.	Dùng để mở rộng trang tệp Gofile, lấy danh sách hình ảnh và video; Gofile hiện yêu cầu Premium để đọc contents API, không định cấu hình vẫn giữ liên kết trang tệp.
+用于生成口味分析。完成设置后选择读取这台电脑，或导入其他设备的记录；也可稍后从「口味」进入。	Used to generate taste analysis. After setup, choose to read this computer or import records from other devices; or enter later from "Taste".	Dùng để phân tích khẩu vị. Hoàn tất cài đặt rồi chọn đọc máy này, hoặc nhập bản ghi máy khác; cũng có thể vào sau từ mục "Khẩu vị".
+用时 {elapsed}	Took {elapsed}	Mất {elapsed}
+用浏览器登录	Log in with Browser	Đăng nhập bằng trình duyệt
+用过的	Used	Đã dùng
+用这一块	Use this crop	Dùng phần này
+用这个地址	Use this address	Dùng địa chỉ này
+由 Mix 保存	Saved from a Mix	Lưu từ Mix
+电影	Movie	Điện ảnh
+男性	Male	Nam giới
+画中画	Picture-in-Picture	Hình trong hình (PiP)
+画幅	Aspect ratio	Khung hình
+画质	Quality	Chất lượng
+留 {item}	Keep {item}	Giữ {item}
+留最大	Keep largest	Giữ tệp lớn nhất
+留最长	Keep longest	Giữ tệp dài nhất
+留空时按推送发现自动填写	Leave blank to fill from push discovery	Để trống để tự điền theo đẩy phát hiện
+留空自动查找	Leave blank to auto-detect	Để trống để tự động tìm kiếm
+留空表示原地改名	Leave blank to rename in place	Để trống để đổi tên tại chỗ
+番号	Code	Mã
+番号封面	Code cover	Bìa theo mã
+番号目录存疑	Questionable code catalog	Danh mục mã nghi vấn
+番号，如 ABW-232	Code, such as ABW-232	Mã, ví dụ ABW-232
+登出	Log Out	Đăng xuất
+登录	Sign in	Đăng nhập
+登录 FANBOX 后，从一次成功的 api.fanbox.cc/post.info 请求复制整条 Cookie 请求头。	After logging in to FANBOX, copy the full Cookie request header from a successful api.fanbox.cc/post.info request.	Sau khi đăng nhập FANBOX, sao chép toàn bộ tiêu đề Cookie từ yêu cầu api.fanbox.cc/post.info thành công.
+登录 Premium Gofile 账户后，在个人资料页复制 API token。	After logging into a Premium Gofile account, copy the API token from your profile page.	Sau khi đăng nhập tài khoản Premium Gofile, sao chép API token tại trang hồ sơ cá nhân.
+登录后从浏览器复制整条 Cookie 请求头，写进凭据文件的 cookie 字段。	After logging in, copy the full Cookie header from the browser into the cookie field of the credentials file.	Sau khi đăng nhập, sao chép toàn bộ tiêu đề Cookie từ trình duyệt vào trường cookie trong tệp xác thực.
+登录后在账号设置页生成 API key，把 user_id 和 api_key 写进凭据文件。	After logging in, generate an API key on the account settings page, then write user_id and api_key into the credentials file.	Sau khi đăng nhập, tạo API key trên trang cài đặt tài khoản, sau đó nhập user_id và api_key vào tệp thông tin xác thực.
+登录方式	Login Method	Phương thức đăng nhập
+监视本机文件夹	Watch local folders	Theo dõi thư mục máy cục bộ
+目录模板	Directory template	Mẫu thư mục
+目录要已经存在。	Directory must already exist.	Thư mục phải tồn tại từ trước.
+目标目录	Target folder	Thư mục đích
+直接连接	Direct connection	Kết nối trực tiếp
+直连	Direct	Trực tiếp
+看过	Watched	Đã xem
+看过了	Watched	Đã xem
+看过了 · 只降低近期推荐	Watched · Lower recent recommendations	Đã xem rồi · Chỉ giảm gợi ý gần đây
+真实 {real}% · 到达 {row}%	Real {real}% · reached {row}%	Thật {real}% · tới {row}%
+真实观看	Real Watch Count	Lượt xem thực tế
+真实观看 {real}%	Real watch {real}%	Xem thật {real}%
+眼镜	Glasses	Kính mắt
+确认访问密码	Confirm Access Password	Xác nhận mật khẩu truy cập
+磁力 {info_hash}	Magnet {info_hash}	Magnet {info_hash}
+磁力链接	Magnet link	Liên kết magnet
+磁盘	Disk	Ổ đĩa
+磁链	Magnet	Magnet
+社交账号	Social media accounts	Tài khoản mạng xã hội
+社媒头像	Social avatar	Ảnh đại diện mạng xã hội
+离开位置	Playback Position	Vị trí dừng phát
+离线	Offline	Ngoại tuyến
+离线权限	Offline Permissions	Quyền tải offline
+离线，已跳过	Offline, skipped	Ngoại tuyến, đã bỏ qua
+私密	Private	Riêng tư
+私有导出	Private export	Xuất riêng tư
+移入回收站	Move to trash	Chuyển vào thùng rác
+移入回收站 · 文件仍保留，可从回收站永久清除	Move to trash · File kept, can be purged from trash	Chuyển vào thùng rác · Tệp vẫn giữ, có thể xóa vĩnh viễn sau
+移入回收站失败	Could not move to trash	Không chuyển được vào thùng rác
+移出播放列表	Remove from playlist	Xóa khỏi danh sách phát
+移出稍后看	Remove from Watch Later	Xóa khỏi xem sau
+移除	Remove	Gỡ bỏ
+移除 {label}	Remove {label}	Gỡ {label}
+移除 {length} 条订阅源	Remove {length} feeds	Gỡ {length} nguồn đăng ký
+移除 {original}	Remove {original}	Gỡ {original}
+移除 {profile}	Remove {profile}	Gỡ {profile}
+移除创作者别名	Remove creator alias	Gỡ bí danh nhà sáng tạo
+移除别名 {name}	Remove alias {name}	Gỡ bí danh {name}
+移除口味数据源	Remove taste data source	Gỡ nguồn dữ liệu khẩu vị
+移除所选创作者别名	Remove selected creator aliases	Gỡ bí danh nhà sáng tạo đã chọn
+移除所选别名	Remove selected aliases	Gỡ bí danh đã chọn
+移除所选别名（{length}）	Remove selected aliases ({length})	Gỡ bí danh đã chọn ({length})
+移除所选订阅源	Remove selected feeds	Gỡ nguồn đăng ký đã chọn
+移除索引器 {index}	Remove indexer {index}	Xóa chỉ mục {index}
+移除订阅源	Remove feed	Gỡ nguồn đăng ký
+移除该浏览器的读取配置和已导入历史、书签，浏览器原文件保留。可以通过添加浏览器重新接入。	Remove this browser’s read settings and the imported history and bookmarks. The browser’s own files stay. Add the browser again to reconnect.	Gỡ cấu hình đọc của trình duyệt này cùng lịch sử và dấu trang đã nhập. Tệp gốc của trình duyệt được giữ. Thêm trình duyệt lại để nối lại.
+移除这一条	Remove this item	Xóa mục này
+移除这个文件夹	Remove this folder	Xóa thư mục này
+程序版本一致	Program versions match	Phiên bản chương trình đồng nhất
+稍后	Later	Để sau
+稍后在配置页开始扫描媒体库。	Start the library scan from configuration when you are ready.	Khi sẵn sàng, bắt đầu quét thư viện ở trang cấu hình.
+稍后看	Watch later	Xem sau
+稍后看 · 加入或移出队列	Watch Later · Add or remove from queue	Xem sau · Thêm hoặc bớt khỏi hàng đợi
+空文件夹	Empty folders	Thư mục trống
+空文件夹 {empty} 个	{empty} empty folders	{empty} thư mục trống
+立即拉取	Fetch now	Kéo dữ liệu ngay
+立即重启	Restart Now	Khởi động lại ngay
+竖屏	Portrait	Dọc
+站上这一页挂在「{alias}」名下	This page on the site is filed under “{alias}”	Trang này trên site nằm dưới tên “{alias}”
+站内没有查到来源	No source was found on the site	Không thấy nguồn trên trang
+站外链接	External links	Liên kết ngoài
+站点	Site	Trang
+站点不让游客读帖，检查更新必须带登录会话；前面的 DDoS-Guard 对标准桌面浏览器标识不出质询，Peach 也不解任何质询，cookie 失效就原样报错。	Guests cannot view posts on this site; checking for updates requires a logged-in session. DDoS-Guard passes standard desktop browsers without challenge; Peach does not solve challenges, and will report errors if the cookie expires.	Trang web không cho khách xem bài viết, kiểm tra cập nhật phải có phiên đăng nhập; DDoS-Guard phía trước không đặt thử thách với trình duyệt tiêu chuẩn, Peach cũng không giải thử thách, cookie hết hạn sẽ báo lỗi nguyên bản.
+站点拒绝程序访问或一次临时故障都会落在这里。链接保留，可勾选后单独重试。	A site that refuses programmatic access, or a temporary failure, lands here. The link stays and can be retried on its own.	Trang từ chối truy cập bằng chương trình, hoặc lỗi tạm, sẽ nằm ở đây. Liên kết được giữ và có thể thử lại riêng.
+站点返回 404 或 410，确认这个地址不存在。	The site returned 404 or 410. This address does not exist.	Trang trả 404 hoặc 410. Địa chỉ này không tồn tại.
+端口	Port	Cổng
+第 {cell} 格	Cell {cell}	Ô {cell}
+第 {item} 页	Page {item}	Trang {item}
+第 {label} 卷	Part {label}	Tập/Phần {label}
+第 {page} 页	Page {page}	Trang {page}
+等	etc.	v.v.
+等 {count} 人	and {count} others	và {count} người khác
+等 {length} 个名字	and {length} more names	và {length} tên nữa
+等你在浏览器窗口里登录 PikPak	Waiting for you to log in to PikPak in browser…	Đang đợi bạn đăng nhập PikPak trong cửa sổ trình duyệt…
+等待上限（小时）	Wait Timeout (hours)	Giới hạn thời gian chờ (giờ)
+等待当前文件响应，剩余时间待更新	Waiting for the current file. The remaining time will update.	Đang chờ tệp hiện tại. Thời gian còn lại sẽ cập nhật.
+等待扫描导入第一项馆藏。	Waiting to scan and import first library item.	Đang chờ quét nhập mục bộ sưu tập đầu tiên.
+筛选与排序	Filter and sort	Lọc và sắp
+筛选分组方式	Group by	Cách nhóm
+筛选名称	Filter name	Tên bộ lọc
+筛选字段分类	Field category	Nhóm trường
+筛选已保存	Filter saved	Đã lưu bộ lọc
+筛选当前分类	Filter this category	Lọc mục này
+筛选想要	Filter wants	Lọc muốn xem
+筛选推荐	Filter recommendations	Lọc gợi ý
+筛选番号、女优或标题	Filter by code, performer, or title	Lọc theo mã, diễn viên hoặc tiêu đề
+管理	Manage	Quản lý
+管理关注	Manage follows	Quản lý theo dõi
+管理媒体库	Manage libraries	Quản lý thư viện
+类型	Type	Loại
+粘贴 Cookie	Paste cookie	Dán cookie
+粘贴来源链接，或输入创作者名、id…	Paste a source link, or enter a creator name or id…	Dán liên kết nguồn, hoặc nhập tên nhà sáng tạo, id…
+精选	Featured	Tuyển chọn
+糖果	Candy	Kẹo ngọt
+系列	Series	Sê-ri
+系统代理	System proxy	Proxy hệ thống
+系统检查	System checks	Kiểm tra hệ thống
+系统诊断	System diagnostics	Chẩn đoán hệ thống
+素人	Amateurs	Nghiệp dư
+索引器 {index} API key	Indexer {index} API key	API key chỉ mục {index}
+索引器 {index} Torznab 地址	Indexer {index} Torznab URL	Địa chỉ Torznab chỉ mục {index}
+索引器 {index} 名称	Indexer {index} name	Tên chỉ mục {index}
+索引器提供的 API 地址	API URL provided by indexer	Địa chỉ API do chỉ mục cung cấp
+索引器连接帮助	Indexer connection help	Trợ giúp kết nối chỉ mục (Indexer)
+紧凑 · 圆形头像	Compact · Round avatar	Gọn · Ảnh tròn
+紧凑 · 圆形标识	Compact · Round logo	Gọn · Logo tròn
+约	approx.	khoảng
+约 	About 	Khoảng
+线路 {n}	Stream {n}	Đường truyền {n}
+组	groups	nhóm
+绑定关注作者	Link a followed author	Gắn tác giả đang theo dõi
+结果	Result	Kết quả
+统一选择来源	Choose one source for all	Chọn một nguồn cho tất cả
+统计维度	Stats facet	Khía cạnh thống kê
+统计视图	Stats view	Xem thống kê
+继续	Continue	Tiếp tục
+继续载入中…	Loading more…	Đang tải thêm…
+继续：{label}	Continue: {label}	Tiếp tục: {label}
+缓冲健康	Buffer Health	Tình trạng bộ đệm
+缓存上限	Cache limit	Hạn mức bộ nhớ đệm
+缓存上限和清理方式填在 CloudDrive「设置」里，清理方式选 LRU。上限不要填 0，系统盘至少留 40 GiB；填完重开设置页确认存住了。	Fill cache limit and LRU cleanup in CloudDrive "Settings". Do not set limit to 0, leave at least 40 GiB on system drive; reopen settings to confirm saved.	Điền hạn mức đệm và dọn dẹp LRU trong "Cài đặt" của CloudDrive. Không điền 0, ổ hệ thống để trống ít nhất 40 GiB; điền xong mở lại để kiểm tra đã lưu.
+缓存按所在硬盘和可用内存选起步值，再根据播放表现调整。	Choose starting cache values based on disk and RAM, then adjust by playback performance.	Chọn mức đệm khởi điểm theo ổ đĩa và RAM khả dụng, sau đó tinh chỉnh theo trải nghiệm phát.
+编码 / 传输	Codec / Transport	Bộ mã hóa / Truyền tải
+编辑	Edit	Chỉnh sửa
+编辑名称	Edit name	Sửa tên
+编辑播放列表	Edit Playlist	Chỉnh sửa danh sách phát
+缩小	Zoom out	Thu nhỏ
+缩小播放墙	Zoom out video wall	Thu nhỏ tường video
+缩放	Zoom	Phóng to/Thu nhỏ
+缩略图	Thumbnail	Hình thu nhỏ
+缩略图采集间隔	Thumbnail Sampling Interval	Khoảng lấy mẫu hình thu nhỏ
+缺 {missing}	Missing {missing}	Thiếu {missing}
+缺少 untrunc	untrunc is missing	Thiếu untrunc
+缺少：{items}	Missing: {items}	Thiếu: {items}
+缺时间戳表的片子另存一份修好的头，原文件不动；缺索引的片子重建后替换原文件，	Works missing a timestamp table get a repaired header saved beside them; the original stays. Works missing an index are rebuilt and replace the original,	Phim thiếu bảng mốc thời gian được lưu một đầu đã sửa, tệp gốc không đổi; phim thiếu chỉ mục được dựng lại và thay tệp gốc,
+网址	URL	Địa chỉ
+网址快捷方式	Web shortcut	Lối tắt web
+网盘与本地	Cloud & Local	Đám mây & Cục bộ
+网络与访问	Network & Access	Mạng & Truy cập
+网络播放地址	Network playback URL	Địa chỉ phát qua mạng
+网络活动	Network Activity	Hoạt động mạng
+网页版挂了 Cloudflare 验证码，Peach 不绕验证码，只能走官方 API。	Web version uses Cloudflare captcha; Peach does not bypass captchas, and must use the official API.	Bản web có mã captcha Cloudflare, Peach không vượt captcha mà chỉ sử dụng API chính thức.
+网页链接	Web link	Liên kết web
+网黄博主	Bloggers	Blogger 18+
+署上这个名字的视频入库后会显示在这里。	Videos credited to this name will appear here after import.	Video ghi danh tên này sẽ xuất hiện ở đây sau khi nhập kho.
+署名含	Credit contains	Ghi danh chứa
+署名含 {credited}	Credit includes {credited}	Credit có {credited}
+能连接到 Peach 的设备打开地址就能看馆藏，不需要登录。	Devices connecting to Peach can view the library directly without logging in.	Các thiết bị kết nối được tới Peach có thể mở xem trực tiếp mà không cần đăng nhập.
+自动	Auto	Tự động
+自动下载仅适用于 Windows 独立测试包	Automatic download is only available for Windows standalone preview packages	Tự động tải xuống chỉ áp dụng cho gói thử nghiệm độc lập trên Windows
+自动下载更新	Automatically download updates	Tự động tải xuống bản cập nhật
+自动更新	Automatic Updates	Cập nhật tự động
+自动更新设置无法读取，请重新保存。	Unable to read automatic update settings, please save again.	Không thể đọc cài đặt tự động cập nhật, vui lòng lưu lại.
+自动更新需要由托盘管理的服务	Automatic updates require services managed by the system tray	Tự động cập nhật yêu cầu dịch vụ do khay hệ thống quản lý
+自动更新需要由托盘管理的服务。	Automatic updates require service managed by system tray.	Cập nhật tự động cần dịch vụ được quản lý bởi khay hệ thống.
+自动检查新版本	Automatically check for new versions	Tự động kiểm tra phiên bản mới
+自动检查更新	Auto check for updates	Tự động kiểm tra cập nhật
+自动检查间隔	Check interval	Khoảng thời gian kiểm tra
+自动识别	Auto detect	Tự động nhận diện
+自定义	Custom	Tùy chỉnh
+自定义元数据来源	Custom metadata source	Nguồn siêu dữ liệu tùy chỉnh
+至少 8 个字符。保存后其他设备需要重新登录。	At least 8 characters. Other devices will need to log in again after saving.	Tối thiểu 8 ký tự. Sau khi lưu, các thiết bị khác cần đăng nhập lại.
+艺人	People	Nghệ sĩ
+花朵	Flower	Hoa lá
+获取凭据	Get credentials	Lấy chứng thư
+补全完成：取得 {covers} 张封面，生成 {previews} 部视频预览。	Fill finished: {covers} covers, {previews} video previews.	Bổ sung xong: {covers} bìa, {previews} xem trước video.
+补全未完成	Fill did not finish	Bổ sung chưa xong
+补全资料	Complete metadata	Bổ sung dữ liệu
+补全资料或添加标签后，这里会显示馆藏中的内容标签。	After completing metadata or adding tags, content tags from the library will appear here.	Sau khi bổ sung thông tin hoặc thêm thẻ, các thẻ nội dung trong bộ sưu tập sẽ hiển thị ở đây.
+补全预览	Fill previews	Bổ sung xem trước
+补齐关注来源凭证	Complete credentials for followed sources	Bổ sung thông tin xác thực cho nguồn theo dõi
+补齐女优资料：别名 {aliases} 个，头像 {avatars} 张	Fill performer data: {aliases} aliases, {avatars} avatars	Bổ sung diễn viên: {aliases} bí danh, {avatars} ảnh đại diện
+表格视图	Table	Bảng
+被打断	Interrupted	Bị ngắt
+被挡下的	Blocked	Bị chặn
+裁剪 {code} 的封面	Crop the cover of {code}	Cắt bìa của {code}
+裁剪封面	Crop cover	Cắt bìa
+裁剪封面：框出正封那一块	Crop cover: frame the front cover	Cắt bìa: khoanh phần bìa chính
+西方	Western	Phương Tây
+西方身份回配	Western identity mapping	Ghép định danh phương Tây
+要先有 CloudDrive2 能访问的 HTTPS 地址才能生成。	Requires HTTPS address accessible by CloudDrive2 before generating.	Cần có địa chỉ HTTPS mà CloudDrive2 truy cập được trước khi tạo.
+观看	Watch	Xem
+观看历史	Watch history	Lịch sử xem
+观看或标记作品后，可以探索少看的馆藏。	After you watch or mark works, you can explore the parts of the library you see less.	Sau khi xem hoặc đánh dấu tác phẩm, có thể khám phá phần thư viện ít xem.
+观看时间	Watched	Lần xem
+观看次数	Plays	Lượt xem
+观看状态	Watch status	Trạng thái xem
+观看进度	Watch Progress	Tiến độ xem
+规范创作者	Canonical creator	Nhà sáng tạo chuẩn
+规范创作者名	Canonical creator name	Tên nhà sáng tạo chuẩn
+视口 / 帧	Viewport / Frames	Khung nhìn / Khung hình
+视图	Views	Chế độ xem
+视图与标签	Views & Tags	Chế độ xem & Thẻ
+视频	Video	Video
+视频 ID / 会话	Video ID / Session	ID video / Phiên
+视频 {asset_id}	Video {asset_id}	Video {asset_id}
+视频 · {work_total}{text}	Videos · {work_total}{text}	Video · {work_total}{text}
+视频合集	Video compilation	Hợp tuyển video
+视频暂时无法播放	Video temporarily cannot be played	Tạm thời không thể phát video
+视频预览	Video Preview	Xem trước video
+视频预览已生成：{previews} 部	Video previews made: {previews}	Đã tạo xem trước video: {previews}
+视频预览未取得	Video preview unavailable	Chưa lấy được bản xem trước video
+角色	Characters	Nhân vật
+角色扮演	Roleplay	Hóa thân nhân vật
+角色设定	Roles	Thiết lập nhân vật
+计划	Plan	Kế hoạch
+订阅新作	Follow new works	Theo dõi tác phẩm mới
+订阅源批量操作	Bulk feed actions	Thao tác hàng loạt nguồn đăng ký
+记一次高潮	Record a climax	Ghi nhận một lần cao trào
+记录在其他设备上：导出文件后，选择「导入历史文件」或「导入书签文件」。书签支持浏览器导出的 HTML 文件和 Chromium Bookmarks JSON 文件。	The history is on another device. Export it, then choose Import history file or Import bookmarks file. Bookmarks accept a browser HTML export or a Chromium Bookmarks JSON file.	Lịch sử nằm trên thiết bị khác. Xuất tệp, rồi chọn Nhập tệp lịch sử hoặc Nhập tệp dấu trang. Dấu trang nhận HTML trình duyệt xuất ra hoặc JSON Bookmarks của Chromium.
+记录已接到新文件，批次 {batch}	Records were attached to a new file, batch {batch}	Bản ghi đã gắn sang tệp mới, lô {batch}
+设置	Settings	Cài đặt
+设置完成	Setup complete	Thiết lập xong
+设置文件	Configuration file	Tệp cấu hình
+设置访问密码	Set access password	Đặt mật khẩu truy cập
+设置采集来源与凭证	Configure scraping sources & credentials	Thiết lập nguồn thu thập & thông tin xác thực
+访问	Visit	Truy cập
+访问密码	Access password	Mật khẩu truy cập
+访问密码不正确	The access password is wrong	Mật khẩu truy cập không đúng
+访问密码需为 8–256 个字符	Password must be 8–256 characters	Mật khẩu truy cập phải từ 8–256 ký tự
+访问范围	Access Scope	Phạm vi truy cập
+访问设置无法读取，请在本机检查配置文件。	Access settings unreadable; check config on host.	Không thể đọc cấu hình truy cập; vui lòng kiểm tra tệp cấu hình trên máy chủ.
+评为 {n} 星	Rate as {n} stars	Đánh giá {n} sao
+评分	Rating	Điểm số
+评分 {rating}	Rating {rating}	Điểm {rating}
+评论	Comments	Bình luận
+评论日期	Comment date	Ngày bình luận
+评论未取得，请稍后重试	Comments unavailable, please try again later	Chưa lấy được bình luận, vui lòng thử lại sau
+识别中…	Recognizing…	Đang nhận dạng…
+诊断报告下载失败（HTTP {status}）	Diagnostic report download failed (HTTP {status})	Tải báo cáo chẩn đoán thất bại (HTTP {status})
+诊断报告未取得。	Diagnostic report not acquired.	Chưa lấy được báo cáo chẩn đoán.
+诊断读取失败	Failed to read diagnostics	Đọc chẩn đoán thất bại
+词表	Vocabulary	Bảng từ vựng
+试查番号（回车查询）	Try a code (Enter to search)	Thử mã (Enter để tìm)
+试试其他名称。	Try another name.	Thử tên khác.
+试试其他番号、女优或标题。	Try another code, performer, or title.	Thử mã, diễn viên hoặc tiêu đề khác.
+详情	Details	Chi tiết
+详细配置说明	Detailed Configuration Guide	Hướng dẫn cấu hình chi tiết
+请使用支持原盘的外部播放器打开。	Please use an external player that supports disc images.	Vui lòng mở bằng trình phát ngoài có hỗ trợ tệp đĩa gốc ISO.
+请先为所选资料选择要采用的来源。	Choose a source to adopt for the selected data first.	Hãy chọn nguồn để nhận cho dữ liệu đã chọn.
+请先保存所选网盘的账号和目标目录。	Please save the account and target folder for the selected cloud drive first.	Vui lòng lưu tài khoản và thư mục đích của ổ đĩa đã chọn trước.
+请先在媒体库设置中开启视频预览生成	Turn on video preview generation in library settings first	Hãy bật tạo xem trước video trong cài đặt thư viện
+请在运行 Peach 的这台电脑上打开设置。	Please open settings on the computer running Peach.	Vui lòng mở cài đặt trên máy đang chạy Peach.
+请打开详情播放在线作品	Please open details to play online work	Vui lòng mở trang chi tiết để phát tác phẩm trực tuyến
+请打开详情确认计费来源	Please open details to confirm metered source	Vui lòng mở chi tiết để xác nhận nguồn tính phí
+请查看任务记录，核对已处理的文件。	Check the task log for the files that were handled.	Xem nhật ký tác vụ để đối chiếu tệp đã xử lý.
+请查看任务记录，核对已处理的链接。	Check the task log for the links that were handled.	Xem nhật ký tác vụ để đối chiếu liên kết đã xử lý.
+请查看并处理未完成项	Review the unfinished items	Xem và xử lý mục chưa xong
+请求失败（{status}）	The request failed ({status})	Yêu cầu thất bại ({status})
+请求失败，请重试	The request failed. Try again.	Yêu cầu thất bại. Thử lại.
+请输入 15–10080 的整数（分钟）。	Please enter an integer between 15–10080 (minutes).	Vui lòng nhập số nguyên từ 15–10080 (phút).
+请输入 8–256 个字符。	Enter 8–256 characters.	Nhập 8–256 ký tự.
+请输入当前访问密码	Enter current access password	Vui lòng nhập mật khẩu truy cập hiện tại
+请选择 4 MiB 以内的 SRT、ASS、SSA 或 VTT 文件	Please select SRT, ASS, SSA or VTT file under 4 MiB	Vui lòng chọn tệp SRT, ASS, SSA hoặc VTT dưới 4 MiB
+请选择媒体读取策略	Choose how media is read	Chọn cách đọc phương tiện
+请选择检查频率	Please select a check frequency	Vui lòng chọn tần suất kiểm tra
+请选择自动更新方式	Please select an update method	Vui lòng chọn phương thức tự động cập nhật
+请选择运行 Peach 的电脑上的浏览器资料。	Choose a browser profile on the computer running Peach.	Chọn hồ sơ trình duyệt trên máy đang chạy Peach.
+读不到媒体修复的状态	Could not read media repair status	Không đọc được trạng thái sửa phương tiện
+读取任务中心失败	Could not read the task center	Không đọc được trung tâm tác vụ
+读取口味分析失败	Could not read the taste analysis	Không đọc được phân tích khẩu vị
+读取失败	Could not read	Không đọc được
+读取已有 NFO 和封面，采集缺失资料。符合自动规则的资料会在处理完成后保存到数据库，其余资料留待确认。	Read existing NFO and covers, collecting missing metadata. Metadata matching auto-rules will be saved to database upon completion; others remain for confirmation.	Đọc NFO và ảnh bìa hiện có, thu thập dữ liệu còn thiếu. Dữ liệu khớp quy tắc tự động sẽ lưu vào cơ sở dữ liệu sau khi xong, phần còn lại chờ xác nhận.
+读取接着看失败：{error}	Could not read Continue watching: {error}	Không đọc được Xem tiếp: {error}
+读取接着看失败：{reason}	Failed to load continue watching: {reason}	Không thể đọc phần xem tiếp: {reason}
+读取未取得	Read unavailable	Đọc chưa có
+读取浏览器历史	Read browser history	Đọc lịch sử trình duyệt
+读取浏览器记录	Read browser history	Đọc lịch sử trình duyệt
+读取自定义来源	Read custom sources	Đọc nguồn tùy chỉnh
+读取运行 Peach 的这台电脑上的浏览历史与书签	Read browsing history and bookmarks on the computer running Peach	Đọc lịch sử duyệt và dấu trang trên máy đang chạy Peach
+读取配套图片	Read sidecar images	Đọc ảnh đi kèm
+读取采集来源失败	Could not read scrape sources	Không đọc được nguồn thu thập
+读取长度和下载线程填在每个网盘各自的下载设置里，线程都从 2 开始。	Fill read length and threads in each drive's download settings, threads start from 2.	Điền độ dài đọc và số luồng tải trong cài đặt tải xuống của từng ổ, số luồng bắt đầu từ 2.
+读取长度（默认 / 最小）	Read length (default / minimum)	Độ dài đọc (mặc định / tối thiểu)
+调整播放顺序	Adjust Play Order	Điều chỉnh thứ tự phát
+账号	Account	Tài khoản
+贴进 CloudDrive2「设置 → Webhooks」，需要会员；更换密钥后要重贴。	Paste into CloudDrive2 "Settings → Webhooks" (requires VIP); repaste after rotating secret.	Dán vào CloudDrive2 "Cài đặt → Webhooks" (cần VIP); cần dán lại sau khi đổi khóa.
+资料	Metadata	Dữ liệu
+资料出处	Metadata origin	Xuất xứ dữ liệu
+资料库	Database	Cơ sở dữ liệu
+资料未取得	Metadata unavailable	Chưa có dữ liệu
+资料未取得：	Metadata unavailable:	Chưa có dữ liệu:
+资料目录不可用	The data folder cannot be used	Không dùng được thư mục dữ liệu
+资料目录或历史文件	Data folder or history file	Thư mục dữ liệu hoặc tệp lịch sử
+资料结果	Metadata result	Kết quả dữ liệu
+资源	Resources / Downloads	Tài nguyên / Tải về
+资源同步	Resource sync	Đồng bộ tài nguyên
+资源搜索	Resource Search	Tìm kiếm tài nguyên
+资源清理未完成	Resource cleanup did not finish	Dọn tài nguyên chưa xong
+资源链接	Resource link	Liên kết tài nguyên
+资源链接未取得	Resource link unavailable	Chưa có liên kết tài nguyên
+超上限未派	Not queued, over the limit	Không xếp hàng, vượt giới hạn
+超时标为停滞；可填 1–{max} 小时。	Marked as stalled on timeout; 1–{max} hours.	Quá giờ sẽ đánh dấu là đình trệ; có thể điền 1–{max} giờ.
+超深度未派	Not queued, too deep	Không xếp hàng, quá sâu
+足迹	Footprints	Dấu chân
+跨盘 {drives}	Across drives {drives}	Nhiều ổ {drives}
+路径	Path	Đường dẫn
+跳过	Skip	Bỏ qua
+跳过 {history} 条超出首次采集范围的历史内容	Skipped {history} history items outside the first collection	Bỏ qua {history} mục lịch sử ngoài phạm vi thu lần đầu
+跳过 {skipped} 条无资源	Skipped {skipped} with no resource	Bỏ qua {skipped} không có tài nguyên
+跳过：{skipped}。	Skipped: {skipped}.	Bỏ qua: {skipped}.
+身份分类	Identity	Phân loại danh tính
+身材	Measurements	Số đo
+轮播	Carousel	Trình chiếu
+载入更多	Load more	Tải thêm
+输入人物、账号或厂牌名称	Enter person, account, or studio name	Nhập tên nhân vật, tài khoản hoặc hãng
+输入名称	Enter a name	Nhập tên
+输入女优名，到 JavDB 找她的演员页	Enter actress name to find her profile on JavDB	Nhập tên nữ diễn viên để tìm trang diễn viên trên JavDB
+输入番号，例如 SSIS-950	Enter a code, for example SSIS-950	Nhập mã, ví dụ SSIS-950
+输入番号，按回车搜索	Enter a code, then press Enter	Nhập mã, rồi nhấn Enter
+输入番号，添加想看的作品。	Enter a code to add a work you want.	Nhập mã để thêm tác phẩm muốn xem.
+输入馆藏番号，如 ABW-232	Enter a library code, such as ABW-232	Nhập mã trong thư viện, ví dụ ABW-232
+迁移校验未取得	Migration verification not acquired	Chưa lấy được kết quả xác minh di chuyển
+迁移校验通过	Migration check passed	Xác minh di chuyển thành công
+迁移记录与当前程序不一致	Migration history differs from current program	Bản ghi di chuyển không khớp với chương trình hiện tại
+过滤{title}	Filter {title}	Lọc {title}
+运营公司	Operating company	Công ty vận hành
+运行信息	Runtime info	Thông tin chạy
+运行环境	Runtime	Môi trường chạy
+近 {length} 轮	Last {length} rounds	{length} vòng gần nhất
+返回	Back	Quay lại
+返回{title}列表	Back to {title} list	Quay lại danh sách {title}
+返回上一个菜单	Back to previous menu	Quay lại menu trước
+返回备选图片	Back to candidate images	Quay lại ảnh dự phòng
+返回首次设置	Back to first-time setup	Về thiết lập lần đầu
+返回首页	Back to home	Về trang chủ
+还有 {count} 位	and {count} more	còn {count} người nữa
+还有 {count} 条需要复核。	{count} items remaining for review.	Còn {count} mục cần duyệt lại.
+还没发售	Not released yet	Chưa phát hành
+还没拉过	Not fetched yet	Chưa tải
+还没有{label}	No {label} yet	Chưa có {label}
+还没有与已建档女优关联的浏览记录。	No browsing history linked to a filed performer yet.	Chưa có lịch sử duyệt gắn với diễn viên đã lập hồ sơ.
+还没有任务记录	No task history yet	Chưa có lịch sử tác vụ
+还没有保存创作者别名	No creator aliases saved yet	Chưa lưu bí danh nhà sáng tạo
+还没有保存的筛选	No saved filters yet	Chưa có bộ lọc đã lưu
+还没有共享密钥，保存配置后生成。	No shared secret yet, generated after saving.	Chưa có khóa bí mật dùng chung, sẽ tạo sau khi lưu cấu hình.
+还没有关注任何来源	No sources are followed yet	Chưa theo dõi nguồn nào
+还没有关注来源	No follow sources yet	Chưa có nguồn theo dõi
+还没有内容标签	No content tags yet	Chưa có thẻ nội dung
+还没有可探索的入口	Nothing to explore yet	Chưa có lối khám phá
+还没有可用于分析的口味网站访问记录。	No taste-site visits to analyze yet.	Chưa có lượt vào trang khẩu vị để phân tích.
+还没有存储来源	No storage sources yet	Chưa có nguồn lưu trữ
+还没有想要的作品	No wants yet	Chưa có tác phẩm muốn xem
+还没有抓到更新	No updates fetched yet	Chưa bắt được cập nhật
+还没有播放列表	No playlists yet	Chưa có danh sách phát
+还没有收藏	Nothing saved yet	Chưa có mục đã lưu
+还没有数据源	No data sources yet	Chưa có nguồn dữ liệu
+还没有更新	No updates yet	Chưa có cập nhật
+还没有标签来源	No tag sources yet	Chưa có nguồn thẻ
+还没有此类收藏	Nothing saved in this collection yet	Chưa có gì trong bộ sưu tập này
+还没有观看记录	No watch history yet	Chưa có lịch sử xem
+还没有视频	No videos yet	Chưa có video
+还没有订阅源	No feeds yet	Chưa có nguồn đăng ký
+还没查过	Not checked yet	Chưa kiểm
+这一批可以从「回滚上一批」整批退回。	This batch can be reverted together from Roll back the last organize.	Lô này có thể hoàn cả loạt từ Hoàn lại lần sắp gần nhất.
+这一次没有完成	This pass did not finish	Lần này chưa xong
+这一步不可撤销。	This step cannot be undone.	Bước này không hoàn tác được.
+这一组已不存在	This group no longer exists	Nhóm này không còn tồn tại
+这一页没有来源	This page has no sources	Trang này không có nguồn
+这一项耗时较长，暂时没有新进展。任务结束后可以重试未完成的部分。	This step is taking a while and has no new progress. When the task ends, the unfinished part can be retried.	Bước này mất thời gian và chưa có tiến triển mới. Khi tác vụ kết thúc có thể thử lại phần chưa xong.
+这个库在计费来源上，每修一部都要把片子完整拉一遍。	This library is on a metered source. Repairing one work downloads the whole file.	Thư viện này nằm trên nguồn tính phí. Sửa một tác phẩm phải tải cả tệp.
+这个库里的片子都能直接播。	Videos in this library can be played directly.	Phim trong thư viện này đều có thể phát trực tiếp.
+这个播放列表将被删除，视频文件保留。	This playlist will be deleted. The video files stay.	Danh sách phát này sẽ bị xóa. Tệp video được giữ.
+这个目录不存在。	This directory does not exist.	Thư mục này không tồn tại.
+这个磁力已有任务，没有重复提交	This magnet already has a task. It was not submitted again.	Magnet này đã có tác vụ. Không gửi lại.
+这个视频将从播放列表移除，视频文件保留。	This video will be removed from playlist, video file is kept.	Video này sẽ bị xóa khỏi danh sách phát, tệp video vẫn giữ nguyên.
+这个资源被判为违规，不再提交。	This resource was marked as not allowed and will not be submitted again.	Tài nguyên này bị đánh không được phép và sẽ không gửi lại.
+这个部署由配置文件管理服务；在本机编辑下方的设置文件。	This deployment manages services via configuration files; edit the config file below on this machine.	Bản triển khai này quản lý dịch vụ qua tệp cấu hình; chỉnh sửa tệp cấu hình bên dưới trên máy này.
+这些作品的文件已不在盘上，喜欢、稍后看、播放列表与观看历史都还留着。接到新文件后记录跟过去，旧的这一条删掉。	The files for these works are gone. Likes, Watch later, playlists, and watch history remain. After they are attached to a new file, the records move with it and the old row is deleted.	Tệp của các tác phẩm này không còn trên đĩa. Thích, Xem sau, danh sách phát và lịch sử xem vẫn còn. Gắn sang tệp mới thì bản ghi đi theo và dòng cũ bị xóa.
+这些来源这一轮没有取到更新。	These sources did not get any updates this round.	Các nguồn này không lấy được cập nhật trong lượt này.
+这些订阅源这一轮没有取到新条目。	These subscription feeds got no new items this round.	Các nguồn đăng ký này không có mục mới trong lượt này.
+这些词在浏览记录中出现，但 Peach 观看记录还没有对应证据	These words appear in browsing history, and Peach watch history has no matching evidence yet	Các từ này có trong lịch sử duyệt, còn lịch sử xem của Peach chưa có bằng chứng tương ứng
+这几样不可撤销。	These cannot be undone.	Những việc này không hoàn tác được.
+这张图读不出来，换一张再框。	Cannot read this image, select another to crop.	Không đọc được ảnh này, hãy đổi ảnh khác để đóng khung.
+这批作品尚未抽帧	These works have no sampled frames yet	Các tác phẩm này chưa được lấy khung hình
+这批影片中有 {length} 部暂无预览，可补全资料与图片。	{length} works in this batch have no preview yet. Metadata and images can be filled in.	{length} tác phẩm trong lô này chưa có xem trước. Có thể bổ sung dữ liệu và ảnh.
+这批结果没有中文，可查看更多字幕	No Chinese subtitles in this batch, check more subtitles	Đợt kết quả này không có tiếng Trung, có thể xem thêm phụ đề
+这条作品没有可播放的视频	This work has no playable video	Tác phẩm này không có video để phát
+这条关注内容已不存在	This follow item is gone	Mục theo dõi này không còn
+这条关注内容已不存在，可能已被来源删除或已清理。	This follow item is gone. The source may have deleted it, or it was cleaned up.	Mục theo dõi này không còn. Nguồn có thể đã xóa, hoặc nó đã được dọn.
+这条没有对应的关注条目，媒体地址无从解析。	No corresponding follow item, cannot resolve media URL.	Mục này không có mục theo dõi tương ứng, không thể phân giải địa chỉ media.
+这条结果没有可加载的文本字幕	No text subtitles available in this result	Kết quả này không có phụ đề văn bản để tải
+这次检查的结果已经清理，重新扫描可再核对。	Results of this check have been cleaned; rescan to recheck.	Kết quả kiểm tra lần này đã được dọn sạch, quét lại để đối chiếu.
+这里不能打开	Cannot open this here	Không mở được ở đây
+进入 Peach	Enter Peach	Vào Peach
+进入馆藏	Go to Library	Vào bộ sưu tập
+进行中	In progress	Đang chạy
+远端下载进度	Remote download progress	Tiến độ tải từ xa
+远端已有同一任务，已接管	The remote already has this task. Took it over.	Máy xa đã có tác vụ này. Đã nhận.
+连字符转下划线	Hyphens to underscores	Gạch ngang thành gạch dưới
+连接不到 Peach，请确认它仍在运行后重试	Could not reach Peach. Confirm it is still running, then try again.	Không nối được Peach. Xác nhận nó vẫn chạy rồi thử lại.
+连接中断，正在重新读取处理进度	The connection dropped. Reading progress again.	Mất kết nối. Đang đọc lại tiến độ.
+连接方式	Connection	Cách kết nối
+连接速度	Connection Speed	Tốc độ kết nối
+连接速度 {speed}	Connection speed: {speed}	Tốc độ kết nối: {speed}
+迷你播放器	Mini Player	Trình phát thu nhỏ
+退出全屏	Exit Full Screen	Thoát toàn màn hình
+退出播放墙	Exit Video Wall	Thoát bức tường video
+退出画中画	Exit Picture-in-Picture	Thoát hình trong hình
+退出码	Exit code	Mã thoát
+退回后这一批不再出现在这里。	After the rollback, this batch no longer appears here.	Sau khi hoàn lại, lô này không còn hiện ở đây.
+适应窗口	Fit to window	Vừa khít cửa sổ
+适用内容类型	Content types	Loại nội dung áp dụng
+选择	Select	Chọn
+选择 Chrome 历史记录，下载 ZIP 后直接导入。	Select Chrome history, download ZIP and import directly.	Chọn lịch sử Chrome, tải tệp ZIP về rồi nhập trực tiếp.
+选择 {label}	Select {label}	Chọn {label}
+选择 {original}	Select {original}	Chọn {original}
+选择 {title}	Choose {title}	Chọn {title}
+选择别名 {alias}，归入 {canonical}	Select alias {alias}, file under {canonical}	Chọn bí danh {alias}, gộp vào {canonical}
+选择包含 config.toml 和 database 文件夹的数据目录。	Choose the data folder that contains config.toml and the database folder.	Chọn thư mục dữ liệu có config.toml và thư mục database.
+选择图片	Select Image	Chọn hình ảnh
+选择媒体库	Select library	Chọn thư viện
+选择媒体库图标	Select Library Icon	Chọn biểu tượng thư viện
+选择字幕文件	Select Subtitle File	Chọn tệp phụ đề
+选择已保存别名 {canonical_name}	Select saved alias {canonical_name}	Chọn bí danh đã lưu {canonical_name}
+选择文件	Select file	Chọn tệp
+选择文件夹	Select Folder	Chọn thư mục
+选择要加载的字幕	Select Subtitle to Load	Chọn phụ đề cần tải
+选择要添加的页面	Select page to add	Chọn trang cần thêm
+选择读取策略	Select read policy	Chọn chính sách đọc
+选用此资源	Use this resource	Dùng tài nguyên này
+通用	General	Chung
+通知	Notifications	Thông báo
+通过	Approve	Duyệt
+通过后记录身份判断。	Record identity decision upon approval.	Ghi nhận quyết định danh tính sau khi thông qua.
+通过所选	Approve selected	Thông qua mục đã chọn
+邮箱或手机号	Email or phone number	Email hoặc số điện thoại
+部	works	tác phẩm
+部作品	works	tác phẩm
+部分媒体未取得：需要 F95 登录会话解析	Some media is unavailable: an F95 login session is required	Một phần phương tiện chưa có: cần phiên đăng nhập F95
+部分完成	Partly done	Xong một phần
+部分浏览记录未取得	Some browsing history is unavailable	Một phần lịch sử duyệt chưa có
+配置	Configuration	Cấu hình
+配置 Peach 代理	Configure Peach proxy	Cấu hình proxy Peach
+配置与访问	Config & Access	Cấu hình & Truy cập
+配置分区	Configuration sections	Phân vùng cấu hình
+配置可读取	Configuration readable	Cấu hình có thể đọc được
+配置已保存	Configuration saved	Cấu hình đã được lưu
+配置文件无法读取	Configuration file cannot be read	Không thể đọc tệp cấu hình
+配置读取失败	Failed to load configuration	Tải cấu hình thất bại
+配色	Color palette	Phối màu
+配音版	Dubbed	Bản lồng tiếng
+采集未取得	Scrape unavailable	Thu thập chưa có
+采集来源与登录状态	Follow Sources & Login Status	Nguồn thu thập & Trạng thái đăng nhập
+采集来源读取失败	Could not read scrape sources	Không đọc được nguồn thu thập
+采集浏览记录后，这里会列出常访问的网站。	After browsing history is collected, frequent sites show up here.	Sau khi thu lịch sử duyệt, các trang hay vào hiện ở đây.
+采集浏览记录后，这里会列出浏览过的创作者。	After browsing history is collected, visited creators show up here.	Sau khi thu lịch sử duyệt, nhà sáng tạo đã xem hiện ở đây.
+采集浏览记录后，这里会列出浏览过的标签。	After scraping browser history, visited tags will be listed here.	Sau khi thu thập lịch sử duyệt web, các thẻ đã duyệt sẽ được liệt kê ở đây.
+采集浏览记录后，这里会显示聚合后的口味证据。	After browsing history is collected, combined taste evidence shows up here.	Sau khi thu lịch sử duyệt, bằng chứng khẩu vị đã gộp hiện ở đây.
+采集缺失封面	Fetch missing covers	Lấy bìa còn thiếu
+重启安装	Restart & Install	Khởi động lại để cài đặt
+重复内容	Duplicate content	Nội dung trùng lặp
+重复文件	Duplicate files	Tệp trùng
+重复文件读取失败	Could not read duplicate files	Không đọc được tệp trùng
+重建未完成	Rebuild did not finish	Dựng lại chưa xong
+重新判断	Judge again	Phân loại lại
+重新加载图片	Reload the image	Tải lại ảnh
+重新安装	Reinstall	Cài lại
+重新安装会使用 Peach 内置的	Reinstalling will use Peach's bundled 	Cài lại sẽ dùng bản kèm theo Peach là
+重新打开教程	Reopen Tutorial	Mở lại hướng dẫn
+重新扫描	Scan again	Quét lại
+重新提交	Resubmit	Gửi lại
+重新查找	Search again	Tìm kiếm lại
+重新查询	Query again	Truy vấn lại
+重新检查	Check again	Kiểm tra lại
+重新读取资料	Reread metadata	Đọc lại dữ liệu
+重置	Reset	Đặt lại
+重试	Retry	Thử lại
+重试后处理	Retry post-processing	Thử lại hậu xử lý
+重试未完成项	Retry unfinished items	Thử lại mục chưa xong
+重试样图	Retry samples	Thử tải lại ảnh mẫu
+重试读取收藏	Retry loading favorites	Thử lại việc đọc mục yêu thích
+重试选中的 {length} 条	Retry the {length} selected	Thử lại {length} mục đã chọn
+重试选中的链接	Retry the selected links	Thử lại liên kết đã chọn
+链接已失效	The link is dead	Liên kết đã hỏng
+链接总数	Total links	Tổng số liên kết
+链接有效期为 6 小时。VR 播放器可使用网络播放地址；另一台设备需要能访问当前 Peach 地址。	Link valid for 6 hours. VR players can use network playback URL; other device must be able to access current Peach address.	Liên kết có hiệu lực trong 6 giờ. Kính VR có thể dùng địa chỉ mạng này; thiết bị khác cần truy cập được vào địa chỉ Peach hiện tại.
+链接来源	Link source	Nguồn liên kết
+链接清理未完成	Link cleanup did not finish	Dọn liên kết chưa xong
+链接管理	Link management	Quản lý liên kết
+链接统计读取失败	Could not read link stats	Không đọc được thống kê liên kết
+锁定正封比例	Lock front cover aspect ratio	Khóa tỷ lệ bìa chính
+问题	Issue	Vấn đề
+问题清单：共 {issue_count} 项	Issues: {issue_count}	Danh sách vấn đề: {issue_count}
+问题清单：共 {issue_count} 项，展开查看前 {length} 项	Issues: {issue_count}. Expand to see the first {length}.	Danh sách vấn đề: {issue_count}. Mở để xem {length} mục đầu.
+随机	Random	Ngẫu nhiên
+隐藏	Hide	Ẩn
+隐藏 {label}	Hide {label}	Ẩn {label}
+隐藏标签	Hidden tags	Thẻ ẩn
+隐藏这张图	Hide this image	Ẩn ảnh này
+隧道令牌	Tunnel Token	Token đường hầm (Tunnel Token)
+零个文件	No files	Không có tệp
+需处理	Needs action	Cần xử lý
+需检查	Check	Cần kiểm
+需要	Needed	Cần
+需要人机验证	Captcha Verification Required	Cần xác minh người máy
+需要关注	Needs Attention	Cần chú ý
+需要关注 · {length} 项	Needs attention · {length}	Cần chú ý · {length}
+需要刷新时再次读取或导入；数据源可在页面底部移除。	Read or import again when you want a refresh. Data sources can be removed at the bottom of the page.	Khi cần làm mới, đọc hoặc nhập lại. Nguồn dữ liệu có thể gỡ ở cuối trang.
+需要登录时，任选一种方式提供 Cookie。	When a login is required, provide a cookie either way.	Khi cần đăng nhập, đưa cookie theo một trong các cách.
+需要离线任务权限。	Requires offline task permission.	Cần có quyền tác vụ tải offline.
+需要选择连接方式	Connection mode required	Cần chọn phương thức kết nối
+需要配置凭据	Credentials required	Cần cấu hình chứng thư
+需选择来源	Choose a source	Cần chọn nguồn
+静音	Mute	Tắt tiếng
+韩国	Korea	Hàn Quốc
+韩国 MIB	Korea MIB	MIB Hàn
+音量	Volume	Âm lượng
+音频	Audio	Âm thanh
+页面视图	Page view	Kiểu xem trang
+项	items	mục
+项更新	updates	cập nhật
+预告片	Trailer	Đoạn giới thiệu
+预览	Preview	Xem trước
+预览 {name}	Preview {name}	Xem trước {name}
+预览 {n}	Preview {n}	Xem trước {n}
+预览上传内容	Preview Upload Content	Xem trước nội dung tải lên
+预览未取得	Preview unavailable	Chưa lấy được xem trước
+预览结果	Preview result	Kết quả xem trước
+预计剩余不到 1 分钟	Less than a minute left	Còn dưới 1 phút
+预计剩余约 {span} {label}{rough}{text}	About {span} {label} left{rough}{text}	Còn khoảng {span} {label}{rough}{text}
+频率	Interval	Tần suất
+题材	Theme	Chủ đề
+馆藏	Library	Thư viện
+馆藏与口味上传失败，自动重试。	Library and taste upload failed, retrying automatically.	Tải lên bộ sưu tập và khẩu vị thất bại, đang tự động thử lại.
+馆藏与口味上传预览	Library & Taste Upload Preview	Xem trước tải lên bộ sưu tập & khẩu vị
+馆藏与口味明细上传默认关闭，可在「应用与维护」查看并选择。	Uploading library and taste details is disabled by default; manage in "App & Maintenance".	Tải lên chi tiết thư viện và khẩu vị mặc định tắt, có thể xem và chọn trong "Ứng dụng & bảo trì".
+馆藏中有 {total} 项	{total} items in the library	{total} mục trong thư viện
+馆藏探索	Library explore	Khám phá thư viện
+馆藏显示方式	Library view	Cách hiển thị thư viện
+馆藏番号	Library code	Mã trong thư viện
+馆藏统计读取失败	Could not read library stats	Không đọc được thống kê thư viện
+馆藏观看	Library watches	Lượt xem trong thư viện
+馆藏视频	Library videos	Video bộ sưu tập
+馆藏里暂时没有对得上浏览信号的标签。	No tags in the collection match browsing signals yet.	Tạm thời chưa có thẻ nào trong bộ sưu tập khớp với tín hiệu duyệt web.
+首次复核队列已清空。	First review queue cleared.	Hàng đợi duyệt đầu tiên đã trống.
+首次扫描已排队，在后台整理媒体库，期间可以照常使用 Peach。	The first scan is queued and will organize the library in the background. Peach stays usable.	Lần quét đầu đã xếp hàng và sắp thư viện ở nền. Vẫn dùng Peach được.
+首次采集范围	Initial Follow Range	Phạm vi thu thập lần đầu
+首页	Home	Trang chủ
+首页卡片版式	Home card layout	Bố cục thẻ trang chủ
+香蕉	Banana	Chuối vàng
+高清	HD	HD
+高清图片	HD image	ảnh HD
+高清图片可能要经代理才能下载，先检查连接。	High-resolution images may require a proxy to download; please check the connection first.	Ảnh độ phân giải cao có thể cần qua proxy để tải về, hãy kiểm tra kết nối trước.
+高清封面	HD cover	Bìa HD
+高清版	HD copy	Bản HD
+高清版目标读取失败	Could not read HD targets	Không đọc được mục tiêu HD
+高潮	Climax	Cao trào
+高潮 {o_count}	Climax {o_count}	Cao trào {o_count}
+高潮 {o_count} 次	Climax {o_count} times	Cao trào {o_count} lần
+高潮计数	Climax count	Số lần cao trào
+高级设置	Advanced	Nâng cao
+默认	Default	Mặc định
+默认视图	Default view	Xem mặc định
+齐全	Complete	Đầy đủ
+（仅附件）	(attachment only)	(chỉ tệp đính kèm)
+（推断）	(Inferred)	(Suy đoán)
+（无正文）	(no body)	(không có nội dung)
+（粗估）	(rough estimate)	(ước lượng)
+）提供这些内置站点的解析能力。	) powers parsing for these built-in sites.	) cung cấp khả năng phân tích các trang có sẵn này.
+，{failed} 行未能处理	, {failed} rows were not processed	, {failed} dòng chưa xử lý
+，{failed} 行未能退回	, {failed} rows were not reverted	, {failed} dòng chưa hoàn lại
+，{length} 条文件已恢复，未删除	, {length} files were restored and not deleted	, {length} tệp đã khôi phục, chưa xóa
+，{length} 项未完成	, {length} items unfinished	, {length} mục chưa xong
+，生成 {previews} 部视频预览	, made {previews} video previews	, đã tạo {previews} xem trước video
+，队列里还有 {count} 条	, {count} remaining in queue	, trong hàng đợi còn {count} tệp
+：框出正封那一块，封面原图不动。拖动方框移动，滚轮或角上那枚方块改大小。	: Crop the front cover section, leaving the original cover unchanged. Drag box to move, use wheel or corner handles to resize.	: Khoanh vùng bìa chính, ảnh bìa gốc giữ nguyên. Kéo khung để di chuyển, cuộn chuột hoặc kéo góc để đổi kích thước.
+；跳过 {skipped}	; skipped {skipped}	; bỏ qua {skipped}
+媒体挂载	Media Mounts	Điểm gắn Media
+访问安全	Access Security	Bảo mật truy cập
+服务端口	Service Port	Cổng dịch vụ
+未找到：	Not found: 	Không tìm thấy: 
+无法执行：	Unable to execute: 	Không thể thực thi: 
+未找到	Not found	Không tìm thấy
+无法执行	Unable to execute	Không thể thực thi
+未找到：ffmpeg、ffprobe、openssl	Not found: ffmpeg, ffprobe, openssl	Không tìm thấy: ffmpeg, ffprobe, openssl
+访问密码配置无法读取	Access password configuration cannot be read	Không thể đọc cấu hình mật khẩu truy cập
+局域网或公网入口未开启访问密码	LAN or public gateway does not have access password enabled	Cổng LAN hoặc mạng công cộng chưa bật mật khẩu truy cập
+已开启访问密码	Access password enabled	Đã bật mật khẩu truy cập
+仅监听本机	Listening on localhost only	Chỉ lắng nghe máy cục bộ
+在本机检查访问密码配置	Check access password configuration on local machine	Kiểm tra cấu hình mật khẩu truy cập trên máy cục bộ
+在配置中开启访问密码	Enable access password in settings	Bật mật khẩu truy cập trong cài đặt
+没有已配置的本地来源	No local sources configured	Chưa cấu hình nguồn cục bộ
+来源可读取	Source readable	Nguồn có thể đọc
+挂载检测尚未完成	Mount check not yet completed	Chưa hoàn tất kiểm tra điểm gắn
+检查媒体目录与挂载状态	Check media directory and mount status	Kiểm tra thư mục media và trạng thái điểm gắn
+可读取	Readable	Có thể đọc
+没有权限读取	Permission denied to read	Không có quyền đọc
+目录不存在	Directory does not exist	Thư mục không tồn tại
+目标不是目录	Target is not a directory	Mục tiêu không phải là thư mục
+目录读取失败	Failed to read directory	Đọc thư mục thất bại
+正在检测	Checking	Đang kiểm tra
+探测未返回	Probe did not return	Thăm dò chưa phản hồi
+没有权限写入数据目录	Permission denied to write to data directory	Không có quyền ghi vào thư mục dữ liệu
+数据目录无法写入	Cannot write to data directory	Không thể ghi vào thư mục dữ liệu
+临时写入与清理通过	Temporary write and cleanup passed	Ghi tạm và dọn dẹp thành công
+调整数据目录的写入权限	Adjust write permissions for data directory	Điều chỉnh quyền ghi của thư mục dữ liệu
+检查数据目录与可用空间	Check data directory and available space	Kiểm tra thư mục dữ liệu và dung lượng trống
+监听地址不是 IP，端口状态未取得	Listening address is not an IP; port status not retrieved	Địa chỉ lắng nghe không phải IP, chưa lấy được trạng thái cổng
+端口正在使用	Port in use	Cổng đang được sử dụng
+端口状态未取得	Port status not retrieved	Chưa lấy được trạng thái cổng
+端口当前可用	Port currently available	Cổng hiện khả dụng
+任务失败记录未取得	Task failure records not retrieved	Chưa lấy được bản ghi tác vụ thất bại
+没有已记录的任务失败	No recorded task failures	Không có bản ghi tác vụ thất bại
+存在已记录的任务失败	Recorded task failures exist	Có bản ghi tác vụ thất bại
+在活动页查看失败任务	View failed tasks on the Activity page	Xem tác vụ thất bại trên trang Hoạt động
+识别失败	Identification failed	Nhận diện thất bại
+补资料失败	Metadata scraping failed	Bổ sung thông tin thất bại
+缺封面	Missing cover	Thiếu ảnh bìa
+缺时长	Missing duration	Thiếu thời lượng
+来源正在冷却	Source is cooling down	Nguồn đang trong thời gian làm nguội
+代理连接失败	Proxy connection failed	Kết nối proxy thất bại
+来源连接超时	Source connection timed out	Kết nối nguồn quá thời gian
+来源连接未取得	Source connection not established	Chưa kết nối được với nguồn
+来源要求登录或拒绝当前出口	Source requires login or rejected current exit	Nguồn yêu cầu đăng nhập hoặc từ chối cổng ra hiện tại
+来源要求人机验证	Source requires Cloudflare challenge	Nguồn yêu cầu xác thực người máy
+来源拦截当前出口	Source blocked current exit	Nguồn chặn cổng ra hiện tại
+来源限制当前地区	Source geo-restricted for current region	Nguồn giới hạn khu vực hiện tại
+来源正在限流	Source is rate limiting	Nguồn đang giới hạn tần suất
+来源服务异常	Source service error	Dịch vụ nguồn gặp sự cố
+资料解析失败	Metadata parsing failed	Phân tích dữ liệu thất bại
+上次查询未命中	Last query had no match	Lần truy vấn trước không có kết quả
+来源未取得资料	No metadata retrieved from source	Nguồn chưa lấy được dữ liệu
+资料解析通过	Metadata parsed successfully	Phân tích dữ liệu thành công
+曾解析成功，近期解析状态待复查	Previously parsed successfully; recent status pending review	Từng phân tích thành công, trạng thái gần đây chờ xem lại
+连接检查通过；解析状态未取得	Connection check passed; parse status not retrieved	Kiểm tra kết nối thành công; chưa lấy được trạng thái phân tích
+连接检查通过	Connection check passed	Kiểm tra kết nối thành công
+解析状态未取得	Parse status not retrieved	Chưa lấy được trạng thái phân tích
+已有检查记录，解析状态待复查	Check records exist; parse status pending review	Đã có bản ghi kiểm tra, trạng thái phân tích chờ xem lại
+尚无检查或解析记录，可在来源和凭证中检查连接	No check or parse records yet; test connection in Sources & Credentials	Chưa có bản ghi kiểm tra hoặc phân tích, có thể kiểm tra kết nối trong Nguồn và thông tin đăng nhập
+ · {elapsed_s} 秒	 · {elapsed_s} s	 · {elapsed_s} giây
+一本道	1Pondo	1Pondo
+未检测	Unchecked	Chưa kiểm tra

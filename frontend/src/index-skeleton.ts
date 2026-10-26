@@ -10,6 +10,7 @@
 import { boardTabsHtml, fitSkeleton, iconSwitchHtml, indexSkeletonHtml } from '@peach/legacy/ui';
 import { identityFilterSkeletonHtml } from './identity-filter';
 import { islandShortcutsEntry, islandSearchInput } from './island-skeleton';
+import { phrase } from './i18n';
 
 export type IndexPageKind = 'performers' | 'creators' | 'studios' | 'agencies' | 'tags';
 
@@ -50,25 +51,25 @@ export function indexParams(kind: IndexPageKind, search: string): IndexParams {
 
 type Choices = readonly (readonly [string, string, string])[];
 const tabs = (items: Choices, active: string, label: string) => boardTabsHtml(
-  items.map(([value, text, symbol]) => ({ value, label: text, symbol })), { active, label, className: 'indextabs' });
+  items.map(([value, text, symbol]) => ({ value, label: phrase(text), symbol })), { active, label: phrase(label), className: 'indextabs' });
 
 /* 标签页 Tabs 下面还有一块两排的筛选玻璃（React 的 `FilterGlassRows`）：上排是类型药丸，下排是读数、按首字
    跳转和视图切换。药丸有哪几枚、读数多少、有哪些首字都要等数据，视图切换此刻就是最终那一档；块高与下边距同
    旧 `.board-filter-frame`，页面落地时它原地换成真的那一块，下面的内容不下跳。 */
 const tagFilterSkeletonHtml = (view: string) => `<div class="board-filter-frame" data-filter-frame>
-    <div class="tagbar" data-filter-row="top" data-skeleton-tier="pill" aria-label="标签类型"></div>
+    <div class="tagbar" data-filter-row="top" data-skeleton-tier="pill" aria-label="${phrase('标签类型')}"></div>
     <div class="count" data-filter-row="bottom"><span class="mono"><span class="countskeleton"></span></span>
-      ${iconSwitchHtml('tag-view', '标签视图', TAG_VIEWS, view)}</div></div>`;
+      ${iconSwitchHtml('tag-view', phrase('标签视图'), TAG_VIEWS.map(([val, txt, sym]) => [val, phrase(txt), sym]), view)}</div></div>`;
 
 export function indexPlaceholderHtml({ kind, q, scope, view, category }: IndexParams, layout: 'big' | 'compact'): string {
-  const title = INDEX_TITLES[kind] || '标签', people = kind !== 'tags', company = kind === 'studios' || kind === 'agencies';
+  const title = phrase(INDEX_TITLES[kind] || '标签'), people = kind !== 'tags', company = kind === 'studios' || kind === 'agencies';
   const switcher = people
-    ? iconSwitchHtml('people-layout', title + '索引版式', company ? COMPANY_LAYOUTS : PEOPLE_LAYOUTS, layout) : '';
+    ? iconSwitchHtml('people-layout', phrase('{title}索引版式', { title }), (company ? COMPANY_LAYOUTS : PEOPLE_LAYOUTS).map(([val, txt, sym]) => [val, phrase(txt), sym]), layout) : '';
   return `<div class="ihead peach-react" data-index-head>
       <h2 class="disp indexheading">${title}</h2>
       ${people ? '<span class="mono" id="indexCount"><span class="countskeleton"></span></span>' : ''}${switcher}
       ${islandShortcutsEntry()}
-      <div data-index-search class="ml-auto min-w-35 max-w-80 flex-1 max-board-narrow:order-1 max-board-narrow:basis-40">${islandSearchInput('', q, '过滤' + title)}</div>
+      <div data-index-search class="ml-auto min-w-35 max-w-80 flex-1 max-board-narrow:order-1 max-board-narrow:basis-40">${islandSearchInput('', q, phrase('过滤{title}', { title }))}</div>
     </div>
     ${kind === 'tags' ? tabs(INDEX_SCOPES, scope, '词表') : kind === 'performers' || kind === 'creators'
       ? tabs(PEOPLE_INDEX_TABS, kind === 'performers' && scope === 'online' ? 'online' : kind, '人物名册')

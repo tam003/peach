@@ -28,6 +28,7 @@ import { JAV_RELEASE_SORT, SORTS } from './../sort-preferences';
 import { dropBars } from './../catalog-bars';
 import { entityState, pushEntityPage, syncPhotoWalls } from './entity.js';
 import { routeMetaOf } from './../history/route-meta';
+import { phrase } from '../i18n';
 import { peachHistory, shellNavigate, isPreferencePath, preferenceSection, settingsPath, settingsBackgroundOf } from '../history';
 import { filterScrollState } from './filter-scroll.js';
 import { releaseHoverPreviews } from './../card-art/hover';
@@ -88,7 +89,7 @@ export function openDrawer(v){const drawer=$('#drawer'),restore=!v&&drawer.conta
   drawer.inert=!v&&narrowShell();
   drawer.classList.toggle('open',v);$('#scrim').classList.toggle('on',v);
   document.body.classList.toggle('drawer-open',!!v);document.dispatchEvent(new Event('board:sidebar'));
-  $('#filterBtn').setAttribute('aria-expanded',String(!!v));$('#filterBtn').setAttribute('aria-controls','drawer');$('#filterBtn').setAttribute('aria-label',v?'收起侧栏':'展开侧栏');
+  $('#filterBtn').setAttribute('aria-expanded',String(!!v));$('#filterBtn').setAttribute('aria-controls','drawer');$('#filterBtn').setAttribute('aria-label',v?phrase('收起侧栏'):phrase('展开侧栏'));
   if(restore)$('#filterBtn').focus();sessionStorage.setItem('board.sidebar',v?'open':'closed')}
 
 export function closeDrawerAfterNav(){if(narrowShell())openDrawer(false)}
@@ -220,7 +221,7 @@ export function paintListTitle(){
   const el=$('#listTitle');if(!el)return;
   const path=decodeURIComponent(location.pathname);
   const label=!manageSection()&&isCatalogPath(path)?STATE_LABELS[state.state]||'':'';
-  el.hidden=!label;if(label)el.textContent=label;
+  el.hidden=!label;if(label)el.textContent=phrase(label);
   $('#catalogPageHeading').hidden=!!manageSection()||!isCatalogPath(path)||!!label||state.jav==='1';
 }
 

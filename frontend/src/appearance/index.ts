@@ -1,11 +1,12 @@
-/* 外观与版式设置的应用层（@peach/appearance）：偏好 store、启动归一化、文档属性、CSS 变量与版式开关。
- * Application 与 React 页面引用同一份源码，随 peach-app.js 发出。
- * 路由与目录的 JAV、首页判据由 application/layout.js 计算后作为参数传入。 */
+/* Application layer for appearance and layout (`@peach/appearance`): the preference store, startup normalization, document attributes, CSS variables, and layout switches.
+ * Application and the React pages share this source, and it ships in peach-app.js.
+ * Route and catalog checks for JAV and the home page are computed in application/layout.js and passed in as arguments. */
 export {
   allowedSetting, appSettingsStore, applySyncedSettings, DEFAULT_SETTINGS, FEED_COMPILATION_KEYS, FOLLOW_INITIAL_DAYS,
   normalizeAppSettings, postSearchHistoryLimit, readAppSettings, SETTINGS_KEY, THEME_CHOICES,
 } from './settings';
 export type { AppSettings, SyncedEffect, SyncedSettings } from './settings';
+export { applyLocale } from './locale';
 export { applyTheme, THEME_OPTIONS, watchSystemTheme } from './theme';
 export { applyDensity, currentDensity, paintPhotoSizeButton, TILES, toggleDensity } from './density';
 export type { Density } from './density';
@@ -15,7 +16,7 @@ export {
 } from './layout';
 export type { GridLayout } from './layout';
 export {
-  ACCENT_CHOICES, applyAccent, applyGlassFaces, applyHomeGlow, chooseAccent, chooseGlowPreset, glowChips, paintGlowButton,
+  ACCENT_CHOICES, applyAccent, applyGlassFaces, applyHomeGlow, chooseAccent, chooseGlowPreset, glowChips, glowPresetLabel, paintGlowButton,
   paintHomeGlowNow, resetGlowColors, wireGlowButton,
 } from './glow';
 export type { GlowChip, GlowSettings } from './glow';

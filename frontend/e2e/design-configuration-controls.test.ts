@@ -22,8 +22,8 @@ describe('设计决定：配置控件', () => {
           return { width: shape.width, height: shape.height, text: symbol?.textContent, name: icon.closest('button')!.textContent };
         }));
         for (const mark of marks) assert.ok(mark.width > 0 && mark.height > 0, `${mark.name} 字形为空`);
-        assert.ok(marks.find((mark) => mark.name === 'JAV 与新作')?.text?.includes('番'));
-        await page.locator(PANEL).getByRole('tab', { name: '搜索与推荐' }).click();
+        assert.ok(marks.find((mark) => mark.name === 'JAV and new works')?.text?.includes('番'));
+        await page.locator(PANEL).getByRole('tab', { name: 'Search and recommendations' }).click();
         const link = page.locator(PANEL).getByRole('link', { name: '打开口味与记录' });
         const style = await link.evaluate((node) => ({ display: getComputedStyle(node).display,
           height: node.getBoundingClientRect().height, decoration: getComputedStyle(node).textDecorationLine }));
@@ -59,11 +59,11 @@ describe('设计决定：配置控件', () => {
         }));
         assert.equal(centers.length, 3);
         for (const delta of centers) assert.ok(delta <= 1, `状态偏离输入框中线 ${delta}px`);
-        const media = page.getByRole('form', { name: '媒体目录', exact: true });
-        assert.notEqual(await media.getByRole('button', { name: '添加文件夹', exact: true }).evaluate((node) => getComputedStyle(node).backgroundImage),
-          await media.getByRole('button', { name: '保存配置', exact: true }).evaluate((node) => getComputedStyle(node).backgroundImage));
-        await page.getByRole('tab', { name: '应用与维护', exact: true }).click();
-        const tutorial = page.getByRole('region', { name: '安装教程', exact: true });
+        const media = page.getByRole('form', { name: 'Media folders', exact: true });
+        assert.notEqual(await media.getByRole('button', { name: 'Add folder', exact: true }).evaluate((node) => getComputedStyle(node).backgroundImage),
+          await media.getByRole('button', { name: 'Save settings', exact: true }).evaluate((node) => getComputedStyle(node).backgroundImage));
+        await page.getByRole('tab', { name: 'App and maintenance', exact: true }).click();
+        const tutorial = page.getByRole('region', { name: 'Setup guide', exact: true });
         await tutorial.waitFor();
         const aligned = await tutorial.evaluate((node) => {
           const label = [...node.querySelectorAll('p')].find((item) => item.textContent === '安装教程')!.getBoundingClientRect();

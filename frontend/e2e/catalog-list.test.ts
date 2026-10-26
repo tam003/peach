@@ -29,12 +29,12 @@ describe('馆藏卡片与列表', () => {
       const { page } = opened;
       try {
         await page.locator('#grid [data-media-card]').first().waitFor({ state: 'visible' });
-        const folder = page.getByRole('button', { name: '文件夹模式', exact: true });
+        const folder = page.getByRole('button', { name: 'Folders', exact: true });
         assert.equal(await folder.getAttribute('aria-pressed'), 'true');
         assert.equal(await folder.evaluate(node => !!node.closest('[data-entity-sorts]')), true);
-        const choose = (name: string) => page.getByRole('radiogroup', { name: '馆藏显示方式' })
+        const choose = (name: string) => page.getByRole('radiogroup', { name: 'Library view' })
           .locator('label').filter({ has: page.getByRole('radio', { name, exact: true }) }).click();
-        await choose('列表');
+        await choose('List');
         await page.locator('[data-catalog-table] [data-catalog-row]').first().waitFor();
         await settle(page, '#grid');
         const count = await page.locator('#grid [data-catalog-row]').count();
@@ -57,12 +57,12 @@ describe('馆藏卡片与列表', () => {
         await page.screenshot({ path: join(screenshots, `${viewport.name}-list.png`), fullPage: false });
         await page.reload({ waitUntil: 'load' });
         await page.locator('[data-catalog-table] [data-catalog-row]').first().waitFor();
-        assert.equal(await page.getByRole('radio', { name: '列表', exact: true }).isChecked(), true);
+        assert.equal(await page.getByRole('radio', { name: 'List', exact: true }).isChecked(), true);
         const pageSize = page.getByRole('button', { name: /每页显示数量/ });
         await pageSize.scrollIntoViewIfNeeded();
         await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         await pageSize.click();
-        await page.getByRole('option', { name: '每页 10 部', exact: true }).click();
+        await page.getByRole('option', { name: '每页 10 works', exact: true }).click();
         await page.waitForFunction(() => document.querySelectorAll('[data-catalog-row]').length === 10);
         await page.getByRole('button', { name: '下一页', exact: true }).click();
         await page.waitForFunction(() => document.querySelectorAll('[data-catalog-row]').length === 2);
@@ -72,7 +72,7 @@ describe('馆藏卡片与列表', () => {
         await page.locator('[data-catalog-table] [data-catalog-row]').first().waitFor();
         await page.waitForFunction(() => document.querySelectorAll('[data-catalog-row]').length === 2);
         assert.equal(await page.getByRole('button', { name: '第 2 页', exact: true }).getAttribute('aria-current'), 'page');
-        await choose('卡片');
+        await choose('Cards');
         await page.locator('[data-catalog-view-mode="cards"] [data-media-card]').first().waitFor();
         assert.equal(await page.locator('#grid [data-media-card]').count(), count);
         if (viewport.mobile) {
@@ -105,8 +105,8 @@ describe('馆藏卡片与列表', () => {
           const offset = Number(params.get('offset') || 0), limit = Number(params.get('limit') || 60);
           return route.fulfill({ json: { items: sorted.slice(offset, offset + limit), total: sorted.length } });
         });
-        await page.getByRole('radiogroup', { name: '馆藏显示方式' }).locator('label')
-          .filter({ has: page.getByRole('radio', { name: '列表', exact: true }) }).click();
+        await page.getByRole('radiogroup', { name: 'Library view' }).locator('label')
+          .filter({ has: page.getByRole('radio', { name: 'List', exact: true }) }).click();
         await page.locator('[data-catalog-row][data-id="9044"]').waitFor();
         assert.equal(await page.locator('[data-catalog-row]').count(), 20);
         assert.equal(requests.at(-1)!.get('limit'), '20');
@@ -122,7 +122,7 @@ describe('馆藏卡片与列表', () => {
         await page.locator('[data-catalog-row]').first().locator('label').click();
         await page.getByRole('button', { name: '上一页', exact: true }).click();
         await page.locator(`[data-catalog-row][data-id="${firstId}"][data-board-selected]`).waitFor();
-        const sortButton = page.getByRole('button', { name: /作品列表排序/ });
+        const sortButton = page.getByRole('button', { name: /Works排序/ });
         await sortButton.scrollIntoViewIfNeeded();
         await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         await sortButton.click();
@@ -130,7 +130,7 @@ describe('馆藏卡片与列表', () => {
           const url = new URL(response.url());
           return url.pathname === '/api/items' && url.searchParams.get('sort') === 'dur' && url.searchParams.get('dir') === 'asc';
         });
-        try { await page.getByRole('option', { name: '时长', exact: true }).click({ timeout: 5000 }) }
+        try { await page.getByRole('option', { name: 'Length', exact: true }).click({ timeout: 5000 }) }
         catch (error) {
           console.info('排序菜单', await sortButton.getAttribute('aria-expanded'), await page.locator('[role="option"]').allTextContents());
           throw error;
@@ -145,7 +145,7 @@ describe('馆藏卡片与列表', () => {
         await pageSizeButton.scrollIntoViewIfNeeded();
         await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         await pageSizeButton.click();
-        await page.getByRole('option', { name: '每页 10 部', exact: true }).click();
+        await page.getByRole('option', { name: '每页 10 works', exact: true }).click();
         await page.waitForFunction(() => document.querySelectorAll('[data-catalog-row]').length === 10);
         assert.equal(requests.at(-1)!.get('limit'), '10');
         if (!viewport.mobile) {
@@ -153,7 +153,7 @@ describe('馆藏卡片与列表', () => {
             const url = new URL(response.url());
             return url.pathname === '/api/items' && url.searchParams.get('sort') === 'name';
           });
-          await page.getByRole('columnheader', { name: /名称/ }).click();
+          await page.getByRole('columnheader', { name: /Name/ }).click();
           await namedResponse;
           await page.waitForFunction(() => document.querySelector('[data-catalog-row]')?.getAttribute('data-id') === '9000');
           assert.equal(requests.at(-1)!.get('dir'), 'asc');

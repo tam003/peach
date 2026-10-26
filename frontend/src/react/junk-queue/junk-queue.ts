@@ -5,6 +5,7 @@
  * 都走 `/api/batch`，由壳执行（回执、撤销与重读都归壳），做完壳推进 `revision`，查询换键重取。 */
 import { apiGet } from '../../api';
 import type { JunkKind, JunkRoute, JunkView } from '../../junk-queue';
+import { phrase } from '../../i18n/phrase';
 
 export type { JunkKind, JunkRoute, JunkView };
 
@@ -38,16 +39,16 @@ export type JunkOperation = 'dismiss-junk' | 'reconsider-junk' | 'dispose';
 
 /** 卡片上的类型名与字形。网址那一类在卡上写全称。 */
 export const JUNK_KIND_META: Record<string, readonly [string, string]> = {
-  video: ['视频', 'play'], image: ['图片', 'pics'], archive: ['压缩包', 'file-archive'],
-  audio: ['音频', 'file-audio'], url: ['网址快捷方式', 'globe'], other: ['其它文件', 'hard-drive'],
+  get ['video']() { return [phrase('视频'), 'play'] as const; }, get ['image']() { return [phrase('图片'), 'pics'] as const; }, get ['archive']() { return [phrase('压缩包'), 'file-archive'] as const; },
+  get ['audio']() { return [phrase('音频'), 'file-audio'] as const; }, get ['url']() { return [phrase('网址快捷方式'), 'globe'] as const; }, get ['other']() { return [phrase('其它文件'), 'hard-drive'] as const; },
 };
 export const junkKindMeta = (item: JunkItem) => JUNK_KIND_META[item.junk_kind || 'other'] || JUNK_KIND_META.other!;
 
 /** 中间那颗判断键：待判断视图里是「不是垃圾」，已排除视图里是「重新判断」。 */
 export function junkDecision(view: JunkView): { operation: JunkOperation; label: string; glyph: string } {
   return view === 'dismissed'
-    ? { operation: 'reconsider-junk', label: '重新判断', glyph: 'rotate-ccw' }
-    : { operation: 'dismiss-junk', label: '不是垃圾', glyph: 'check' };
+    ? { operation: 'reconsider-junk', label: phrase('重新判断'), glyph: 'rotate-ccw' }
+    : { operation: 'dismiss-junk', label: phrase('不是垃圾'), glyph: 'check' };
 }
 
 /** 分类条上一项的计数：「全部」读这一视图的合计，其余读各类。 */

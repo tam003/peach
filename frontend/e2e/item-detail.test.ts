@@ -470,7 +470,7 @@ describe('作品详情岛', () => {
       const value = page.locator('#detailRating [data-rating-value]');
       assert.equal((await value.innerText()).trim(), '3 星');
       await page.locator('#detailRating [data-rate="3"]').click();
-      await page.locator('#detailRating [data-rating-value]', { hasText: '未评分' }).waitFor();
+      await page.locator('#detailRating [data-rating-value]', { hasText: 'Not rated' }).waitFor();
       assert.equal(await page.locator('#detailRating [data-on="true"]').count(), 0);
       await undo(page);
       await page.locator('#detailRating [data-rating-value]', { hasText: '3 星' }).waitFor();

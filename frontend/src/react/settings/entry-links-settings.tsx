@@ -12,6 +12,7 @@ import { Button } from '@/components/base/buttons/button';
 import { Input } from '@/components/base/input/input';
 
 import { apiSend } from '../../api';
+import { phrase } from '../../i18n/phrase';
 import { ENTRY_LINKS_HELP, ENTRY_LINKS_HINT } from '../../configuration-copy';
 import type { EntryLinkSite, EntryLinksState } from '../bundle';
 import { ErrorText, Footer, Help, Section, Stack } from './section';
@@ -35,25 +36,25 @@ export function EntryLinksForm({ initial, receipt }: {
       apiSend<EntryLinksState>('/api/configuration/entry-links', body, 'POST', signal),
       (next) => {
         setSites(next.sites);
-        receipt('已保存配置');
+        receipt(phrase('已保存配置'));
       });
   };
 
   return (
-    <Section title="作品资料站点" onSubmit={submit}>
+    <Section title={phrase('作品资料站点')} onSubmit={submit}>
       <Stack>
-        <Help>{ENTRY_LINKS_HELP}</Help>
+        <Help>{phrase(ENTRY_LINKS_HELP)}</Help>
         {sites.map((site) => (
-          <Input key={site.key} id={`entry-link-${site.key}`} label={<SiteLabel site={site.key} label={`${site.label} 地址`} />}
+          <Input key={site.key} id={`entry-link-${site.key}`} label={<SiteLabel site={site.key} label={phrase('{label} 地址', { label: site.label })} />}
             autoComplete="off" maxLength={100} value={site.host}
             placeholder={site.default_host}
             onChange={(host) => change(site.key, host)}
-            validationBehavior="aria" hint={ENTRY_LINKS_HINT} />
+            validationBehavior="aria" hint={phrase(ENTRY_LINKS_HINT)} />
         ))}
         {action.error ? <ErrorText>{action.error}</ErrorText> : null}
       </Stack>
       <Footer>
-        <Button type="submit" {...busyProps(action.busy === 'save')}>保存配置</Button>
+        <Button type="submit" {...busyProps(action.busy === 'save')}>{phrase('保存配置')}</Button>
       </Footer>
     </Section>
   );

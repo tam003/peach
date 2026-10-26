@@ -188,7 +188,7 @@ describe('顶栏搜索', () => {
         for (let i = 0; i < 21; i++) await page.keyboard.press('ArrowDown');
         const more = page.locator(`${MENU} [data-search-option="more"]`);
         assert.equal(await more.getAttribute('data-active'), '');
-        assert.equal(await more.textContent(), '查看全部 53 个视频');
+        assert.equal(await more.textContent(), 'View all 53 videos');
         await page.keyboard.press('Enter');
         await page.waitForFunction(() => new URLSearchParams(location.search).get('q') === 'abf');
         await page.locator(MENU).waitFor({ state: 'hidden' });

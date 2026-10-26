@@ -27,6 +27,7 @@ import {
   batchOperate, bulkCloudPreferences, distinctName, DUPLICATES_KEY, duplicateVictims, fetchDuplicates, KEEP_LABELS,
   mixedCloudPreferences, sharedNamePrefix, victimBytes, type DuplicateFile, type DuplicateGroup, type KeepRule,
 } from './duplicates';
+import { phrase } from '../../i18n/phrase';
 
 const PLAY = spriteGlyph('play');
 const STACK = spriteGlyph('file-stack');
@@ -48,9 +49,9 @@ const refresh = () => {
 interface Disposal { groups: readonly DuplicateGroup[]; keep: KeepRule; key: string }
 
 function evidenceFlag(group: DuplicateGroup) {
-  if (group.identical) return <span className={`${FLAG} text-(--keep)`}>sha1 一致</span>;
+  if (group.identical) return <span className={`${FLAG} text-(--keep)`}>{phrase('sha1 一致')}</span>;
   return <span className={`${FLAG} text-text-secondary`}>
-    {group.evidence === 'same_code_short_copy' ? '同番号短版本' : '时长推断'}
+    {group.evidence === 'same_code_short_copy' ? phrase('同番号短版本') : phrase('时长推断')}
   </span>;
 }
 
@@ -61,7 +62,7 @@ function FileRow({ file, prefix, openItem }: { file: DuplicateFile; prefix: stri
   return (
     <div className="duplicate-row items-center gap-3 border-t border-separator-border px-5 py-4 max-compact:p-4">
       {/* 封面格居中用 `inline-grid`：`grid` 与旧样式表同名，不生成这个工具类。 */}
-      <button type="button" onClick={open} aria-label={`预览 ${file.name}`}
+      <button type="button" onClick={open} aria-label={phrase('预览 {name}', { name: file.name })}
         className="relative row-span-2 inline-grid aspect-16/10 w-full cursor-pointer place-items-center overflow-hidden rounded-2lg bg-background-tertiary-default text-text-secondary">
         <PLAY aria-hidden className="size-6" />
         <img src={`/thumb?id=${file.id}&c=4`} alt="" loading="lazy"
@@ -75,8 +76,8 @@ function FileRow({ file, prefix, openItem }: { file: DuplicateFile; prefix: stri
         </button>
         {file.is_largest || file.is_longest
           ? <span className="flex flex-none gap-1">
-              {file.is_largest ? <i className={`${MARK} not-italic bg-background-primary-hover text-text-secondary`}>最大</i> : null}
-              {file.is_longest ? <i className={`${MARK} not-italic bg-(--keep)/22 text-(--keep)`}>最长</i> : null}
+              {file.is_largest ? <i className={`${MARK} not-italic bg-background-primary-hover text-text-secondary`}>{phrase('最大')}</i> : null}
+              {file.is_longest ? <i className={`${MARK} not-italic bg-(--keep)/22 text-(--keep)`}>{phrase('最长')}</i> : null}
             </span>
           : null}
       </span>
@@ -102,12 +103,12 @@ export function DuplicatesPage({ openItem, toast, failure }: DuplicatesProps) {
     mutationFn: (ids: readonly number[]) => batchOperate(ids, 'dispose'),
     onSuccess: (_result, ids) => {
       refresh();
-      toast(`已把 ${ids.length} 项移入回收站`, {
+      toast(phrase('已把 {length} 项移入回收站', { length: ids.length }), {
         undo: async () => {
           try {
             await batchOperate(ids, 'restore');
           } catch (cause) {
-            failure('撤销移入回收站', cause);
+            failure(phrase('撤销移入回收站'), cause);
           } finally {
             refresh();
           }
@@ -121,7 +122,7 @@ export function DuplicatesPage({ openItem, toast, failure }: DuplicatesProps) {
   if (!data) {
     return (
       <div className="mx-auto w-full max-w-board">
-        <Note tone="error" title="重复文件读取失败">{duplicates.error ? errorMessage(duplicates.error) : '未取得重复文件列表，请刷新页面重试。'}</Note>
+        <Note tone="error" title={phrase('重复文件读取失败')}>{duplicates.error ? errorMessage(duplicates.error) : phrase('未取得重复文件列表，请刷新页面重试。')}</Note>
       </div>
     );
   }
@@ -133,10 +134,10 @@ export function DuplicatesPage({ openItem, toast, failure }: DuplicatesProps) {
     const ids = duplicateVictims(chosen, keep);
     if (!ids.length) return;
     void confirmModal({
-      title: '移入回收站',
-      body: `将把 ${ids.length} 个重复文件的馆藏记录移入回收站，每组保留${KEEP_LABELS[keep] ?? KEEP_LABELS.largest}。`
-        + `文件共 ${fmtSize(victimBytes(chosen, ids))}，记录可从回收站还原。`,
-      confirmLabel: '移入回收站',
+      title: phrase('移入回收站'),
+      body: phrase('将把 {length} 个重复文件的馆藏记录移入回收站，每组保留{label}。', { length: ids.length, label: KEEP_LABELS[keep] ?? KEEP_LABELS.largest })
+        + phrase('文件共 {chosen}，记录可从回收站还原。', { chosen: fmtSize(victimBytes(chosen, ids)) }),
+      confirmLabel: phrase('移入回收站'),
       onConfirm: () => { setPending(key); return dispose.mutateAsync(ids) },
     });
   };
@@ -144,26 +145,26 @@ export function DuplicatesPage({ openItem, toast, failure }: DuplicatesProps) {
 
   return (
     <div className="mx-auto w-full max-w-board pb-10.5">
-      <CollectionSummary label="重复内容" figure={`${Number(data.total || 0).toLocaleString()} 组`}
-        detail={`${Number(data.files || 0).toLocaleString()} 个文件 · 可回收 ${fmtSize(data.reclaimable)}`} />
+      <CollectionSummary label={phrase('重复内容')} figure={phrase('{total} 组', { total: Number(data.total || 0).toLocaleString() })}
+        detail={phrase('{files} 个文件 · 可回收 {reclaimable}', { files: Number(data.files || 0).toLocaleString(), reclaimable: fmtSize(data.reclaimable) })} />
       {groups.length
-        ? <FilterGlass title="批量保留">
+        ? <FilterGlass title={phrase('批量保留')}>
             <GlassPill busy={pending === 'all:largest'} onPress={() => run({ groups, keep: 'largest', key: 'all:largest' })}>
-              全部保留最大
+              {phrase('全部保留最大')}
             </GlassPill>
             <GlassPill busy={pending === 'all:longest'} onPress={() => run({ groups, keep: 'longest', key: 'all:longest' })}>
-              全部保留最长
+              {phrase('全部保留最长')}
             </GlassPill>
             {bulkCloudPreferences(groups, configured).map((location) => (
               <GlassPill key={location} busy={pending === `all:${location}`}
                 onPress={() => run({ groups, keep: location, key: `all:${location}` })}>
-                <SourceLabel source={location} label={`全部优先 ${LOC[location] || location}`} />
+                <SourceLabel source={location} label={phrase('全部优先 {item}', { item: LOC[location] || location })} />
               </GlassPill>
             ))}
           </FilterGlass>
         : null}
       {dispose.isError
-        ? <div className="mb-5"><Note tone="error" title="移入回收站失败">{errorMessage(dispose.error)}</Note></div>
+        ? <div className="mb-5"><Note tone="error" title={phrase('移入回收站失败')}>{errorMessage(dispose.error)}</Note></div>
         : null}
       {groups.length
         ? groups.map((group, index) => {
@@ -175,37 +176,37 @@ export function DuplicatesPage({ openItem, toast, failure }: DuplicatesProps) {
                 <div className="flex flex-wrap items-center gap-3 bg-background-tertiary-default p-5 max-compact:p-4 dark:bg-background-secondary-default">
                   <b className="text-title-2-medium text-text-primary">{group.code}</b>
                   <span className="font-mono text-caption-1-regular leading-5 text-text-primary">
-                    {`${Number(group.count || 0).toLocaleString()} 个 · 可回收 ${fmtSize(group.reclaimable)}`}
+                    {phrase('{count} 个 · 可回收 {reclaimable}', { count: Number(group.count || 0).toLocaleString(), reclaimable: fmtSize(group.reclaimable) })}
                   </span>
                   {evidenceFlag(group)}
                   {group.cross_drive
-                    ? <span className={`${FLAG} text-text-secondary`}>{`跨盘 ${group.drives.join(' ')}`}</span>
+                    ? <span className={`${FLAG} text-text-secondary`}>{phrase('跨盘 {drives}', { drives: group.drives.join(' ') })}</span>
                     : null}
                   <span className="ml-auto flex flex-wrap gap-2 max-compact:ml-0 max-compact:w-full">
                     <Button variant="secondary" size="small" {...busy(key('largest'))}
-                      onClick={() => run({ groups: one, keep: 'largest', key: key('largest') })}>留最大</Button>
+                      onClick={() => run({ groups: one, keep: 'largest', key: key('largest') })}>{phrase('留最大')}</Button>
                     <Button variant="secondary" size="small" {...busy(key('longest'))}
-                      onClick={() => run({ groups: one, keep: 'longest', key: key('longest') })}>留最长</Button>
+                      onClick={() => run({ groups: one, keep: 'longest', key: key('longest') })}>{phrase('留最长')}</Button>
                     {mixedCloudPreferences(group.files, configured).map((location) => (
                       <Button key={location} variant="secondary" size="small" {...busy(key(location))}
                         onClick={() => run({ groups: one, keep: location, key: key(location) })}>
-                        <SourceLabel source={location} label={`留 ${LOC[location] || location}`} />
+                        <SourceLabel source={location} label={phrase('留 {item}', { item: LOC[location] || location })} />
                       </Button>
                     ))}
                     <Button variant="danger" size="small" {...busy(key('all'))}
-                      onClick={() => run({ groups: one, keep: 'all', key: key('all') })}>整组回收</Button>
+                      onClick={() => run({ groups: one, keep: 'all', key: key('all') })}>{phrase('整组回收')}</Button>
                   </span>
                 </div>
                 <div>{group.files.map((file) => <FileRow key={file.id} file={file} prefix={prefix} openItem={openItem} />)}</div>
               </section>
             );
           })
-        : <EmptyState icon={STACK} title="没有找到重复文件">
-            所有来源之间没有检测到内容相同的文件。扫描新来源后，这里会自动更新。
+        : <EmptyState icon={STACK} title={phrase('没有找到重复文件')}>
+            {phrase('所有来源之间没有检测到内容相同的文件。扫描新来源后，这里会自动更新。')}
           </EmptyState>}
       {groups.length > 0 && data.total > groups.length
         ? <p className="text-center text-caption-1-regular text-text-secondary">
-            {`显示可回收最多的前 ${groups.length.toLocaleString()} 组，共 ${Number(data.total).toLocaleString()} 组；处理掉这些后，其余的会补上来。`}
+            {phrase('显示可回收最多的前 {length} 组，共 {total} 组；处理掉这些后，其余的会补上来。', { length: groups.length.toLocaleString(), total: Number(data.total).toLocaleString() })}
           </p>
         : null}
     </div>

@@ -8,6 +8,8 @@ import type { ReactNode } from 'react';
 
 import { Input } from '@/components/base/input/input';
 
+import { phrase } from '../../i18n/phrase';
+
 export function PasswordPair({
   label, password, confirmation, onPassword, onConfirmation, disabled = false,
   passwordError, passwordHint, confirmationError, confirmationInvalid = false,
@@ -30,7 +32,7 @@ export function PasswordPair({
         isDisabled={disabled} isRequired={!disabled} validationBehavior="aria"
         isInvalid={!disabled && Boolean(passwordError)}
         hint={disabled ? passwordHint : passwordError || passwordHint} />
-      <Input id="access-confirm" type="password" label="确认访问密码" autoComplete="new-password" maxLength={256}
+      <Input id="access-confirm" type="password" label={phrase('确认访问密码')} autoComplete="new-password" maxLength={256}
         value={confirmation} onChange={onConfirmation} isDisabled={disabled} isRequired={!disabled} validationBehavior="aria"
         isInvalid={!disabled && (Boolean(confirmationError) || confirmationInvalid)}
         hint={disabled ? undefined : confirmationError} />

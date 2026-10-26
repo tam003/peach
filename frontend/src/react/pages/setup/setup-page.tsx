@@ -11,6 +11,7 @@ import { describeFailure, fetchQuestions, SetupRequestError, type SetupDone, typ
 import { SetupDoneView } from './setup-done';
 import { SetupForm } from './setup-form';
 import { SetupRestore } from './setup-restore';
+import { phrase } from '../../../i18n/phrase';
 
 type View =
   | { kind: 'loading' }
@@ -43,14 +44,14 @@ export function SetupPage() {
     setAttempt((count) => count + 1);
   };
   return (
-    <AuthCard title="欢迎使用 Peach" lede="添加媒体库，开始整理馆藏。" busy={view.kind === 'loading'}>
-      {view.kind === 'denied' ? <Note tone="error">请在运行 Peach 的这台电脑上打开设置。</Note> : null}
+    <AuthCard title={phrase('欢迎使用 Peach')} lede={phrase('添加媒体库，开始整理馆藏。')} busy={view.kind === 'loading'}>
+      {view.kind === 'denied' ? <Note tone="error">{phrase('请在运行 Peach 的这台电脑上打开设置。')}</Note> : null}
       {view.kind === 'failed'
-        ? <Note tone="error" action={<Button variant="secondary" onClick={retry}>重试</Button>}>{view.message}</Note>
+        ? <Note tone="error" action={<Button variant="secondary" onClick={retry}>{phrase('重试')}</Button>}>{view.message}</Note>
         : null}
       {view.kind === 'form' ? <>
         <Button variant="secondary" className="self-start" onClick={() => setRestoring((current) => !current)}>
-          {restoring ? '返回首次设置' : '使用已有数据目录'}
+          {restoring ? phrase('返回首次设置') : phrase('使用已有数据目录')}
         </Button>
         {restoring
           ? <SetupRestore onDone={(done) => setView({ kind: 'done', done })} />

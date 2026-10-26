@@ -1837,8 +1837,8 @@ class OperationalScriptTests(unittest.TestCase):
         # 不按 shebang 找 Windows 上的 Python。
         entrypoint.write_text(
             f'{prologue}{marker}'
-            f'PEACH_PY={Path(sys.executable).as_posix()}\n'
-            f'PEACH_STUB={stub.as_posix()}\n'
+            f'PEACH_PY="{Path(sys.executable).as_posix()}"\n'
+            f'PEACH_STUB="{stub.as_posix()}"\n'
             f'{stub_line}\n', encoding="utf-8")
 
         # `/bin/bash` 在 macOS 上就是那个 3.2；装了新版 bash 的机器两个都跑。

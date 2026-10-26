@@ -29,6 +29,7 @@ import { createPortal, flushSync } from 'react-dom';
 
 import { growCollapse, popBadges, setCollapseOpen } from '@peach/legacy/ui';
 
+import { phrase } from '../../i18n/phrase';
 import { useViewGlide } from '../components/use-view-glide';
 import { Icon } from '../settings-panel/icon';
 import type {
@@ -148,12 +149,12 @@ function Navigation({ host: at, epoch, version }: { host: SidebarHost; epoch: nu
     <>
       <div data-sidebar-nav="" ref={column} onPointerLeave={glide.leave}>
         {items.map(([key, label, glyph], index) => (
-          <button type="button" key={key || HOME} data-nav={key} aria-pressed={pressed[index]} aria-label={label}
+          <button type="button" key={key || HOME} data-nav={key} aria-pressed={pressed[index]} aria-label={phrase(label)}
             data-dragging={dragging === key ? '' : undefined}
             data-drop={drop?.key === key ? (drop.after ? 'after' : 'before') : undefined}
             onClick={() => at.navTo(key)} onPointerEnter={glide.hover} {...drag(key)}>
             {key === '' ? <img data-sidebar-home-logo="" src="/peach-logo.png" alt="" /> : <Icon name={glyph} />}
-            <span>{label}</span>
+            <span>{phrase(label)}</span>
           </button>
         ))}
       </div>
@@ -307,7 +308,7 @@ function Group({ title, kind, active, index, epoch, children }: {
   return (
     <details ref={details} data-sidebar-group={title} data-sidebar-kind={kind}>
       <summary role="button" data-sidebar-toggle="" aria-expanded={open} aria-controls={collapseId} onClick={toggle}>
-        <Icon name="chevron-right" /><span>{title}</span>
+        <Icon name="chevron-right" /><span>{phrase(title)}</span>
       </summary>
       <div ref={body} data-sidebar-collapse="" id={collapseId} inert={!open}>
         <div data-sidebar-collapse-body="">
@@ -343,10 +344,10 @@ function ChipList({ rows, filterKey, multi, selected, counts, host: at, onToggle
         return (
           <button type="button" key={row.value} data-sidebar-chip="" aria-pressed={selected.includes(row.value)}
             data-key={filterKey} data-val={row.value} data-multi={multi ? '1' : '0'}
-            data-offline={row.offline ? '' : undefined} disabled={!!row.offline} title={row.offline || row.label}
+            data-offline={row.offline ? '' : undefined} disabled={!!row.offline} title={row.offline || phrase(row.label)}
             onClick={() => onToggle(filterKey, row.value, multi)}>
             <Dot dot={row.dot} />
-            <span data-sidebar-chip-label="">{row.label}</span>
+            <span data-sidebar-chip-label="">{phrase(row.label)}</span>
             {n === null ? null : <span data-sidebar-count="" data-count-badge={`${filterKey}:${row.value}`}>{n.toLocaleString()}</span>}
           </button>
         );
@@ -405,7 +406,7 @@ function MoreList({ epoch, title, rows, latest, limit, filterKey, selected, coun
         counts={counts} host={at} />
       {expandable && rows.length > limit
         ? <button type="button" ref={button} data-sidebar-more={filterKey} aria-expanded={expanded}
-            aria-label={`${expanded ? '收起' : '展开全部'}${title}`} onClick={more}><Icon name="chevron-down" /></button>
+            aria-label={phrase(expanded ? '收起{title}' : '展开全部{title}', { title: phrase(title) })} onClick={more}><Icon name="chevron-down" /></button>
         : null}
     </>
   );
@@ -495,7 +496,7 @@ function Duration({ host: at, filters, commit: onCommit = at.setDuration }: {
 
   const tip = (end: 'min' | 'max', value: number) => (
     <output data-sidebar-range-tip="" data-range-end={end} data-range-active={active === end ? '' : undefined} aria-hidden="true">
-      {end === 'max' && value >= DURATION_MAX ? '不限' : `${value} 分钟`}
+      {end === 'max' && value >= DURATION_MAX ? phrase('不限') : phrase('{value} 分钟', { value })}
     </output>
   );
   return (
@@ -503,9 +504,9 @@ function Duration({ host: at, filters, commit: onCommit = at.setDuration }: {
       <div data-sidebar-range="" id="durationRange" ref={group}>
         <span data-sidebar-range-base="" />
         <span data-sidebar-range-fill="" />
-        <input id="durMin" type="range" min="0" max={DURATION_MAX} step="5" value={lo} aria-label="最短时长（分钟）"
+        <input id="durMin" type="range" min="0" max={DURATION_MAX} step="5" value={lo} aria-label={phrase('最短时长（分钟）')}
           ref={minInput} onChange={(event) => move('min', Number(event.currentTarget.value))} />
-        <input id="durMax" type="range" min="0" max={DURATION_MAX} step="5" value={hi} aria-label="最长时长（分钟）"
+        <input id="durMax" type="range" min="0" max={DURATION_MAX} step="5" value={hi} aria-label={phrase('最长时长（分钟）')}
           ref={maxInput} onChange={(event) => move('max', Number(event.currentTarget.value))} />
         {tip('min', lo)}
         {tip('max', hi)}

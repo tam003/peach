@@ -12,6 +12,7 @@ import { coverUrl } from '@peach/card-art';
 import type { MediaPage } from '../catalog-grid/types';
 import type { DownloadPrefill } from './cloud-download-dialog';
 import { sameWorkCode } from './work-code';
+import { phrase } from '../../i18n/phrase';
 
 interface Candidate {
   id: string; uri: string; name: string; size: number; seeders: number; origins: string[];
@@ -24,8 +25,8 @@ function SearchSpinner({ className }: { className?: string }) {
 }
 
 function preferredGoal(reason: string | undefined): string {
-  if (['中字', '中文字幕'].includes(reason?.trim() ?? '')) return 'chinese';
-  if (['无码', '无码破解'].includes(reason?.trim() ?? '')) return 'uncensored';
+  if ([phrase('中字'), phrase('中文字幕')].includes(reason?.trim() ?? '')) return 'chinese';
+  if ([phrase('无码'), phrase('无码破解')].includes(reason?.trim() ?? '')) return 'uncensored';
   return 'quality';
 }
 
@@ -70,39 +71,39 @@ export function ResourceSearch({ initialCode, reason, choose, onSearch, onWork }
     }
   };
   return (
-    <section aria-label="查找资源" aria-busy={Boolean(action.busy)} className="flex min-w-0 flex-col gap-4">
-      {reason ? <Help>版本目标：{reason}。可在下方调整搜索优先项；完整度与水印需要逐条复核。</Help> : null}
-      <Input label="按番号查找资源" value={code} maxLength={80} placeholder="输入番号，按回车搜索" enterKeyHint="search"
+    <section aria-label={phrase('查找资源')} aria-busy={Boolean(action.busy)} className="flex min-w-0 flex-col gap-4">
+      {reason ? <Help>{phrase('版本目标：')}{reason}{phrase('。可在下方调整搜索优先项；完整度与水印需要逐条复核。')}</Help> : null}
+      <Input label={phrase('按番号查找资源')} value={code} maxLength={80} placeholder={phrase('输入番号，按回车搜索')} enterKeyHint="search"
         leadingIcon={action.busy ? SearchSpinner : RiSearchLine}
         isReadOnly={Boolean(action.busy)} aria-busy={Boolean(action.busy)} onChange={setCode} onKeyDown={(event) => {
           if (event.key === 'Enter' && !event.nativeEvent.isComposing) { event.preventDefault(); search() }
         }} />
       <div className="flex flex-col gap-1">
-        <FieldLabel>优先寻找</FieldLabel>
-        <Select aria-label="优先寻找" selectedKey={goal} isDisabled={Boolean(action.busy)}
+        <FieldLabel>{phrase('优先寻找')}</FieldLabel>
+        <Select aria-label={phrase('优先寻找')} selectedKey={goal} isDisabled={Boolean(action.busy)}
           onSelectionChange={(key) => { if (key !== null) setGoal(String(key)) }}>
-          <SelectItem id="quality">高清</SelectItem><SelectItem id="chinese">中字</SelectItem>
-          <SelectItem id="uncensored">无码</SelectItem>
+          <SelectItem id="quality">{phrase('高清')}</SelectItem><SelectItem id="chinese">{phrase('中字')}</SelectItem>
+          <SelectItem id="uncensored">{phrase('无码')}</SelectItem>
         </Select>
       </div>
       <div className="flex gap-3 max-sm:flex-col">
-        <Input label="最小体积（GiB）" inputMode="decimal" value={min} onChange={setMin} />
-        <Input label="最大体积（GiB）" inputMode="decimal" value={max} onChange={setMax} />
+        <Input label={phrase('最小体积（GiB）')} inputMode="decimal" value={min} onChange={setMin} />
+        <Input label={phrase('最大体积（GiB）')} inputMode="decimal" value={max} onChange={setMax} />
       </div>
-      {action.busy ? <Help role="status">正在搜索资源</Help> : null}
+      {action.busy ? <Help role="status">{phrase('正在搜索资源')}</Help> : null}
       {action.error ? <ErrorText>{action.error}</ErrorText> : null}
       {result?.error ? <Help role="status">{result.error}</Help> : null}
-      {result?.state === 'ready' && !result.items.length ? <Help role="status">没有符合条件的资源。</Help> : null}
+      {result?.state === 'ready' && !result.items.length ? <Help role="status">{phrase('没有符合条件的资源。')}</Help> : null}
       {result?.warnings.map((warning) => <Help key={warning}>{warning}</Help>)}
       {result?.items.length ? <ul className="flex min-w-0 flex-col gap-4">
         {result.items.map((item) => <li key={item.id} className="flex min-w-0 flex-col gap-2 border-t border-separator-border pt-4">
           <p className="break-words text-body-2-medium text-text-primary">{item.name}</p>
-          <Help>{[item.size > 0 ? `${(item.size / 1024 ** 3).toFixed(2)} GiB` : '体积未取得', item.seeders >= 0 ? `${item.seeders} 个做种` : '做种未取得',
-            item.resolution ? `${item.resolution}p` : '', item.codec, item.chinese ? '中字' : '',
-            item.uncensored ? '无码' : '', item.origins.join('、')].filter(Boolean).join(' · ')}</Help>
+          <Help>{[item.size > 0 ? `${(item.size / 1024 ** 3).toFixed(2)} GiB` : phrase('体积未取得'), item.seeders >= 0 ? phrase('{seeders} 个做种', { seeders: item.seeders }) : phrase('做种未取得'),
+            item.resolution ? `${item.resolution}p` : '', item.codec, item.chinese ? phrase('中字') : '',
+            item.uncensored ? phrase('无码') : '', item.origins.join('、')].filter(Boolean).join(' · ')}</Help>
           <div><Button type="button" variant="secondary" onClick={() => {
             choose(item.uri, searched); setSelected(item.id);
-          }}>{selected === item.id ? '已填入磁力' : '选用此资源'}</Button></div>
+          }}>{selected === item.id ? phrase('已填入磁力') : phrase('选用此资源')}</Button></div>
         </li>)}
       </ul> : null}
     </section>

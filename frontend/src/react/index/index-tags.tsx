@@ -17,6 +17,7 @@ import { SelectionDock } from '../components/selection-dock';
 import { spriteGlyph } from '../components/sprite-glyph';
 import { useHorizontalScroller } from '../components/use-horizontal-scroller';
 import { FavoriteButton } from '../library-shortcuts/shortcut-controls';
+import { phrase } from '../../i18n/phrase';
 import { tagColorKey, type IndexTag, type TagView } from './index-data';
 
 export interface TagEntry extends IndexTag {
@@ -59,7 +60,7 @@ export function TagAlphabet({ groups, actions }: { groups: [string, TagEntry[]][
         <section key={letter} data-alpha-group={at}
           className={cardClass({ radius: 'plain', padding: 'none', className: 'px-5 pt-4 pb-3' })}>
           <h3 className="mb-2 flex items-center text-title-2-medium text-text-primary">
-            {letter}<TabCount value={tags.length} />
+            {phrase(letter)}<TabCount value={tags.length} />
           </h3>
           <div className="index-tag-list gap-x-4 gap-y-0.5">
             {tags.map((tag) => <AlphaTag key={tag.k} tag={tag} actions={actions} />)}
@@ -114,11 +115,11 @@ export function TagFilters(
 ) {
   const alphaScroll = useHorizontalScroller<HTMLElement>();
   return (
-    <FilterGlassRows label="标签筛选" topLabel="标签类型"
+    <FilterGlassRows label={phrase('标签筛选')} topLabel={phrase('标签类型')}
       top={categories.map(([key, label]) => (
         <FilterPill key={key} data-tag-pill="" data-tag-cat={key === 'all' ? 'all' : tagColorKey(online, key)}
           pressed={category === key} onPress={() => onCategory(key)}>
-          <Dot />{label}
+          <Dot />{phrase(label)}
         </FilterPill>
       ))}
       bottom={<>
@@ -126,23 +127,23 @@ export function TagFilters(
           {readout}
         </span>
         {letters.length > 1 ? (
-          <nav ref={alphaScroll} aria-label="按首字跳转" data-alpha-jump=""
+          <nav ref={alphaScroll} aria-label={phrase('按首字跳转')} data-alpha-jump=""
             className="flex min-w-0 gap-0.5 overflow-x-auto overscroll-x-contain">
             {letters.map((letter, at) => (
               <button key={letter} type="button" onClick={() => onJump(at)}
                 className="h-7.5 min-w-7.5 flex-none cursor-pointer rounded-glass-key px-1.5 text-caption-1-regular leading-5 text-(--glass-text)/60 outline-none hover:text-(--glass-text) focus-visible:ring-2 focus-visible:ring-border-focus-ring">
-                {letter}
+                {phrase(letter)}
               </button>
             ))}
           </nav>
         ) : null}
-        <RadioGroup aria-label="标签视图" orientation="horizontal" value={view}
+        <RadioGroup aria-label={phrase('标签视图')} orientation="horizontal" value={view}
           onChange={(next) => onView(next as TagView)} className={`ml-auto ${SEGMENTED_GLASS_TRACK}`}>
           {VIEWS.map(([value, label, symbol]) => {
             const Glyph = spriteGlyph(symbol);
             return (
-              <Radio key={value} value={value} aria-label={label} data-glass-segment="" className={SEGMENT_GLASS}>
-                <span title={label} className="contents"><Glyph className="size-4" /></span>
+              <Radio key={value} value={value} aria-label={phrase(label)} data-glass-segment="" className={SEGMENT_GLASS}>
+                <span title={phrase(label)} className="contents"><Glyph className="size-4" /></span>
               </Radio>
             );
           })}
@@ -159,15 +160,15 @@ export function TagDock(
   { count: number; match: 'any' | 'all'; onMatch(match: 'any' | 'all'): void; onClear(): void; onApply(): void },
 ) {
   return (
-    <SelectionDock visible={count > 0} label="所选标签操作" count={`已选 ${count.toLocaleString()} 个标签`}>
+    <SelectionDock visible={count > 0} label={phrase('所选标签操作')} count={phrase('已选 {count} 个标签', { count: count.toLocaleString() })}>
       <Checkbox isSelected={match === 'any'} onChange={(on) => onMatch(on ? 'any' : 'all')}>
         <span className="flex flex-col">
-          <span className="text-body-medium">广泛匹配</span>
-          <span className="text-caption-1-regular text-text-secondary">开启后匹配任一所选标签；关闭后必须同时包含全部标签。</span>
+          <span className="text-body-medium">{phrase('广泛匹配')}</span>
+          <span className="text-caption-1-regular text-text-secondary">{phrase('开启后匹配任一所选标签；关闭后必须同时包含全部标签。')}</span>
         </span>
       </Checkbox>
-      <Button variant="secondary" size="small" onClick={onClear}>清空</Button>
-      <Button variant="primary" size="small" disabled={!count} onClick={onApply}>显示结果</Button>
+      <Button variant="secondary" size="small" onClick={onClear}>{phrase('清空')}</Button>
+      <Button variant="primary" size="small" disabled={!count} onClick={onApply}>{phrase('显示结果')}</Button>
     </SelectionDock>
   );
 }

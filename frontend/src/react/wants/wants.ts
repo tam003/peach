@@ -5,6 +5,7 @@
  * 跟着弹起。 */
 import { apiGet, apiSend } from '../../api';
 import { queryClient } from '../query';
+import { phrase } from '../../i18n/phrase';
 
 export const WANTS_URL = '/api/wants';
 
@@ -12,10 +13,10 @@ export const WANTS_KEY = ['wants'] as const;
 export const wantFollowKey = (itemId: number) => ['wants', 'follow', itemId] as const;
 
 /** 清单上的四段，次序就是页签里排的次序。 */
-export const PHASES = [
-  ['searching', '待找'], ['unreleased', '未发售'], ['given_up', '暂时放弃'], ['acquired', '已入库'],
-] as const;
-export type Phase = (typeof PHASES)[number][0];
+export const PHASES = () => ([
+  ['searching', phrase('待找')], ['unreleased', phrase('未发售')], ['given_up', phrase('暂时放弃')], ['acquired', phrase('已入库')],
+] as const);
+export type Phase = ReturnType<typeof PHASES>[number][0];
 
 /** 一条想要。字段与 `src/peach/web_wants.py` 的 `_payload` 对齐。 */
 export interface Want {
@@ -80,13 +81,13 @@ export const resetWants = (ids: number[], signal?: AbortSignal) =>
 export const invalidateWants = () => queryClient.invalidateQueries({ queryKey: WANTS_KEY });
 
 /** 一条想要叫什么：番号打头，没有番号的关注条目用标题。 */
-export const wantName = (want: Want) => want.code || want.title || `关注条目 ${want.follow_item_id ?? want.id}`;
+export const wantName = (want: Want) => want.code || want.title || phrase('关注条目 {follow_item_id}', { follow_item_id: want.follow_item_id ?? want.id });
 
 /** 「待找」那一段的说明：新片查不到不计数，老片查满三次就暂时放弃。 */
 export function searchNote(want: Want): string {
-  if (want.phase === 'acquired') return want.acquired_at ? `入库于 ${want.acquired_at.slice(0, 10)}` : '已入库';
-  if (want.phase === 'unreleased') return want.release_date ? `${want.release_date} 发售` : '还没发售';
-  if (want.phase === 'given_up') return `查过 ${want.search_count} 次都没找到`;
-  if (want.fresh) return '新片：查不到也一直留在待找';
-  return want.search_count ? `查过 ${want.search_count} 次` : '还没查过';
+  if (want.phase === 'acquired') return want.acquired_at ? phrase('入库于 {acquired_at}', { acquired_at: want.acquired_at.slice(0, 10) }) : phrase('已入库');
+  if (want.phase === 'unreleased') return want.release_date ? phrase('{release_date} 发售', { release_date: want.release_date }) : phrase('还没发售');
+  if (want.phase === 'given_up') return phrase('查过 {search_count} 次都没找到', { search_count: want.search_count });
+  if (want.fresh) return phrase('新片：查不到也一直留在待找');
+  return want.search_count ? phrase('查过 {search_count} 次', { search_count: want.search_count }) : phrase('还没查过');
 }

@@ -4,6 +4,7 @@
  * 换分类只改地址，不等数据，所以骨架里就是最终长相：地址栏那一档是 primary、其余 secondary，
  * 只是还不接线。哪几类有人要等计数，计数到之前整排都摆出来，到了再收掉空的那几类。 */
 import { islandButton } from './island-skeleton';
+import { phrase } from './i18n';
 
 export const IDENTITY_CATEGORIES: readonly (readonly [string, string])[] = [
   ['all', '全部'], ['japanese_av', '女优'], ['amateur', '素人'], ['western', '西方'], ['blogger', '网黄博主'], ['animation', '动画作者'],
@@ -15,7 +16,7 @@ export const IDENTITY_ROW_CLASS = 'mb-4 flex flex-wrap gap-2';
 export function identityFilterSkeletonHtml(category: string): string {
   const known = IDENTITY_CATEGORIES.some(([key]) => key === category) ? category : 'all';
   const buttons = IDENTITY_CATEGORIES.map(([key, label]) => islandButton({
-    variant: key === known ? 'primary' : 'secondary', size: 'small', label, attrs: `aria-pressed="${key === known}"`,
+    variant: key === known ? 'primary' : 'secondary', size: 'small', label: phrase(label), attrs: `aria-pressed="${key === known}"`,
   })).join('');
-  return `<div class="peach-react"><div aria-label="身份分类" class="${IDENTITY_ROW_CLASS}">${buttons}</div></div>`;
+  return `<div class="peach-react"><div aria-label="${phrase('身份分类')}" class="${IDENTITY_ROW_CLASS}">${buttons}</div></div>`;
 }
