@@ -32,7 +32,7 @@ export async function openAccess(browser: Browser): Promise<Visit & { form: Loca
   const opened = await visit(browser, '/settings/library', DESKTOP);
   await expectBody(opened.page, '/settings/library', configurationBody(opened.page));
   await settle(opened.page);
-  await opened.page.getByRole('tab', { name: '网络与访问' }).click({ timeout: 5_000 });
+  await opened.page.getByRole('tab', { name: 'Network and access' }).click({ timeout: 5_000 });
   await settle(opened.page);
   const form = opened.page.locator('form[aria-label="访问密码"]');
   await form.waitFor({ timeout: 10_000 });

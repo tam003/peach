@@ -62,12 +62,12 @@ export function useEntityOnline(author: string, active: boolean, wall: {
     media,
     mediaCounts: counts.images || media === 'images' ? counts : null,
     photoLayout: wall.photoLayout, photoLayouts: wall.photoLayouts, imagesOnly: wall.imagesOnly,
-    status: view.status, statuses: FOLLOW_FILTERS,
+    status: view.status, statuses: FOLLOW_FILTERS(),
     provider: view.provider,
     providers: (facets.providers || []).map((key) => [key, labels.get(key) || key] as const),
     tags: tagRows.map(([k, n]) => ({ k, label: tagLabel(k), n, selected: view.tags.includes(k),
       cat: groupTagType(data?.groups || [], k) })),
-    sorts: FOLLOW_FEED_SORTS.map(([key, label]) => ({
+    sorts: FOLLOW_FEED_SORTS().map(([key, label]) => ({
       key, label, pressed: view.sort === key, dir: view.sort === key ? view.dir : '',
       ariaLabel: sortAriaLabel(key, label, view.sort, view.dir) })),
   };

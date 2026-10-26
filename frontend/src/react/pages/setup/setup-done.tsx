@@ -10,12 +10,13 @@ import { RESTART_REDIRECT_MS } from '../../restart-redirect';
 import { Disclosure, ExternalLink, Fact, FactList } from '../../settings/section';
 import { AuthCard } from '../auth-card';
 import type { SetupDone } from './setup-api';
+import { phrase } from '../../../i18n/phrase';
 
 export function SetupDoneView({ done }: { done: SetupDone }) {
   const entry = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
-    document.title = 'Peach · 设置完成';
+    document.title = phrase('Peach · 设置完成');
     entry.current?.focus();
   }, []);
 
@@ -27,16 +28,16 @@ export function SetupDoneView({ done }: { done: SetupDone }) {
   }, [done.redirect]);
 
   return (
-    <AuthCard title="设置完成" lede="正在启动馆藏。">
+    <AuthCard title={phrase('设置完成')} lede={phrase('正在启动馆藏。')}>
       <p className="text-body-regular text-text-primary">
-        {done.restored ? '已连接已有数据目录。' : done.scan_requested
-          ? '首次扫描已排队，在后台整理媒体库，期间可以照常使用 Peach。'
-          : '稍后在配置页开始扫描媒体库。'}
+        {done.restored ? phrase('已连接已有数据目录。') : done.scan_requested
+          ? phrase('首次扫描已排队，在后台整理媒体库，期间可以照常使用 Peach。')
+          : phrase('稍后在配置页开始扫描媒体库。')}
       </p>
       <ButtonLink ref={entry} href={done.url} className="self-start">
-        {done.history_guide ? '导入浏览器历史记录' : '进入 Peach'}
+        {done.history_guide ? phrase('导入浏览器历史记录') : phrase('进入 Peach')}
       </ButtonLink>
-      <Disclosure summary="运行信息">
+      <Disclosure summary={phrase('运行信息')}>
         <FactList>
           {done.facts.map((fact) => (
             <Fact key={fact.term} term={fact.term}>

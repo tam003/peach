@@ -1,8 +1,9 @@
-/* preferences 域控制器：本域状态与动作，启动由 Application 的生命周期统一安装。 */
+/* Preferences domain controller: this domain's state and actions. Startup is installed by Application's lifecycle. */
 import { loadMediaSources } from './../query/media-sources';
 import { buildBars, dropOfflineFromDefaultLoc, homePath, loadCatalog, paintCatalogFilter, repaintCatalogGrid } from './catalog.js';
 import { appSettingsStore } from './../appearance/settings';
 import { playUiSound, setUiSoundsEnabled, wireUiSounds } from '../ui-kit/sounds';
+import { applyLocale } from './../appearance/locale';
 import { applyTheme, watchSystemTheme } from './../appearance/theme';
 import { applyAccent, applyGlassFaces, applyHomeGlow, paintHomeGlowNow } from './../appearance/glow';
 import { navigationState } from './navigation.js';
@@ -52,7 +53,7 @@ export function sidebarDot(loc){
   if(loc==='online')return {kind:'glyph',name:'rss'};
   const mark=MEDIA_SOURCE_ICONS[loc];
   if(mark)return mark.startsWith('data:')?{kind:'image',src:mark}:{kind:'glyph',name:mark};
-  // 已登记的计费来源使用自己的标识。
+  // A registered metered source uses its own mark.
   return {kind:'cost',cost:'free'};
 }
 
@@ -74,10 +75,10 @@ export async function refreshAll(automatic=false){
   if(automatic&&(document.hidden||!isCatalogPath(decodeURIComponent(location.pathname))||
       mediaState.stageOpen()||mediaState.immerseOpen()||selectMode||selected.size||document.activeElement===$('#q')))return false;
   if(!$('#stats').hidden){
-    /* 管理区的换批行为写在路由元数据的 `refresh` 上：`reopen` 重开自己，
-       `skip` 不参与（追更页重画要联网，只能由它自己的按钮触发），
-       没写的（统计、数据管理、资源同步）落到统计页。播放列表页画着就只重读（`rereadPlaylists`）；别的页原地
-       改写一次不认领的地址，领一个新的页面打开序号，页面元素换一次 key 重开，历史条数不变。 */
+    /* How a management page refreshes is `refresh` on the route metadata. `reopen` opens itself again.
+       `skip` does not take part (the follow page needs the network to repaint, so only its own button can start that).
+       A page with no value (stats, data management, resource sync) lands on the stats page. A painted playlist page only rereads (`rereadPlaylists`). Any other page
+       rewrites an unclaimed address in place, takes a new page-open number, changes the page element's key so it remounts, and leaves the history length alone. */
     const path=decodeURIComponent(location.pathname),refresh=navigationState.routeMeta(path)?.route.refresh;
     if(refresh==='skip')return;
     if(path==='/playlists'){rereadPlaylists();return}
@@ -88,14 +89,14 @@ export async function refreshAll(automatic=false){
   }
   if(!$('#index').hidden){return}
   state.sort='seed';state.dir='';state.seed=receiptsState.rollSeed();notifyShell();
-  // 顶部三层（女优头像、厂牌、标签）有 30 秒会话缓存，而 refreshAll 只重载网格：
-  // 不清掉这两个缓存，「换一批」之后上面还是同一批人。
+  // The top three rows (performer portraits, studios, tags) have a 30-second session cache, and refreshAll only reloads the grid.
+  // Without clearing those two caches, "another batch" still shows the same people above.
   dropBars();
-  /* 网格和顶部三层一起换，两边耗时不一样，所以转圈归这一层管：换批键转到这个 Promise
-     落定，网格先到时标签条还在等的那段时间里它不停。顶部三层与标签条不铺骨架——它们此刻
-     有内容在屏幕上，撕成灰条再填回去比直接换掉更晃眼；只铺一层微光，骨架留给从无到有的首屏。 */
+  /* The grid and the top three rows change together, and they take different amounts of time, so the spinner belongs to this layer. The refresh control waits for this Promise.
+     If the grid arrives first, the spinner keeps going while the tag bar is still waiting. The top three rows and the tag bar do not get a skeleton. They
+     already have content on screen, and replacing it with gray bars is more jarring than swapping it. They get a shimmer. The skeleton is for a first screen that starts empty. */
   paintCatalogFilter({refreshing:true});
-  /* 目录元素在改写地址排下的那个微任务里发起取数；让过这一拍，网格先认领表面、铺好等待态，顶部三层再取。 */
+  /* The catalog element starts its fetch in the microtask queued by the address rewrite. After that turn, the grid claims the surface and shows its waiting state, then the top three rows fetch. */
   try{const loading=replaceCatalogAddress();await null;await Promise.all([loading,buildBars()])}
   finally{paintCatalogFilter({refreshing:false})}
   if(!automatic)window.scrollTo({top:0,behavior:'smooth'});
@@ -147,6 +148,7 @@ document.documentElement.style.setProperty('--hover-delay',`${preferencesState.a
 setUiSoundsEnabled(preferencesState.appSettings.uiSounds);
 wireUiSounds();
 applyTheme();
+applyLocale();
 watchSystemTheme();
 paintHomeGlowNow();
 applyGlassFaces();
@@ -156,8 +158,9 @@ preferencesState.nextCatalogLoad = ()=>new Promise(resolve=>preferencesState.cat
 preferencesState.handOff = loading=>{preferencesState.catalogLoadWaiters.splice(0).forEach(resolve=>resolve(loading));return loading};
 preferencesState.settingsEffects = {
   theme:()=>applyTheme(),
-  /* 开这一格时立刻响一声开关音，人才知道它开了。关的那一声由 document 上的 change 监听
-     发出：捕获阶段排在这里前面，那时开关还没关掉，最后一声还能响出来。 */
+  locale:()=>applyLocale(),
+  /* Turning this on plays the switch sound immediately, so the change is audible. The sound for turning it off comes from the change listener on document.
+     That listener runs in the capture phase, before this code, while the switch is still on, so the last sound can still play. */
   uiSounds:()=>{setUiSoundsEnabled(preferencesState.appSettings.uiSounds);if(preferencesState.appSettings.uiSounds)playUiSound('toggle-on')},
   glowFrame:()=>applyHomeGlow(),
   glow:()=>{applyHomeGlow();applyGlassFaces()},
@@ -179,11 +182,11 @@ preferencesState.settingsEffects = {
     document.documentElement.style.setProperty('--hover-delay',`${preferencesState.appSettings.hoverDelaySeconds}s`);
   },
   seekSeconds:()=>repaintCatalogGrid(),
-  /* 折叠是在渲染时做的，不重取的话已经被跳过的那些卡不会自己冒出来。 */
+  /* Folding happens while rendering. Without a refetch, cards that were skipped do not appear on their own. */
   groupCollapse:()=>reloadCurrentSurface(),
   feedAutoScroll:()=>syncFeedAutoScroll(),
   feedCompilations:()=>refreshFeedRows(),
-  /* 设置说的是「离开详情不再进小窗」，已经开着的那个小窗留着反而像没生效。 */
+  /* The setting says leaving the detail page no longer opens the small window. Leaving an already open small window up would look like the setting did nothing. */
   miniplayer:()=>{if(!preferencesState.appSettings.miniplayer)stageApi()?.closeMiniplayer()},
   javImage:()=>{
     syncJavImages(document,preferencesState.appSettings.javImage);repaintCatalogGrid();

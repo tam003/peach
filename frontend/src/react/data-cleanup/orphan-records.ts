@@ -4,6 +4,7 @@
  * 接回把记录搬到选中的文件、删掉旧行，记一个可整批撤回的批次。彻底删除走批量接口的 `delete`。 */
 import { apiGet, apiSend } from '../../api';
 import { BATCH_URL } from '../duplicates/duplicates';
+import { phrase } from '../../i18n/phrase';
 
 export const ORPHAN_RECORDS_URL = '/api/orphan-records';
 export const ORPHAN_ATTACH_URL = '/api/orphan-records/attach';
@@ -43,14 +44,14 @@ export type RowRecord = 'rating' | 'o_count' | 'play_count' | 'last_played';
 export type RecordKey = RecordTable | RowRecord;
 
 /** 六张表在这一块里的名字，顺序就是显示顺序。 */
-export const RECORD_LABELS: ReadonlyArray<readonly [RecordTable, string]> = [
-  ['asset_preference', '喜欢与理由'],
-  ['watch_queue', '稍后看'],
-  ['playlist_item', '播放列表'],
-  ['asset_quality_goal', '寻找更好版本'],
-  ['activity_event', '观看历史'],
-  ['asset_tag_preference', '隐藏标签'],
-];
+export const RECORD_LABELS = (): ReadonlyArray<readonly [RecordTable, string]> => ([
+  ['asset_preference', phrase('喜欢与理由')],
+  ['watch_queue', phrase('稍后看')],
+  ['playlist_item', phrase('播放列表')],
+  ['asset_quality_goal', phrase('寻找更好版本')],
+  ['activity_event', phrase('观看历史')],
+  ['asset_tag_preference', phrase('隐藏标签')],
+]);
 
 export const fetchOrphanRecords = (signal?: AbortSignal) =>
   apiGet<OrphanRecordsData>(ORPHAN_RECORDS_URL, signal);
@@ -66,21 +67,21 @@ export const purgeOrphan = (id: number | number[]) =>
 
 /** 行上四列的写法：分值与次数照写；只记过最近播放、没有播放次数时写「播放过」。 */
 const rowRecordsText = (records: OrphanRecord['records']) => [
-  records.rating ? `评分 ${records.rating}` : '',
-  records.play_count ? `播放 ${Number(records.play_count).toLocaleString()} 次`
-    : records.last_played ? '播放过' : '',
-  records.o_count ? `高潮 ${Number(records.o_count).toLocaleString()} 次` : '',
+  records.rating ? phrase('评分 {rating}', { rating: records.rating }) : '',
+  records.play_count ? phrase('播放 {play_count} 次', { play_count: Number(records.play_count).toLocaleString() })
+    : records.last_played ? phrase('播放过') : '',
+  records.o_count ? phrase('高潮 {o_count} 次', { o_count: Number(records.o_count).toLocaleString() }) : '',
 ];
 
 /** 一条带的记录排成一句：「喜欢与理由 1 · 观看历史 3 · 评分 4 · 播放 2 次」。 */
 export const recordsText = (records: OrphanRecord['records']) => [
-  ...RECORD_LABELS
+  ...RECORD_LABELS()
     .filter(([table]) => records[table])
     .map(([table, label]) => `${label} ${Number(records[table]).toLocaleString()}`),
   ...rowRecordsText(records),
 ].filter(Boolean).join(' · ');
 
-const minutes = (seconds: number | null) => (seconds ? `${Math.round(seconds / 60)} 分钟` : '');
+const minutes = (seconds: number | null) => (seconds ? phrase('{seconds} 分钟', { seconds: Math.round(seconds / 60) }) : '');
 
 /** 下拉框里一个候选文件那一行。 */
 export const candidateText = (item: OrphanCandidate) =>

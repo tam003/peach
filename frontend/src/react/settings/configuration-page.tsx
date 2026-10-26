@@ -10,6 +10,7 @@ import { Fragment, useEffect, useLayoutEffect, useRef, useState, type KeyboardEv
 import { peachHistory, shellNavigate, settingsPath } from '@peach/history';
 
 import { errorMessage } from '../../api';
+import { phrase } from '../../i18n/phrase';
 import type { ConfigurationData, ConfigurationPanel, ConfigurationProps } from '../bundle';
 import { Note } from '../components/note';
 import { CONFIGURATION_KEY, fetchConfiguration } from './configuration';
@@ -30,8 +31,8 @@ export function ConfigurationPage({ receipt, reopenTutorial, section = '', diagn
   if (!data) {
     return (
       <div className="ui-configpage">
-        <Note tone="error" title="配置读取失败">
-          {config.error ? errorMessage(config.error) : '未取得配置，请刷新页面重试。'}
+        <Note tone="error" title={phrase('配置读取失败')}>
+          {config.error ? errorMessage(config.error) : phrase('未取得配置，请刷新页面重试。')}
         </Note>
       </div>
     );
@@ -114,19 +115,19 @@ function ConfigurationGroups(
   };
   return (
     <div ref={workspace} className="ui-configpage">
-      <div className="ui-board-local-nav" role="tablist" aria-label="配置分区" data-section-nav="" data-section-items=""
+      <div className="ui-board-local-nav" role="tablist" aria-label={phrase('配置分区')} data-section-nav="" data-section-items=""
         aria-orientation={narrow ? 'horizontal' : 'vertical'}>
         {groups.map(({ title }, i) => (
           <button key={title} ref={(node) => { buttons.current[i] = node }} type="button" role="tab"
             id={`${prefix}-tab-${i}`} aria-controls={`${prefix}-panel-${i}-0`} aria-selected={i === at}
             tabIndex={i === at ? 0 : -1} onClick={() => choose(title)} onKeyDown={(event) => move(event, i)}>
-            {title}
+            {phrase(title)}
           </button>
         ))}
       </div>
       {groups.map(({ title, body }, i) => (
         <Fragment key={title}>
-          <h2 className="ui-configgroup">{title}</h2>
+          <h2 className="ui-configgroup">{phrase(title)}</h2>
           {body({ index: i, id: `${prefix}-panel-${i}-0`, labelledBy: `${prefix}-tab-${i}`, active: i === at })}
         </Fragment>
       ))}

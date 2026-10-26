@@ -5,6 +5,7 @@ import { errorMessage } from '../../api';
 import { DISCONNECTED_TEXT, freshProcessingResult, processingActive } from './library-processing';
 import { ProcessingNoticePanel } from './library-processing-notice';
 import { useLibraryProcessingJob } from './use-library-processing';
+import { phrase } from '../../i18n/phrase';
 
 const TASK_TOAST = 'peach-library-processing';
 
@@ -13,7 +14,7 @@ export function LibraryProcessingDock({ toast: receipt }: Pick<LibraryProcessing
   const { job, settled } = useLibraryProcessingJob({ toast: receipt, mode: 'notice' });
   const dismissed = useRef('');
   const state = job.data;
-  const problem = job.isError ? state ? DISCONNECTED_TEXT : errorMessage(job.error) : '';
+  const problem = job.isError ? state ? phrase(DISCONNECTED_TEXT) : errorMessage(job.error) : '';
   useEffect(() => {
     const active = processingActive(state);
     const key = state?.job_id || 'unavailable';

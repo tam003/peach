@@ -5,6 +5,7 @@
  * 提交时机跟原生数字框的 `change` 一致：失焦或回车，打字途中不提交。 */
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
+import { t } from '../../i18n/translate';
 import { boundedPreference } from '../../number-setting';
 
 export interface NumberSpec { min: number; max: number; unit: string; optional?: boolean; fallback: number }
@@ -22,12 +23,26 @@ export type NumberSettingId = keyof typeof NUMBER_SPECS;
 
 const storageKey = (id: string) => `peach.number.${id}`;
 
+const UNIT_LABEL = {
+  '个': 'unit.count',
+  '秒': 'unit.seconds',
+  '条': 'unit.entries',
+  '分钟': 'unit.minutes',
+} as const;
+
+function unitLabel(unit: string): string {
+  const key = UNIT_LABEL[unit as keyof typeof UNIT_LABEL];
+  return key ? t(key) : unit;
+}
+
 /** 以分钟计的间隔满一天时，单位旁边再说一遍是几天：「10080 分钟」读不出是一周。
  *  不满一天、不是整数或不是分钟的读数返回空串。 */
 export function dayReading(value: number, unit: string): string {
   if (unit !== '分钟' || !Number.isInteger(value) || value < 1440) return '';
   const days = value / 1440;
-  return Number.isInteger(days) ? `${days.toLocaleString()} 天` : `约 ${days.toFixed(1)} 天`;
+  return Number.isInteger(days)
+    ? t('unit.days', { n: days.toLocaleString() })
+    : t('unit.aboutDays', { n: days.toFixed(1) });
 }
 
 export function NumberSetting({ id, label, value, disabled = false, onApply }: {
@@ -64,7 +79,7 @@ export function NumberSetting({ id, label, value, disabled = false, onApply }: {
     if (!node) return;
     if (!node.value || !node.checkValidity()) {
       node.setAttribute('aria-invalid', 'true');
-      setError(`请输入 ${min}–${max} 的整数（${unit}）`);
+      setError(t('unit.range', { min, max, unit: unitLabel(unit) }));
       return;
     }
     node.removeAttribute('aria-invalid');
@@ -102,10 +117,11 @@ export function NumberSetting({ id, label, value, disabled = false, onApply }: {
   };
 
   const blocked = disabled || value === null;
+  const reading = dayReading(Number(draft), unit);
   return (
     <div data-number-setting="">
       {optional
-        ? <input type="checkbox" data-toggle="" role="switch" aria-label={`启用${label}`}
+        ? <input type="checkbox" data-toggle="" role="switch" aria-label={t('unit.enable', { label })}
             checked={on} disabled={blocked} onChange={toggle} />
         : null}
       <div data-number-fields="" hidden={optional && !on}>
@@ -120,7 +136,7 @@ export function NumberSetting({ id, label, value, disabled = false, onApply }: {
               }
             }}
             onKeyDown={(event) => { if (event.key === 'Enter') { event.preventDefault(); commit() } }} />
-          <span aria-hidden="true">{unit}{dayReading(Number(draft), unit) ? ` · ${dayReading(Number(draft), unit)}` : ''}</span>
+          <span aria-hidden="true">{unitLabel(unit)}{reading ? ` · ${reading}` : ''}</span>
         </div>
         <small id={`${id}-error`} data-number-error="" role="status" hidden={!error}>{error}</small>
       </div>

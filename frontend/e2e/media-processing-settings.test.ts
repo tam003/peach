@@ -28,7 +28,7 @@ describe('视频预览设置', () => {
       });
       const { page } = opened;
       try {
-        const toggle = page.getByRole('switch', { name: '生成视频预览', exact: true });
+        const toggle = page.getByRole('switch', { name: 'Generate video previews', exact: true });
         const interval = page.locator('#videoThumbnailSetting button');
         await toggle.waitFor();
         await settle(page);

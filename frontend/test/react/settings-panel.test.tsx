@@ -107,7 +107,7 @@ async function connect(r: Loaded) {
 }
 
 const settings = (): PanelSettings => ({
-  theme: 'system', uiSounds: true, homeGlow: { ...normalizeHomeGlow(null), on: true, preset: 'ash' }, accent: 'blue',
+  theme: 'system', locale: 'zh', uiSounds: true, homeGlow: { ...normalizeHomeGlow(null), on: true, preset: 'ash' }, accent: 'blue',
   sidebarOrder: [''], batchSize: 60, defaultSort: 'seed', defaultSortDirection: '', groupCollapse: true,
   javImage: 'cover', feedAutoScroll: true, feedHideGroupCompilations: true, feedHideSoloCompilations: false,
   feedHideExcerpts: true, hoverDelaySeconds: 5, detailAutoplay: false, miniplayer: true, seekSeconds: 10,

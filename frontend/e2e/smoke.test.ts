@@ -1,17 +1,17 @@
-/* 每条主路由在桌面与 390×844 下都要守住的不变量。
+/* Invariants every main route must hold on desktop and at 390×844.
  *
- * 这些是界面验收里每一轮都要重测的几何与运行期事实：写成用例之后由测试入口执行，
- * 浏览器面板只留给新布局首次成形和观感判断。新发现的同类问题先在这里补一条再修。
+ * These are the geometry and runtime facts the interface check repeats every round. Once they are cases, the test entry runs them.
+ * The browser panel is kept for a new layout's first shape and for looking at it. A new problem of the same kind gets a case here before the fix.
  *
- * 每条路由先等它自己的主体出现，再 settle、再量几何。报错、失败请求、横向溢出和等待态
- * 这几条在页面完全没渲染时全都成立，不写主体的话白屏也是绿的。主体按 `tests/test_web_e2e.py`
- * 生成的演示库写：12 条视频，没有播放列表、关注来源和任务记录，这几页等到的是各自的空态。
- * 女优、厂牌与标签的索引在一轮里会从空变成有：前面的路由打开过作品之后条目就出现了，
- * 所以索引页的主体是「条目或空态」二选一，不绑死其中一种。标题只能拿来认页面，不能单独
- * 当主体：管理页的 `[data-manage-title]` 由外壳先写好，内容区失败时它照样在。
+ * Each route waits for its own body, then settle, then the geometry. Errors, failed requests, horizontal overflow, and a waiting state
+ * all hold when the page never rendered, so a blank screen would pass without a body. The body is written for the demo library from `tests/test_web_e2e.py`:
+ * 12 videos, no playlists, follow sources, or task records. Those pages wait for their own empty state.
+ * Performer, studio, and tag indexes can go from empty to filled in one round: an earlier route that opened a work makes entries appear,
+ * so an index body is "an entry or an empty state", not one of the two. A title only identifies the page. It is not the body by itself:
+ * a management page's `[data-manage-title]` is written by the shell first, and it is still there when the content area fails.
  *
- * 分区 tab（`.ui-board-local-nav`）只显示当前那一格，其余面板不参与布局；每一格都切过去
- * 再测一遍，否则配置页「网络与访问」这类不在首屏的分区永远不会被量到。 */
+ * Section tabs (`.ui-board-local-nav`) show only the current cell. The other panels do not take part in layout. Each cell is selected
+ * and measured, or a configuration section that is not on the first screen, such as network and access, would never be measured. */
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 
@@ -22,7 +22,7 @@ import { mockJavDetail } from './jav-detail-fixture.ts';
 
 interface Route {
   path: string;
-  /** 目标页面主体：每个定位器都要可见。骨架屏的占位标题带 `aria-hidden`，按角色找不到。 */
+  /** The target page body. Every locator must be visible. A skeleton placeholder title has `aria-hidden`, so a role query does not find it. */
   body(page: Page): Locator[];
 }
 
@@ -31,13 +31,13 @@ const heading = (page: Page, scope: string, name: string): Locator =>
 
 const DESKTOP = VIEWPORTS.find((viewport) => !viewport.mobile)!;
 
-/** 索引条目（`data-k`）或明确的空态，先出现哪个算哪个。两样都只有 React 那棵树画，
- * 壳铺的骨架一样都不带。选择器里就带 `:visible`：不然 `.first()` 可能落在一个隐藏的
- * 匹配上，等它可见等到超时，主体其实早画好了。 */
+/** An index entry (`data-k`) or a definite empty state, whichever appears first. Both are painted only by the React tree.
+ * The shell skeleton has neither. The selector includes `:visible`. Otherwise `.first()` can land on a hidden
+ * match, waiting for it to be visible times out, and the body was already painted. */
 const indexEntries = (page: Page): Locator =>
   page.locator('#index [data-k]:visible, #index [data-empty-state]:visible').first();
 
-/** 统计页画完的标志：四张读数卡兼页签，第一张是馆藏。名字里还带读数和体积，按前缀匹配。 */
+/** The sign that the stats page has painted: four reading cards that are also tabs. The first is the library. The name also carries the count and the size, so the match is a prefix. */
 const statsInventoryTab = (page: Page): Locator =>
   page.locator('#stats').getByRole('tab', { name: /^馆藏视频/ });
 
@@ -47,7 +47,7 @@ const ROUTES: readonly Route[] = [
   { path: '/jav?tab=discover', body: page => [heading(page, '#stats', 'JAV'), page.getByRole('tab', { name: '发现', exact: true, selected: true }), page.getByText('暂无匹配口味的作品', { exact: true })] },
   { path: '/jav?tab=wants', body: page => [heading(page, '#stats', 'JAV'), page.getByRole('tab', { name: '想要', exact: true, selected: true }), page.getByText('还没有想要的作品', { exact: true })] },
   { path: '/', body: (page) => [page.locator('#grid [data-media-card]').first()] },
-  { path: '/wall', body: (page) => [page.locator('[data-wall-tile]').first(), page.getByRole('button', { name: '退出播放墙' })] },
+  { path: '/wall', body: (page) => [page.locator('[data-wall-tile]').first(), page.getByRole('button', { name: 'Leave the video wall' })] },
   { path: '/performers', body: (page) => [heading(page, '#index', '艺人'), indexEntries(page)] },
   { path: '/creators', body: (page) => [heading(page, '#index', '卖家'), indexEntries(page)] },
   { path: '/creators/', body: (page) => [heading(page, '#index', '卖家'), indexEntries(page)] },
@@ -64,79 +64,79 @@ const ROUTES: readonly Route[] = [
     body: (page) => [heading(page, '#stats', '关注'), heading(page, '#stats', '还没有关注任何来源')],
   },
   {
-    // 骨架里也有「关注列表」那一排分段，可整块带 `aria-hidden`；按角色找得到页签的只有真页面。
+    // The skeleton also has the follow-list segments, and the whole block can carry `aria-hidden`. A tab found by role is only the real page.
     path: '/subscriptions',
     body: (page) => [heading(page, '#main', '关注管理'),
       page.locator('#stats').getByRole('tab', { name: '添加关注', exact: true })],
   },
   {
-    // 订阅源页签由地址参数直达；演示库没有订阅源，等到的是那一节的页脚按钮。
+    // The feed tab is opened by the address. The demo library has no feeds, so the wait is that section's footer button.
     path: '/subscriptions?tab=feeds',
     body: (page) => [page.locator('#stats').getByRole('tab', { name: 'JAV 订阅源', exact: true, selected: true }),
       page.locator('#stats').getByRole('button', { name: '立即拉取', exact: true })],
   },
   {
-    // 骨架里那条指标带也写着「馆藏视频」，认不出画完没有；只有真页面把四张读数卡做成页签。
+    // The skeleton's metric strip also says the library-video label, so it does not show that painting finished. Only the real page makes the four reading cards into tabs.
     path: '/stats',
     body: (page) => [heading(page, '#main', '统计'), statsInventoryTab(page)],
   },
   {
-    // 骨架那条指标带也写着「浏览记录」，认不出画完没有；把两套证据做成页签的只有真页面。
+    // The skeleton's metric strip also says the history label, so it does not show that painting finished. Only the real page makes the two evidence sets into tabs.
     path: '/taste',
     body: (page) => [heading(page, '#main', '口味'),
       page.locator('#stats').getByRole('tab', { name: '浏览器记录', exact: true })],
   },
   {
-    // 骨架那一列分类也写着「复核分类」，认不出画完没有；把十个分类做成页签的只有真页面。
+    // The skeleton's category column also says the review-category label, so it does not show that painting finished. Only the real page makes the ten categories into tabs.
     path: '/review',
     body: (page) => [heading(page, '#main', '人工复核'),
       page.locator('#stats').getByRole('tab', { name: '元数据字段' })],
   },
   {
     path: '/data-cleanup',
-    // 挂载前的遗留骨架用 heading，最终 React 卡片用带名字的 section；等最终语义才能证明挂载完成。
+    // The legacy skeleton before mount uses a heading. The final React card uses a named section. Waiting for that final name is what shows the mount finished.
     body: (page) => [heading(page, '#main', '数据管理'),
       page.locator('#stats section[aria-label="扫描与采集"]'),
       page.locator('#stats section[aria-label="媒体修复"]')],
   },
   {
-    // 演示库里没有垃圾候选，等到的是垃圾队列那一页的空态标题；壳铺的骨架只有卡片占位。
+    // The demo library has no junk candidates, so the wait is the empty-state title of the junk queue. The shell skeleton only has card placeholders.
     path: '/junk-files',
     body: (page) => [heading(page, '#main', '垃圾文件'), heading(page, '#grid', '没有待判断的垃圾文件')],
   },
   {
-    // 骨架只写「正在比对重复内容」；汇总块上那一格「重复内容」有没有重复组都会画，只有真页面有。
+    // The skeleton only says the comparison is running. The summary cell for duplicate content is painted whether or not groups exist, and only the real page has it.
     path: '/duplicates',
     body: (page) => [heading(page, '#main', '重复文件'), page.locator('#stats').getByText('重复内容', { exact: true })],
   },
   {
-    // 旧直达地址落到数据管理页的锚点上；骨架里那一段没有 `id`，带 `id` 的只有演示库配了根目录后的真卡片。
+    // The old direct address lands on the data-management anchor. That block in the skeleton has no `id`. The id is only on the real card after the demo library has a root.
     path: '/resource-sync',
     body: (page) => [heading(page, '#main', '数据管理'), page.locator('#stats section#resource-sync')],
   },
   {
     path: '/quality-goals',
-    // 演示库里没有标记中的目标，等到的是空态那一句：它是真的标题元素，不是一段文字。
+    // The demo library has no marked targets, so the wait is the empty-state sentence. It is a real heading element, not a stretch of text.
     body: (page) => [heading(page, '#main', '高清版'), heading(page, '#stats', '没有标记中的高清版目标')],
   },
   {
-    // 「高清图片可能需要代理」那句遗留骨架里也有，认不出画完没有；「高清封面」那一张只有真页面有。
+    // The legacy skeleton also has the sentence about high-resolution pictures maybe needing a proxy, so it does not show that painting finished. The high-resolution cover form is only on the real page.
     path: '/sources',
     body: (page) => [heading(page, '#main', '来源和凭证'), page.locator('#stats form[aria-label="高清封面"]')],
   },
-  // 名字对不上任何一家时要换成空态；骨架一直留着，读起来就是还在取。
+  // A name that matches no agency becomes the empty state. The skeleton staying in place would read as still loading.
   { path: '/agencies/不存在的事务所', body: (page) => [heading(page, '#index', '找不到这个事务所')] },
   { path: '/settings/library', body: configurationBody },
-  { path: '/diagnostics', body: page => [page.getByRole('tab', { name: '系统诊断', selected: true }), page.locator('#stats section[aria-label="库健康"]')] },
-  { path: '/settings/diagnostics', body: page => [page.getByRole('tab', { name: '系统诊断', selected: true }), page.locator('#stats section[aria-label="库健康"]')] },
+  { path: '/diagnostics', body: page => [page.getByRole('tab', { name: 'Diagnostics', selected: true }), page.locator('#stats section[aria-label="库健康"]')] },
+  { path: '/settings/diagnostics', body: page => [page.getByRole('tab', { name: 'Diagnostics', selected: true }), page.locator('#stats section[aria-label="库健康"]')] },
   { path: '/tasks', body: (page) => [heading(page, '#main', '任务中心'), heading(page, '#stats', '还没有任务记录')] },
   ...['', '/appearance', '/playback', '/jav', '/search', '/content'].map(section => ({ path: '/settings' + section,
-    body: (page: Page) => [page.getByRole('dialog', { name: /外观与导航|浏览与播放|JAV 与新作|搜索与推荐|内容显示/ })] })),
+    body: (page: Page) => [page.getByRole('dialog', { name: /Appearance and navigation|Browse and playback|JAV and new works|Search and recommendations|Content display/ })] })),
   ...['subscriptions', 'downloads', 'network', 'maintenance'].map(section => ({ path: `/settings/${section}`, body: configurationBody })),
   {
     path: `/assets/${requiredEnv('PEACH_E2E_ITEM')}`,
     body: (page) => {
-      const stage = page.getByRole('dialog', { name: '作品详情' });
+      const stage = page.getByRole('dialog', { name: 'Work details' });
       return [stage, stage.locator('video.vjs-tech')];
     },
   },
@@ -172,7 +172,7 @@ describe('路由冒烟', () => {
 
   for (const viewport of VIEWPORTS) {
     for (const route of ROUTES) {
-      // 单条超时远小于 Python 侧的整轮超时：卡住的那一条自己报名字，不拖垮整轮输出。
+      // One case's timeout is far shorter than the whole Python round. A stuck case reports its own name and does not stall the round's output.
       it(`${route.path} @ ${viewport.name}`, { timeout: 60_000 }, async () => {
         const opened = await visit(browser, route.path.startsWith('/works/') ? '/stats' : route.path, viewport);
         try {
@@ -183,10 +183,10 @@ describe('路由冒烟', () => {
           await expectBody(opened.page, route.path, route.body(opened.page));
           await settle(opened.page);
           await assertHolds(opened.page, opened.problems, route.path);
-          // 设置浮层的那一排 tab 常驻 DOM、关着时不可见；只点页面上看得见的那一排。
+          // The settings overlay's tab row stays in the DOM and is invisible while closed. Only click the row that is visible on the page.
           const tabs = opened.page.locator('.ui-board-local-nav [role="tab"]:visible');
           const count = await tabs.count();
-          // 选择器一旦对不上，循环一格都不跑也照样绿；配置页至少有媒体、网络与访问、维护三格。
+          // If the selector matches nothing, the loop runs zero cells and still passes. The configuration page has at least the media, network and access, and maintenance cells.
           if (route.path === '/settings/library') assert.ok(count >= 3, `配置页只看到 ${count} 个分区 tab`);
           for (let index = 0; index < count; index += 1) {
             const tab = tabs.nth(index);
@@ -203,9 +203,9 @@ describe('路由冒烟', () => {
     }
   }
 
-  /* React 档的页面自己管取数：轮询跟着那棵根活，而不是跟着遗留层的「代」。遗留层换页时
-     多数管理页直接 `innerHTML=`，根被挤出文档却照样活着——这一条盯的就是它有没有被卸掉。
-     换页走 pushState + popstate：侧栏按钮、抽屉和浏览器后退最后走的都是这一条路。 */
+  /* A React page fetches for itself. Polling lives with that root, not with a generation in the legacy layer. When the legacy layer changes pages,
+     most management pages assign `innerHTML` directly. The root can leave the document and still be alive. This case watches whether it was unmounted.
+     Page changes go through pushState and popstate. Sidebar buttons, the drawer, and the browser back button all end on that path. */
   it('离开活动页之后轮询停下，回到这一页又接上', { timeout: 120_000 }, async () => {
     const opened = await visit(browser, '/tasks', DESKTOP);
     try {
@@ -222,7 +222,7 @@ describe('路由冒烟', () => {
       };
       await expectBody(opened.page, '/tasks',
         [heading(opened.page, '#stats', '还没有任务记录')]);
-      // 先确认轮询真的在跑，否则下面「停下来了」在它从没开始时也成立。
+      // Confirm the poll is actually running. Otherwise "it stopped" also holds when it never started.
       await waitForPolls(2, '活动页的轮询没有跑起来');
 
       await opened.page.evaluate(() => {
@@ -232,7 +232,7 @@ describe('路由冒烟', () => {
       await expectBody(opened.page, '/stats', [statsInventoryTab(opened.page)]);
       await settle(opened.page);
       const stopped = polls.length;
-      // 统计页自己也是 React 档：管理区正文里应当只剩它那一棵根，活动页那一棵连同轮询一起撤掉。
+      // The stats page is a React page too. The management body should have only that root left. The activity page's root leaves with its poll.
       assert.equal(await opened.page.locator('#stats .peach-react').count(), 1,
         '管理区正文里不是只剩统计页那一棵 React 根');
       assert.equal(
@@ -251,8 +251,8 @@ describe('路由冒烟', () => {
     }
   });
 
-  /* 首页那一行新作只属于目录页：从首页进统计页要收起清空，取数还没回来就离开的那一轮
-     也不许回头把它画到管理区上。演示库没有订阅，新作由拦截的接口给一条。 */
+  /* The new-works row on the home page belongs only to the catalog. Going from home to stats hides and clears it. A fetch that has not returned
+     must not paint the row onto a management page after the user has left. The demo library has no subscriptions. The intercepted API supplies one new work. */
   it('离开首页之后新作那一行收起，晚到的取数也不画回来', { timeout: 60_000 }, async () => {
     const opened = await visit(browser, '/stats', DESKTOP);
     try {
@@ -260,7 +260,7 @@ describe('路由冒烟', () => {
       let served = 0;
       await opened.page.route(/\/api\/feeds\/discoveries\?/, async (route) => {
         if (hold) await hold;
-        // 请求可能已随换页撤掉，那时回包会报错；要核对的只是回包之后页面长什么样。
+        // The request may already have been cancelled with the page change, and fulfilling it then throws. What matters is the page after the response.
         await route.fulfill({ json: { ok: true, more: false, items: [{
           id: 1, code: 'MCSR-191', title: 'MCSR-191 示例作品', link: null, cover_url: null,
           has_cover: false, cover_frame: null, poster_box: null, release_date: '2025-07-19',
@@ -302,7 +302,7 @@ describe('路由冒烟', () => {
         release();
         for (let step = 0; step < 40 && served === before; step += 1) await opened.page.waitForTimeout(100);
         assert.ok(served > before, '压住的那一次新作取数没有放行');
-        // 回包之后页面只剩一次同步重画；目录区的旧加载态不属于当前页面。
+        // After the response the page has one synchronous repaint left. An old loading state in the catalog does not belong to the current page.
         await opened.page.waitForTimeout(500);
         assert.equal(await feedCards.count(), 0, `晚到的新作取数画到了 ${target} 上`);
         await assertHolds(opened.page, opened.problems, `首页与 ${target} 往返`);
@@ -312,8 +312,8 @@ describe('路由冒烟', () => {
     }
   });
 
-  /* 还没装进本机的新作只有来源给的封套地址，没有边车。贴右缘的话 0.75 的卡片比正封宽，
-     左边带进一条书脊；按正封先验比例 0.704 从右缘量回去才只剩正封。 */
+  /* A new work that is not on this machine has only the sleeve address from the source, and no sidecar. Flush to the right edge, a 0.75 card is wider than the front cover
+     and pulls in a spine on the left. Measuring back from the right edge at the front-cover ratio 0.704 leaves only the front cover. */
   it('远程封套按正封先验比例切，不带进书脊', { timeout: 60_000 }, async () => {
     const opened = await visit(browser, '/stats', DESKTOP);
     try {
@@ -335,7 +335,7 @@ describe('路由冒烟', () => {
       });
       const cover = opened.page.locator('#feedNew img.cover.panel');
       await expectBody(opened.page, '/', [cover]);
-      // 1500×1000 的封套，正封宽 704，左缘在 796 列：切掉左边 53.07%，右缘不动。
+      // A 1500×1000 sleeve. The front cover is 704 wide and its left edge is column 796: clip 53.07% off the left and leave the right edge.
       assert.equal(await cover.evaluate((img) => img.style.getPropertyValue('--panel-clip')),
         '0% 0% 0% 53.07%');
     } finally {
@@ -343,8 +343,8 @@ describe('路由冒烟', () => {
     }
   });
 
-  /* 最近一轮取封面断在连接上、这一行又还有没封面的卡时，行上方挂一条 Note 指去采集页。
-     一排「无封面」自己说不清是官方没出还是线路不通。 */
+  /* When the latest cover fetch dies on the connection and the row still has cards without covers, a Note above the row points at the source page.
+     A row of missing covers does not say whether the publisher has no cover or the line is down. */
   it('封面连不上图片主机时新作那一行上方指去配连接方式', { timeout: 60_000 }, async () => {
     const opened = await visit(browser, '/stats', DESKTOP);
     try {

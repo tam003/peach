@@ -21,7 +21,7 @@ describe('外部播放器', () => {
         });
         await page.getByText('外部播放器 / VR', { exact: true }).click();
         assert.equal(requested, 0);
-        await page.getByRole('button', { name: '生成播放链接', exact: true }).click();
+        await page.getByRole('button', { name: 'Create playback link', exact: true }).click();
         await page.getByRole('link', { name: '下载 M3U 播放列表' }).waitFor();
         assert.equal(requested, 1);
         assert.match(await page.getByRole('textbox', { name: '网络播放地址' }).inputValue(), /\/external-stream\/11\?ticket=/);

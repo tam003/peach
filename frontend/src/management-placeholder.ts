@@ -6,6 +6,7 @@
 import { esc } from '@peach/legacy/core';
 import { configurationSkeletonHtml, fitSkeleton, skeletonHtml } from '@peach/legacy/ui';
 
+import { phrase } from './i18n';
 import { boardPageSkeleton } from './board-skeleton';
 import { cleanupSkeletonHtml } from './management';
 import { CONFIGURATION_SECTIONS } from './history/settings-route';
@@ -37,10 +38,10 @@ const REVIEW_LABELS = ['元数据字段', '创作者标签', '厂牌 Logo', '女
    分类名和「复核分类」这两样与数据无关，直接写出来；等的是每类多少条，所以只有计数
    那一枚是占位。工具条上那三件——分组方式、分类筛选、全选本页——要等队列回来才知道
    选项和条数，三枚占位一件对一件。 */
-const reviewSkeletonHtml = (label = '正在读取复核队列'): string => `<div class="review review-workspace review-skeleton" data-skeleton="review" aria-busy="true" aria-label="${esc(label)}">
-  <div class="reviewcontrols" data-section-nav><h2 class="review-category-title">复核分类</h2>
+const reviewSkeletonHtml = (label = phrase('正在读取复核队列')): string => `<div class="review review-workspace review-skeleton" data-skeleton="review" aria-busy="true" aria-label="${esc(label)}">
+  <div class="reviewcontrols" data-section-nav><h2 class="review-category-title">${phrase('复核分类')}</h2>
     <div class="reviewtabs" data-section-items>${REVIEW_LABELS.map((text, i) =>
-      `<button type="button" disabled aria-selected="${i === 0}">${esc(text)}<span class="skeleton reviewcountskeleton" aria-hidden="true"></span></button>`).join('')}</div></div>
+      `<button type="button" disabled aria-selected="${i === 0}">${esc(phrase(text))}<span class="skeleton reviewcountskeleton" aria-hidden="true"></span></button>`).join('')}</div></div>
   <div class="reviewbulkbar reviewbulktoolbar" aria-hidden="true">${'<span class="skeleton reviewtoolskeleton"></span>'.repeat(3)}</div>
   <section class="reviewsection"><div class="reviewlist">${
     '<div class="skeletoncard" aria-hidden="true"><i></i><b></b><em></em></div>'.repeat(6)}</div></section></div>`;
@@ -53,8 +54,8 @@ const PLACEHOLDERS: Record<string, () => string> = {
   '/review': () => reviewSkeletonHtml(),
   /* 采集来源是 812px 窄列里一叠同宽的 Fieldset：一块高清封面加六个来源。骨架画四块，
      那是首屏装得下的张数；说明那一句是静态文案，与数据无关，立刻显示。 */
-  '/sources': () => `<div class="scraping-page"><p>高清图片可能要经代理才能下载，先检查连接。</p>
-    ${pageSkeletonHtml('正在读取采集来源', { cards: true, count: 4, fill: false, className: 'cleanup-skeleton' })}</div>`,
+  '/sources': () => `<div class="scraping-page"><p>${phrase('高清图片可能要经代理才能下载，先检查连接。')}</p>
+    ${pageSkeletonHtml(phrase('正在读取采集来源'), { cards: true, count: 4, fill: false, className: 'cleanup-skeleton' })}</div>`,
 };
 
 /** 关注管理的骨架照这台浏览器上次选的视图画，排序框与方向键照地址栏上的那一档画：等数据的这段时间画成
@@ -68,7 +69,7 @@ export interface FollowSkeletonState {
 /** 这一页的加载态 HTML。 */
 export function managementSkeletonHtml(path: string, { followLayout, followSort, followDir }: FollowSkeletonState): string {
   return boardPageSkeleton(path, { followLayout, ...(path === '/subscriptions' ? { followSort, followDir } : {}) })
-    || (PLACEHOLDERS[path] ?? (() => pageSkeletonHtml('正在读取页面')))();
+    || (PLACEHOLDERS[path] ?? (() => pageSkeletonHtml(phrase('正在读取页面'))))();
 }
 
 /** 骨架的键：同一个键说明是同一张，不必重画。 */

@@ -1,4 +1,4 @@
-/* 界面偏好的启动归一化、整页那一份 store 与数据库对账（`src/appearance/settings.ts`）。 */
+/* Startup normalization of interface preferences, the page-wide store, and the database reconcile (`src/appearance/settings.ts`). */
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { DEFAULT_ACCENT, DEFAULT_HOME_GLOW } from '../../src/appearance/home-glow';
@@ -18,7 +18,7 @@ describe('启动归一化', () => {
       ...DEFAULT_SETTINGS, sidebarOrder: [...DEFAULT_SIDEBAR_ORDER], homeGlow: DEFAULT_HOME_GLOW, accent: DEFAULT_ACCENT,
       followInitialDays: 30, detailAutoplay: true, uiSounds: true, feedAutoScroll: true,
       feedHideGroupCompilations: true, feedHideSoloCompilations: false, feedHideExcerpts: true,
-      /* JAV 版式与艺人索引默认大图；照片墙一套几十张，先看全貌所以是小图。 */
+      /* JAV layout and the performer index default to large pictures. A photo wall holds dozens of pictures, so it starts small to show the whole set. */
       homeLayout: 'small', javLayout: 'big', peopleLayout: 'big', photoSize: 'small',
       ambientMode: true, miniplayer: true, theaterMode: false, theme: 'system', groupCollapse: true,
     });
@@ -27,12 +27,12 @@ describe('启动归一化', () => {
   it('认不出的一项退回出厂那一档，其余照留', () => {
     const { settings } = normalizeAppSettings({
       batchSize: 0, defaultSort: 'nope', hoverDelaySeconds: 61, seekSeconds: 2.5, searchHistoryLimit: 51, relatedLimit: -1,
-      theme: 'sepia', followInitialDays: 14, metadataRefreshDays: '7', accent: 'teal', homeLayout: 'big', ambientMode: 0,
+      theme: 'sepia', locale: 'sepia', followInitialDays: 14, metadataRefreshDays: '7', accent: 'teal', homeLayout: 'big', ambientMode: 0,
       theaterMode: 'yes', miniplayer: false, feedHideSoloCompilations: 'true',
     });
     expect(settings).toMatchObject({
       batchSize: 60, defaultSort: 'seed', hoverDelaySeconds: 5, seekSeconds: 10, searchHistoryLimit: 10, relatedLimit: 20,
-      theme: 'system', followInitialDays: 30, accent: 'teal', homeLayout: 'big', ambientMode: true,
+      theme: 'system', locale: 'zh', followInitialDays: 30, accent: 'teal', homeLayout: 'big', ambientMode: true,
       theaterMode: false, miniplayer: false, feedHideSoloCompilations: false,
     });
   });
@@ -50,7 +50,7 @@ describe('启动归一化', () => {
       { settings: { defaultSort: 'dur' }, migrated: true });
     expect(normalizeAppSettings({ defaultSort: 'new', sortDefaultsVersion: 3 })).toMatchObject(
       { settings: { defaultSort: 'new' }, migrated: false });
-    /* 版本已经是 3 还存着旧键，说明不是迁移能认的来路，按白名单退回随机，不改写成别的列。 */
+    /* Version 3 still holding an old key is not a path migration recognizes. The allow-list turns it back to random and does not rewrite it into another column. */
     expect(normalizeAppSettings({ defaultSort: 'long', sortDefaultsVersion: 3 })).toMatchObject(
       { settings: { defaultSort: 'seed' }, migrated: false });
   });

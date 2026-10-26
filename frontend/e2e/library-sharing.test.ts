@@ -68,12 +68,12 @@ describe('馆藏与口味分享', () => {
         });
       const { page } = opened;
       try {
-        const region = page.getByRole('region', { name: '数据上传', exact: true });
+        const region = page.getByRole('region', { name: 'Data upload', exact: true });
         await region.waitFor();
         assert.equal(await region.getByRole('switch').count(), 2, '两项上传开关同属一个分区');
-        const initialToggle = region.getByRole('switch', { name: '上传馆藏与口味明细', exact: true });
+        const initialToggle = region.getByRole('switch', { name: 'Upload library and taste details', exact: true });
         assert.equal(await initialToggle.count(), 1, '关闭状态也应显示上传开关');
-        await region.getByRole('button', { name: '预览上传内容', exact: true }).click();
+        await region.getByRole('button', { name: 'Preview upload', exact: true }).click();
         const preview = region.getByLabel('馆藏与口味上传预览', { exact: true });
         await preview.waitFor();
         assert.equal(posts.length, 0);
@@ -96,7 +96,7 @@ describe('馆藏与口味分享', () => {
         assert.equal(posts.length, 0);
         await region.getByRole('checkbox').focus();
         await region.getByRole('checkbox').press('Space');
-        await region.getByRole('button', { name: '同意并开启上传', exact: true }).click();
+        await region.getByRole('button', { name: 'Agree and turn on upload', exact: true }).click();
         await preview.waitFor({ state: 'hidden' });
         await settle(page);
         assert.deepEqual(posts[0], { enabled: true, schema: 4, consent: true, preview_token: 'preview-token' });
@@ -104,7 +104,7 @@ describe('馆藏与口味分享', () => {
         assert.equal(await region.getByRole('checkbox').count(), 0, '同意后收起同意框');
         assert.equal(await region.getByText(state.fields[0], { exact: true }).count(), 0, '同意后收起字段明细');
         assert.equal(await toggle.isChecked(), true);
-        await region.getByRole('button', { name: '预览上传内容', exact: true }).click();
+        await region.getByRole('button', { name: 'Preview upload', exact: true }).click();
         await preview.waitFor();
         assert.equal(posts.length, 1, '查看预览不重复保存同意');
         assert.equal(await region.getByRole('checkbox').count(), 0, '已开启时查看预览不重复要求同意');

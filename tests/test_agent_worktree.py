@@ -448,12 +448,16 @@ class LeftoverProcessTests(_WorktreeCase):
         cwd.mkdir(parents=True, exist_ok=True)
         child = subprocess.Popen([sys.executable, "-c", "import sys; sys.stdin.read()"],
                                  cwd=cwd, stdin=subprocess.PIPE)
+        target_pid = child.pid
         deadline = time.monotonic() + 10
         while time.monotonic() < deadline:
             rows = processes_under([cwd])
-            if any(row["pid"] == child.pid for row in rows):
+            matched = [row["pid"] for row in rows if row["pid"] == child.pid or row.get("ppid") == child.pid]
+            if matched:
+                target_pid = matched[0]
                 break
             time.sleep(0.1)
+        child.target_pid = target_pid
         return child
 
     def stop(self, child: subprocess.Popen) -> None:
@@ -466,7 +470,7 @@ class LeftoverProcessTests(_WorktreeCase):
             report = agent_worktree.processes(self.repo)
         finally:
             self.stop(child)
-        row = next(row for row in report["processes"] if row["pid"] == child.pid)
+        row = next(row for row in report["processes"] if row["pid"] in (child.pid, getattr(child, "target_pid", child.pid)))
         self.assertFalse(row["orphan"], "父进程（测试本身）还在")
         self.assertFalse(row["caller"])
         self.assertGreaterEqual(row["age_minutes"], 0)
@@ -479,8 +483,9 @@ class LeftoverProcessTests(_WorktreeCase):
             rows = processes_under([self.root / "elsewhere", Path(os.getcwd())])
         finally:
             self.stop(child)
-        self.assertIn(child.pid, [row["pid"] for row in rows])
-        self.assertNotIn(child.pid, [row["pid"] for row in processes_under([self.repo])])
+        target = getattr(child, "target_pid", child.pid)
+        self.assertTrue(any(row["pid"] in (child.pid, target) for row in rows))
+        self.assertFalse(any(row["pid"] in (child.pid, target) for row in processes_under([self.repo])))
         mine = [row for row in rows if row["pid"] == os.getpid()]
         self.assertEqual([row["caller"] for row in mine], [True], "调用者自己这条链要标出来")
 
@@ -494,7 +499,8 @@ class LeftoverProcessTests(_WorktreeCase):
         finally:
             self.stop(child)
         self.assertEqual([row["path"] for row in report["residue"]], [str(held)])
-        self.assertIn(child.pid, [row["pid"] for row in report["residue"][0]["holders"]])
+        target = getattr(child, "target_pid", child.pid)
+        self.assertTrue(any(pid in (child.pid, target) for pid in [row["pid"] for row in report["residue"][0]["holders"]]))
 
     def test_without_psutil_the_scan_says_it_was_not_obtained(self):
         with mock.patch.dict(sys.modules, {"psutil": None}):

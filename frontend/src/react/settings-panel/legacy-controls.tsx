@@ -24,19 +24,21 @@ export function IconSwitch({ id, name, legend, options, value, attr, variant, te
   attr: string; variant: string; text?: boolean; epoch: number; onChoose(value: string): void;
 }) {
   const mount = useRef<HTMLDivElement | null>(null);
-  const painted = useRef<{ value: string; epoch: number } | null>(null);
+  const painted = useRef<{ value: string; epoch: number; labels: string } | null>(null);
   const choose = useRef(onChoose);
   choose.current = onChoose;
+  const labels = options.map(([, label]) => label).join('\0');
   useLayoutEffect(() => {
     const node = mount.current;
     if (!node) return;
-    if (painted.current && painted.current.value === value && painted.current.epoch === epoch) return;
+    if (painted.current && painted.current.value === value && painted.current.epoch === epoch
+      && painted.current.labels === labels) return;
     node.innerHTML = iconSwitchHtml(name, legend, rows(options), value, { attr, className: variant, text });
     wireIconSwitch(node, attr, (next) => {
-      painted.current = { value: next, epoch };
+      painted.current = { value: next, epoch, labels };
       choose.current(next);
     });
-    painted.current = { value, epoch };
+    painted.current = { value, epoch, labels };
   });
   return <div id={id} ref={mount} />;
 }
@@ -49,18 +51,19 @@ export function SelectField({ id, label, options, value, disabled = false, busy 
 }) {
   const mount = useRef<HTMLDivElement | null>(null);
   const field = useRef<(HTMLElement & { value: string; disabled: boolean }) | null>(null);
-  const built = useRef(-1);
+  const built = useRef<{ epoch: number; labels: string } | null>(null);
   const pick = useRef(onPick);
   pick.current = onPick;
+  const labels = `${label}\0${options.map(([, name]) => name).join('\0')}`;
   useLayoutEffect(() => {
     const node = mount.current;
     if (!node) return;
-    if (built.current !== epoch || !field.current) {
+    if (!built.current || built.current.epoch !== epoch || built.current.labels !== labels || !field.current) {
       node.innerHTML = selectFieldHtml(rows(options), value, { label });
       const root = wireSelectField(node.firstElementChild as HTMLElement);
       root.addEventListener('change', () => pick.current(root.value));
       field.current = root;
-      built.current = epoch;
+      built.current = { epoch, labels };
     }
     const root = field.current;
     if (root.value !== value) root.value = value;
@@ -93,6 +96,10 @@ export function DialRow({ field, label, max, value, hidden, onStep, onSettle }: 
   useLayoutEffect(() => {
     if (dial.current && dial.current.value !== value) dial.current.set(value);
   }, [value]);
+  useLayoutEffect(() => {
+    const slider = row.current?.querySelector<HTMLElement>('[data-dial-slider]');
+    if (slider) slider.setAttribute('aria-label', label);
+  }, [label]);
   return (
     <div data-glow-field={field} hidden={hidden} ref={row}>
       <span data-glow-field-label="">{label}</span>

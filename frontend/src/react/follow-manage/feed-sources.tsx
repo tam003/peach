@@ -48,6 +48,7 @@ import {
   checkFeeds, errorHeadline, FEEDS_KEY, feedIntervalText, fetchFeeds, removeFeed, setFeedEnabled,
   pageWindow, type FeedSource,
 } from './follow-manage';
+import { phrase } from '../../i18n/phrase';
 
 const feedTableFeatures = tableFeatures({
   rowPaginationFeature,
@@ -58,15 +59,15 @@ const feedTableFeatures = tableFeatures({
 });
 
 const COLUMN_LABELS: Record<string, string> = {
-  select: '选择',
-  name: '名称',
-  kind: '类型',
-  origin: '来源',
-  status: '状态',
-  interval: '频率',
-  fetched: '上次拉取',
-  fresh: '上次新增',
-  actions: '操作',
+  get ['select']() { return phrase('选择'); },
+  get ['name']() { return phrase('名称'); },
+  get ['kind']() { return phrase('类型'); },
+  get ['origin']() { return phrase('来源'); },
+  get ['status']() { return phrase('状态'); },
+  get ['interval']() { return phrase('频率'); },
+  get ['fetched']() { return phrase('上次拉取'); },
+  get ['fresh']() { return phrase('上次新增'); },
+  get ['actions']() { return phrase('操作'); },
 };
 
 /** 表头里不占字的列：勾选那一格自己会说「选择 谁」，行尾三个控件也各带自己的名字。 */
@@ -88,9 +89,9 @@ function originHost(url: string): string {
 
 /** 一条源此刻的状态：拉不动最要紧，其次才是开着还是停着。 */
 function StatusChip({ source }: { source: FeedSource }) {
-  if (source.last_error) return <Chip variant="caption" color="rose">拉取失败</Chip>;
-  if (!source.enabled) return <Chip variant="caption" color="neutral">已暂停</Chip>;
-  return <Chip variant="caption" color="lime">正常</Chip>;
+  if (source.last_error) return <Chip variant="caption" color="rose">{phrase('拉取失败')}</Chip>;
+  if (!source.enabled) return <Chip variant="caption" color="neutral">{phrase('已暂停')}</Chip>;
+  return <Chip variant="caption" color="lime">{phrase('正常')}</Chip>;
 }
 
 /** 名字前的圆框：和关注列表的创作者圆标同一个尺寸与底色。里面那段由 `card-art` 的 `avatarInner` 拼：
@@ -143,11 +144,11 @@ interface RowHandlers {
 function confirmRemove(sources: FeedSource[], write: () => Promise<unknown>) {
   const one = sources.length === 1 ? sources[0] : null;
   return confirmModal({
-    title: one ? '移除订阅源' : `移除 ${sources.length} 条订阅源`,
+    title: one ? phrase('移除订阅源') : phrase('移除 {length} 条订阅源', { length: sources.length }),
     body: one
-      ? `将移除订阅源「${feedName(one)}」，之后不再拉取它的新作；已经拉到的新作保留。`
-      : '将移除所选订阅源，之后不再拉取它们的新作；已经拉到的新作保留。',
-    confirmLabel: one ? '移除订阅源' : '移除所选订阅源', danger: true,
+      ? phrase('将移除订阅源「{one}」，之后不再拉取它的新作；已经拉到的新作保留。', { one: feedName(one) })
+      : phrase('将移除所选订阅源，之后不再拉取它们的新作；已经拉到的新作保留。'),
+    confirmLabel: one ? phrase('移除订阅源') : phrase('移除所选订阅源'), danger: true,
     onConfirm: write,
   });
 }
@@ -188,10 +189,10 @@ export function FeedSources({ readOnly, toast }: {
       const done = result.ids.length - failed.length;
       setSelected(new Set());
       void reload();
-      if (result.action === 'remove' && done) toast(`已移除 ${done} 条订阅源`);
+      if (result.action === 'remove' && done) toast(phrase('已移除 {done} 条订阅源', { done: done }));
       if (failed.length) {
         const first = failed[0]!;
-        action.setError(`${failed.length} 条没有写入：${first.ok ? '' : errorMessage(first.error)}`);
+        action.setError(phrase('{length} 条没有写入：{value}', { length: failed.length, value: first.ok ? '' : errorMessage(first.error) }));
       }
     },
     onError: (cause) => action.setError(errorMessage(cause)),
@@ -213,7 +214,7 @@ export function FeedSources({ readOnly, toast }: {
       (signal) => checkFeeds(signal, [source.id]), () => void reload()),
     remove: (source) => void confirmRemove([source], async () => {
       await removeFeed(source.id);
-      toast(`已移除订阅源「${feedName(source)}」`);
+      toast(phrase('已移除订阅源「{source}」', { source: feedName(source) }));
       void reload();
     }),
   };
@@ -230,7 +231,7 @@ export function FeedSources({ readOnly, toast }: {
         cell: (context) => (
           <Checkbox slot={null} isSelected={context.row.getIsSelected()}
             onChange={(on) => context.row.toggleSelected(on)}
-            aria-label={`选择 ${feedName(context.row.original)}`} />
+            aria-label={phrase('选择 {original}', { original: feedName(context.row.original) })} />
         ),
       }),
       column.accessor(feedName, {
@@ -245,7 +246,7 @@ export function FeedSources({ readOnly, toast }: {
               <FeedAvatar source={context.row.original} />
               {context.getValue()}
               {alias ? (
-                <span className="text-body-2-regular text-text-secondary" title={`站上这一页挂在「${alias}」名下`}>
+                <span className="text-body-2-regular text-text-secondary" title={phrase('站上这一页挂在「{alias}」名下', { alias: alias })}>
                   {alias}
                 </span>
               ) : null}
@@ -262,13 +263,13 @@ export function FeedSources({ readOnly, toast }: {
         id: 'origin',
         header: label('origin'),
         cell: (context) => (
-          <a href={context.getValue()} target="_blank" rel="noreferrer noopener" title="打开来源页面"
+          <a href={context.getValue()} target="_blank" rel="noreferrer noopener" title={phrase('打开来源页面')}
             className="text-text-primary underline-offset-2 hover:underline">
             {originHost(context.getValue())}
           </a>
         ),
       }),
-      column.accessor((source) => source.last_error ? '拉取失败' : source.enabled ? '已启用' : '已暂停', {
+      column.accessor((source) => source.last_error ? phrase('拉取失败') : source.enabled ? phrase('已启用') : phrase('已暂停'), {
         id: 'status',
         header: label('status'),
         cell: (context) => <StatusChip source={context.row.original} />,
@@ -281,12 +282,12 @@ export function FeedSources({ readOnly, toast }: {
       column.accessor((row) => row.last_fetched_at ? Date.parse(row.last_fetched_at) || 0 : 0, {
         id: 'fetched',
         header: label('fetched'),
-        cell: (context) => <span className="whitespace-nowrap tabular-nums">{context.row.original.last_fetched_at ? localTime(context.row.original.last_fetched_at) : '还没拉过'}</span>,
+        cell: (context) => <span className="whitespace-nowrap tabular-nums">{context.row.original.last_fetched_at ? localTime(context.row.original.last_fetched_at) : phrase('还没拉过')}</span>,
       }),
       column.accessor((row) => row.last_new_count, {
         id: 'fresh',
         header: label('fresh'),
-        cell: (context) => <span className="whitespace-nowrap tabular-nums">{`${context.getValue()} 条`}</span>,
+        cell: (context) => <span className="whitespace-nowrap tabular-nums">{phrase('{getValue} 条', { getValue: context.getValue() })}</span>,
       }),
       column.display({
         id: 'actions',
@@ -295,16 +296,16 @@ export function FeedSources({ readOnly, toast }: {
            刷新与垃圾桶字形，xs 那一档和开关一样高。 */
         cell: (context) => (
           <span className="flex items-center gap-1">
-            <Switch aria-label={`启用 ${feedName(context.row.original)}`}
+            <Switch aria-label={phrase('启用 {original}', { original: feedName(context.row.original) })}
               isSelected={context.row.original.enabled} isDisabled={handlers.current.readOnly}
               onChange={(enabled) => handlers.current.toggle(context.row.original, enabled)} />
             <Button variant="secondary" size="xs" iconOnly leadingIcon={RiRefreshLine}
-              aria-label={`拉取 ${feedName(context.row.original)}`}
+              aria-label={phrase('拉取 {original}', { original: feedName(context.row.original) })}
               disabled={handlers.current.readOnly}
               {...busyProps(handlers.current.busy === `check-${context.row.original.id}`)}
               onClick={() => handlers.current.fetch(context.row.original)} />
             <Button variant="secondary" size="xs" iconOnly leadingIcon={RiDeleteBinLine}
-              aria-label={`移除 ${feedName(context.row.original)}`}
+              aria-label={phrase('移除 {original}', { original: feedName(context.row.original) })}
               disabled={handlers.current.readOnly}
               onClick={() => handlers.current.remove(context.row.original)} />
           </span>
@@ -331,8 +332,8 @@ export function FeedSources({ readOnly, toast }: {
 
   if (!data) {
     return feeds.error
-      ? <Note tone="error" title="打不开订阅源">{errorMessage(feeds.error)}</Note>
-      : <Help>正在读订阅源。</Help>;
+      ? <Note tone="error" title={phrase('打不开订阅源')}>{errorMessage(feeds.error)}</Note>
+      : <Help>{phrase('正在读订阅源。')}</Help>;
   }
 
   const check = () => void action.run('check', (signal) => checkFeeds(signal), () => void reload());
@@ -347,13 +348,13 @@ export function FeedSources({ readOnly, toast }: {
   return (
     <div className="flex flex-col gap-3">
       <AddFeed readOnly={readOnly} toast={toast} onAdded={() => void reload()} />
-      <section aria-label="JAV 订阅列表"
+      <section aria-label={phrase('JAV 订阅列表')}
         className={cardClass({ padding: 'none', className: 'flex flex-col gap-4 px-6 py-5 max-sm:px-4' })}>
       <div className="flex flex-wrap items-center gap-2">
-        <h3 className="mr-auto text-title-2-medium text-text-primary">JAV 订阅源</h3>
-        <span className="text-body-2-regular text-text-secondary">{`${sources.length.toLocaleString()} 个订阅源 · ${(Number(data.unread) || 0).toLocaleString()} 条未看`}</span>
-        <Button onClick={check} disabled={readOnly} {...busyProps(action.busy === 'check')}>立即拉取</Button>
-        <DataTableSort label="JAV 订阅源" sorting={sorting} onChange={(next) => { setSorting(next); setPage(1); }}
+        <h3 className="mr-auto text-title-2-medium text-text-primary">{phrase('JAV 订阅源')}</h3>
+        <span className="text-body-2-regular text-text-secondary">{phrase('{length} 个订阅源 · {unread} 条未看', { length: sources.length.toLocaleString(), unread: (Number(data.unread) || 0).toLocaleString() })}</span>
+        <Button onClick={check} disabled={readOnly} {...busyProps(action.busy === 'check')}>{phrase('立即拉取')}</Button>
+        <DataTableSort label={phrase('JAV 订阅源')} sorting={sorting} onChange={(next) => { setSorting(next); setPage(1); }}
           options={['name', 'kind', 'origin', 'status', 'interval', 'fetched', 'fresh'].map((id) => ({ id, label: COLUMN_LABELS[id]! }))} />
       </div>
 
@@ -362,35 +363,35 @@ export function FeedSources({ readOnly, toast }: {
           {/* 拉不动的源并成一条：每条源一行「源名：报错首行」，几条源同时坏也不把表格推出首屏；
               表格里那一行的状态徽章同时标着「拉取失败」。 */}
           {failing.length ? (
-            <Note tone="error" title={`${failing.length.toLocaleString()} 条订阅源拉取失败`}
+            <Note tone="error" title={phrase('{length} 条订阅源拉取失败', { length: failing.length.toLocaleString() })}
               extra={<ul className="flex flex-col gap-0.5 text-body-2-regular">
                 {failing.map((source) => (
                   <li key={source.id} className="min-w-0 truncate" title={source.last_error || ''}>
-                    {`${feedName(source)}：${errorHeadline(source.last_error || '') || '未说明原因'}`}
+                    {`${feedName(source)}：${errorHeadline(source.last_error || '') || phrase('未说明原因')}`}
                   </li>
                 ))}
               </ul>}>
-              这些订阅源这一轮没有取到新条目。
+              {phrase('这些订阅源这一轮没有取到新条目。')}
             </Note>
           ) : null}
           {action.error ? <ErrorText>{action.error}</ErrorText> : null}
         </div>
       ) : null}
 
-        <SelectionDock visible={chosen.length > 0} label="订阅源批量操作" count={`已选 ${chosen.length} 条订阅源`}>
+        <SelectionDock visible={chosen.length > 0} label={phrase('订阅源批量操作')} count={phrase('已选 {length} 条订阅源', { length: chosen.length })}>
           <Button variant="secondary" size="small" disabled={readOnly} {...busyProps(bulk.isPending)}
-            onClick={() => bulk.mutate({ ids: chosen.map((row) => row.id), action: 'enabled' })}>启用</Button>
+            onClick={() => bulk.mutate({ ids: chosen.map((row) => row.id), action: 'enabled' })}>{phrase('启用')}</Button>
           <Button variant="secondary" size="small" disabled={readOnly} {...busyProps(bulk.isPending)}
-            onClick={() => bulk.mutate({ ids: chosen.map((row) => row.id), action: 'paused' })}>暂停</Button>
+            onClick={() => bulk.mutate({ ids: chosen.map((row) => row.id), action: 'paused' })}>{phrase('暂停')}</Button>
           <Button variant="danger" size="small" disabled={readOnly} {...busyProps(bulk.isPending)}
             onClick={() => void confirmRemove(chosen,
-              () => bulk.mutateAsync({ ids: chosen.map((row) => row.id), action: 'remove' }))}>移除</Button>
-          <Button variant="ghost" size="small" onClick={() => setSelected(new Set())}>取消选择</Button>
+              () => bulk.mutateAsync({ ids: chosen.map((row) => row.id), action: 'remove' }))}>{phrase('移除')}</Button>
+          <Button variant="ghost" size="small" onClick={() => setSelected(new Set())}>{phrase('取消选择')}</Button>
         </SelectionDock>
 
       {sources.length ? (
         <DataTableFrame follow onRowClick={(key) => toggleRow(Number(key))}>
-          <Table aria-label="JAV 订阅源" size="sm"
+          <Table aria-label={phrase('JAV 订阅源')} size="sm"
             sortDescriptor={sorting[0] ? { column: sorting[0].id, direction: sorting[0].desc ? 'descending' : 'ascending' } : undefined}
             onSortChange={(sort) => table.getColumn(String(sort.column))?.toggleSorting(sort.direction === 'descending')}>
             <TableHeader>
@@ -420,18 +421,18 @@ export function FeedSources({ readOnly, toast }: {
           </Table>
         </DataTableFrame>
       ) : (
-        <EmptyState icon={RiRssLine} title="还没有订阅源" shell="plain">
-          在上面按女优名添加，或在人物页点「订阅新作」。
+        <EmptyState icon={RiRssLine} title={phrase('还没有订阅源')} shell="plain">
+          {phrase('在上面按女优名添加，或在人物页点「订阅新作」。')}
         </EmptyState>
       )}
       {sources.length ? (
-        <DataTableFooter label="JAV 订阅" total={win.total} unit="个订阅源"
+        <DataTableFooter label={phrase('JAV 订阅')} total={win.total} unit={phrase('个订阅源')}
           pagination={{ pageIndex: win.page - 1, pageSize }}
           onChange={(next) => { setPageSize(next.pageSize); setPage(next.pageIndex + 1); }} />
       ) : null}
       <footer className="-mx-6 -mb-5 flex flex-wrap items-center gap-2 border-t border-separator-border rounded-b-2xl bg-card-footer px-6 py-4 max-sm:-mx-4 max-sm:px-4">
         <span role="status" className="mr-auto text-body-2-regular text-text-secondary">
-          {`未看 ${(Number(data.unread) || 0).toLocaleString()} · 已启用 ${sources.filter((source) => source.enabled).length.toLocaleString()} / ${sources.length.toLocaleString()}`}
+          {phrase('未看 {unread} · 已启用 {length} / {length2}', { unread: (Number(data.unread) || 0).toLocaleString(), length: sources.filter((source) => source.enabled).length.toLocaleString(), length2: sources.length.toLocaleString() })}
         </span>
       </footer>
       </section>

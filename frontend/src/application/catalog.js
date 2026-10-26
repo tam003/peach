@@ -28,6 +28,7 @@ import { loadingState, renderCatalogLoading } from './loading.js';
 import { releaseHoverPreviews } from './../card-art/hover';
 import { revealRoutedPage } from './follow.js';
 import { pageSkeletonHtml } from './../management-placeholder';
+import { phrase } from '../i18n';
 import { catalogEmptyHtml } from './../catalog-onboarding';
 import { junkRoute } from './../junk-queue';
 import { wallAddress } from '../react/video-wall/wall-route';
@@ -87,11 +88,11 @@ export async function toggleWatchLater(it,onChange){
   try{
     const r=await api('/api/watch-later',{method:'POST',body:JSON.stringify({id:it.id})});
     it.watch_later=r.watch_later;onChange(!!r.watch_later);
-    receiptsState.actionReceipt(r.watch_later?'已加入稍后看':'已移出稍后看',{undo:async()=>{
+    receiptsState.actionReceipt(r.watch_later?phrase('已加入稍后看'):phrase('已移出稍后看'),{undo:async()=>{
       const restored=await api('/api/watch-later',{method:'POST',body:JSON.stringify({id:it.id})});
       it.watch_later=restored.watch_later;onChange(!!restored.watch_later);
     }});
-  }catch(error){receiptsState.actionFailure('更新稍后看',error)}
+  }catch(error){receiptsState.actionFailure(phrase('更新稍后看'),error)}
 }
 
 export async function runResourceOperation(it,operation){
@@ -99,12 +100,12 @@ export async function runResourceOperation(it,operation){
     await api('/api/batch',{method:'POST',body:JSON.stringify({ids:[it.id],operation})});
     await loadCatalog();
     const inverse=operation==='restore'?'dispose':'restore';
-    receiptsState.actionReceipt(operation==='restore'?'已还原':'已移入回收站',{undo:async()=>{
+    receiptsState.actionReceipt(operation==='restore'?phrase('已还原'):phrase('已移入回收站'),{undo:async()=>{
       await api('/api/batch',{method:'POST',body:JSON.stringify({ids:[it.id],operation:inverse,
         ...(inverse==='dispose'?{disposal_reason:it.disposal_reason??null}:{})})});
       await loadCatalog();
     }});
-  }catch(error){receiptsState.actionFailure('操作',error);throw error}
+  }catch(error){receiptsState.actionFailure(phrase('操作'),error);throw error}
 }
 
 export async function getBarsData(context){
@@ -244,8 +245,8 @@ export function catalogFilterActions(){
 }
 
 export function catalogLayoutProp(){
-  if(javActive())return {name:'jav-layout',label:'JAV 卡片版式',value:javLayout(),options:JAV_LAYOUTS};
-  if(homeLayoutActive())return {name:'home-layout',label:'首页卡片版式',value:cardLayout(),options:JAV_LAYOUTS};
+  if(javActive())return {name:'jav-layout',label:phrase('JAV 卡片版式'),value:javLayout(),options:JAV_LAYOUTS};
+  if(homeLayoutActive())return {name:'home-layout',label:phrase('首页卡片版式'),value:cardLayout(),options:JAV_LAYOUTS};
   return null;
 }
 
@@ -346,14 +347,14 @@ export function paintCatalogCount(nextTotal,n){
 }
 
 export function emptyTrash(){
-  return confirmModal({title:'清空回收站',body:'回收站中的全部文件和馆藏记录将永久删除，无法恢复。',confirmLabel:'清空回收站',danger:true,onConfirm:async()=>{
+  return confirmModal({title:phrase('清空回收站'),body:phrase('回收站中的全部文件和馆藏记录将永久删除，无法恢复。'),confirmLabel:phrase('清空回收站'),danger:true,onConfirm:async()=>{
     try{
       const r=await api('/api/trash/empty',{method:'POST'});
       /* 删不掉的文件（占用中、网盘离线）会连同数据库行一起留在回收站，必须说出来，
          否则用户看到条目还在会以为清空又没生效。 */
-      if(r.blocked&&r.blocked.length)throw new Error(`已永久删除 ${r.purged} 项；${r.blocked.length} 项未能删除，仍在回收站：\n`
+      if(r.blocked&&r.blocked.length)throw new Error(phrase('已永久删除 {purged} 项；{blocked} 项未能删除，仍在回收站：\n', { purged: r.purged, blocked: r.blocked.length })
         +r.blocked.slice(0,5).map(x=>`${x.path}（${x.reason}）`).join('\n'));
-      receiptsState.actionReceipt(`已永久删除 ${r.purged} 项`);
+      receiptsState.actionReceipt(phrase('已永久删除 {count} 项', { count: r.purged }));
     }finally{await loadCatalog()}
   }});
 }
@@ -433,7 +434,7 @@ export function catalogGridLayout(){
   return gridLayout({active:javActive()||home,home,portrait:state.orient==='竖屏'});
 }
 
-export function catalogSkeletonHtml(label='正在读取作品'){
+export function catalogSkeletonHtml(label=phrase('正在读取作品')){
   return pageSkeletonHtml(label,{cards:true,className:'catalog-skeleton postercard-skeleton',cardRatio:catalogCardRatio()});
 }
 
@@ -469,7 +470,7 @@ export function catalogGridProps(){
     shorts:home&&path!=='/wall'&&!javActive()&&state.orient!=='竖屏'&&!trash&&state.browse!=='folders',
     countRow:$('#count'),onCount:paintCatalogCount,onCountFailed:()=>paintCatalogFilter({count:false}),
     emptyHtml:({trash:inTrash,libraryEmpty})=>inTrash
-      ?preferencesState.emptyState('trash','回收站是空的','删掉的内容会先到这里；确认不再需要后再清空。')
+      ?preferencesState.emptyState('trash',phrase('回收站是空的'),phrase('删掉的内容会先到这里；确认不再需要后再清空。'))
       :catalogEmptyHtml({jav:javActive()&&!libraryEmpty,configurable:runtimeConfigurable,filtered:!libraryEmpty}),
     canLoadMore:()=>$('#stats').hidden&&$('#index').hidden,
   };
@@ -479,7 +480,7 @@ export function loadJunk(surface){
   const count=$('#count');
   const live=catalogState.controller.page==='/junk-files'&&gridPainted()&&!catalogState.controller.pending
     &&count.querySelector(':scope > .peach-react:not([data-junk-count-skeleton])');
-  if(!live){clearCatalogGrid();renderCatalogLoading('正在读取垃圾文件')}
+  if(!live){clearCatalogGrid();renderCatalogLoading(phrase('正在读取垃圾文件'))}
   showHomeSurfaces();
   renderCombo();
   // 垃圾文件是逐项处置队列，计数只是当前队列说明，不是需要跟随浏览的排序工具。
@@ -495,11 +496,11 @@ export async function runJunkOperation(it,operation){
       ...(disposed?{disposal_reason:'junk'}:{})})});
     await loadCatalog();
     const inverse=disposed?'restore':reconsidered?'dismiss-junk':'reconsider-junk';
-    receiptsState.actionReceipt(disposed?'已移入回收站':reconsidered?'已重新加入垃圾判断':'已标记为不是垃圾',{undo:async()=>{
+    receiptsState.actionReceipt(disposed?phrase('已移入回收站'):reconsidered?phrase('已重新加入垃圾判断'):phrase('已标记为不是垃圾'),{undo:async()=>{
       await api('/api/batch',{method:'POST',body:JSON.stringify({ids,operation:inverse})});
       await loadCatalog();
     }});
-  }catch(error){receiptsState.actionFailure('操作',error);throw error}
+  }catch(error){receiptsState.actionFailure(phrase('操作'),error);throw error}
 }
 
 export function junkQueueProps(){
@@ -507,7 +508,7 @@ export function junkQueueProps(){
     ...junkRoute(location.search),helpers:catalogState.junkQueueHelpers,actions:catalogState.junkQueueActions,
     batchSize:preferencesState.appSettings.batchSize,revision:catalogState.controller.revision,selectMode,selected:new Set(selected),
     countRow:$('#count'),settled:settleCatalog,
-    skeletonHtml:()=>pageSkeletonHtml('正在读取垃圾文件',{cards:true,className:'catalog-skeleton postercard-skeleton'}),
+    skeletonHtml:()=>pageSkeletonHtml(phrase('正在读取垃圾文件'),{cards:true,className:'catalog-skeleton postercard-skeleton'}),
     canLoadMore:()=>$('#stats').hidden&&$('#index').hidden,
   };
 }
@@ -584,7 +585,7 @@ catalogState.topsQueryParams = (context,page=0)=>{
 catalogState.facetCountsSeq = 0;
 catalogState.VIEW_PILLS = [{k:'',label:'全部'},{k:'fresh',label:'没看过'},
                   {k:'later',label:'稍后看'},{k:'flagged',label:'已标记'}];
-catalogState.catalogViews = ()=>catalogState.VIEW_PILLS.map(v=>({...v,href:v.k?STATE_ROUTES[v.k]:'/'}));
+catalogState.catalogViews = ()=>catalogState.VIEW_PILLS.map(v=>({...v,label:phrase(v.label),href:v.k?STATE_ROUTES[v.k]:'/'}));
 catalogState.TAGS_FIRST = 26;
 applicationEffects.listen($('#catalogFilter'), 'click', event=>{
   const view=event.target.closest?.('[data-catalog-view]');
@@ -592,7 +593,7 @@ applicationEffects.listen($('#catalogFilter'), 'click', event=>{
   event.preventDefault();catalogFilterActions().setView(view.dataset.catalogView);
 });
 catalogState.catalogOnScreen = ()=>$('#index').hidden&&$('#stats').hidden;
-catalogState.COMBO_LABELS = {creator:'创作者',studio:'厂牌',owner:'归属'};
+catalogState.COMBO_LABELS = {creator:phrase('创作者'),studio:phrase('厂牌'),owner:phrase('归属')};
 catalogState.hideCatalogCombo = ()=>{if(catalogState.catalogFilterProps)paintCatalogFilter({comboHidden:true})};
 }
 
@@ -606,7 +607,7 @@ catalogState.junkQueueActions = {
     ?window.open('/photo?id='+it.id,'_blank','noopener'):openItem(it.id,true,null,anchor),
   /* 定位成功由 Toast 报，卡上状态行留空；失败把原因写回状态行。 */
   reveal:async it=>{
-    try{await api('/api/reveal',{method:'POST',body:JSON.stringify({id:it.id})});receiptsState.toast({text:'已在资源管理器中显示'});return ''}
+    try{await api('/api/reveal',{method:'POST',body:JSON.stringify({id:it.id})});receiptsState.toast({text:phrase('已在资源管理器中显示')});return ''}
     catch(error){return entityState.sourceHint(error.message)}
   },
   operate:(it,operation)=>runJunkOperation(it,operation),

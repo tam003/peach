@@ -13,6 +13,7 @@
 import { useSyncExternalStore } from 'react';
 import { flushSync } from 'react-dom';
 
+import { phrase } from '../../i18n/phrase';
 import { SelectionDock } from '../components/selection-dock';
 import { batchActions, type BatchDockApi, type BatchDockHost, type BatchDockProps } from './batch-dock-api';
 import './batch-dock.css';
@@ -50,13 +51,14 @@ export function BatchDockSurface() {
 function BatchDock({ host: at, props: view }: { host: BatchDockHost; props: BatchDockProps }) {
   return (
     <div className="peach-react" data-batch-scope="" data-context={view.context}>
-      <SelectionDock label="所选项目操作" visible={view.count > 0} count={`已选 ${view.count.toLocaleString()} 项`}>
+      <SelectionDock label={phrase('所选项目操作')} visible={view.count > 0}
+        count={phrase('已选 {count} 项', { count: view.count.toLocaleString('zh-CN') })}>
         {batchActions(view.context, view.junkDismissed).map((action) => (
           <button key={`${action.group}:${action.operation}`} type="button" data-batch-group={action.group}
             data-batch-action={action.operation} data-danger={action.danger ? '' : undefined}
             onClick={(event) => at.run(action.group, action.operation, event.currentTarget)}>
             <svg aria-hidden viewBox="0 0 24 24"><use href={`#i-${action.glyph}`} /></svg>
-            {action.label}
+            {phrase(action.label)}
           </button>
         ))}
       </SelectionDock>

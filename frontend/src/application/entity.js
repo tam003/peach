@@ -23,6 +23,7 @@ import { followState, pushFollowFeed } from './follow.js';
 import { applyDensity, paintPhotoSizeButton } from './../appearance/density';
 import { applicationEffects } from './effects';
 import { entitySkeletonHtml } from './../entity-skeleton';
+import { phrase } from '../i18n';
 import { INDEX_TITLES } from './../index-skeleton';
 import { filterControlsSkeletonHtml } from './../filter-controls-skeleton';
 import { cardRatio, gridLayout } from './../appearance/layout';
@@ -47,8 +48,9 @@ export function currentBarsContext(){
 export function sortKeys(current,dir,jav=javActive()){
   return sortOptions(jav).map(([key,label])=>{
     const pressed=current===key,next=nextSortState(key,current,dir);
-    return {key,label,pressed,dir:pressed&&sortDirWord(key,dir)?(dir==='asc'?'asc':'desc'):'',
-      ariaLabel:next?`按${label}${next.dir?sortDirWord(next.sort,next.dir):''}排序`:''}});
+    return {key,label:phrase(label),pressed,dir:pressed&&sortDirWord(key,dir)?(dir==='asc'?'asc':'desc'):'',
+      ariaLabel:next?phrase('按{label}{dir}排序',{label:phrase(label),dir:next.dir?phrase(sortDirWord(next.sort,next.dir)):''}):''};
+  });
 }
 
 export function routeEntityPage(kind,name,filters,media=entityState.EMPTY_ENTITY_MEDIA,options={}){
@@ -153,11 +155,11 @@ export async function entityAliasForm(mine,write){
 
 export function showEntityLoading(kind,name){
   const jav=['performer','studio'].includes(kind)&&feedState.hasEntityPart(kind,name,'jav');
-  const head=`<div data-filter-row="bottom" class="flex min-w-0 items-center gap-3 px-3 py-2 min-h-12"><h3 data-entity-readout><span data-skeleton="count" class="relative inline-block h-3.5 w-24 rounded-md align-middle skeleton-sheen"></span></h3>${islandShortcutsEntry()}${kind==='agency'?'':filterControlsSkeletonHtml(sortKeys(state.sort,state.dir,jav),jav?{name:'jav-layout',label:'JAV 卡片版式',value:javLayout(),options:JAV_LAYOUTS}:null)}</div>`;
-  const top=kind==='agency'?'':`<div data-entity-media><button type="button" data-media-view="videos" aria-label="视频" aria-pressed="true" disabled data-skeleton-action>${icon('play')}</button><button type="button" data-media-view="photos" aria-label="照片" disabled data-skeleton-action>${icon('pics')}</button></div><span data-entity-sep></span><div data-entity-scroll><div data-entity-states>${catalogState.catalogViews().map(view=>`<button type="button" data-entity-state="${esc(view.k)}" aria-pressed="${state.state===view.k}" disabled data-skeleton-action>${esc(view.label)}</button>`).join('')}</div>`;
+  const head=`<div data-filter-row="bottom" class="flex min-w-0 items-center gap-3 px-3 py-2 min-h-12"><h3 data-entity-readout><span data-skeleton="count" class="relative inline-block h-3.5 w-24 rounded-md align-middle skeleton-sheen"></span></h3>${islandShortcutsEntry()}${kind==='agency'?'':filterControlsSkeletonHtml(sortKeys(state.sort,state.dir,jav),jav?{name:'jav-layout',label:phrase('JAV 卡片版式'),value:javLayout(),options:JAV_LAYOUTS}:null)}</div>`;
+  const top=kind==='agency'?'':`<div data-entity-media><button type="button" data-media-view="videos" aria-label="${phrase('视频')}" aria-pressed="true" disabled data-skeleton-action>${icon('play')}</button><button type="button" data-media-view="photos" aria-label="${phrase('照片')}" disabled data-skeleton-action>${icon('pics')}</button></div><span data-entity-sep></span><div data-entity-scroll><div data-entity-states>${catalogState.catalogViews().map(view=>`<button type="button" data-entity-state="${esc(view.k)}" aria-pressed="${state.state===view.k}" disabled data-skeleton-action>${esc(view.label)}</button>`).join('')}</div>`;
   const body=kind==='agency'
     ?indexSkeletonHtml({kind:'performers',layout:indexState.peopleIndexLayout()})
-    :pageSkeletonHtml('正在读取作品',{cards:true,className:'catalog-skeleton postercard-skeleton',cardRatio:cardRatio(gridLayout({active:jav,home:false,portrait:false}))});
+    :pageSkeletonHtml(phrase('正在读取作品'),{cards:true,className:'catalog-skeleton postercard-skeleton',cardRatio:cardRatio(gridLayout({active:jav,home:false,portrait:false}))});
   const placeholder=entitySkeletonHtml(kind,head,body,top);
   if($('#index').firstElementChild?.dataset.skeleton!==`entity/${kind}`){
     $('#index').innerHTML=placeholder;
@@ -179,9 +181,9 @@ export function syncEntitySkeletonParts(kind,name){
 }
 
 export function showEntityMissing(kind){
-  const index=ENTITY_ROUTES[kind]||kind,title=INDEX_TITLES[index]||'条目';
-  const actions=INDEX_TITLES[index]?`<a class="geist-button primary" href="/${index}">返回${title}列表</a>`:'';
-  $('#index').innerHTML=preferencesState.emptyState('search-x',`找不到这个${title}`,'名字可能拼错了，或者已经合并到别的名字下；回列表里重新找。',{actions});
+  const index=ENTITY_ROUTES[kind]||kind,title=phrase(INDEX_TITLES[index]||'条目');
+  const actions=INDEX_TITLES[index]?`<a class="geist-button primary" href="/${index}">${phrase('返回{title}列表',{title})}</a>`:'';
+  $('#index').innerHTML=preferencesState.emptyState('search-x',phrase('找不到这个{title}',{title}),phrase('名字可能拼错了，或者已经合并到别的名字下；回列表里重新找。'),{actions});
 }
 
 export function openEntity(kind,name){openRoutedPage(entityState.application.fresh(kind,name))}
@@ -237,10 +239,10 @@ entityState.syncedText = r=>[r.trashed?`已把 ${r.trashed} 项移入回收站`:
   r.vanished?`${r.vanished} 项带个人记录，已标为已消失`:'',
   r.reattached?`${r.reattached} 项的记录已接到库里的另一个版本`:''].filter(Boolean).join('，');
 entityState.sourceToolButtons = id=>`
-    <button type="button" data-reveal="${id}" title="在文件管理器里打开源文件所在目录"
-      aria-label="定位源文件">${icon('folder-open')}</button>
-    <button type="button" data-sync="${id}" title="核对该目录：磁盘上已删除的移入 Peach 回收站，带个人记录的标为已消失"
-      aria-label="同步删除">${icon('folder-sync')}</button>`;
+    <button type="button" data-reveal="${id}" title="${phrase('在文件管理器里打开源文件所在目录')}"
+      aria-label="${phrase('定位源文件')}">${icon('folder-open')}</button>
+    <button type="button" data-sync="${id}" title="${phrase('核对该目录：磁盘上已删除的移入 Peach 回收站，带个人记录的标为已消失')}"
+      aria-label="${phrase('同步删除')}">${icon('folder-sync')}</button>`;
 }
 
 export function connectPhotoController(){

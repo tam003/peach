@@ -13,6 +13,7 @@ import type { SyncedSettings } from './settings-data';
 /** 面板读写的那几项；对象本身还有别的字段，面板不碰。 */
 export interface PanelSettings {
   theme: string;
+  locale: string;
   uiSounds: boolean;
   homeGlow: HomeGlow;
   /** 预设格选一档时连强调色一起换（`@peach/appearance` 的 `chooseGlowPreset`）。 */
@@ -40,7 +41,7 @@ export interface PanelSettings {
 
 /** 改完一项之后壳要跟着做的事，一项一个名字；落盘已经由面板做过。 */
 export type SettingsEffect =
-  | 'theme' | 'uiSounds'
+  | 'theme' | 'locale' | 'uiSounds'
   /** 拖光晕拉条的每一步：只排一帧重画侧栏那一层，不碰根。 */
   | 'glowFrame'
   /** 光晕的开关、颜色、恢复默认与松手：侧栏那一层、其余玻璃面和侧栏配色钮一起对齐。 */

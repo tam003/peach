@@ -8,15 +8,16 @@ import { ButtonLink } from '@/components/base/buttons/button';
 
 import { AuthCard } from '../auth-card';
 import type { PageData } from '../page-data';
+import { phrase } from '../../../i18n/phrase';
 
 const TITLES: Readonly<Record<string, string>> = {
-  403: '这里不能打开',
-  404: '四〇四',
-  409: '现在不能这样做',
+  get [403]() { return phrase('这里不能打开'); },
+  get [404]() { return phrase('四〇四'); },
+  get [409]() { return phrase('现在不能这样做'); },
 };
 
 export function errorTitle(status: string | undefined): string {
-  return TITLES[status ?? ''] ?? '出了点问题';
+  return TITLES[status ?? ''] ?? phrase('出了点问题');
 }
 
 export function ErrorPage({ data }: { data: PageData }) {
@@ -26,7 +27,7 @@ export function ErrorPage({ data }: { data: PageData }) {
   }, [title]);
   return (
     <AuthCard title={title} lede={data.status === '404' ? undefined : data.detail}>
-      <ButtonLink href="/" className="self-start">返回首页</ButtonLink>
+      <ButtonLink href="/" className="self-start">{phrase('返回首页')}</ButtonLink>
     </AuthCard>
   );
 }

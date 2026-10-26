@@ -8,11 +8,11 @@ export function readFollowView(search: string, previousSeed: number, rollSeed: (
   const status = params.get('status');
   const sort = params.get('sort');
   return {
-    status: FOLLOW_FILTERS.find(([key]) => key && key === status)?.[0] || '',
+    status: FOLLOW_FILTERS().find(([key]) => key && key === status)?.[0] || '',
     media: params.get('media') === 'images' ? 'images' : 'videos',
     author: csv('author')[0] || '', provider: csv('provider')[0] || '', work: csv('work')[0] || '',
     tags: csv('tag'), durMin: seconds('dur_min'), durMax: seconds('dur_max'),
-    sort: sort === FOLLOW_RANDOM_SORT ? sort : FOLLOW_FEED_SORTS.find(([key]) => key === sort)?.[0] || 'new',
+    sort: sort === FOLLOW_RANDOM_SORT ? sort : FOLLOW_FEED_SORTS().find(([key]) => key === sort)?.[0] || 'new',
     seed: Number(params.get('seed')) >>> 0 || previousSeed || rollSeed(),
     dir: params.get('dir') === 'asc' ? 'asc' : 'desc',
   };

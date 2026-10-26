@@ -7,6 +7,7 @@ import { useId, useState } from 'react';
 import { Button } from '@/components/base/buttons/button';
 
 import { errorHeadline } from './tasks';
+import { phrase } from '../../i18n/phrase';
 
 export function ErrorExcerpt({ text, className = '' }: { text: string; className?: string }) {
   const [open, setOpen] = useState(false);
@@ -23,7 +24,7 @@ export function ErrorExcerpt({ text, className = '' }: { text: string; className
       {more
         ? <Button variant="ghost" size="xs" className="-ml-2" aria-expanded={open} aria-controls={open ? id : undefined}
             onClick={() => setOpen(!open)}>
-            {open ? '收起详情' : '查看详情'}
+            {open ? phrase('收起详情') : phrase('查看详情')}
           </Button>
         : null}
     </div>

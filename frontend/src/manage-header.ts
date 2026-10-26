@@ -64,7 +64,7 @@ export interface ManageHeaderView {
 }
 
 export const trashLedeText = ({ total, shown }: TrashCount) =>
-  `${total.toLocaleString()} 个符合 · 显示 ${shown.toLocaleString()}`;
+  phrase('{total} 个符合 · 显示 {shown}', { total: total.toLocaleString('zh-CN'), shown: shown.toLocaleString('zh-CN') });
 
 /** 页头这一刻画什么；不在管理区时是 null。 */
 export function manageHeaderView(props: ManageHeaderProps): ManageHeaderView | null {
@@ -82,6 +82,8 @@ export function manageHeaderView(props: ManageHeaderProps): ManageHeaderView | n
   };
 }
 
+import { phrase } from './i18n/phrase';
+
 const escape = (value: string) => value.replace(/[&<>"']/g, (char) =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]!);
 const glyph = (name: string) => `<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-${escape(name)}"/></svg>`;
@@ -97,20 +99,21 @@ export function manageHeaderSkeletonHtml(props: ManageHeaderProps): string {
   if (!view) return '';
   const menu = props.menu.map(([key, label, mark]) => {
     const on = key === view.pressed;
+    const name = phrase(label);
     return `<button type="button" data-manage="${escape(key)}" aria-pressed="${on}"${on ? ' aria-current="page"' : ''}>`
-      + `${glyph(mark)}<span>${escape(label)}</span></button>`;
+      + `${glyph(mark)}<span>${escape(name)}</span></button>`;
   }).join('');
   const crumb = view.crumb
-    ? `<nav data-manage-crumb="" aria-label="Breadcrumb"><ol><li><a href="/data-cleanup">数据管理</a>${glyph('chevron-right')}</li>`
-      + `<li aria-current="true"><span>${escape(view.crumb)}</span></li></ol></nav>`
+    ? `<nav data-manage-crumb="" aria-label="Breadcrumb"><ol><li><a href="/data-cleanup">${escape(phrase('数据管理'))}</a>${glyph('chevron-right')}</li>`
+      + `<li aria-current="true"><span>${escape(phrase(view.crumb))}</span></li></ol></nav>`
     : '';
   const lede = view.lede.kind === 'none' ? ''
     : `<p class="mono" data-manage-lede="">${view.lede.kind === 'skeleton' ? TRASH_LEDE_SKELETON_HTML
-      : `<span data-lede-text="">${escape(view.lede.text)}</span>${view.lede.total ? EMPTY_TRASH_HTML : ''}`}</p>`;
-  return `<nav data-manage-bar="" aria-label="管理"><div data-manage-menu="">${menu}</div></nav>`
+      : `<span data-lede-text="">${escape(view.lede.text)}</span>${view.lede.total ? emptyTrashHtml() : ''}`}</p>`;
+  return `<nav data-manage-bar="" aria-label="${escape(phrase('管理'))}"><div data-manage-menu="">${menu}</div></nav>`
     + crumb
-    + `<h2 data-manage-title=""${view.compact ? ' data-compact=""' : ''}>${escape(view.title)}</h2>`
+    + `<h2 data-manage-title=""${view.compact ? ' data-compact=""' : ''}>${escape(phrase(view.title))}</h2>`
     + lede;
 }
 
-const EMPTY_TRASH_HTML = '<button type="button" data-empty-trash="" title="永久删除回收站内容">清空回收站</button>';
+const emptyTrashHtml = () => `<button type="button" data-empty-trash="" title="${escape(phrase('永久删除回收站内容'))}">${escape(phrase('清空回收站'))}</button>`;

@@ -10,6 +10,7 @@ import { MEDIA_SOURCE_ICONS } from '@peach/legacy/ui';
 import { Button } from '@/components/base/buttons/button';
 import { MENU_POPOVER_SURFACE } from '@/components/base/dropdown/menu-styles';
 
+import { phrase } from '../../i18n/phrase';
 import { SourceMark } from './section';
 
 /* 一行七枚、六行排完。第一枚是「不另选」：网盘库自动用网盘标识，本地路径没有可识别的
@@ -45,25 +46,25 @@ export function LibraryIconPicker({ value, label, kind = 'local', onChange }: {
     <>
       <Button ref={trigger} variant="secondary" className="self-start" aria-label={label} aria-haspopup="dialog"
         aria-expanded={open} onClick={() => { setDraft(value); setOpen(true); }}>
-        <span data-icon-choice className="flex items-center gap-2"><SourceMark mark={value || autoMark} />{nameOf(value)}</span>
+        <span data-icon-choice className="flex items-center gap-2"><SourceMark mark={value || autoMark} />{phrase(nameOf(value))}</span>
       </Button>
       <Popover triggerRef={trigger} isOpen={open} onOpenChange={setOpen} placement="bottom start" offset={4}
         className={MENU_POPOVER_SURFACE}>
-        <Dialog aria-label={`${label}可选图标`} className="flex w-72 flex-col gap-3 outline-none">
-          <Heading slot="title" className="px-1 text-body-medium text-text-primary">选择媒体库图标</Heading>
+        <Dialog aria-label={phrase('{label}可选图标', { label })} className="flex w-72 flex-col gap-3 outline-none">
+          <Heading slot="title" className="px-1 text-body-medium text-text-primary">{phrase('选择媒体库图标')}</Heading>
           {/* 格子里只放图标，名字走 aria-label：带着字的话 42 个候选要排十几行。 */}
-          <RadioGroup aria-label="可选图标" value={draft || AUTO} onChange={(next) => setDraft(next === AUTO ? '' : next)}
+          <RadioGroup aria-label={phrase('可选图标')} value={draft || AUTO} onChange={(next) => setDraft(next === AUTO ? '' : next)}
             className="inline-grid grid-cols-7 gap-1">
             {LIBRARY_ICON_CHOICES.map(([key, name]) => (
-              <Radio key={key || AUTO} value={key || AUTO} aria-label={key ? name : autoLabel}
+              <Radio key={key || AUTO} value={key || AUTO} aria-label={phrase(key ? name : autoLabel)}
                 className="flex h-10 cursor-pointer items-center justify-center rounded-lg text-foreground-icon-secondary outline-none hover:bg-dropdown-item-hover-background focus-visible:ring-2 focus-visible:ring-border-focus-ring data-selected:bg-dropdown-item-hover-background data-selected:text-text-primary">
                 <SourceMark mark={key || autoMark} />
               </Radio>
             ))}
           </RadioGroup>
           <div className="flex justify-end gap-2 border-t border-separator-border pt-2.5">
-            <Button variant="secondary" onClick={() => setOpen(false)}>取消</Button>
-            <Button disabled={draft === value} onClick={() => { onChange(draft); setOpen(false); }}>应用</Button>
+            <Button variant="secondary" onClick={() => setOpen(false)}>{phrase('取消')}</Button>
+            <Button disabled={draft === value} onClick={() => { onChange(draft); setOpen(false); }}>{phrase('应用')}</Button>
           </div>
         </Dialog>
       </Popover>

@@ -10,6 +10,7 @@ import { Button } from '@/components/base/buttons/button';
 import { Input } from '@/components/base/input/input';
 
 import { ApiError, apiSend, errorMessage } from '../../api';
+import { phrase } from '../../i18n/phrase';
 import type { ConfigurationData, TunnelState } from '../bundle';
 import { Note } from '../components/note';
 import { queryClient } from '../query';
@@ -89,52 +90,52 @@ export function TunnelSettings({ revision: initialRevision, initial, receipt }: 
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    send('save', active, () => receipt('已保存配置'));
+    send('save', active, () => receipt(phrase('已保存配置')));
   };
 
   const toggle = () => send('toggle', !active, (next) => receipt(
-    next.enabled ? '公网入口已启动' : '公网入口已停止',
+    next.enabled ? phrase('公网入口已启动') : phrase('公网入口已停止'),
   ));
 
   return (
-    <Section title="Cloudflare 公网入口" onSubmit={submit}>
+    <Section title={phrase('Cloudflare 公网入口')} onSubmit={submit}>
       <Stack>
         {state.named_available
-          ? <RadioGroup aria-label="公网入口的形态（二选一）" value={mode} isDisabled={active}
+          ? <RadioGroup aria-label={phrase('公网入口的形态（二选一）')} value={mode} isDisabled={active}
               onChange={(next) => setMode(next as TunnelState['mode'])} className={SEGMENTED_TRACK}>
               {MODES.map(([value, label]) => (
-                <Radio key={value} value={value} className={SEGMENT}>{label}</Radio>
+                <Radio key={value} value={value} className={SEGMENT}>{phrase(label)}</Radio>
               ))}
             </RadioGroup>
           : null}
-        <Help>{HELP[named ? 'named' : 'quick']}</Help>
+        <Help>{phrase(HELP[named ? 'named' : 'quick'])}</Help>
         {named ? <>
-          <Input id="tunnel-hostname" label="公开主机名" autoComplete="off" maxLength={253}
+          <Input id="tunnel-hostname" label={phrase('公开主机名')} autoComplete="off" maxLength={253}
             value={hostname} onChange={setHostname} isDisabled={active} validationBehavior="aria"
             isInvalid={Boolean(fields.hostname)}
-            hint={fields.hostname || 'Cloudflare Zero Trust 里指向这台电脑的主机名。'} />
-          <Input id="tunnel-token" type="password" label="隧道令牌" autoComplete="off" maxLength={2048}
+            hint={fields.hostname || phrase('Cloudflare Zero Trust 里指向这台电脑的主机名。')} />
+          <Input id="tunnel-token" type="password" label={phrase('隧道令牌')} autoComplete="off" maxLength={2048}
             value={token} onChange={setToken} isDisabled={active} validationBehavior="aria"
             hint={state.token_set
-              ? '已保存，留空不改。'
-              : '在 Cloudflare Zero Trust 的隧道详情页复制。'} />
+              ? phrase('已保存，留空不改。')
+              : phrase('在 Cloudflare Zero Trust 的隧道详情页复制。')} />
         </> : null}
         {!state.available
-          ? <Note tone="warning" title="找不到 cloudflared">安装官方 cloudflared，或用设置文件的 tunnel.binary 与 PEACH_CLOUDFLARED 指定路径。</Note>
+          ? <Note tone="warning" title={phrase('找不到 cloudflared')}>{phrase('安装官方 cloudflared，或用设置文件的 tunnel.binary 与 PEACH_CLOUDFLARED 指定路径。')}</Note>
           : null}
         {state.state === 'running' && state.url
-          ? <Note tone="info" title="公网地址"><ExternalLink href={state.url}>{state.url}</ExternalLink></Note>
+          ? <Note tone="info" title={phrase('公网地址')}><ExternalLink href={state.url}>{state.url}</ExternalLink></Note>
           : null}
-        {state.state === 'starting' ? <Note tone="info" title="正在连接">正在等待 cloudflared 连上 Cloudflare 边缘。</Note> : null}
-        {state.error ? <ErrorText>{state.error}</ErrorText> : null}
-        {action.error ? <ErrorText>{action.error}</ErrorText> : null}
+        {state.state === 'starting' ? <Note tone="info" title={phrase('正在连接')}>{phrase('正在等待 cloudflared 连上 Cloudflare 边缘。')}</Note> : null}
+        {state.error ? <ErrorText>{phrase(state.error)}</ErrorText> : null}
+        {action.error ? <ErrorText>{phrase(action.error)}</ErrorText> : null}
       </Stack>
-      <Footer status={state.enabled ? 'Peach 重启后自动恢复。' : undefined}>
+      <Footer status={state.enabled ? phrase('Peach 重启后自动恢复。') : undefined}>
         <Button variant={state.named_available ? 'secondary' : 'primary'} onClick={toggle} {...busyProps(action.busy === 'toggle')}>
-          {active ? '停止公网入口' : '启动公网入口'}
+          {active ? phrase('停止公网入口') : phrase('启动公网入口')}
         </Button>
         {state.named_available
-          ? <Button type="submit" {...busyProps(action.busy === 'save')}>保存配置</Button>
+          ? <Button type="submit" {...busyProps(action.busy === 'save')}>{phrase('保存配置')}</Button>
           : null}
       </Footer>
     </Section>

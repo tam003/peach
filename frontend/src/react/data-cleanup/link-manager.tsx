@@ -31,6 +31,7 @@ import {
   LINK_PRUNE_KEY, LINKS_KEY, pruneText, startLinkCheck, startLinkPrune,
   type LinkCheckState, type LinkPruneState, type LinkRow,
 } from './links';
+import { phrase } from '../../i18n/phrase';
 
 const UNLINK = spriteGlyph('unlink');
 const RETRY = spriteGlyph('rotate-cw');
@@ -64,15 +65,15 @@ function LinkTable(
 ) {
   if (!items.length) return null;
   const columns: DataColumn<LinkRow>[] = [
-    { id: 'entity', label: '所属', value: (item) => item.entity,
+    { id: 'entity', label: phrase('所属'), value: (item) => item.entity,
       render: (item) => <span className="block min-w-24 wrap-anywhere">{item.entity}</span> },
-    { id: 'kind', label: '类型', value: (item) => LINK_KINDS[item.link_kind] || item.link_kind,
+    { id: 'kind', label: phrase('类型'), value: (item) => LINK_KINDS[item.link_kind] || item.link_kind,
       render: (item) => LINK_KINDS[item.link_kind] || item.link_kind },
-    { id: 'label', label: '标签', value: (item) => item.label || '',
+    { id: 'label', label: phrase('标签'), value: (item) => item.label || '',
       render: (item) => <span className="block min-w-24 wrap-anywhere">{item.label || ''}</span> },
-    { id: 'note', label: '结果', value: (item) => item.note,
+    { id: 'note', label: phrase('结果'), value: (item) => item.note,
       render: (item) => <div className="min-w-40 max-w-80"><ErrorExcerpt text={item.note} className="tabular-nums text-text-error-primary" /></div> },
-    { id: 'url', label: '地址', value: (item) => item.url,
+    { id: 'url', label: phrase('地址'), value: (item) => item.url,
       render: (item) => <a href={item.url} target="_blank" rel="noreferrer" title={item.url}
         className="flex max-w-90 min-w-0 items-center gap-1 text-text-secondary hover:text-text-primary">
         <span data-middle-truncate className="min-w-0 truncate">{item.url}</span>
@@ -82,8 +83,8 @@ function LinkTable(
   return (
     <div className={RESULT_SECTION}>
       <DataTable label={title} items={items} columns={columns} rowId={(item) => String(item.id)}
-        description={hint} unit="条链接" panel={false} footerActions={footer}
-        rowLabel={(item) => `${item.entity} 的${item.label || item.url}`}
+        description={hint} unit={phrase('条链接')} panel={false} footerActions={footer}
+        rowLabel={(item) => phrase('{entity} 的{label}', { entity: item.entity, label: item.label || item.url })}
         selected={picked.map(String)} onSelected={(ids) => onPick(ids.map(Number))}
         actions={() => children} />
     </div>
@@ -134,9 +135,9 @@ export function LinkManager() {
   const removeGone = (ids?: number[]) => {
     if (removing || !gone.length) return;
     void confirmModal({
-      title: '删除失效链接',
-      body: `将删除 ${ids?.length ?? gone.length} 条失效链接。删除前会再次检查，删除后无法恢复。`,
-      confirmLabel: '删除失效链接',
+      title: phrase('删除失效链接'),
+      body: phrase('将删除 {length} 条失效链接。删除前会再次检查，删除后无法恢复。', { length: ids?.length ?? gone.length }),
+      confirmLabel: phrase('删除失效链接'),
       danger: true,
       onConfirm: () => prune.start.mutateAsync({ checkId, ids }),
     });
@@ -148,39 +149,39 @@ export function LinkManager() {
   let progress: ReactNode = null;
   let result: ReactNode = null;
   if (pruned?.status === 'failed') {
-    result = <Note tone="error" title="链接清理未完成">{pruned.error || '请查看任务记录，核对已处理的链接。'}</Note>;
+    result = <Note tone="error" title={phrase('链接清理未完成')}>{pruned.error || phrase('请查看任务记录，核对已处理的链接。')}</Note>;
   } else if (pruned && !gone.length && !unclear.length) {
-    result = <Note tone="success" title="完成">{pruneText(pruned)}</Note>;
+    result = <Note tone="success" title={phrase('完成')}>{pruneText(pruned)}</Note>;
   } else if (startError) {
-    result = <Note tone="error" title="检查失败">{errorMessage(startError)}</Note>;
+    result = <Note tone="error" title={phrase('检查失败')}>{errorMessage(startError)}</Note>;
   } else if (check.query.isError && state) {
-    result = <Note tone="neutral" title="任务状态">{DISCONNECTED}</Note>;
+    result = <Note tone="neutral" title={phrase('任务状态')}>{phrase(DISCONNECTED)}</Note>;
   } else if (state?.status === 'failed') {
-    result = <Note tone="error" title="检查失败">{state.error || '检查失败'}</Note>;
+    result = <Note tone="error" title={phrase('检查失败')}>{state.error || phrase('检查失败')}</Note>;
   } else if (state && state.status !== 'idle') {
     progress = <>
       {state.status === 'running'
         ? <TaskProgress embedded label={checkLine(state)} value={Math.min(state.checked || 0, state.total || 0)} total={state.total} />
         : null}
       {removing
-        ? <TaskProgress embedded label={prune.job?.message || '正在重验并删除失效链接…'}
+        ? <TaskProgress embedded label={prune.job?.message || phrase('正在重验并删除失效链接…')}
             value={Math.min(prune.job?.checked || 0, prune.job?.total || 0)} total={prune.job?.total} />
         : null}
     </>;
-    const pickedLabel = selectedRetryable.length ? `重试选中的 ${selectedRetryable.length} 条` : '重试选中的链接';
+    const pickedLabel = selectedRetryable.length ? phrase('重试选中的 {length} 条', { length: selectedRetryable.length }) : phrase('重试选中的链接');
     result = done || gone.length || unclear.length ? (
       <div className={RESULT_PANEL}>
-        {pruned?.status === 'complete' ? <Note tone="success" title="完成">{pruneText(pruned)}</Note> : null}
-        <LinkTable title="地址已失效" items={gone} hint={GONE_HINT} picked={gonePicked} onPick={setGonePicked}>
+        {pruned?.status === 'complete' ? <Note tone="success" title={phrase('完成')}>{pruneText(pruned)}</Note> : null}
+        <LinkTable title={phrase('地址已失效')} items={gone} hint={phrase(GONE_HINT)} picked={gonePicked} onPick={setGonePicked}>
           <Button variant="danger" size="small" disabled={!done || !selectedGone.length}
             {...busyProps(removing)} onClick={() => removeGone(selectedGone)}>
-            {`删除所选（${selectedGone.length}）`}
+            {phrase('删除所选（{length}）', { length: selectedGone.length })}
           </Button>
         </LinkTable>
-        <LinkTable title="本次未访问成功" items={unclear} hint={UNCLEAR_HINT}
+        <LinkTable title={phrase('本次未访问成功')} items={unclear} hint={phrase(UNCLEAR_HINT)}
           picked={picked} onPick={setPicked} footer={retryable.length
             ? <Button leadingIcon={RETRY} {...busyProps(running)}
-                onClick={() => run(retryable.map((item) => item.id))}>{`全部重试（${retryable.length}）`}</Button>
+                onClick={() => run(retryable.map((item) => item.id))}>{phrase('全部重试（{length}）', { length: retryable.length })}</Button>
             : null}>
           {retryable.length
             ? <>
@@ -190,14 +191,14 @@ export function LinkManager() {
             : null}
         </LinkTable>
         {done && gone.length
-          ? <PanelFooter tone="error" status={PRUNE_HINT}>
+          ? <PanelFooter tone="error" status={phrase(PRUNE_HINT)}>
               <Button variant="danger" {...busyProps(removing)} onClick={() => removeGone()}>
-                {`删除 ${gone.length} 条失效链接`}
+                {phrase('删除 {length} 条失效链接', { length: gone.length })}
               </Button>
             </PanelFooter>
           : null}
         {done && !gone.length && !unclear.length
-          ? <p className={`${RESULT_SECTION} text-body-regular text-notification-success-foreground`}>全部链接均可访问。</p>
+          ? <p className={`${RESULT_SECTION} text-body-regular text-notification-success-foreground`}>{phrase('全部链接均可访问。')}</p>
           : null}
       </div>
     ) : null;
@@ -207,24 +208,24 @@ export function LinkManager() {
     <section id="link-manager" aria-labelledby="link-manager-title" className="flex scroll-mt-20 flex-col gap-4">
       <Fieldset layout="stack" labelledBy="link-manager-title" footer={
         <Button leadingIcon={UNLINK} {...busyProps(running)} onClick={() => run()}>
-          {running ? '检查中' : done ? '重新检查' : '检查死链'}
+          {running ? phrase('检查中') : done ? phrase('重新检查') : phrase('检查死链')}
         </Button>
       }>
-        <FieldsetTitle id="link-manager-title" gap="small">链接管理</FieldsetTitle>
+        <FieldsetTitle id="link-manager-title" gap="small">{phrase('链接管理')}</FieldsetTitle>
         {stats.isError
-          ? <Note tone="error" title="链接统计读取失败">{errorMessage(stats.error)}</Note>
+          ? <Note tone="error" title={phrase('链接统计读取失败')}>{errorMessage(stats.error)}</Note>
           : info
             ? <>
                 <div className="link-stat-grid mt-4 gap-x-8 gap-y-3">
-                  <Stat label="链接总数" value={count(info.total)}
-                    note={`分布在 ${count(info.entities)} 个女优、厂牌与系列`} />
+                  <Stat label={phrase('链接总数')} value={count(info.total)}
+                    note={phrase('分布在 {entities} 个女优、厂牌与系列', { entities: count(info.entities) })} />
                   {Object.entries(info.by_kind ?? {}).map(([kind, value]) => (
                     <Stat key={kind} label={LINK_KINDS[kind] || kind} value={count(value)} />
                   ))}
                 </div>
                 {hosts
                   ? <div className="mt-4 flex min-w-0 flex-col gap-0.5">
-                      <span className="text-caption-1-regular text-text-secondary">主要站点</span>
+                      <span className="text-caption-1-regular text-text-secondary">{phrase('主要站点')}</span>
                       <b className="text-body-2-medium break-words text-text-primary">{hosts}</b>
                     </div>
                   : null}

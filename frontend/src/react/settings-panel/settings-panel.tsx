@@ -23,6 +23,8 @@ import {
   setActionBusy, setIconSwap, wireHorizontalScroller,
 } from '@peach/legacy/ui';
 
+import { LOCALE_CHOICES } from '../../i18n/locale';
+import { applyDocumentLocale, getLocale, subscribeLocale, t } from '../../i18n/translate';
 import { normalizeJavImage } from '../../jav-artwork';
 import { boundedPreference } from '../../number-setting';
 import { GlowSettings } from './glow-settings';
@@ -35,25 +37,44 @@ import { SidebarOrder } from './sidebar-order';
 import { SettingsDialogClose } from '../components/settings-dialog-close';
 
 /* 左栏的分区，顺序即右边各组的顺序。字形按条目自己的名字取：整列取自 Remix，一家画的笔画
-   才一样粗。 */
+   才一样粗。 键仍是中文（路由与 open(section) 认它），面上的字经 sectionLabel。 */
 const SECTIONS = [
   ['外观与导航', 'ri-palette-line'], ['浏览与播放', 'ri-play-circle-line'],
   ['JAV 与新作', 'jav'], ['搜索与推荐', 'ri-search-line'], ['内容显示', 'ri-shield-check-line'],
 ] as const;
 
-const SORT_OPTIONS: readonly Choice[] = [
-  ['seed', '随机'], ['rating', '评分'], ['o', '高潮计数'], ['plays', '观看次数'],
-  ['dur', '时长'], ['size', '体积'], ['new', '入库时间'], ['played', '观看时间'],
+const SECTION_LABEL = {
+  '外观与导航': 'settings.appearance',
+  '浏览与播放': 'settings.playback',
+  'JAV 与新作': 'settings.jav',
+  '搜索与推荐': 'settings.search',
+  '内容显示': 'settings.content',
+} as const;
+
+function sectionLabel(title: string): string {
+  const key = SECTION_LABEL[title as keyof typeof SECTION_LABEL];
+  return key ? t(key) : title;
+}
+
+function themeLabel(value: string): string {
+  if (value === 'light') return t('settings.theme.light');
+  if (value === 'dark') return t('settings.theme.dark');
+  return t('settings.theme.system');
+}
+
+const getSortOptions = (): readonly Choice[] => [
+  ['seed', t('settings.sort.seed')], ['rating', t('settings.sort.rating')], ['o', t('settings.sort.climax')], ['plays', t('settings.sort.plays')],
+  ['dur', t('settings.sort.duration')], ['size', t('settings.sort.size')], ['new', t('settings.sort.added')], ['played', t('settings.sort.watched')],
 ];
-const DIRECTION_OPTIONS: readonly Choice[] = [['desc', '降序'], ['asc', '升序']];
-const JAV_IMAGE_OPTIONS: readonly Choice[] = [['cover', '官方封面', ''], ['thumbnail', '预览图', '']];
+const getDirectionOptions = (): readonly Choice[] => [['desc', t('settings.sort.desc')], ['asc', t('settings.sort.asc')]];
+const getJavImageOptions = (): readonly Choice[] => [['cover', t('settings.image.cover'), ''], ['thumbnail', t('settings.image.thumb'), '']];
 /* 新作那一行收不收合集由服务端按数据库里的设置筛，这里的开关只是镜像：真相在 `/api/settings`。 */
-const FEED_COMPILATIONS = [
-  ['feedHideGroupSetting', 'feedHideGroupCompilations', '大合集', '隐藏大合集'],
-  ['feedHideSoloSetting', 'feedHideSoloCompilations', '单人合集', '隐藏单人合集'],
-  ['feedHideExcerptSetting', 'feedHideExcerpts', '切片', '隐藏切片'],
+const getFeedCompilations = () => [
+  ['feedHideGroupSetting', 'feedHideGroupCompilations', t('settings.feed.group'), t('settings.feed.hideGroup')],
+  ['feedHideSoloSetting', 'feedHideSoloCompilations', t('settings.feed.solo'), t('settings.feed.hideSolo')],
+  ['feedHideExcerptSetting', 'feedHideExcerpts', t('settings.feed.excerpt'), t('settings.feed.hideExcerpt')],
 ] as const;
-type CompilationKey = typeof FEED_COMPILATIONS[number][1];
+type CompilationKey = 'feedHideGroupCompilations' | 'feedHideSoloCompilations' | 'feedHideExcerpts';
 
 const FOCUSABLE = 'button:not([disabled]),input:not([disabled]),textarea:not([disabled]),a[href]';
 
@@ -221,23 +242,23 @@ function SettingsNav({ tab, epoch, configurable, openConfiguration, onSelect }: 
 
   /* 整块是一个 tablist：小标题写成 presentation，不占 tab 的位置，方向键从头走到尾。 */
   return (
-    <div data-settings-nav="" data-glass-pane="" role="tablist" aria-label="设置分区" ref={nav}
+    <div data-settings-nav="" data-glass-pane="" role="tablist" aria-label={t('settings.sections')} ref={nav}
       onPointerLeave={(event) => { if (event.pointerType !== 'touch') place(buttons.current[shown.current], true) }}>
       <span data-settings-glide="" aria-hidden="true" hidden ref={glide} />
-      <p data-settings-nav-caption="" role="presentation">设置</p>
+      <p data-settings-nav-caption="" role="presentation">{t('settings.caption')}</p>
       {SECTIONS.map(([title, icon], index) => (
         <button type="button" role="tab" key={title} id={tabId(index)} aria-controls={groupId(index)}
           aria-selected={index === tab} tabIndex={index === tab ? 0 : -1}
           ref={(node) => { buttons.current[index] = node }}
           onClick={() => onSelect(index)} onKeyDown={(event) => keys(event, index)}
           onPointerEnter={(event) => { if (event.pointerType !== 'touch') place(event.currentTarget, true) }}>
-          {icon === 'jav' ? <Icon name={icon} /> : <RemixIcon name={icon} />}{title}
+          {icon === 'jav' ? <Icon name={icon} /> : <RemixIcon name={icon} />}{sectionLabel(title)}
         </button>
       ))}
       <div data-settings-service="" role="presentation">
         <button type="button" disabled={configurable !== true} onClick={openConfiguration}
-          title={configurable === false ? '请在运行 Peach 的设备上打开 Peach 配置' : undefined}>
-          <Icon name="folder-cog" />Peach 配置<Icon name="chevron-right" />
+          title={configurable === false ? t('settings.configureOnDevice') : undefined}>
+          <Icon name="folder-cog" />{t('settings.peachConfig')}<Icon name="chevron-right" />
         </button>
       </div>
     </div>
@@ -247,7 +268,7 @@ function SettingsNav({ tab, epoch, configurable, openConfiguration, onSelect }: 
 function Group({ index, tab, children }: { index: number; tab: number; children: ReactNode }) {
   return (
     <section data-setting-group="" id={groupId(index)} role="tabpanel" aria-labelledby={tabId(index)} hidden={index !== tab}>
-      <h3>{SECTIONS[index][0]}</h3>
+      <h3>{sectionLabel(SECTIONS[index][0])}</h3>
       {children}
     </section>
   );
@@ -279,9 +300,11 @@ function Row({ title, description, kind, children }: {
 }
 
 function SettingsPanel({ host: current, view: shown }: { host: SettingsPanelHost; view: View }) {
-  /* 订阅只为重画：读的是活对象 `store.value`，版本号本身不用。 */
+  /* 订阅只为重画：读的是活对象 `store.value`，版本号本身不用。语言表换了也要重画这一屏。 */
   useSyncExternalStore(current.store.subscribe, current.store.version);
+  useSyncExternalStore(subscribeLocale, getLocale);
   const settings = current.store.value;
+  const themeOptions = current.themeOptions.map(([value, , icon]): Choice => [value, themeLabel(value), icon]);
   const panel = useRef<HTMLElement | null>(null);
   const card = useRef<HTMLDivElement | null>(null);
   const head = useRef<HTMLDivElement | null>(null);
@@ -331,30 +354,41 @@ function SettingsPanel({ host: current, view: shown }: { host: SettingsPanelHost
       onClick={(event) => { if (event.target === event.currentTarget) close() }}>
       <div data-settings-card="" ref={card}>
         <div data-settings-head="" ref={head}>
-          <h2 id="settingsTitle">{SECTIONS[shown.tab][0]}</h2>
-            <SettingsDialogClose id="settingsClose" label="关闭设置" onPress={() => close()} />
+          <h2 id="settingsTitle">{sectionLabel(SECTIONS[shown.tab][0])}</h2>
+            <SettingsDialogClose id="settingsClose" label={t('settings.close')} onPress={() => close()} />
         </div>
         <SettingsNav tab={shown.tab} epoch={epoch} configurable={shown.configurable} onSelect={select}
           openConfiguration={() => { close(false); current.openConfiguration() }} />
         <div data-settings-scroll="" ref={scroll}>
           <Group index={0} tab={shown.tab}>
-            <Row title="主题">
-              <IconSwitch id="themeSetting" name="theme" legend="主题" options={current.themeOptions} value={settings.theme}
+            <Row title={t('settings.theme')}>
+              <IconSwitch id="themeSetting" name="theme" legend={t('settings.theme')} options={themeOptions} value={settings.theme}
                 attr="data-theme-choice" variant="themeswitch" epoch={epoch}
                 onChoose={(choice) => { settings.theme = choice; save(); current.changed('theme') }} />
             </Row>
+            <Row title={t('settings.language')}>
+              <IconSwitch id="localeSetting" name="locale" legend={t('settings.language')} text
+                options={LOCALE_CHOICES.map(([value, label]): Choice => [value, label])}
+                value={settings.locale} attr="data-locale-choice" variant="localeswitch" epoch={epoch}
+                onChoose={(choice) => {
+                  settings.locale = choice;
+                  save();
+                  applyDocumentLocale(choice);
+                  current.changed('locale');
+                }} />
+            </Row>
             <div data-setting-row="">
-              <label htmlFor="glassContrastSetting"><b>增加对比度</b></label>
+              <label htmlFor="glassContrastSetting"><b>{t('settings.contrast')}</b></label>
               <input type="checkbox" id="glassContrastSetting" data-toggle="" role="switch" checked={current.highContrast()}
                 onChange={(event) => current.setHighContrast(event.target.checked)} />
             </div>
-            <ToggleRow id="uiSoundsSetting" title="界面音效" checked={settings.uiSounds}
+            <ToggleRow id="uiSoundsSetting" title={t('settings.sounds')} checked={settings.uiSounds}
               onToggle={(on) => { settings.uiSounds = on; save(); current.changed('uiSounds') }} />
-            <ToggleRow id="homeGlowSetting" title="侧栏光晕" checked={settings.homeGlow.on}
+            <ToggleRow id="homeGlowSetting" title={t('settings.glow')} checked={settings.homeGlow.on}
               onToggle={(on) => { settings.homeGlow.on = on; save(); current.changed('glow') }} />
             <GlowSettings host={current} />
             <section data-sidebar-setting="" aria-labelledby="sidebarOrderTitle">
-              <span><b id="sidebarOrderTitle">导航入口与顺序</b></span>
+              <span><b id="sidebarOrderTitle">{t('settings.navOrder')}</b></span>
               <SidebarOrder host={current} />
             </section>
           </Group>
@@ -362,17 +396,17 @@ function SettingsPanel({ host: current, view: shown }: { host: SettingsPanelHost
           <JavGroup host={current} tab={shown.tab} epoch={epoch} />
           <Group index={3} tab={shown.tab}>
             <SearchHistoryRow host={current} epoch={epoch} />
-            <Row title="相关推荐数量">
+            <Row title={t('settings.related')}>
               <div id="relatedLimitSetting">
-                <NumberSetting key={epoch} id="relatedLimitSetting" label="相关推荐数量" value={settings.relatedLimit}
+                <NumberSetting key={epoch} id="relatedLimitSetting" label={t('settings.related')} value={settings.relatedLimit}
                   onApply={(value) => { settings.relatedLimit = value; save() }} />
               </div>
             </Row>
-            <Row title="口味与记录"><div className="peach-react"><ButtonLink variant="secondary" href="/taste" onClick={() => close(false)}>打开口味与记录</ButtonLink></div></Row>
+            <Row title={t('settings.taste')}><div className="peach-react"><ButtonLink variant="secondary" href="/taste" onClick={() => close(false)}>{t('settings.openTaste')}</ButtonLink></div></Row>
           </Group>
           <Group index={4} tab={shown.tab}>
-            <ToggleRow id="censorSetting" title="SFW 模式" describedBy="sfwDescription" checked={current.censored()}
-              description="隐藏敏感画面，停止悬停预览。"
+            <ToggleRow id="censorSetting" title={t('settings.sfw')} describedBy="sfwDescription" checked={current.censored()}
+              description={t('settings.sfwHelp')}
               onToggle={(on) => current.setCensored(on)} />
           </Group>
         </div>
@@ -394,7 +428,7 @@ function decorateDirection(field: HTMLElement, ascending: boolean): void {
   }
   setIconSwap(mark, ascending ? 'a' : 'b');
   const label = mark.querySelector('[data-sort-direction-label]');
-  if (label) label.textContent = ascending ? '升序' : '降序';
+  if (label) label.textContent = ascending ? t('settings.sort.asc') : t('settings.sort.desc');
 }
 
 function BrowseGroup({ host: current, tab, epoch }: GroupProps) {
@@ -404,24 +438,24 @@ function BrowseGroup({ host: current, tab, epoch }: GroupProps) {
   const ascending = settings.defaultSortDirection === 'asc';
   return (
     <Group index={1} tab={tab}>
-      <Row title="每批加载作品">
+      <Row title={t('settings.batch')}>
         <div id="batchSizeSetting">
-          <NumberSetting key={epoch} id="batchSizeSetting" label="每批作品" value={settings.batchSize}
+          <NumberSetting key={epoch} id="batchSizeSetting" label={t('settings.batchLabel')} value={settings.batchSize}
             onApply={(value) => { settings.batchSize = value || 60; save(); current.changed('batchSize') }} />
         </div>
       </Row>
-      <Row title="默认排序" kind="sort">
+      <Row title={t('settings.defaultSort')} kind="sort">
         <div data-setting-sort-controls="">
-          <SelectField id="defaultSortSetting" label="默认排序" options={SORT_OPTIONS} value={settings.defaultSort} epoch={epoch}
+          <SelectField id="defaultSortSetting" label={t('settings.defaultSort')} options={getSortOptions()} value={settings.defaultSort} epoch={epoch}
             onPick={(value) => { settings.defaultSort = value; save(); current.changed('defaultSort') }} />
-          <SelectField id="defaultSortDirectionSetting" label="默认排序方向" options={DIRECTION_OPTIONS}
+          <SelectField id="defaultSortDirectionSetting" label={t('settings.sortDirection')} options={getDirectionOptions()}
             value={ascending ? 'asc' : 'desc'} hidden={random} disabled={random} epoch={epoch}
             onPick={(value) => { settings.defaultSortDirection = value; save(); current.changed('sortDirection') }}
             decorate={(field) => decorateDirection(field, ascending)} />
         </div>
       </Row>
-      <Row title="视频卡片大小">
-        <IconSwitch id="javSizeSetting" name="video-size" legend="视频卡片大小" options={current.videoLayouts}
+      <Row title={t('settings.cardSize')}>
+        <IconSwitch id="javSizeSetting" name="video-size" legend={t('settings.cardSize')} options={current.videoLayouts}
           value={current.videoLayout()} attr="data-video-layout" variant="javimageswitch" text epoch={epoch}
           onChoose={(layout) => current.setVideoLayout(layout)} />
       </Row>
@@ -435,20 +469,20 @@ function JavGroup({ host: current, tab, epoch }: GroupProps) {
   const save = () => current.store.save();
   return (
     <Group index={2} tab={tab}>
-      <h4 data-settings-subheading="">作品显示</h4>
-      <Row title="默认图片">
-        <IconSwitch id="javImageSetting" name="jav-image" legend="默认图片" options={JAV_IMAGE_OPTIONS}
+      <h4 data-settings-subheading="">{t('settings.worksDisplay')}</h4>
+      <Row title={t('settings.defaultImage')}>
+        <IconSwitch id="javImageSetting" name="jav-image" legend={t('settings.defaultImage')} options={getJavImageOptions()}
           value={settings.javImage} attr="data-jav-image-choice" variant="javimageswitch" text epoch={epoch}
           onChoose={(choice) => { settings.javImage = normalizeJavImage(choice); save(); current.changed('javImage') }} />
       </Row>
-      <label data-setting-row=""><span><b>合并分卷与版本</b></span>
+      <label data-setting-row=""><span><b>{t('settings.groupParts')}</b></span>
         <input type="checkbox" id="groupCollapseSetting" data-toggle="" role="switch" checked={settings.groupCollapse}
           onChange={(event) => { settings.groupCollapse = event.target.checked; save(); current.changed('groupCollapse') }} />
       </label>
-      <h4 data-settings-subheading="">新作显示</h4>
-      <ToggleRow id="feedAutoScrollSetting" title="新作自动滚动" checked={settings.feedAutoScroll}
+      <h4 data-settings-subheading="">{t('settings.newWorks')}</h4>
+      <ToggleRow id="feedAutoScrollSetting" title={t('settings.feedScroll')} checked={settings.feedAutoScroll}
         onToggle={(on) => { settings.feedAutoScroll = on; save(); current.changed('feedAutoScroll') }} />
-      {FEED_COMPILATIONS.map(([id, key, label, title]) => (
+      {getFeedCompilations().map(([id, key, label, title]) => (
         <CompilationToggle key={id} host={current} id={id} settingKey={key} label={label} title={title} />
       ))}
     </Group>
@@ -471,9 +505,9 @@ function CompilationToggle({ host: current, id, settingKey, label, title }: {
         settings[settingKey] = saved[settingKey] === true;
         current.store.save();
         current.changed('feedCompilations');
-        current.receipt(on ? `新作已收起${label}` : `新作已列出${label}`);
+        current.receipt(on ? t('settings.feed.hidden', { name: label }) : t('settings.feed.listed', { name: label }));
       },
-      onError: (error) => current.failure(`保存${label}开关`, error),
+      onError: (error) => current.failure(t('settings.feed.saveFailed', { name: label }), error),
       onSettled: () => { setPending(null); setActionBusy(box.current, false) },
     });
   };
@@ -491,21 +525,21 @@ function PlaybackRows({ host: current, epoch }: Omit<GroupProps, 'tab'>) {
   const save = () => current.store.save();
   return (
     <>
-      <Row title="悬停预览延迟">
+      <Row title={t('settings.hover')}>
         <div id="hoverDelaySetting">
-          <NumberSetting key={epoch} id="hoverDelaySetting" label="悬停预览延迟" value={settings.hoverDelaySeconds}
+          <NumberSetting key={epoch} id="hoverDelaySetting" label={t('settings.hover')} value={settings.hoverDelaySeconds}
             onApply={(value) => {
               settings.hoverDelaySeconds = boundedPreference(value, 0, 60, 5); save(); current.changed('hoverDelay');
             }} />
         </div>
       </Row>
-      <ToggleRow id="detailAutoplaySetting" title="打开详情自动播放" checked={settings.detailAutoplay}
+      <ToggleRow id="detailAutoplaySetting" title={t('settings.autoplay')} checked={settings.detailAutoplay}
         onToggle={(on) => { settings.detailAutoplay = on; save() }} />
-      <ToggleRow id="miniplayerSetting" title="离开详情后小窗播放" checked={settings.miniplayer}
+      <ToggleRow id="miniplayerSetting" title={t('settings.miniplayer')} checked={settings.miniplayer}
         onToggle={(on) => { settings.miniplayer = on; save(); current.changed('miniplayer') }} />
-      <Row title="快进 / 快退步长">
+      <Row title={t('settings.seek')}>
         <div id="seekSecondsSetting">
-          <NumberSetting key={epoch} id="seekSecondsSetting" label="快进 / 快退" value={settings.seekSeconds}
+          <NumberSetting key={epoch} id="seekSecondsSetting" label={t('settings.seekLabel')} value={settings.seekSeconds}
             onApply={(value) => { settings.seekSeconds = value || 10; save(); current.changed('seekSeconds') }} />
         </div>
       </Row>
@@ -518,9 +552,9 @@ function SearchHistoryRow({ host: current, epoch }: { host: SettingsPanelHost; e
   const save = useSaveSettings();
   /* 条数跟着数据库走（`/api/settings`），所有访问端看到同一个数；本地那份只是镜像。 */
   return (
-    <Row title="搜索记录数量">
+    <Row title={t('settings.history')}>
       <div id="searchHistoryLimitSetting">
-        <NumberSetting key={epoch} id="searchHistoryLimitSetting" label="搜索记录" value={settings.searchHistoryLimit}
+        <NumberSetting key={epoch} id="searchHistoryLimitSetting" label={t('settings.historyLabel')} value={settings.searchHistoryLimit}
           onApply={(value) => {
             settings.searchHistoryLimit = boundedPreference(value, 0, 50, 10);
             current.store.save();
