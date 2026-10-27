@@ -2,6 +2,7 @@ import { act } from 'react';
 import { describe, expect, it, vi } from 'vitest';
 
 import { PICK_FOLDER_URL } from '../../src/configuration-endpoints';
+import { setLocale } from '../../src/i18n/translate';
 import { SetupPage } from '../../src/react/pages/setup/setup-page';
 import { SETUP_QUESTIONS_URL, SETUP_URL, type SetupDone, type SetupQuestions } from '../../src/react/pages/setup/setup-api';
 import { RESTART_REDIRECT_MS } from '../../src/react/restart-redirect';
@@ -321,4 +322,23 @@ it('读题失败时给原因和重试', async () => {
   await settle();
   expect(fetcher).toHaveBeenCalledTimes(2);
   expect(paths(host)).toHaveLength(1);
+});
+
+it('越南语环境下正确呈现本地化标题、题面与提示', async () => {
+  setLocale('vi');
+  try {
+    const { host } = await open({
+      questions: [
+        { key: 'media_dir', label: '媒体库', help: ['Peach 从媒体库读取视频和图片。请选择已存在的文件夹，也可以使用外置硬盘。'],
+          default: 'D:\\Videos', required: true, advanced: false, input: 'folders', prefix: '', suffix: '' },
+        { key: 'data_root', label: '数据目录', help: ['Peach 数据库、缓存和设置文件都放在这里。'],
+          default: 'C:\\peach-data', required: true, advanced: true, input: 'text', prefix: '', suffix: '' },
+      ],
+    });
+    expect(document.title).toBe('Peach · Thiết lập lần đầu');
+    expect(host.querySelector('#setup-media-title')?.textContent).toContain('Thư viện');
+    expect(host.textContent).toContain('Peach đọc video và hình ảnh từ thư viện phương tiện.');
+  } finally {
+    setLocale('zh');
+  }
 });

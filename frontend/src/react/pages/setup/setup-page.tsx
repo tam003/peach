@@ -26,6 +26,10 @@ export function SetupPage() {
   const [restoring, setRestoring] = useState(false);
 
   useEffect(() => {
+    document.title = phrase('Peach · 首次运行');
+  }, []);
+
+  useEffect(() => {
     const controller = new AbortController();
     fetchQuestions(controller.signal).then(
       (setup) => setView({ kind: 'form', setup }),

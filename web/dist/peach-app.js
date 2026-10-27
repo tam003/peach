@@ -24402,6 +24402,62 @@ var Tn = /* @__PURE__ */ s({ phrases: () => En }), En = {
 	来源会话: {
 		en: "Source sessions",
 		vi: "Phiên nguồn"
+	},
+	"Peach · 首次运行": {
+		en: "Peach · First Run",
+		vi: "Peach · Thiết lập lần đầu"
+	},
+	"Peach 从媒体库读取视频和图片。请选择已存在的文件夹，也可以使用外置硬盘。": {
+		en: "Peach reads videos and images from the library. Please select an existing folder, or use an external drive.",
+		vi: "Peach đọc video và hình ảnh từ thư viện phương tiện. Vui lòng chọn một thư mục hiện có, cũng có thể sử dụng ổ cứng gắn ngoài."
+	},
+	"Peach 从媒体库读取视频和图片。": {
+		en: "Peach reads videos and images from the library.",
+		vi: "Peach đọc video và hình ảnh từ thư viện phương tiện."
+	},
+	"Peach 数据库、缓存和设置文件都放在这里。": {
+		en: "Peach database, cache, and settings files are stored here.",
+		vi: "Cơ sở dữ liệu, bộ nhớ đệm và tệp cài đặt của Peach đều được lưu tại đây."
+	},
+	谁可以访问: {
+		en: "Who can access",
+		vi: "Ai có thể truy cập"
+	},
+	只有这台电脑: {
+		en: "Only this computer",
+		vi: "Chỉ máy tính này"
+	},
+	同一局域网的设备: {
+		en: "Devices on the same LAN",
+		vi: "Thiết bị trong cùng mạng LAN"
+	},
+	"浏览器地址里冒号后面的数字，一般不用改。": {
+		en: "The number after the colon in the browser address, usually no need to change.",
+		vi: "Số sau dấu hai chấm trong địa chỉ trình duyệt, thông thường không cần sửa."
+	},
+	局域网访问地址: {
+		en: "LAN access address",
+		vi: "Địa chỉ truy cập mạng LAN"
+	},
+	"选了「同一局域网的设备」之后，其他设备在浏览器里输入这个地址就能打开 Peach。": {
+		en: "After selecting \"Devices on the same LAN\", other devices can open Peach by entering this address in the browser.",
+		vi: "Sau khi chọn \"Thiết bị trong cùng mạng LAN\", các thiết bị khác nhập địa chỉ này vào trình duyệt là có thể mở Peach."
+	},
+	"其他设备打开这个地址时要加上上面的端口，例如 http://peach.local:8900。首次连接请允许 Windows 专用网络访问。": {
+		en: "Other devices opening this address must add the port above, e.g. http://peach.local:8900. Please allow Windows private network access on first connection.",
+		vi: "Thiết bị khác khi mở địa chỉ này cần thêm cổng ở trên, ví dụ http://peach.local:8900. Lần đầu kết nối vui lòng cho phép truy cập mạng riêng tư trong Windows."
+	},
+	"填写这台设备实际读取媒体的文件夹；Docker 部署填写容器内目录，例如 /media。": {
+		en: "Fill in the actual folder where this device reads media; Docker deployments fill in the container directory, e.g. /media.",
+		vi: "Điền thư mục thực tế mà thiết bị này đọc media; triển khai Docker thì điền thư mục trong container, ví dụ /media."
+	},
+	"请先将 CloudDrive2 或 OpenList 中的网盘挂载为本机文件夹；Windows 读取 NAS 共享时，请先映射为盘符，再选择对应文件夹。本机安装提示仅适用于在本机运行 CloudDrive。文件操作需要挂载工具和网盘账号授予写入权限；光鸭云盘的上传、建文件夹、改名和移动需要 CloudDrive2 v1.1.0 或更高版本，删除和复制暂不支持。": {
+		en: "Please mount the cloud drive in CloudDrive2 or OpenList as a local folder first; when Windows reads a NAS share, map it to a drive letter first, then select the folder. Local installation hints only apply when CloudDrive runs locally. File operations require write permissions from the mount tool and cloud drive account.",
+		vi: "Vui lòng gắn ổ đĩa mạng trong CloudDrive2 hoặc OpenList thành thư mục cục bộ trước; khi Windows đọc chia sẻ NAS, hãy ánh xạ thành ổ đĩa trước rồi chọn thư mục. Các thao tác tệp cần công cụ gắn ổ và tài khoản cấp quyền ghi."
+	},
+	"先在 CloudDrive 登录网盘并完成挂载。": {
+		en: "Log in to the cloud drive in CloudDrive and finish mounting first.",
+		vi: "Đăng nhập vào ổ đĩa mạng trong CloudDrive và hoàn tất gắn ổ trước."
 	}
 }, Rn = /* @__PURE__ */ s({
 	phrases: () => zn,
