@@ -165,6 +165,9 @@ class VerificationTests(unittest.TestCase):
         (self.repo / name).write_text("value = 1\n", encoding="utf-8")
         self.git("add", "--", name)
         self.git("commit", "-m", "test: fixture")
+        # 工作区 diff 在 core.fileMode 打开时（macOS、Linux）读文件本身的权限，关闭时（Windows）读索引；
+        # 两处都设上，各平台看到的才是同一个模式变化。
+        (self.repo / name).chmod(0o755)
         self.git("update-index", "--chmod=+x", name)
         contents = runner.changed_contents(self.repo, "HEAD", [name])
         self.assertEqual(runner.scopes_for_changes([name], contents=contents)[0], ("full",))

@@ -117,7 +117,7 @@ export async function expectBody(page: Page, where: string, body: readonly Locat
 export function configurationBody(page: Page): Locator[] {
   return [
     page.locator('#main').getByRole('heading', { name: 'Peach 配置', exact: true }),
-    page.locator('#stats').getByRole('tab', { name: 'Library and import' }),
+    page.locator('#stats').getByRole('tab', { name: '媒体库与入库' }),
   ];
 }
 
