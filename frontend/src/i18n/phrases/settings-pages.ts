@@ -656,4 +656,7 @@ export const phrases: PhrasePack = {
   '准备处理': { en: 'Preparing to process', vi: 'Chuẩn bị xử lý' },
   '准备扫描文件': { en: 'Preparing to scan files', vi: 'Chuẩn bị quét tệp' },
   '准备采集资料': { en: 'Preparing to collect metadata', vi: 'Chuẩn bị thu thập dữ liệu' },
+  '选择媒体目录': { en: 'Select media directory', vi: 'Chọn thư mục media' },
+  '已经有一个选择文件夹的窗口开着': { en: 'A folder picker window is already open', vi: 'Đã có một cửa sổ chọn thư mục đang mở' },
+  '这个系统上没有可用的文件夹对话框': { en: 'There is no folder dialog available on this system', vi: 'Hệ thống này không có sẵn hộp thoại chọn thư mục' },
 };

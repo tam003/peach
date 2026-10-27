@@ -46,6 +46,11 @@ class CommandTests(unittest.TestCase):
         self.assertIn(f"Pick('{folder_picker.PROMPT}', $env:PEACH_PICK_INITIAL)", script)
         self.assertEqual(env, {"PEACH_PICK_INITIAL": r"D:\Media"})
 
+    def test_windows_supports_custom_prompt_for_localization(self):
+        argv, _ = folder_picker.command(r"D:\Media", platform="win32", prompt="Chọn thư mục media")
+        script = base64.b64decode(argv[-1]).decode("utf-16-le")
+        self.assertIn("Pick('Chọn thư mục media', $env:PEACH_PICK_INITIAL)", script)
+
     def test_macos_uses_applescript_choose_folder_and_escapes_the_initial_path(self):
         with mock.patch("os.path.isdir", return_value=True):
             argv, env = folder_picker.command('/Volumes/My "Disk"', platform="darwin")

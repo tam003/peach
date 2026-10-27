@@ -33,7 +33,7 @@ import { busyProps, useAction } from './use-action';
 
 const sourceName = (location: string) => MEDIA_SOURCES.find(([kind]) => kind === location)?.[1] ?? location;
 const pickFolder = async (initial: string) =>
-  (await apiSend<{ path: string | null }>(PICK_FOLDER_URL, { initial })).path;
+  (await apiSend<{ path: string | null }>(PICK_FOLDER_URL, { initial, prompt: phrase('选择媒体目录') })).path;
 
 interface MediaRow { path: string; location: string; root: string; library: string; library_icon: string; cost: SourceCost | '' }
 interface FieldErrors { media_dirs?: string[]; port?: string }

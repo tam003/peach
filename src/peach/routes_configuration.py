@@ -772,8 +772,19 @@ def pick_folder(request: Request, body: dict[str, Any] = Body(default_factory=di
     local_only(request)
     same_origin(request)
     initial = body.get("initial")
+    prompt = body.get("prompt")
+    if not prompt:
+        lang = (request.headers.get("accept-language") or "").lower()
+        if "vi" in lang:
+            prompt = "Chọn thư mục media"
+        elif "en" in lang:
+            prompt = "Select media directory"
+    kwargs = {"prompt": prompt} if prompt else {}
     try:
-        path = folder_picker.pick_folder(initial if isinstance(initial, str) and initial else None)
+        path = folder_picker.pick_folder(
+            initial if isinstance(initial, str) and initial else None,
+            **kwargs,
+        )
     except folder_picker.PickerBusy as exc:
         raise HTTPException(409, str(exc)) from exc
     except folder_picker.PickerUnavailable as exc:

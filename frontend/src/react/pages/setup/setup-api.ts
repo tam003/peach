@@ -100,6 +100,6 @@ export const restoreSetup = (dataRoot: string) =>
 
 export const pickFolder = async (initial: string) =>
   (await request<{ path: string | null }>(PICK_FOLDER_URL,
-    { method: 'POST', body: JSON.stringify({ initial }) }, phrase('没能打开文件夹对话框'))).path;
+    { method: 'POST', body: JSON.stringify({ initial, prompt: phrase('选择媒体目录') }) }, phrase('没能打开文件夹对话框'))).path;
 
 export const describeFailure = (cause: unknown) => (cause instanceof Error && cause.message) || phrase('请求失败，请重试');
