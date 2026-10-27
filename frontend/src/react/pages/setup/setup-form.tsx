@@ -33,9 +33,9 @@ const ADVANCED_KEYS = ['data_root', 'host', 'port', 'mdns_name'];
 /** 媒体目录那一项的错误：与行数对得上就按行写回，否则是整表一句。 */
 function folderErrors(value: SetupErrors[string], count: number): { rows: string[]; table: string } {
   if (Array.isArray(value)) {
-    return value.length === count ? { rows: value, table: '' } : { rows: [], table: value.filter(Boolean).join(' ') };
+    return value.length === count ? { rows: value.map((msg) => phrase(msg)), table: '' } : { rows: [], table: value.filter(Boolean).map((msg) => phrase(msg)).join(' ') };
   }
-  return { rows: [], table: value ?? '' };
+  return { rows: [], table: phrase(value ?? '') };
 }
 
 function scanLabel(paths: string[]): string {
@@ -44,7 +44,7 @@ function scanLabel(paths: string[]): string {
   return phrase('完成设置后扫描这 {length} 个文件夹并补全资料', { length: paths.length });
 }
 
-const text = (value: SetupErrors[string]) => (Array.isArray(value) ? value.filter(Boolean).join(' ') : value ?? '');
+const text = (value: SetupErrors[string]) => (Array.isArray(value) ? value.filter(Boolean).map((msg) => phrase(msg)).join(' ') : phrase(value ?? ''));
 
 export function SetupForm({ setup, onDone }: { setup: SetupQuestions; onDone: (done: SetupDone) => void }) {
   const media = setup.questions.find((question) => question.input === 'folders');

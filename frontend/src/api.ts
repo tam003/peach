@@ -8,6 +8,8 @@
 /** 服务端明确回了非 2xx。`status` 留给调用方区分 401／409／404 这类需要不同处置的情况。 */
 import { requestErrorMessage } from './core/request-error';
 import { registerResponseEntities } from './core/entity-links';
+import { phrase } from './i18n/phrase';
+import { getLocale } from './i18n/translate';
 
 export class ApiError extends Error {
   readonly status: number;
@@ -27,7 +29,7 @@ const reasonOf = (payload: unknown): string => {
   const body = payload as Record<string, unknown>;
   for (const key of ['message', 'detail', 'error']) {
     const value = body[key];
-    if (typeof value === 'string' && value) return value;
+    if (typeof value === 'string' && value) return phrase(value);
   }
   return '';
 };
@@ -36,12 +38,12 @@ const reasonOf = (payload: unknown): string => {
  *
  * 一次取数失败会同时落到两处——路由树打开时的首屏状态和共享 store 的错误态——
  * 两边显示的必须是同一句话，否则同一个失败会因为落在哪儿而说法不同。 */
-export const errorMessage = (cause: unknown): string => requestErrorMessage(cause);
+export const errorMessage = (cause: unknown): string => phrase(requestErrorMessage(cause));
 
 /** GET 一个 `/api/...` 契约端点。`signal` 中止时抛出 `AbortError`，调用方据此放弃写 DOM。 */
 export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> {
   const response = await fetch(path, {
-    headers: { Accept: 'application/json' },
+    headers: { Accept: 'application/json', 'Accept-Language': getLocale() },
     // 页面口令是 httponly cookie，取数必须带上；跨源请求不在此列。
     credentials: 'same-origin',
     ...(signal ? { signal } : {}),
@@ -53,7 +55,7 @@ export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> 
     // 失败响应不一定是 JSON（例如 401 的登录页），下面用状态码兜底。
   }
   if (!response.ok) {
-    throw new ApiError(reasonOf(payload) || `请求失败（${response.status}）`, response.status);
+    throw new ApiError(reasonOf(payload) || `${phrase('请求失败，请重试')}（${response.status}）`, response.status);
   }
   registerResponseEntities(path, payload);
   return payload as T;
@@ -63,7 +65,7 @@ export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> 
 export async function apiSend<T>(path: string, body: unknown, method = 'POST', signal?: AbortSignal): Promise<T> {
   const response = await fetch(path, {
     method, ...(signal ? { signal } : {}),
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json', 'Accept-Language': getLocale() },
     credentials: 'same-origin',
     body: JSON.stringify(body),
   });
@@ -74,7 +76,7 @@ export async function apiSend<T>(path: string, body: unknown, method = 'POST', s
     // 同上：失败响应不一定是 JSON。
   }
   if (!response.ok) {
-    throw new ApiError(reasonOf(payload) || `请求失败（${response.status}）`, response.status, payload);
+    throw new ApiError(reasonOf(payload) || `${phrase('请求失败，请重试')}（${response.status}）`, response.status, payload);
   }
   return payload as T;
 }

@@ -611,6 +611,19 @@ class SetupJsonContractTests(_SetupHttpCase):
                      access_confirm="should-not-be-used")
         self.assertEqual(access.load(self.data_root / "secrets" / "access.json")["mode"], "open")
 
+    def test_setup_errors_and_questions_localize_for_vietnamese_client(self):
+        response = self._send("GET", self.QUESTIONS, headers={"Accept-Language": "vi"})
+        self.assertEqual(response.status_code, 200)
+        questions = {q["key"]: q["label"] for q in response.json()["questions"]}
+        self.assertEqual(questions.get("data_root"), "Thư mục dữ liệu")
+        self.assertEqual(questions.get("port"), "Cổng")
+
+        body = self._body(access_enabled=True, access_password="", access_confirm="")
+        response = self._send("POST", self.SUBMIT, json=body, headers={"Accept-Language": "vi"})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["error"], "Có một số mục cần chỉnh sửa")
+        self.assertEqual(response.json()["errors"]["access_password"], "Vui lòng nhập mật khẩu truy cập")
+
     def test_the_setup_service_opens_the_folder_dialog_for_each_row(self):
         with mock.patch("peach.folder_picker.pick_folder", return_value=str(self.media)) as picker:
             response = self._send("POST", "/api/pick-folder", json={"initial": "E:/old"})
