@@ -87,11 +87,11 @@ export function ProcessingNoticePanel({ state, problem = '', measure = false }: 
           {step.status === 'complete' ? <RiCheckLine aria-hidden className="size-4 shrink-0" />
             : <RiCheckboxBlankCircleLine aria-hidden className={cx('size-4 shrink-0', step.status === 'current' && 'text-border-focus-ring')} />}
           <VisuallyHidden>{step.status === 'complete' ? phrase('已完成：') : step.status === 'current' ? phrase('当前：') : phrase('待处理：')}</VisuallyHidden>
-          {step.status === 'complete' ? <s className="wrap-anywhere">{step.label}</s> : <span className="wrap-anywhere">{step.label}</span>}
+          {step.status === 'complete' ? <s className="wrap-anywhere">{phrase(step.label)}</s> : <span className="wrap-anywhere">{phrase(step.label)}</span>}
         </li>)}
       </ol> : null}
       <p className="text-body-2-regular wrap-anywhere">{problem || (failed ? state?.error || phrase('请查看并处理未完成项') : <ProcessingLine state={state!} />)}</p>
-      {active && state?.stage && !state.steps?.length ? <p className="text-caption-1-regular text-text-tertiary">{phrase('当前阶段 ·')} {state.stage}</p> : null}
+      {active && state?.stage && !state.steps?.length ? <p className="text-caption-1-regular text-text-tertiary">{phrase('当前阶段 ·')} {phrase(state.stage)}</p> : null}
       {state?.stalled && !problem ? <p className="text-caption-1-regular">{phrase('当前步骤耗时较长，正在等待进展')}</p> : null}
     </div> : null}
     <div className="flex flex-wrap items-center justify-between gap-2">

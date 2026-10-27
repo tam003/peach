@@ -24458,6 +24458,86 @@ var Tn = /* @__PURE__ */ s({ phrases: () => En }), En = {
 	"先在 CloudDrive 登录网盘并完成挂载。": {
 		en: "Log in to the cloud drive in CloudDrive and finish mounting first.",
 		vi: "Đăng nhập vào ổ đĩa mạng trong CloudDrive và hoàn tất gắn ổ trước."
+	},
+	"正在卸载，Peach 将退出。完成后可关闭此页。": {
+		en: "Uninstalling, Peach will exit. You can close this page after completion.",
+		vi: "Đang gỡ cài đặt, Peach sẽ thoát. Có thể đóng trang này sau khi hoàn tất."
+	},
+	"这个系统上先退出 Peach，再手动移除程序与数据目录": {
+		en: "On this system, please exit Peach first, then manually remove the program and data directories.",
+		vi: "Trên hệ thống này, vui lòng thoát Peach trước, sau đó xóa thư mục chương trình và dữ liệu theo cách thủ công."
+	},
+	"更新任务尚未结束，请完成后卸载": {
+		en: "Update task has not finished yet, please uninstall after completion.",
+		vi: "Tác vụ cập nhật chưa hoàn tất, vui lòng gỡ cài đặt sau khi hoàn tất."
+	},
+	所选记录: {
+		en: "Selected records",
+		vi: "Các mục đã chọn"
+	},
+	检查媒体目录: {
+		en: "Check media directory",
+		vi: "Kiểm tra thư mục media"
+	},
+	读取媒体属性: {
+		en: "Read media properties",
+		vi: "Đọc thuộc tính media"
+	},
+	读取媒体属性与生成预览: {
+		en: "Read media properties and generate previews",
+		vi: "Đọc thuộc tính media và tạo bản xem trước"
+	},
+	采集外部资料与封面: {
+		en: "Collect metadata and covers",
+		vi: "Thu thập dữ liệu và bìa bên ngoài"
+	},
+	采集缺失资料: {
+		en: "Collect missing metadata",
+		vi: "Thu thập dữ liệu còn thiếu"
+	},
+	读取时长与分辨率: {
+		en: "Read duration and resolution",
+		vi: "Đọc thời lượng và độ phân giải"
+	},
+	生成预览图: {
+		en: "Generate preview images",
+		vi: "Tạo ảnh xem trước"
+	},
+	准备读取配套图片: {
+		en: "Preparing to read sidecar images",
+		vi: "Chuẩn bị đọc ảnh đi kèm"
+	},
+	准备生成预览: {
+		en: "Preparing to generate previews",
+		vi: "Chuẩn bị tạo bản xem trước"
+	},
+	准备生成预览图: {
+		en: "Preparing to generate previews",
+		vi: "Chuẩn bị tạo bản xem trước"
+	},
+	准备采集外部资料: {
+		en: "Preparing to collect metadata",
+		vi: "Chuẩn bị thu thập dữ liệu"
+	},
+	整理采集结果: {
+		en: "Organizing collected metadata",
+		vi: "Tổng hợp kết quả thu thập"
+	},
+	处理结束: {
+		en: "Processing completed",
+		vi: "Xử lý hoàn tất"
+	},
+	准备处理: {
+		en: "Preparing to process",
+		vi: "Chuẩn bị xử lý"
+	},
+	准备扫描文件: {
+		en: "Preparing to scan files",
+		vi: "Chuẩn bị quét tệp"
+	},
+	准备采集资料: {
+		en: "Preparing to collect metadata",
+		vi: "Chuẩn bị thu thập dữ liệu"
 	}
 }, Rn = /* @__PURE__ */ s({
 	phrases: () => zn,
@@ -28615,7 +28695,7 @@ function fee(e, { selector: t, attribute: n, onMove: r } = {}) {
 //#endregion
 //#region src/ui-kit/modal.ts
 var _c = 0;
-function vc({ title: e, description: t = "", body: n = "", confirmLabel: r, cancelLabel: i = "取消", onConfirm: a = null, confirmDisabled: o = !1 } = {}) {
+function vc({ title: e, description: t = "", body: n = "", confirmLabel: r, cancelLabel: i = W("取消"), onConfirm: a = null, confirmDisabled: o = !1 } = {}) {
 	let s = document.activeElement, c = document.createElement("dialog");
 	c.className = "ui-geist-modal";
 	let l = `geist-form-title-${++_c}`;
@@ -28627,7 +28707,7 @@ function vc({ title: e, description: t = "", body: n = "", confirmLabel: r, canc
         <div><button type="submit" class="geist-button primary" data-modal-confirm></button></div>
       </footer></form>`, c.querySelector("h3").textContent = e, t && (c.querySelector(".ui-geist-modal-body p").textContent = t);
 	let u = c.querySelector("[data-modal-cancel]"), d = c.querySelector("[data-modal-confirm]"), f = c.querySelector("[data-modal-error]");
-	u.textContent = i, d.textContent = r, d.disabled = !!o, document.body.append(c);
+	u.textContent = i || W("取消"), d.textContent = r, d.disabled = !!o, document.body.append(c);
 	let p = null, m = !1, h = new Promise((e) => c.addEventListener("close", () => {
 		c.remove(), s instanceof HTMLElement && s.isConnected && s.focus(), e(p || { confirmed: !1 });
 	}, { once: !0 }));
@@ -28648,7 +28728,7 @@ function vc({ title: e, description: t = "", body: n = "", confirmLabel: r, canc
 						result: await a()
 					}, c.close();
 				} catch (e) {
-					f.innerHTML = ps(e.message || "操作未完成", { variant: "error" }), lc(d, !1);
+					f.innerHTML = ps(e.message || W("操作未完成"), { variant: "error" }), lc(d, !1);
 				} finally {
 					m = !1;
 				}
@@ -28662,7 +28742,7 @@ function vc({ title: e, description: t = "", body: n = "", confirmLabel: r, canc
 	};
 }
 var yc = 0;
-function bc({ title: e, body: t, items: n = [], confirmLabel: r, cancelLabel: i = "取消", onConfirm: a = null, danger: o = !1 } = {}) {
+function bc({ title: e, body: t, items: n = [], confirmLabel: r, cancelLabel: i = W("取消"), onConfirm: a = null, danger: o = !1 } = {}) {
 	let s = document.activeElement, c = document.createElement("dialog");
 	c.className = "ui-geist-modal";
 	let l = `geist-modal-title-${++yc}`;
@@ -28675,7 +28755,7 @@ function bc({ title: e, body: t, items: n = [], confirmLabel: r, cancelLabel: i 
 	let u = null;
 	if (n.length) {
 		let e = document.createElement("div");
-		e.className = "ui-geist-modal-list", u = document.createElement("ul"), u.setAttribute("aria-label", "所选记录"), u.tabIndex = 0;
+		e.className = "ui-geist-modal-list", u = document.createElement("ul"), u.setAttribute("aria-label", W("所选记录")), u.tabIndex = 0;
 		for (let e of n) {
 			let t = document.createElement("li");
 			t.textContent = e, u.append(t);
@@ -28685,7 +28765,7 @@ function bc({ title: e, body: t, items: n = [], confirmLabel: r, cancelLabel: i 
 	let d = c.querySelector("[data-modal-cancel]"), f = c.querySelector("[data-modal-confirm]");
 	o && (f.classList.remove("primary"), f.classList.add("danger"));
 	let p = c.querySelector("[data-modal-error]");
-	return d.textContent = i, f.textContent = r, document.body.append(c), new Promise((e) => {
+	return d.textContent = i || W("取消"), f.textContent = r, document.body.append(c), new Promise((e) => {
 		let t = null, n = !1;
 		c.addEventListener("close", () => {
 			c.remove(), s instanceof HTMLElement && s.isConnected && s.focus(), e(t || { confirmed: !1 });
@@ -28706,7 +28786,7 @@ function bc({ title: e, body: t, items: n = [], confirmLabel: r, cancelLabel: i 
 							result: await a()
 						}, c.close();
 					} catch (e) {
-						p.innerHTML = ps(e.message || "操作未完成", { variant: "error" }), lc(f, !1);
+						p.innerHTML = ps(e.message || W("操作未完成"), { variant: "error" }), lc(f, !1);
 					} finally {
 						n = !1;
 					}
@@ -60438,7 +60518,7 @@ function hCe(e) {
 function gCe(e) {
 	if (e.status === "paused") return W("已暂停");
 	if (e.status === "pausing") return W("正在暂停");
-	let t = mCe[e.current_action || ""] || e.stage || W("正在处理"), n = e.waited_seconds ? W(" · 已等待 {waited_seconds}", { waited_seconds: bj(e.waited_seconds) }) : "";
+	let t = mCe[e.current_action || ""] || W(e.stage || "") || W("正在处理"), n = e.waited_seconds ? W(" · 已等待 {waited_seconds}", { waited_seconds: bj(e.waited_seconds) }) : "";
 	return e.current_asset_name ? W("当前：{current_asset_name} · {action}{waited}", {
 		current_asset_name: e.current_asset_name,
 		action: t,
@@ -60994,10 +61074,10 @@ function $P({ state: e, problem: t = "", measure: n = !1 }) {
 								/* @__PURE__ */ (0, C.jsx)(Hb, { children: e.status === "complete" ? W("已完成：") : e.status === "current" ? W("当前：") : W("待处理：") }),
 								e.status === "complete" ? /* @__PURE__ */ (0, C.jsx)("s", {
 									className: "wrap-anywhere",
-									children: e.label
+									children: W(e.label)
 								}) : /* @__PURE__ */ (0, C.jsx)("span", {
 									className: "wrap-anywhere",
-									children: e.label
+									children: W(e.label)
 								})
 							]
 						}, e.id))
@@ -61011,7 +61091,7 @@ function $P({ state: e, problem: t = "", measure: n = !1 }) {
 						children: [
 							W("当前阶段 ·"),
 							" ",
-							e.stage
+							W(e.stage)
 						]
 					}) : null,
 					e?.stalled && !t ? /* @__PURE__ */ (0, C.jsx)("p", {

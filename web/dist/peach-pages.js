@@ -24113,6 +24113,86 @@ var Dt = /* @__PURE__ */ s({ phrases: () => Ot }), Ot = {
 	"先在 CloudDrive 登录网盘并完成挂载。": {
 		en: "Log in to the cloud drive in CloudDrive and finish mounting first.",
 		vi: "Đăng nhập vào ổ đĩa mạng trong CloudDrive và hoàn tất gắn ổ trước."
+	},
+	"正在卸载，Peach 将退出。完成后可关闭此页。": {
+		en: "Uninstalling, Peach will exit. You can close this page after completion.",
+		vi: "Đang gỡ cài đặt, Peach sẽ thoát. Có thể đóng trang này sau khi hoàn tất."
+	},
+	"这个系统上先退出 Peach，再手动移除程序与数据目录": {
+		en: "On this system, please exit Peach first, then manually remove the program and data directories.",
+		vi: "Trên hệ thống này, vui lòng thoát Peach trước, sau đó xóa thư mục chương trình và dữ liệu theo cách thủ công."
+	},
+	"更新任务尚未结束，请完成后卸载": {
+		en: "Update task has not finished yet, please uninstall after completion.",
+		vi: "Tác vụ cập nhật chưa hoàn tất, vui lòng gỡ cài đặt sau khi hoàn tất."
+	},
+	所选记录: {
+		en: "Selected records",
+		vi: "Các mục đã chọn"
+	},
+	检查媒体目录: {
+		en: "Check media directory",
+		vi: "Kiểm tra thư mục media"
+	},
+	读取媒体属性: {
+		en: "Read media properties",
+		vi: "Đọc thuộc tính media"
+	},
+	读取媒体属性与生成预览: {
+		en: "Read media properties and generate previews",
+		vi: "Đọc thuộc tính media và tạo bản xem trước"
+	},
+	采集外部资料与封面: {
+		en: "Collect metadata and covers",
+		vi: "Thu thập dữ liệu và bìa bên ngoài"
+	},
+	采集缺失资料: {
+		en: "Collect missing metadata",
+		vi: "Thu thập dữ liệu còn thiếu"
+	},
+	读取时长与分辨率: {
+		en: "Read duration and resolution",
+		vi: "Đọc thời lượng và độ phân giải"
+	},
+	生成预览图: {
+		en: "Generate preview images",
+		vi: "Tạo ảnh xem trước"
+	},
+	准备读取配套图片: {
+		en: "Preparing to read sidecar images",
+		vi: "Chuẩn bị đọc ảnh đi kèm"
+	},
+	准备生成预览: {
+		en: "Preparing to generate previews",
+		vi: "Chuẩn bị tạo bản xem trước"
+	},
+	准备生成预览图: {
+		en: "Preparing to generate previews",
+		vi: "Chuẩn bị tạo bản xem trước"
+	},
+	准备采集外部资料: {
+		en: "Preparing to collect metadata",
+		vi: "Chuẩn bị thu thập dữ liệu"
+	},
+	整理采集结果: {
+		en: "Organizing collected metadata",
+		vi: "Tổng hợp kết quả thu thập"
+	},
+	处理结束: {
+		en: "Processing completed",
+		vi: "Xử lý hoàn tất"
+	},
+	准备处理: {
+		en: "Preparing to process",
+		vi: "Chuẩn bị xử lý"
+	},
+	准备扫描文件: {
+		en: "Preparing to scan files",
+		vi: "Chuẩn bị quét tệp"
+	},
+	准备采集资料: {
+		en: "Preparing to collect metadata",
+		vi: "Chuẩn bị thu thập dữ liệu"
 	}
 }, Vt = /* @__PURE__ */ s({
 	phrases: () => Ht,

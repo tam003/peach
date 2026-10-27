@@ -162,7 +162,7 @@ export function notesLine(notes: Record<string, number>): string {
 export function currentLine(state: LibraryProcessingData): string {
   if (state.status === 'paused') return phrase('已暂停');
   if (state.status === 'pausing') return phrase('正在暂停');
-  const action = ACTION_LABELS[state.current_action || ''] || state.stage || phrase('正在处理');
+  const action = ACTION_LABELS[state.current_action || ''] || phrase(state.stage || '') || phrase('正在处理');
   const waited = state.waited_seconds ? phrase(' · 已等待 {waited_seconds}', { waited_seconds: elapsedText(state.waited_seconds) }) : '';
   return state.current_asset_name
     ? phrase('当前：{current_asset_name} · {action}{waited}', { current_asset_name: state.current_asset_name, action: action, waited: waited })
