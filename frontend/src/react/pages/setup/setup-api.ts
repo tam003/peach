@@ -5,6 +5,7 @@
  * 与行对应的列表，整表不成立时是只有一句话的列表。 */
 import { PICK_FOLDER_URL } from '../../../configuration-endpoints';
 import { phrase } from '../../../i18n/phrase';
+import { getLocale } from '../../../i18n/translate';
 
 export const SETUP_QUESTIONS_URL = '/api/setup/questions';
 export const SETUP_URL = '/api/setup';
@@ -78,14 +79,18 @@ async function request<T>(url: string, init: RequestInit, fallback: string): Pro
   try {
     response = await fetch(url, {
       credentials: 'same-origin', ...init,
-      headers: { Accept: 'application/json', ...(init.body ? { 'Content-Type': 'application/json' } : {}) },
+      headers: {
+        Accept: 'application/json',
+        'Accept-Language': getLocale(),
+        ...(init.body ? { 'Content-Type': 'application/json' } : {}),
+      },
     });
   } catch (cause) {
     if (init.signal?.aborted) throw cause;
     throw new SetupRequestError(0, phrase('连接不到 Peach，请确认它仍在运行后重试'));
   }
   const body = await response.json().catch(() => null) as { error?: string; errors?: SetupErrors } | null;
-  if (!response.ok) throw new SetupRequestError(response.status, body?.error || fallback, body?.errors);
+  if (!response.ok) throw new SetupRequestError(response.status, phrase(body?.error || fallback), body?.errors);
   return body as T;
 }
 
@@ -102,4 +107,4 @@ export const pickFolder = async (initial: string) =>
   (await request<{ path: string | null }>(PICK_FOLDER_URL,
     { method: 'POST', body: JSON.stringify({ initial, prompt: phrase('选择媒体目录') }) }, phrase('没能打开文件夹对话框'))).path;
 
-export const describeFailure = (cause: unknown) => (cause instanceof Error && cause.message) || phrase('请求失败，请重试');
+export const describeFailure = (cause: unknown) => (cause instanceof Error && phrase(cause.message)) || phrase('请求失败，请重试');

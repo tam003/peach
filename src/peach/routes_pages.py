@@ -359,7 +359,9 @@ def setup_questions(request: Request):
             # 局域网地址只在选了「同一局域网的设备」时显示并提交；不提交时服务端按默认值补。
             item["visible_when"] = {"host": "2"}
         items.append(item)
-    return JSONResponse({
+    from . import i18n
+    lang = i18n.request_language(request)
+    payload = {
         "windows": windows,
         "standalone": distribution.standalone(),
         "questions": items,
@@ -372,7 +374,10 @@ def setup_questions(request: Request):
         "scan_now": True,
         "history_guide": False,
         "remote_reporting": remote_reporting.snapshot(),
-    })
+    }
+    if lang != "zh":
+        payload = i18n.localize_value(payload, lang)
+    return JSONResponse(payload)
 
 
 def _json_text(value: object) -> str:

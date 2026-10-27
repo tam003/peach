@@ -17,6 +17,12 @@ function detectInitialLocale(): Locale {
       }
     }
   } catch { /* ignore */ }
+  try {
+    if (typeof document !== 'undefined') {
+      const match = document.cookie.match(/(?:^|;\s*)peach\.locale=([^;]+)/);
+      if (match) return normalizeLocale(match[1]);
+    }
+  } catch { /* ignore */ }
   if (typeof document !== 'undefined' && document.documentElement?.lang) {
     return normalizeLocale(document.documentElement.lang);
   }
@@ -33,6 +39,11 @@ export function getLocale(): Locale {
 export function setLocale(locale: Locale): void {
   if (current === locale) return;
   current = locale;
+  try {
+    if (typeof document !== 'undefined') {
+      document.cookie = `peach.locale=${locale}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+  } catch { /* ignore */ }
   listeners.forEach((listener) => listener());
 }
 

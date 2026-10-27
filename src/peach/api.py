@@ -491,11 +491,17 @@ def create_app(
     def _http_exception_handler(request: Request, exc: StarletteHTTPException):
         headers = _server_error_headers(request, exc, exc.status_code)
         detail = exc.detail
+        from . import i18n
+        lang = i18n.request_language(request)
         if isinstance(detail, dict):
             # 表单校验那种带字段明细的 4xx：`message` 是总话，其余键原样带给页面。
-            body = {"error": str(detail.get("message", "")), **{k: v for k, v in detail.items() if k != "message"}}
+            body = {
+                "error": i18n.localize_string(str(detail.get("message", "")), lang),
+                **{k: i18n.localize_value(v, lang) for k, v in detail.items() if k != "message"},
+            }
         else:
-            body = {"error": _DEFAULT_DETAILS.get(str(detail), str(detail))}
+            raw = _DEFAULT_DETAILS.get(str(detail), str(detail))
+            body = {"error": i18n.localize_string(raw, lang)}
         # 浏览器地址栏直接打开一个页面路径撞上 403／404／409 时，给人看的是一页话，
         # 不是一行 JSON；`/api/` 与脚本取数（Accept 里没有 text/html）照旧回 JSON。
         navigation = (request.method in {"GET", "HEAD"} and not request.url.path.startswith("/api/")
@@ -508,7 +514,10 @@ def create_app(
     @app.exception_handler(Exception)
     def _server_exception_handler(request: Request, exc: Exception):
         headers = _server_error_headers(request, exc)
-        return JSONResponse({'error': '服务处理失败，请导出诊断报告',
+        from . import i18n
+        lang = i18n.request_language(request)
+        error_msg = i18n.localize_string('服务处理失败，请导出诊断报告', lang)
+        return JSONResponse({'error': error_msg,
                              'error_id': headers['X-Peach-Error-ID']}, status_code=500, headers=headers)
 
     # 第三方前端依赖固定版本并随 Peach 自托管；局域网断网时仍可播放。

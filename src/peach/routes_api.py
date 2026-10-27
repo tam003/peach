@@ -116,21 +116,23 @@ def reveal(request: Request, body: dict[str, Any] = Body(default_factory=dict), 
     if body.get("id") is None and body.get("path") is not None:
         # 这一条的原因要一路显示到路径旁边，所以每种都自带一句中文：页面那层的统一错误
         # 映射按状态码说话，410／501 落在它的表外，只剩一句「操作未完成」。
+        from . import i18n
+        lang = i18n.request_language(request)
         target = _own_data_path(str(body.get("path") or ""))
         if target is None:
             return JSONResponse({"error": "path not in the data root",
-                                 "message": "这个位置不归 Peach 管，只能自己打开"}, status_code=403)
+                                 "message": i18n.localize_string("这个位置不归 Peach 管，只能自己打开", lang)}, status_code=403)
         if not target.exists():
             return JSONResponse({"error": "file missing",
-                                 "message": "这个位置已经不在了"}, status_code=410)
+                                 "message": i18n.localize_string("这个位置已经不在了", lang)}, status_code=410)
         try:
             if not reveal_path(target):
                 return JSONResponse({"error": "unsupported platform",
-                                     "message": "这台机器上打不开文件管理器"}, status_code=501)
+                                     "message": i18n.localize_string("这台机器上打不开文件管理器", lang)}, status_code=501)
         except OSError as error:
             LOGGER.warning("reveal failed for %s: %s", target, error)
             return JSONResponse({"error": "reveal failed",
-                                 "message": "打开文件管理器失败，请重试"}, status_code=500)
+                                 "message": i18n.localize_string("打开文件管理器失败，请重试", lang)}, status_code=500)
         return {"ok": True, "path": str(target)}
     try:
         asset_id = int(body.get("id"))
@@ -177,6 +179,8 @@ async def taste_import(
     This deliberately avoids multipart/form-data and its extra parser dependency.  The
     browser sends the file bytes as-is and provides only a display filename header.
     """
+    from . import i18n
+    lang = i18n.request_language(request)
     contract = request.app.state.web_contract
     maximum = 1024 * 1024 * 1024
     try:
@@ -184,7 +188,7 @@ async def taste_import(
     except ValueError:
         declared = 0
     if declared > maximum:
-        return JSONResponse({"error": "导出文件超过 1 GB"}, status_code=413)
+        return JSONResponse({"error": i18n.localize_string("导出文件超过 1 GB", lang)}, status_code=413)
     filename = unquote(request.headers.get("x-peach-filename") or "history-export")
     filename = re.sub(r"[^\w.()\-\u3400-\u9fff]+", "-", os.path.basename(filename)).strip(".-")
     filename = filename[-160:] or "history-export"
@@ -203,7 +207,7 @@ async def taste_import(
                 digest.update(chunk)
                 await asyncio.to_thread(handle.write, chunk)
         if not size:
-            raise ValueError("导出文件为空")
+            raise ValueError(i18n.localize_string("导出文件为空", lang))
         target = root / f"{digest.hexdigest()[:12]}-{filename}"
         if target.exists():
             temporary.unlink()
@@ -224,7 +228,7 @@ async def taste_import(
         }
     except OverflowError:
         temporary.unlink(missing_ok=True)
-        return JSONResponse({"error": "导出文件超过 1 GB"}, status_code=413)
+        return JSONResponse({"error": i18n.localize_string("导出文件超过 1 GB", lang)}, status_code=413)
     except (BrowserexportError, OSError, ValueError, TypeError) as exc:
         temporary.unlink(missing_ok=True)
         if imported_target is not None:
@@ -275,7 +279,7 @@ def clouddrive_inbox(request: Request, body: dict[str, Any] = Body(default_facto
     return Response(status_code=204)
 
 
-def _conflict(error: TaskRunConflict) -> JSONResponse:
+def _conflict(error: TaskRunConflict, request: Request | None = None) -> JSONResponse:
     """手动触发撞上在跑的那一轮：409，并带上挡路那一轮的 id。
 
     不用 500 也不用 200：这不是故障，用户的请求也没有生效。前端拿 `blocking_run_id`
@@ -284,10 +288,19 @@ def _conflict(error: TaskRunConflict) -> JSONResponse:
     `message` 是给人看的那句话，所以在这里用 `task_label` 翻一次：异常自己住在 `jobs`
     里，那一层在 `task_runs` 下面，拿不到中文名表。
     """
+    from . import i18n
+    lang = i18n.request_language(request)
+    raw = f"{task_label(error.task_key)}已有一轮在进行，等它跑完再试"
+    if lang == "vi":
+        msg = f"{task_label(error.task_key)} đang có một lượt đang chạy, vui lòng đợi hoàn thành rồi thử lại"
+    elif lang == "en":
+        msg = f"{task_label(error.task_key)} is already running, please wait until it finishes"
+    else:
+        msg = raw
     return JSONResponse(
         {"error": "task already running", "task_key": error.task_key,
          "blocking_run_id": error.blocking_run_id,
-         "message": f"{task_label(error.task_key)}已有一轮在进行，等它跑完再试"},
+         "message": msg},
         status_code=409)
 
 
@@ -302,7 +315,7 @@ def api_get(request: Request, route: str, args: dict[str, str] = Depends(require
             payload = state.review_mirror.resolve(payload)
         return payload
     except TaskRunConflict as exc:
-        return _conflict(exc)
+        return _conflict(exc, request)
     except UpdateBusy as exc:
         return JSONResponse({'error': 'update in progress', 'message': str(exc)}, status_code=409)
     except FolderRuleConflict as exc:
@@ -342,7 +355,7 @@ def api_post(
         return web_contract.dispatch_api_post(
             request.app.state.web_contract, route_path, body)
     except TaskRunConflict as exc:
-        return _conflict(exc)
+        return _conflict(exc, request)
     except UpdateBusy as exc:
         return JSONResponse({'error': 'update in progress', 'message': str(exc)}, status_code=409)
     except KeyError:

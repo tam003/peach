@@ -24205,6 +24205,138 @@ var Dt = /* @__PURE__ */ s({ phrases: () => Ot }), Ot = {
 	这个系统上没有可用的文件夹对话框: {
 		en: "There is no folder dialog available on this system",
 		vi: "Hệ thống này không có sẵn hộp thoại chọn thư mục"
+	},
+	有几项需要修改: {
+		en: "Several items need changes",
+		vi: "Có một số mục cần chỉnh sửa"
+	},
+	请输入访问密码: {
+		en: "Please enter an access password",
+		vi: "Vui lòng nhập mật khẩu truy cập"
+	},
+	两次输入的密码不一致: {
+		en: "Passwords do not match",
+		vi: "Mật khẩu nhập lại không khớp"
+	},
+	"访问密码需为 8–256 个字符": {
+		en: "Access password must be 8–256 characters",
+		vi: "Mật khẩu truy cập phải từ 8–256 ký tự"
+	},
+	当前访问密码不正确: {
+		en: "Current access password is incorrect",
+		vi: "Mật khẩu truy cập hiện tại không đúng"
+	},
+	密码需要是文字: {
+		en: "Password must be text",
+		vi: "Mật khẩu phải là chuỗi văn bản"
+	},
+	请选择设置或关闭密码: {
+		en: "Please choose to set or disable password",
+		vi: "Vui lòng chọn đặt hoặc tắt mật khẩu"
+	},
+	关闭访问密码前先勾选确认: {
+		en: "Please check confirmation before disabling access password",
+		vi: "Vui lòng chọn xác nhận trước khi tắt mật khẩu truy cập"
+	},
+	"Peach 数据目录不能为空": {
+		en: "Peach data directory cannot be empty",
+		vi: "Thư mục dữ liệu Peach không được để trống"
+	},
+	媒体目录不能为空: {
+		en: "Media directory cannot be empty",
+		vi: "Thư mục media không được để trống"
+	},
+	"填 1（只有这台电脑）或 2（同一局域网的设备）": {
+		en: "Enter 1 (this computer only) or 2 (devices on LAN)",
+		vi: "Chọn 1 (chỉ máy này) hoặc 2 (thiết bị cùng mạng LAN)"
+	},
+	"端口要是 1 到 65535 之间的整数": {
+		en: "Port must be an integer between 1 and 65535",
+		vi: "Cổng phải là số nguyên từ 1 đến 65535"
+	},
+	"这个端口已被占用，请换一个端口": {
+		en: "This port is already in use, please choose another port",
+		vi: "Cổng này đã được sử dụng, vui lòng chọn cổng khác"
+	},
+	"名字只能用字母、数字和连字符，不能以连字符开头或结尾": {
+		en: "Name can only contain letters, numbers, and hyphens, and cannot start or end with a hyphen",
+		vi: "Tên chỉ chứa chữ cái, số và dấu gạch nối, không được bắt đầu hoặc kết thúc bằng gạch nối"
+	},
+	"填 y 或 n": {
+		en: "Enter y or n",
+		vi: "Điền y hoặc n"
+	},
+	无法使用此数据目录: {
+		en: "Cannot use this data directory",
+		vi: "Không thể dùng thư mục dữ liệu này"
+	},
+	"请求正文要是 JSON 对象": {
+		en: "Request body must be a JSON object",
+		vi: "Nội dung yêu cầu phải là đối tượng JSON"
+	},
+	请选择已有数据目录的绝对路径: {
+		en: "Please select an absolute path to an existing data directory",
+		vi: "Vui lòng chọn đường dẫn tuyệt đối đến thư mục dữ liệu đã có"
+	},
+	"此目录中没有有效的 config.toml": {
+		en: "No valid config.toml found in this directory",
+		vi: "Không tìm thấy config.toml hợp lệ trong thư mục này"
+	},
+	"此目录中没有数据库，请选择保存原配置和数据库的数据目录": {
+		en: "No database found in this directory, please select a data directory with existing config and database",
+		vi: "Không tìm thấy cơ sở dữ liệu trong thư mục này, vui lòng chọn thư mục chứa cấu hình và dữ liệu cũ"
+	},
+	"请从 Peach 设置页提交": {
+		en: "Please submit from the Peach settings page",
+		vi: "Vui lòng gửi từ trang cài đặt Peach"
+	},
+	"请从 Peach 配置页提交": {
+		en: "Please submit from the Peach configuration page",
+		vi: "Vui lòng gửi từ trang cấu hình Peach"
+	},
+	请使用本机地址打开设置: {
+		en: "Please open settings using the local address",
+		vi: "Vui lòng dùng địa chỉ cục bộ để mở cài đặt"
+	},
+	"请确认卸载 Peach": {
+		en: "Please confirm uninstalling Peach",
+		vi: "Vui lòng xác nhận gỡ cài đặt Peach"
+	},
+	"后台任务正在运行，请完成后卸载": {
+		en: "Background task is running, please uninstall after completion",
+		vi: "Tác vụ nền đang chạy, vui lòng gỡ cài đặt sau khi hoàn tất"
+	},
+	"这个位置不归 Peach 管，只能自己打开": {
+		en: "This location is not managed by Peach, please open it manually",
+		vi: "Vị trí này không do Peach quản lý, vui lòng tự mở"
+	},
+	这个位置已经不在了: {
+		en: "This location no longer exists",
+		vi: "Vị trí này không còn tồn tại"
+	},
+	这台机器上打不开文件管理器: {
+		en: "Cannot open file manager on this system",
+		vi: "Không thể mở trình quản lý tệp trên hệ thống này"
+	},
+	"打开文件管理器失败，请重试": {
+		en: "Failed to open file manager, please try again",
+		vi: "Không thể mở trình quản lý tệp, vui lòng thử lại"
+	},
+	"导出文件超过 1 GB": {
+		en: "Export file exceeds 1 GB",
+		vi: "Tệp xuất vượt quá 1 GB"
+	},
+	导出文件为空: {
+		en: "Export file is empty",
+		vi: "Tệp xuất rỗng"
+	},
+	浏览器添加只在允许修改数据库的设备上可用: {
+		en: "Browser extension addition is only available on devices allowed to edit the database",
+		vi: "Tính năng thêm từ trình duyệt chỉ khả dụng trên thiết bị được phép ghi cơ sở dữ liệu"
+	},
+	"请在 Peach 下载渠道启用浏览器添加并配置专用令牌": {
+		en: "Please enable browser addition and configure a dedicated token in Peach download settings",
+		vi: "Vui lòng bật tính năng thêm từ trình duyệt và cấu hình token riêng trong cài đặt tải về của Peach"
 	}
 }, Vt = /* @__PURE__ */ s({
 	phrases: () => Ht,
@@ -25841,6 +25973,12 @@ function Jt() {
 				let t = JSON.parse(e);
 				if (t?.locale) return qt(t.locale);
 			}
+		}
+	} catch {}
+	try {
+		if (typeof document < "u") {
+			let e = document.cookie.match(/(?:^|;\s*)peach\.locale=([^;]+)/);
+			if (e) return qt(e[1]);
 		}
 	} catch {}
 	return typeof document < "u" && document.documentElement?.lang ? qt(document.documentElement.lang) : "zh";
@@ -34141,6 +34279,7 @@ async function Sm(e, t, n) {
 			...t,
 			headers: {
 				Accept: "application/json",
+				"Accept-Language": Xt(),
 				...t.body ? { "Content-Type": "application/json" } : {}
 			}
 		});
@@ -34148,7 +34287,7 @@ async function Sm(e, t, n) {
 		throw t.signal?.aborted ? e : new xm(0, V("连接不到 Peach，请确认它仍在运行后重试"));
 	}
 	let i = await r.json().catch(() => null);
-	if (!r.ok) throw new xm(r.status, i?.error || n, i?.errors);
+	if (!r.ok) throw new xm(r.status, V(i?.error || n), i?.errors);
 	return i;
 }
 var Cm = (e) => Sm(ym, { signal: e }, V("没能读取设置题目")), wm = (e) => Sm(bm, {
@@ -34163,7 +34302,7 @@ var Cm = (e) => Sm(ym, { signal: e }, V("没能读取设置题目")), wm = (e) =
 		initial: e,
 		prompt: V("选择媒体目录")
 	})
-}, V("没能打开文件夹对话框"))).path, Dm = (e) => e instanceof Error && e.message || V("请求失败，请重试"), Om = 8e3, km = /* @__PURE__ */ new WeakMap();
+}, V("没能打开文件夹对话框"))).path, Dm = (e) => e instanceof Error && V(e.message) || V("请求失败，请重试"), Om = 8e3, km = /* @__PURE__ */ new WeakMap();
 function Am(e, t, n) {
 	t.classList.add("ui-fcollapse");
 	let r = (km.get(t) || 0) + 1;
@@ -35777,20 +35916,20 @@ var Qg = [
 ];
 function $g(e, t) {
 	return Array.isArray(e) ? e.length === t ? {
-		rows: e,
+		rows: e.map((e) => V(e)),
 		table: ""
 	} : {
 		rows: [],
-		table: e.filter(Boolean).join(" ")
+		table: e.filter(Boolean).map((e) => V(e)).join(" ")
 	} : {
 		rows: [],
-		table: e ?? ""
+		table: V(e ?? "")
 	};
 }
 function e_(e) {
 	return e.length ? e.length === 1 ? V("完成设置后扫描并补全资料：{item}", { item: e[0] }) : V("完成设置后扫描这 {length} 个文件夹并补全资料", { length: e.length }) : V("完成设置后扫描并补全资料");
 }
-var t_ = (e) => Array.isArray(e) ? e.filter(Boolean).join(" ") : e ?? "";
+var t_ = (e) => Array.isArray(e) ? e.filter(Boolean).map((e) => V(e)).join(" ") : V(e ?? "");
 function n_({ setup: e, onDone: t }) {
 	let n = e.questions.find((e) => e.input === "folders"), r = e.questions.filter((e) => e.input !== "folders"), i = e.media_sources.map(({ value: e, label: t }) => [e, t]), a = (t = "") => ({
 		path: t,
