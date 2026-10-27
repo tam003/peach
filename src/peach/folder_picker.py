@@ -147,21 +147,25 @@ Add-Type -TypeDefinition @'
 '@
 $picked = [PeachPick.Picker]::Pick('@PROMPT@', $env:PEACH_PICK_INITIAL)
 if ($picked) { [Console]::Out.Write($picked) }
-""".replace("@INTEROP@", _WINDOWS_INTEROP.strip()).replace("@PROMPT@", PROMPT)
+""".replace("@INTEROP@", _WINDOWS_INTEROP.strip())
 
 
 def _applescript_string(text: str) -> str:
     return text.replace("\\", "\\\\").replace('"', '\\"')
 
 
-def command(initial: str | None, platform: str = sys.platform) -> tuple[list[str], dict[str, str]]:
+def command(initial: str | None, platform: str = sys.platform,
+            prompt: str | None = None) -> tuple[list[str], dict[str, str]]:
     """这个平台弹对话框的命令行，以及要附加的环境变量。"""
+    active_prompt = prompt or PROMPT
     if platform == "win32":
-        encoded = base64.b64encode(_WINDOWS_SCRIPT.encode("utf-16-le")).decode("ascii")
+        escaped_prompt = active_prompt.replace("'", "''")
+        script = _WINDOWS_SCRIPT.replace("@PROMPT@", escaped_prompt)
+        encoded = base64.b64encode(script.encode("utf-16-le")).decode("ascii")
         argv = ["powershell.exe", "-NoProfile", "-NonInteractive", "-STA", "-EncodedCommand", encoded]
         return argv, {"PEACH_PICK_INITIAL": initial or ""}
     if platform == "darwin":
-        script = f'choose folder with prompt "{_applescript_string(PROMPT)}"'
+        script = f'choose folder with prompt "{_applescript_string(active_prompt)}"'
         if initial and os.path.isdir(initial):
             script += f' default location POSIX file "{_applescript_string(initial)}"'
         return ["osascript", "-e", f"POSIX path of ({script})"], {}
@@ -169,9 +173,9 @@ def command(initial: str | None, platform: str = sys.platform) -> tuple[list[str
 
 
 def pick_folder(initial: str | None = None, *, platform: str = sys.platform,
-                run=subprocess.run) -> str | None:
+                prompt: str | None = None, run=subprocess.run) -> str | None:
     """弹对话框，返回选中的绝对路径；用户取消返回 None。"""
-    argv, extra = command(initial, platform)
+    argv, extra = command(initial, platform, prompt=prompt)
     if not _LOCK.acquire(blocking=False):
         raise PickerBusy("已经有一个选择文件夹的窗口开着")
     try:

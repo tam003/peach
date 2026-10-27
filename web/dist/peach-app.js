@@ -24538,6 +24538,18 @@ var Tn = /* @__PURE__ */ s({ phrases: () => En }), En = {
 	准备采集资料: {
 		en: "Preparing to collect metadata",
 		vi: "Chuẩn bị thu thập dữ liệu"
+	},
+	选择媒体目录: {
+		en: "Select media directory",
+		vi: "Chọn thư mục media"
+	},
+	已经有一个选择文件夹的窗口开着: {
+		en: "A folder picker window is already open",
+		vi: "Đã có một cửa sổ chọn thư mục đang mở"
+	},
+	这个系统上没有可用的文件夹对话框: {
+		en: "There is no folder dialog available on this system",
+		vi: "Hệ thống này không có sẵn hộp thoại chọn thư mục"
 	}
 }, Rn = /* @__PURE__ */ s({
 	phrases: () => zn,
@@ -89326,7 +89338,10 @@ function Uze({ initial: e, receipt: t }) {
 }
 //#endregion
 //#region src/react/settings/media-settings.tsx
-var Wze = (e) => $V.find(([t]) => t === e)?.[1] ?? e, Gze = async (e) => (await U(eze, { initial: e })).path, rH = (e = "") => ({
+var Wze = (e) => $V.find(([t]) => t === e)?.[1] ?? e, Gze = async (e) => (await U(eze, {
+	initial: e,
+	prompt: W("选择媒体目录")
+})).path, rH = (e = "") => ({
 	path: e,
 	location: "local",
 	root: "",

@@ -24193,6 +24193,18 @@ var Dt = /* @__PURE__ */ s({ phrases: () => Ot }), Ot = {
 	准备采集资料: {
 		en: "Preparing to collect metadata",
 		vi: "Chuẩn bị thu thập dữ liệu"
+	},
+	选择媒体目录: {
+		en: "Select media directory",
+		vi: "Chọn thư mục media"
+	},
+	已经有一个选择文件夹的窗口开着: {
+		en: "A folder picker window is already open",
+		vi: "Đã có một cửa sổ chọn thư mục đang mở"
+	},
+	这个系统上没有可用的文件夹对话框: {
+		en: "There is no folder dialog available on this system",
+		vi: "Hệ thống này không có sẵn hộp thoại chọn thư mục"
 	}
 }, Vt = /* @__PURE__ */ s({
 	phrases: () => Ht,
@@ -34147,7 +34159,10 @@ var Cm = (e) => Sm(ym, { signal: e }, V("没能读取设置题目")), wm = (e) =
 	body: JSON.stringify({ data_root: e })
 }, V("没能使用此数据目录")), Em = async (e) => (await Sm(vm, {
 	method: "POST",
-	body: JSON.stringify({ initial: e })
+	body: JSON.stringify({
+		initial: e,
+		prompt: V("选择媒体目录")
+	})
 }, V("没能打开文件夹对话框"))).path, Dm = (e) => e instanceof Error && e.message || V("请求失败，请重试"), Om = 8e3, km = /* @__PURE__ */ new WeakMap();
 function Am(e, t, n) {
 	t.classList.add("ui-fcollapse");
