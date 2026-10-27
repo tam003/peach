@@ -12,7 +12,7 @@
 import { apiGet, apiSend } from '../../api';
 import { MEDIA_SOURCES_KEY, SCANNABLE_LOCATIONS, type MediaSourcesData } from '../media-sources';
 import { queryClient } from '../query';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 export const RESOURCE_SCAN_URL = '/api/resource-sync/scan';
 export const RESOURCE_APPLY_URL = '/api/resource-sync/apply';
@@ -152,7 +152,7 @@ export function applyLeftovers(out: ResourceApplyState) {
   const done = Number(out.purged || 0) + Number(out.vanished || 0) + Number(out.reattached || 0)
     + Number(out.dirs_removed || 0) + Number(out.cache_removed || 0);
   const left = blocked.length + dirErrors + cacheBlocked.length;
-  const names = blocked.slice(0, 3).map((item) => `「${item.name}」`).join('、') + (blocked.length > 3 ? phrase(' 等') : '');
+  const names = blocked.slice(0, 3).map((item) => `「${item.name}」`).join(listSeparator()) + (blocked.length > 3 ? phrase(' 等') : '');
   const rest = [
     blocked.length ? phrase('{length} 条记录没有删除（{names}）', { length: count(blocked.length), names: names }) : '',
     dirErrors ? phrase('{dirErrors} 个文件夹没有删除', { dirErrors: count(dirErrors) }) : '',

@@ -17,7 +17,7 @@ import { DataTableFrame } from '../components/data-table-frame';
 import { DataTableFooter, DataTableSort } from '../components/table-controls';
 import { RetryNote } from '../components/grid-reveal';
 import { LibraryCompletionPrompt, missingPreviewIds } from '../library-processing/library-completion';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 import { catalogParams } from './catalog-grid';
 import type { CatalogGridProps, MediaItem, MediaPage } from './types';
 import './catalog-list.css';
@@ -156,7 +156,7 @@ export function CatalogListPage(props: CatalogGridProps) {
 function ListIdentity({ item, props, disabled }: { item: MediaItem; props: CatalogGridProps; disabled: boolean }) {
   const artwork = cardArtwork(item, 'small', false, props.layout.javImage);
   const name = props.helpers.displayName(item, item.name || '').trim() || phrase('未命名作品');
-  const who = item.creator || item.performers?.join('、') || item.studio;
+  const who = item.creator || item.performers?.join(listSeparator()) || item.studio;
   return <div data-list-identity="">
     <button type="button" data-list-open="" disabled={disabled} aria-label={phrase('打开 {name}', { name })} onClick={event => {
       if (props.selectMode || event.shiftKey || event.ctrlKey || event.metaKey) {

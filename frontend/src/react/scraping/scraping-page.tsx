@@ -38,7 +38,7 @@ import {
   fetchSources, SCRAPING_CHECK_URL, SCRAPING_COVER_URL, SCRAPING_KEY, SCRAPING_SETTINGS_URL,
   type AmaneBridge, type Check, type CoverJob, type ScrapingData, type Source,
 } from './scraping';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 const NETWORKS = () => ([['peach', phrase('Peach 代理')], ['direct', phrase('直接连接')]] as const);
 
@@ -321,7 +321,7 @@ function AmaneBridgeCard({ toast }: ScrapingProps) {
       <Stack divided>
         {data.sites.length
           ? <Disclosure summary={phrase('查看内置站点')}>
-              <p className="text-body-2-regular text-text-secondary">{data.sites.map((site) => site.label).join('、')}</p>
+              <p className="text-body-2-regular text-text-secondary">{data.sites.map((site) => phrase(site.label)).join(listSeparator())}</p>
             </Disclosure>
           : null}
         <Help>

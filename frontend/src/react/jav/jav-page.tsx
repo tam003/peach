@@ -32,7 +32,7 @@ const SearchGlyph = spriteGlyph('search');
 const MetadataStopGlyph = spriteGlyph('x');
 const MetadataRefreshGlyph = spriteGlyph('refresh-cw');
 import { peachHistory, shellNavigate } from '@peach/history';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 function writeJavQuery(patch: Record<string, string>): void {
   const params = new URLSearchParams(location.search);
@@ -157,7 +157,7 @@ function Discover({ readOnly, receipt, resource, query, navigate, clearText }: {
     {action.error ? <Note tone="error">{action.error}</Note> : null}
     <div data-media-grid="" className={JAV_RECOMMENDATION_GRID} style={{ '--card-ratio': ratio } as CSSProperties}>
       {items.map(item => {
-        const performers = item.performer_refs?.length ? item.performer_refs.map(person => person.name).join('、') : item.performers;
+        const performers = item.performer_refs?.length ? item.performer_refs.map(person => person.name).join(listSeparator()) : item.performers;
         const artwork = discoveryArtwork(item, layout, settings.value.javImage);
         const recommendation = recommendationScore(item.taste_score ?? item.score);
         const scoreDetails = [recommendation.label, phrase('口味 {taste_score}', { taste_score: discoveryScore(item.taste_score ?? item.score) }),

@@ -101,8 +101,8 @@ export function OrganizeCard(
   const running = job.running || job.start.isPending;
   const plan = preview.data;
   const changes = Number(plan?.counts?.change || 0);
-  const name = LOC[location] || location;
-  const hint = (data?.placeholders ?? []).map((item) => `{${item.key}} ${item.label}`).join(' · ');
+  const name = phrase(LOC[location] || location);
+  const hint = (data?.placeholders ?? []).map((item) => `{${item.key}} ${phrase(item.label)}`).join(' · ');
 
   const runPreview = () => {
     if (preview.isPending || !location) return;
@@ -176,8 +176,8 @@ export function OrganizeCard(
                 setChosen(String(key)); setInvalid(null); preview.reset();
               }}>
               {locations.map((row) => (
-                <SelectItem key={row.location} id={row.location} textValue={LOC[row.location] || row.location}>
-                  <SourceMark mark={MEDIA_SOURCE_ICONS[row.location] || 'database'} />{LOC[row.location] || row.location}
+                <SelectItem key={row.location} id={row.location} textValue={phrase(LOC[row.location] || row.location)}>
+                  <SourceMark mark={MEDIA_SOURCE_ICONS[row.location] || 'database'} />{phrase(LOC[row.location] || row.location)}
                 </SelectItem>
               ))}
             </Select>
@@ -191,16 +191,16 @@ export function OrganizeCard(
         {data?.presets?.length
           ? <div className="flex flex-wrap gap-2">
               {data.presets.map((preset) => (
-                <Button key={preset.label} variant="secondary" title={preset.label}
+                <Button key={preset.label} variant="secondary" title={phrase(preset.label)}
                   className="max-w-full [&>span]:min-w-0 [&>span]:shrink"
                   onClick={() => { edit({ file: preset.file, dir: preset.dir }); setInvalid(null) }}>
-                  <span className="truncate">{preset.label}</span>
+                  <span className="truncate">{phrase(preset.label)}</span>
                 </Button>
               ))}
             </div>
           : null}
         <p className="text-caption-1-regular leading-4.5 text-text-secondary">
-          {phrase('{text}方括号里的内容在字段为空时整段省略。', { text: hint ? `${hint}；` : '' })}
+          {phrase('{text}方括号里的内容在字段为空时整段省略。', { text: hint ? `${hint}${phrase('；')}` : '' })}
         </p>
       </div>
       <div aria-live="polite" className="mt-3 flex flex-col gap-2 empty:hidden">{state}</div>

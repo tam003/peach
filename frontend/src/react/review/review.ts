@@ -241,7 +241,7 @@ export function rowSubject(category: ReviewCategory, row: ReviewRow): string {
 }
 
 export const rowFieldName = (category: ReviewCategory, row: ReviewRow): string =>
-  (category === 'metadata_fields' ? String(row.field_label || row.field || '').trim() : '');
+  (category === 'metadata_fields' ? phrase(String(row.field_label || row.field || '').trim()) : '');
 
 export function rowTitle(category: ReviewCategory, row: ReviewRow): string {
   const subject = rowSubject(category, row);

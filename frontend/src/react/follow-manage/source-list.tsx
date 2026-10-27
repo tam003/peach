@@ -53,7 +53,7 @@ import {
   type TableRow as SourceTableRow,
 } from './follow-manage';
 import { AuthorAvatar, ErrorLine, SourceIcon, SourceLink, StatusBadge } from './source-view';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 const sourceTableFeatures = tableFeatures({
   rowPaginationFeature,
@@ -187,7 +187,7 @@ function AuthorCard(
   const ids = group.map((source) => source.id);
   const enabled = group.filter((source) => source.enabled).map((source) => source.id);
   const bad = group.filter(isBroken).length;
-  const providers = [...new Set(group.map((source) => source.provider_label || source.provider))].join('、');
+  const providers = [...new Set(group.map((source) => source.provider_label || source.provider))].join(listSeparator());
   const panel = `follow-author-${group[0]!.id}`;
   const state = selectionState(selected, ids);
   return (

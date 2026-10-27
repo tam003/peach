@@ -13,7 +13,7 @@ import {
 } from '../follow-manage/follow-manage';
 import { localTime } from '../time';
 import type { FollowContext, FollowGroup, FollowIdentity, FollowItem, FollowSource } from './follow-feed';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 const text = (value: unknown): string => (typeof value === 'string' ? value : '');
 const aliasesOf = (context: FollowContext) => context.aliases as readonly AliasGroup[];
@@ -112,7 +112,7 @@ export function followBadges(group: FollowGroup, shown: FollowItem = group.prima
     .map((member) => [member.provider, member.provider_label || member.provider] as const));
   if (!sites.size) return '';
   const marks = [...sites].map(([provider, label]) => sourceIcon(provider, label) || `<span>${esc(label)}</span>`).join('');
-  return phrase('<span data-follow-seealso="" title="另见 {value}"><span data-follow-seealso-label="">另见</span> {marks}</span>', { value: esc([...sites.values()].join('、')), marks: marks });
+  return phrase('<span data-follow-seealso="" title="另见 {value}"><span data-follow-seealso-label="">另见</span> {marks}</span>', { value: esc([...sites.values()].join(listSeparator())), marks: marks });
 }
 
 /** 「媒体未取得」那一句，没有就是空串。 */

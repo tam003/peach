@@ -22,7 +22,7 @@ import { Select, SelectItem } from '@/components/base/select/select';
 import { Switch } from '@/components/base/switch/switch';
 
 import { apiSend, errorMessage } from '../../api';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 import type { PushDiscoveryPrefix, PushDiscoveryState } from '../bundle';
 import { CodeBlock } from '../components/code-block';
 import { Disclosure, ErrorText, FieldLabel, Footer, Help, Rows, Section, Stack } from './section';
@@ -73,7 +73,7 @@ export function PushDiscoveryForm({ initial, receipt }: {
   const ingested = phrase('已入库 {count} 个文件', { count: live.queue.ingested })
     + (live.queue.pending ? phrase('，队列里还有 {count} 条', { count: live.queue.pending }) : '');
   const watching = live.local_running
-    ? phrase('正在监视 {roots}', { roots: live.local_roots.join('、') }) : live.local_message || phrase('没有运行');
+    ? phrase('正在监视 {roots}', { roots: live.local_roots.join(listSeparator()) }) : live.local_message || phrase('没有运行');
 
   return (
     <Section title={phrase('推送发现')} onSubmit={submit}>

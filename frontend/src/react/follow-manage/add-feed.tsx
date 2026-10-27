@@ -17,7 +17,7 @@ import { Note } from '../components/note';
 import { ExternalLink, FieldLabel, Help } from '../settings/section';
 import { busyProps, useAction } from '../settings/use-action';
 import { followFeedByName, lookupFeedActor, type FeedCandidate, type FeedLookup } from './follow-manage';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 const PLACEHOLDER = '输入女优名，到 JavDB 找她的演员页';
 
@@ -35,7 +35,7 @@ function destination(result: FeedLookup, picked: ReadonlySet<string>): { text: s
     if (picked.has(card.id) && card.held_by) holders.set(card.held_by.id, card.held_by.name);
   }
   if (holders.size > 1) {
-    return { text: phrase('所勾的卡分属数据库里不同的人：{value}，先去合并再订', { value: [...holders.values()].join('、') }), blocked: true };
+    return { text: phrase('所勾的卡分属数据库里不同的人：{value}，先去合并再订', { value: [...holders.values()].join(listSeparator()) }), blocked: true };
   }
   const [holder] = holders.values();
   if (holder) return { text: phrase('会登记到「{holder}」名下', { holder: holder }), blocked: false };
@@ -48,7 +48,7 @@ function CandidateRow({ card, picked, onPick }: { card: FeedCandidate; picked: b
     <div className="flex flex-wrap items-center gap-2">
       <Checkbox isSelected={picked} onChange={onPick}>
         <span className="flex min-w-0 flex-wrap items-center gap-1.5">
-          <span className="min-w-0 break-words">{card.names.join('、')}</span>
+          <span className="min-w-0 break-words">{card.names.join(listSeparator())}</span>
           {card.record ? <Chip variant="caption" color="neutral">{card.record}</Chip> : null}
           {card.held_by ? (
             <small className="text-caption-1-regular text-text-secondary">{phrase('已在「{name}」名下', { name: card.held_by.name })}</small>
