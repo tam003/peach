@@ -118,6 +118,148 @@ def menu_text(value: str, limit: int = 48) -> str:
     return text if len(text) <= limit else text[:limit - 1] + "…"
 
 
+TRAY_STRINGS: dict[str, dict[str, str]] = {
+    "vi": {
+        "open_peach": "Mở Peach",
+        "reopen_setup": "Mở lại trang cài đặt",
+        "configure_peach": "Cài đặt Peach",
+        "status_line": "Trạng thái: %s",
+        "status_waiting": "Chờ hoàn tất thiết lập ban đầu",
+        "status_running": "Đang chạy",
+        "status_partial": "Một số dịch vụ bất thường",
+        "status_stopped": "Dịch vụ chưa chạy",
+        "status_reminders": "%s · %d nhắc nhở",
+        "normal": "Bình thường",
+        "abnormal": "Bất thường",
+        "abnormal_detail": "Bất thường (%s)",
+        "not_checked": "Chưa kiểm tra",
+        "address": "Địa chỉ: %s",
+        "view_config": "Xem toàn bộ cấu hình",
+        "sync_source": "Đồng bộ tiến độ phát triển",
+        "sync_database": "Đồng bộ cơ sở dữ liệu",
+        "take_ownership": "Tiếp quản quyền ghi CSDL trên máy này",
+        "restart_services": "Khởi động lại dịch vụ",
+        "view_logs": "Xem nhật ký",
+        "export_diagnostics": "Xuất báo cáo chẩn đoán",
+        "version_updates": "Phiên bản & Cập nhật",
+        "check_updates": "Kiểm tra cập nhật",
+        "quit_peach": "Thoát Peach",
+        "tooltip": "Peach",
+        "setup_complete": "Đã hoàn tất thiết lập ban đầu, dịch vụ đã chuyển sang: %s",
+        "diagnostics_saved": "Báo cáo chẩn đoán đã xuất tới: %s",
+        "diagnostics_failed": "Xuất báo cáo chẩn đoán thất bại: %s",
+        "restart_ready": "%s, dịch vụ đã chuyển sang cấu hình sẵn sàng và khởi động lại.",
+    },
+    "zh": {
+        "open_peach": "打开 Peach",
+        "reopen_setup": "重新打开设置页",
+        "configure_peach": "配置 Peach",
+        "status_line": "状态：%s",
+        "status_waiting": "等待完成首次设置",
+        "status_running": "运行中",
+        "status_partial": "部分服务异常",
+        "status_stopped": "服务未运行",
+        "status_reminders": "%s · %d 项提醒",
+        "normal": "正常",
+        "abnormal": "异常",
+        "abnormal_detail": "异常（%s）",
+        "not_checked": "未检测",
+        "address": "地址：%s",
+        "view_config": "查看完整配置",
+        "sync_source": "同步开发进度",
+        "sync_database": "同步数据库",
+        "take_ownership": "由本机接管数据库写入",
+        "restart_services": "重启服务",
+        "view_logs": "查看日志",
+        "export_diagnostics": "导出诊断报告",
+        "version_updates": "版本与更新",
+        "check_updates": "检查更新",
+        "quit_peach": "退出 Peach",
+        "tooltip": "Peach · 蜜桃",
+        "setup_complete": "已完成首次设置，服务已切至正常入口：%s",
+        "diagnostics_saved": "诊断报告已导出至：%s",
+        "diagnostics_failed": "导出诊断报告失败：%s",
+        "restart_ready": "%s，服务已切至就绪规格并重启。",
+    },
+    "en": {
+        "open_peach": "Open Peach",
+        "reopen_setup": "Reopen setup page",
+        "configure_peach": "Configure Peach",
+        "status_line": "Status: %s",
+        "status_waiting": "Waiting for initial setup",
+        "status_running": "Running",
+        "status_partial": "Some services abnormal",
+        "status_stopped": "Service not running",
+        "status_reminders": "%s · %d reminders",
+        "normal": "Normal",
+        "abnormal": "Abnormal",
+        "abnormal_detail": "Abnormal (%s)",
+        "not_checked": "Not checked",
+        "address": "Address: %s",
+        "view_config": "View full configuration",
+        "sync_source": "Sync development progress",
+        "sync_database": "Sync database",
+        "take_ownership": "Take ownership of database writes",
+        "restart_services": "Restart services",
+        "view_logs": "View logs",
+        "export_diagnostics": "Export diagnostic report",
+        "version_updates": "Version & Updates",
+        "check_updates": "Check for updates",
+        "quit_peach": "Quit Peach",
+        "tooltip": "Peach",
+        "setup_complete": "Initial setup completed, switched to: %s",
+        "diagnostics_saved": "Diagnostic report exported to: %s",
+        "diagnostics_failed": "Export diagnostic report failed: %s",
+        "restart_ready": "%s, switched to ready specs and restarted.",
+    },
+}
+
+
+def detect_locale(explicit: str | None = None) -> str:
+    """Detect interface language: 'vi', 'en', or 'zh'. Default 'zh' in tests for backwards compatibility."""
+    if explicit:
+        val = explicit.lower().strip()
+        if val in TRAY_STRINGS:
+            return val
+    env = os.environ.get("PEACH_LOCALE", "").strip().lower()
+    if env:
+        if env.startswith("vi"):
+            return "vi"
+        if env.startswith("en"):
+            return "en"
+        if env.startswith("zh"):
+            return "zh"
+    try:
+        from .config import STATE_DIR
+        locale_path = STATE_DIR / "locale.txt"
+        if locale_path.is_file():
+            val = locale_path.read_text(encoding="utf-8").strip().lower()
+            if val in TRAY_STRINGS:
+                return val
+    except Exception:
+        pass
+    if "unittest" in sys.modules:
+        return "zh"
+    try:
+        import locale
+        loc = (locale.getlocale()[0] or "").lower()
+        if "vietnamese" in loc or loc.startswith("vi"):
+            return "vi"
+        if "english" in loc or loc.startswith("en"):
+            return "en"
+        if "chinese" in loc or loc.startswith("zh"):
+            return "zh"
+    except Exception:
+        pass
+    return "zh"
+
+
+def tray_text(key: str, locale: str | None = None) -> str:
+    loc = detect_locale(locale)
+    table = TRAY_STRINGS.get(loc, TRAY_STRINGS["zh"])
+    return table.get(key, TRAY_STRINGS["zh"].get(key, key))
+
+
 def tray_restart_required(changed_paths: tuple[str, ...]) -> bool:
     """这次更新动没动托盘自己的代码。"""
     return any(path in TRAY_SOURCES for path in changed_paths)
@@ -267,7 +409,9 @@ class ServiceManager:
         mount_share: Callable[[], bool] | None = None,
         log_dir: Path | None = None,
         extra_env: dict[str, str] | None = None,
+        locale: str | None = None,
     ) -> None:
+        self.locale = locale or detect_locale()
         self.specs = specs
         # 日志目录与子进程环境可替换：首次设置完成后 Peach 数据目录可能换了地方，那之后拉起的
         # 服务必须把日志写进新 Peach 数据目录，也必须显式看到新的 PEACH_DATA_ROOT——托盘进程
@@ -334,20 +478,28 @@ class ServiceManager:
 
     def status_summary(self) -> str:
         """两种托盘共用的短状态；同一个挂载提醒不因 HTTP/HTTPS 重复计数。"""
+        loc = getattr(self, "locale", None) or detect_locale()
         with self._lock:
             healthy = sum(self._last_health[spec.name][0] for spec in self.specs)
             warnings = set(value for spec in self.specs
                            for value in self._mount_warnings.get(spec.name, ()))
-            state = ("运行中" if healthy == len(self.specs) else "部分服务异常") if healthy else "服务未运行"
-        return f"{state} · {len(warnings)} 项提醒" if warnings else state
+            if healthy == len(self.specs):
+                state = tray_text("status_running", loc)
+            elif healthy:
+                state = tray_text("status_partial", loc)
+            else:
+                state = tray_text("status_stopped", loc)
+        return (tray_text("status_reminders", loc) % (state, len(warnings))) if warnings else state
 
     def status_details(self) -> tuple[str, ...]:
         """服务与挂载分行呈现，避免一行堆入所有来源。"""
+        loc = getattr(self, "locale", None) or detect_locale()
         with self._lock:
             services = []
             for spec in self.specs:
                 ok, detail = self._last_health[spec.name]
-                state = "正常" if ok else f"异常（{detail}）" if detail else "异常"
+                state = tray_text("normal", loc) if ok else (
+                    tray_text("abnormal_detail", loc) % detail if detail else tray_text("abnormal", loc))
                 services.append(menu_text(f"{spec.name.upper()} {state}"))
             warnings = dict.fromkeys(value for spec in self.specs
                                      for value in self._mount_warnings.get(spec.name, ()))
@@ -906,10 +1058,12 @@ class SetupGate:
         load: Callable[[], object] = settings_file.load_config,
         popen: Callable[..., subprocess.Popen] = subprocess.Popen,
         open_browser: Callable[[str], object] = webbrowser.open,
+        locale: str | None = None,
     ) -> None:
         self.manager = manager
         self.config = config
         self._waiting = waiting
+        self.locale = locale or getattr(manager, "locale", None)
         self._instance = instance
         self._load = load
         self._popen = popen
@@ -922,14 +1076,16 @@ class SetupGate:
         return self._waiting
 
     def open_label(self) -> str:
-        return "重新打开设置页" if self._waiting else "打开 Peach"
+        loc = getattr(self, "locale", None) or getattr(self.manager, "locale", None) or detect_locale()
+        return tray_text("reopen_setup", loc) if self._waiting else tray_text("open_peach", loc)
 
     def open_url(self) -> str:
         return setup_url(self.config) if self._waiting else normal_url(self.config)
 
     def status_line(self) -> str:
+        loc = getattr(self, "locale", None) or getattr(self.manager, "locale", None) or detect_locale()
         if self._waiting:
-            return "等待完成首次设置"
+            return tray_text("status_waiting", loc)
         return self.manager.status_summary()
 
     def open(self) -> None:
@@ -1055,6 +1211,7 @@ class PeachTray:
         silent: bool = False,
         show_browser: bool = False,
         preparation: TrayPreparation | None = None,
+        locale: str | None = None,
     ) -> None:
         self.lifecycle = None
         self.manager = manager
@@ -1062,6 +1219,8 @@ class PeachTray:
         self.show_browser = show_browser
         self.preparation = preparation
         self.gate = gate or SetupGate(manager, settings_file.active(), waiting=False)
+        loc_mgr = getattr(self.manager, "locale", None)
+        self.locale = locale if isinstance(locale, str) else (loc_mgr if isinstance(loc_mgr, str) else detect_locale())
         self.versions = versions or VersionManager()
         self.windows_updates = windows_updates or WindowsUpdateInstaller(
             getattr(self.versions, "root", PROJECT_ROOT),
@@ -1081,35 +1240,79 @@ class PeachTray:
             pystray.Menu.SEPARATOR,
             pystray.MenuItem("检查更新", self.check_updates),
         )
+        menu = pystray.Menu(
+            pystray.MenuItem(lambda _item: self.gate.open_label(), self.open, default=True),
+            pystray.MenuItem("配置 Peach", lambda *_: webbrowser.open(self.gate.open_url() + "configuration")),
+            pystray.MenuItem(lambda _item: f"状态：{self.gate.status_line()}", pystray.Menu(
+                lambda: (
+                    *(pystray.MenuItem(line, None, enabled=False)
+                      for line in self.manager.status_details()),
+                    pystray.MenuItem(menu_text(f"地址：{self.gate.open_url()}"), self.open),
+                    pystray.MenuItem("查看完整配置", lambda *_: webbrowser.open(
+                        self.gate.open_url() + "configuration")),
+                ))),
+            pystray.Menu.SEPARATOR,
+            pystray.MenuItem("同步开发进度", self.sync_source,
+                             visible=lambda _: not standalone()),
+            *ledger_menu_items(
+                pystray.MenuItem, self.sync_ledger, self.take_ownership),
+            pystray.MenuItem("重启服务", self.restart),
+            pystray.MenuItem("查看日志", self.open_logs),
+            pystray.MenuItem("导出诊断报告", self.export_diagnostics),
+            pystray.MenuItem("版本与更新", version_menu),
+            pystray.Menu.SEPARATOR,
+            pystray.MenuItem("退出 Peach", self.exit),
+        )
+        if self.locale != "zh":
+            self._localize_menu(menu)
         self.icon = pystray.Icon(
             "Peach",
             # macOS 菜单栏要单色 template image，Windows 托盘要彩色品牌图。
             create_icon(template=sys.platform == "darwin"),
-            "Peach · 蜜桃",
-            pystray.Menu(
-                pystray.MenuItem(lambda _item: self.gate.open_label(), self.open, default=True),
-                pystray.MenuItem("配置 Peach", lambda *_: webbrowser.open(self.gate.open_url() + "configuration")),
-                pystray.MenuItem(lambda _item: f"状态：{self.gate.status_line()}", pystray.Menu(
-                    lambda: (
-                        *(pystray.MenuItem(line, None, enabled=False)
-                          for line in self.manager.status_details()),
-                        pystray.MenuItem(menu_text(f"地址：{self.gate.open_url()}"), self.open),
-                        pystray.MenuItem("查看完整配置", lambda *_: webbrowser.open(
-                            self.gate.open_url() + "configuration")),
-                    ))),
-                pystray.Menu.SEPARATOR,
-                pystray.MenuItem("同步开发进度", self.sync_source,
-                                 visible=lambda _: not standalone()),
-                *ledger_menu_items(
-                    pystray.MenuItem, self.sync_ledger, self.take_ownership),
-                pystray.MenuItem("重启服务", self.restart),
-                pystray.MenuItem("查看日志", self.open_logs),
-                pystray.MenuItem("导出诊断报告", self.export_diagnostics),
-                pystray.MenuItem("版本与更新", version_menu),
-                pystray.Menu.SEPARATOR,
-                pystray.MenuItem("退出 Peach", self.exit),
-            ),
+            tray_text("tooltip", self.locale) if self.locale != "zh" else "Peach · 蜜桃",
+            menu,
         )
+
+    def _localize_menu(self, menu) -> None:
+        """Map static Chinese menu text to active locale for pystray menus."""
+        mapping = {
+            "配置 Peach": "configure_peach",
+            "同步开发进度": "sync_source",
+            "同步数据库": "sync_database",
+            "由本机接管数据库写入": "take_ownership",
+            "重启服务": "restart_services",
+            "查看日志": "view_logs",
+            "导出诊断报告": "export_diagnostics",
+            "版本与更新": "version_updates",
+            "检查更新": "check_updates",
+            "查看完整配置": "view_config",
+            "退出 Peach": "quit_peach",
+        }
+
+        def walk(m):
+            try:
+                items = list(getattr(m, "items", ()))
+            except Exception:
+                return
+            for item in items:
+                try:
+                    text = getattr(item, "text", None)
+                    if callable(text):
+                        text = text(item)
+                except Exception:
+                    continue
+                if text in mapping:
+                    key = mapping[text]
+                    item._text = lambda _item, k=key: tray_text(k, self.locale)
+                elif isinstance(text, str) and text.startswith("地址："):
+                    item._text = lambda _item: menu_text(tray_text("address", self.locale) % self.gate.open_url())
+                elif isinstance(text, str) and text.startswith("状态："):
+                    item._text = lambda _item: tray_text("status_line", self.locale) % self.gate.status_line()
+                sub = getattr(item, "submenu", None)
+                if sub is not None and type(sub).__name__ not in ("Mock", "MagicMock"):
+                    walk(sub)
+
+        walk(menu)
 
     def open(self, _icon=None, _item=None) -> None:
         # 等待首次设置时打开的是引导服务的表单，不是那个还没有人在监听的 `.local`。

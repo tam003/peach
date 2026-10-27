@@ -211,6 +211,18 @@ def launch_detached(argv, *, cwd, env=None) -> DetachedProcess:
     user.GetShellWindow.restype = wintypes.HWND
     user.GetWindowThreadProcessId.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.DWORD)]
     shell = user.GetShellWindow()
+    if not shell:
+        try:
+            user.OpenDesktopW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+            user.OpenDesktopW.restype = wintypes.HANDLE
+            user.SetThreadDesktop.argtypes = [wintypes.HANDLE]
+            user.SetThreadDesktop.restype = wintypes.BOOL
+            hdesk = user.OpenDesktopW("default", 0, False, 0x01FF)
+            if hdesk:
+                user.SetThreadDesktop(hdesk)
+                shell = user.GetShellWindow()
+        except Exception:
+            pass
     pid = wintypes.DWORD()
     if not shell or not user.GetWindowThreadProcessId(shell, ctypes.byref(pid)):
         error = OSError("未取得当前会话的 Windows 桌面进程，请确认已登录 Windows 桌面")

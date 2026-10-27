@@ -250,6 +250,23 @@ class ServiceStatusTests(unittest.TestCase):
         self.assertIn("HTTP 异常（无响应）", [item.text for item in status.submenu.items])
         self.assertIs(tray.manager, manager)
 
+    def test_windows_tray_vietnamese_locale(self):
+        manager = self.manager({"http": (True, "")})
+        manager.locale = "vi"
+        with patch("peach.tray.pystray.Icon") as icon:
+            _ = PeachTray(manager, locale="vi")
+        root = icon.call_args.args[3]
+        status = next(item for item in root.items if item.text.startswith("Trạng thái: "))
+        self.assertEqual(status.text, "Trạng thái: Đang chạy")
+        self.assertIn("HTTP Bình thường", [item.text for item in status.submenu.items])
+        labels = [item.text for item in root.items if hasattr(item, "text")]
+        self.assertIn("Mở Peach", labels)
+        self.assertIn("Cài đặt Peach", labels)
+        self.assertIn("Khởi động lại dịch vụ", labels)
+        self.assertIn("Xem nhật ký", labels)
+        self.assertIn("Xuất báo cáo chẩn đoán", labels)
+        self.assertIn("Thoát Peach", labels)
+
     def test_partial_names_the_broken_one_with_reason(self):
         self.assertEqual(
             self.manager({"http": (True, ""), "https": (False, "状态码 503")}).status(),
