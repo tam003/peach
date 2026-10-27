@@ -5,7 +5,7 @@ from __future__ import annotations
 import subprocess
 from pathlib import Path
 
-READMES = {"README.md", "README.en.md"}
+READMES = {"README.md", "README.en.md", "README.zh-CN.md", "README.vi.md"}
 PREFIXES = ("src/peach/", "web/", "frontend/", "migrations/", "resources/")
 FILES = {
     "pyproject.toml", "package.json", "package-lock.json",
@@ -82,9 +82,10 @@ def check(repo: Path, base: str, head: str = "HEAD") -> list[str]:
     status, problems = declaration(trailers(repo, message).get("readme-impact", []))
     if problems:
         return problems
-    if touched and touched != READMES:
+    repo_readmes = {name for name in READMES if (repo / name).is_file()} or READMES
+    if touched and touched != repo_readmes:
         reviewed = trailers(repo, message).get("readme-reviewed", [])
-        other = next(iter(READMES - touched))
+        other = next(iter(repo_readmes - touched))
         if problems := reviewed_declaration(reviewed, other):
             return problems
     if status == "updated" and not touched:

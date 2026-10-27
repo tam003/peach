@@ -15,7 +15,8 @@
   <a href="https://github.com/orgs/peach-mitao/projects/7/views/1">Requests board</a> ·
   <a href="https://github.com/orgs/peach-mitao/projects/7/views/3">Roadmap</a> ·
   <a href="#documentation">Documentation</a> ·
-  <a href="README.md">中文</a>
+  <a href="README.zh-CN.md">中文</a> ·
+  <a href="README.vi.md">Tiếng Việt</a>
 </p>
 
 <p align="center">
@@ -131,7 +132,7 @@ Thanks to [amane](https://github.com/sqzw-x/amane), [Gfriends](https://github.co
 
 <a href="https://www.star-history.com/?repos=peach-mitao%2Fpeach&amp;type=date&amp;logscale=&amp;releases=&amp;legend=top-left">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=peach-mitao/peach&amp;type=date&amp;theme=dark&amp;logscale&amp;legend=top-left">
+    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=peach-mitao/peach&amp;type=date&amp;logscale&amp;legend=top-left">
     <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=peach-mitao/peach&amp;type=date&amp;logscale&amp;legend=top-left">
     <img alt="Peach Star History" src="https://api.star-history.com/svg?repos=peach-mitao/peach&amp;type=date&amp;logscale&amp;legend=top-left">
   </picture>
