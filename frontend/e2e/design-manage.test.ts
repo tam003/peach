@@ -816,7 +816,7 @@ describe('设计决定：数据管理、索引页与资料页头', () => {
     const opened = await openFollowManage(browser);
     try {
       await opened.page.getByRole('button', { name: /^来源与订阅设置/ }).click();
-      await opened.page.getByRole('tab', { name: 'Sources and subscriptions', exact: true, selected: true }).waitFor();
+      await opened.page.getByRole('tab', { name: '来源与订阅', exact: true, selected: true }).waitFor();
       await opened.page.getByRole('region', { name: '可配置凭据', exact: true }).waitFor();
       await settle(opened.page);
       const faces: Record<string, string> = {};

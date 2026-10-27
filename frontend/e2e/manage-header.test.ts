@@ -197,7 +197,7 @@ describe('批量条', () => {
         assert.equal(await page.locator(DOCK).count(), 0, '没选中时批量条就画出来了');
         await pickTwo(cards);
         assert.deepEqual(await readDock(page),
-          { count: '2 selected', buttons: ['Like', 'Seen', 'Watch later', 'Set region', 'Move to trash', 'Cancel'] });
+          { count: '已选 2 项', buttons: ['喜欢', '看过', '稍后看', '判定产地', '移入回收站', '取消'] });
         await page.locator(`${DOCK} [data-batch-group="clear"]`).click();
         await page.locator(DOCK).waitFor({ state: 'detached', timeout: 10_000 });
 
@@ -209,16 +209,16 @@ describe('批量条', () => {
         const empty = await page.locator('[data-manage-lede] [data-empty-trash]').boundingBox();
         assert.equal(Math.round(empty!.height), viewport.mobile ? 44 : 32, '清空回收站的键高');
         await pickTwo(cards);
-        assert.deepEqual(await readDock(page), { count: '2 selected', buttons: ['Restore', 'Delete permanently', 'Cancel'] });
+        assert.deepEqual(await readDock(page), { count: '已选 2 项', buttons: ['还原', '彻底删除', '取消'] });
 
         await stubJunk(page);
         const junk = page.locator('#grid [data-junk-card]');
-        for (const [path, first] of [['/junk-files', 'Not junk'], ['/junk-files?view=dismissed', 'Review again']] as const) {
+        for (const [path, first] of [['/junk-files', '不是垃圾'], ['/junk-files?view=dismissed', '重新判断']] as const) {
           await page.goto(new URL(path, page.url()).href, { waitUntil: 'load' });
           await junk.first().waitFor({ timeout: 15_000 });
           await settle(page);
           await pickTwo(junk);
-          assert.deepEqual(await readDock(page), { count: '2 selected', buttons: [first, 'Move to trash', 'Cancel'] }, path);
+          assert.deepEqual(await readDock(page), { count: '已选 2 项', buttons: [first, '移入回收站', '取消'] }, path);
         }
         assert.deepEqual(opened.problems, []);
       } finally {
@@ -230,7 +230,7 @@ describe('批量条', () => {
       const opened = await openFollowFeed(browser, '/follow', viewport);
       try {
         await pickTwo(opened.page.locator('[data-follow-list] > [data-follow-item]'));
-        assert.deepEqual(await readDock(opened.page), { count: '2 selected', buttons: ['Save to library', 'Mark seen', 'Ignore', 'Cancel'] });
+        assert.deepEqual(await readDock(opened.page), { count: '已选 2 项', buttons: ['保存到数据库', '标记已看', '忽略', '取消'] });
         assert.deepEqual(opened.stub.writes.filter((write) => write.url !== '/api/follow/check'), []);
       } finally {
         await opened.close();

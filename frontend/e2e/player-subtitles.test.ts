@@ -86,7 +86,7 @@ describe('播放器字幕', () => {
         assert.equal(appearance.stroke, 'rgb(255, 255, 255)');
         assert.ok(appearance.inset >= 48, JSON.stringify(appearance));
         assert.equal(await page.locator('[data-subtitle-options] use').getAttribute('href'), '#i-settings');
-        assert.equal(await page.locator('[data-subtitle-options]').getAttribute('aria-label'), 'Subtitle options');
+        assert.equal(await page.locator('[data-subtitle-options]').getAttribute('aria-label'), '字幕选项');
         const cancelled = page.waitForEvent('filechooser');
         await page.locator('[data-subtitle-file]').click();
         await (await cancelled).setFiles([]);
@@ -119,7 +119,7 @@ describe('播放器字幕', () => {
         assert.ok(bounds.menuTop >= bounds.frameTop && bounds.menuRight <= bounds.frameRight + 1, JSON.stringify(bounds));
         await page.screenshot({ path: join(process.cwd(), `../build/subtitles-${viewport.name}.png`) });
         await page.locator('[data-subtitle-back]').click();
-        await page.getByRole('menuitemradio', { name: 'Close', exact: true }).click();
+        await page.getByRole('menuitemradio', { name: '关闭', exact: true }).click();
         await page.locator('.vjs-peach-captions').waitFor({ state: 'hidden' });
         await page.locator('#stage [data-player-quality]>button').click();
         if (viewport.mobile) await page.locator('#stage [data-player-expand]').click();

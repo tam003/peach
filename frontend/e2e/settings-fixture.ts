@@ -51,21 +51,12 @@ export async function stubServer(page: Page): Promise<Server> {
   return server;
 }
 
-const SECTION_NAMES: Record<string, string> = {
-  '外观与导航': 'Appearance and navigation',
-  '浏览与播放': 'Browse and playback',
-  'JAV 与新作': 'JAV and new works',
-  '搜索与推荐': 'Search and recommendations',
-  '内容显示': 'Content display',
-};
-
-/** The gear opens the panel on `section`. On a narrow screen the gear sits at the bottom of the drawer, so the click is dispatched directly. Both widths use the same entry. */
+/** 齿轮打开面板并停在 `section` 那一格。窄屏下齿轮收在抽屉底部，直接派发点击，两种宽度走同一条入口。 */
 export async function openPanel(page: Page, section = '外观与导航'): Promise<void> {
-  const name = SECTION_NAMES[section] ?? section;
   await page.locator('#settingsBtn').evaluate((button: HTMLElement) => button.click());
   await page.locator(`${PANEL}:not([hidden])`).waitFor({ timeout: 10_000 });
-  if (section !== '外观与导航') await page.locator(PANEL).getByRole('tab', { name, exact: true }).click();
-  await page.locator(PANEL).getByRole('tab', { name, exact: true })
+  if (section !== '外观与导航') await page.locator(PANEL).getByRole('tab', { name: section, exact: true }).click();
+  await page.locator(PANEL).getByRole('tab', { name: section, exact: true })
     .and(page.locator('[aria-selected="true"]')).waitFor({ timeout: 5_000 });
 }
 
