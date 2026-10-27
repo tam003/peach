@@ -133,28 +133,28 @@ export function SetupForm({ setup, onDone }: { setup: SetupQuestions; onDone: (d
       const labelId = `setup-${question.key}-label`;
       return (
         <div key={question.key} className="flex flex-col gap-1.5">
-          <Label id={labelId} elementType="span">{question.label}</Label>
+          <Label id={labelId} elementType="span">{phrase(question.label)}</Label>
           <SegmentedRadioGroup aria-labelledby={labelId} orientation="horizontal" className={SEGMENTED_TRACK}
             value={values[question.key] ?? question.default} onChange={(value) => setValue(question.key, value)}>
             {(question.options ?? []).map((option) => (
-              <Radio key={option.value} value={option.value} className={SEGMENT}>{option.label}</Radio>
+              <Radio key={option.value} value={option.value} className={SEGMENT}>{phrase(option.label)}</Radio>
             ))}
           </SegmentedRadioGroup>
-          {help ? <Help>{help}</Help> : null}
+          {help ? <Help>{phrase(help)}</Help> : null}
           {error ? <ErrorText key={errorRound}>{error}</ErrorText> : null}
         </div>
       );
     }
     const Suffix = () => <span className="shrink-0 pr-1 text-body-regular text-text-secondary">{question.suffix}</span>;
     return (
-      <Input key={question.key} id={`f-${question.key}`} label={question.label} isRequired={question.required}
+      <Input key={question.key} id={`f-${question.key}`} label={phrase(question.label)} isRequired={question.required}
         inputMode={question.input === 'number' ? 'numeric' : undefined} autoComplete="off" spellCheck="false"
         value={values[question.key] ?? ''} onChange={(value) => setValue(question.key, value)}
         leadingAddon={question.prefix
           ? <span className="shrink-0 pl-1 text-body-regular text-text-secondary">{question.prefix}</span>
           : undefined}
         trailingIcon={question.suffix ? Suffix : undefined}
-        validationBehavior="aria" isInvalid={Boolean(error)} hint={announce(error) ?? (help || undefined)} />
+        validationBehavior="aria" isInvalid={Boolean(error)} hint={announce(error) ?? (help ? phrase(help) : undefined)} />
     );
   };
 
@@ -166,12 +166,12 @@ export function SetupForm({ setup, onDone }: { setup: SetupQuestions; onDone: (d
       {media ? (
         <CardGroup first labelledBy="setup-media-title">
           <GroupTitle id="setup-media-title">
-            {media.label}<span aria-hidden className="ml-0.5 text-text-error-primary">*</span>
+            {phrase(media.label)}<span aria-hidden className="ml-0.5 text-text-error-primary">*</span>
           </GroupTitle>
           {tableError ? <ErrorText key={errorRound}>{tableError}</ErrorText> : null}
           <div role="group" aria-labelledby="setup-media-title" className="flex flex-col gap-3">
             {folders.rows.map((row, index) => (
-              <FolderRow key={index} label={`${media.label} ${index + 1}`} path={row.path}
+              <FolderRow key={index} label={`${phrase(media.label)} ${index + 1}`} path={row.path}
                 onPath={(path) => folders.edit(index, { path })} error={announce(folders.errors[index])}
                 inputRef={folders.inputRef(index)} picking={folders.picking === index}
                 onPick={() => void folders.pick(index)}
@@ -190,15 +190,15 @@ export function SetupForm({ setup, onDone }: { setup: SetupQuestions; onDone: (d
           {cloud ? (
             <>
               <MediaReadPolicyHelp />
-              <Help>{setup.cloud.help}<ExternalLink href={setup.cloud.link.url}>{setup.cloud.link.label}</ExternalLink></Help>
+              <Help>{phrase(setup.cloud.help)}<ExternalLink href={setup.cloud.link.url}>{phrase(setup.cloud.link.label)}</ExternalLink></Help>
               {setup.cloud.dependencies.map((dependency) => (
                 <Help key={dependency.name}>
-                  {dependency.message}<ExternalLink href={dependency.download_url}>{dependency.download_label}</ExternalLink>
+                  {phrase(dependency.message)}<ExternalLink href={dependency.download_url}>{phrase(dependency.download_label)}</ExternalLink>
                 </Help>
               ))}
             </>
           ) : null}
-          {media.help.map((line) => <Help key={line}>{line}</Help>)}
+          {media.help.map((line) => <Help key={line}>{phrase(line)}</Help>)}
         </CardGroup>
       ) : null}
 
