@@ -38,7 +38,7 @@ def menu_path() -> Path:
 
 def download(opener, root: Path, version: str, kind: str) -> Path:
     request = urllib.request.Request(
-        f"https://api.github.com/repos/peach-mitao/peach/releases/tags/v{version}")
+        f"https://api.github.com/repos/tam003/peach/releases/tags/v{version}")
     if token := os.environ.get("GH_TOKEN"):
         request.add_header("Authorization", f"Bearer {token}")
     with opener.open(request, timeout=30) as response:
