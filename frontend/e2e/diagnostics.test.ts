@@ -54,12 +54,12 @@ describe('配置中的系统诊断', () => {
         await page.locator('article[data-diagnostic-source]').first().waitFor();
         await settle(page);
         await page.evaluate(() => window.scrollTo(0, 650));
-        const nav = page.getByRole('tablist', { name: 'Settings sections' });
+        const nav = page.getByRole('tablist', { name: '配置分区' });
         const pinned = await nav.evaluate(element => ({ nav: element.getBoundingClientRect().top,
           search: document.querySelector('.top')!.getBoundingClientRect().bottom }));
         assert.ok(pinned.nav >= pinned.search + 7, JSON.stringify(pinned));
         assert.ok(pinned.nav <= pinned.search + 9, JSON.stringify(pinned));
-        await nav.getByRole('tab', { name: 'Network and access', exact: true }).click();
+        await nav.getByRole('tab', { name: '网络与访问', exact: true }).click();
         await settle(page);
         const visible = await page.locator('.ui-board-group-active').evaluate(element => ({ panel: element.getBoundingClientRect().top,
           nav: document.querySelector('.ui-board-local-nav')!.getBoundingClientRect().bottom,
@@ -86,7 +86,7 @@ describe('配置中的系统诊断', () => {
           return { x: body.x, width: body.width };
         });
         release();
-        await page.getByRole('tab', { name: 'Diagnostics', selected: true }).waitFor();
+        await page.getByRole('tab', { name: '系统诊断', selected: true }).waitFor();
         await page.locator('article[data-diagnostic-source]').first().waitFor();
         await settle(page);
         const ready = await page.locator('.ui-board-group-active').boundingBox();
@@ -105,7 +105,7 @@ describe('配置中的系统诊断', () => {
             action: '检查媒体目录与挂载状态', target: '/settings/library', details: {} };
           await route.fulfill({ json: report });
         });
-        await page.getByRole('tab', { name: 'Diagnostics', exact: true }).click();
+        await page.getByRole('tab', { name: '系统诊断', exact: true }).click();
         await page.locator('section[aria-label="来源会话"]').waitFor();
         await settle(page);
         assert.equal(new URL(page.url()).pathname, '/settings/diagnostics');
@@ -154,7 +154,7 @@ describe('配置中的系统诊断', () => {
         assert.ok(grouping.gap >= 20);
         assert.deepEqual(opened.problems, []);
         await page.reload();
-        await page.getByRole('tab', { name: 'Diagnostics', selected: true }).waitFor();
+        await page.getByRole('tab', { name: '系统诊断', selected: true }).waitFor();
         await page.locator('section[aria-label="来源会话"]').waitFor();
       } finally { await opened.close(); }
     });

@@ -1,5 +1,5 @@
-/* The settings panel (`settings-panel` island, ADR-0031): open, close, and focus, and each kind of setting takes effect immediately and lands where it belongs.
- * The write stubs live in `settings-fixture.ts`. Layout and pixels are measured by `design-settings.test.ts`. This file only covers behavior. */
+/* 设置面板（`settings-panel` 岛，ADR-0031）：开合与焦点、每一类设置改完立刻生效并落到该去的地方。
+ * 写接口的桩在 `settings-fixture.ts`；面板的版式与像素由 `design-settings.test.ts` 量，这里只写行为。 */
 import assert from 'node:assert/strict';
 import { after, before, describe, it } from 'node:test';
 
@@ -11,16 +11,16 @@ import { openHome, openPanel, ORDER, PANEL, stubServer, type Server } from './se
 const DESKTOP = VIEWPORTS.find((viewport) => !viewport.mobile)!;
 const MOBILE = VIEWPORTS.find((viewport) => viewport.mobile)!;
 
-/** Wait until the condition holds, for at most five seconds. */
+/** 等到条件成立，最多五秒。 */
 async function until(page: Page, condition: () => boolean, message: string): Promise<void> {
   for (let tries = 0; tries < 100 && !condition(); tries += 1) await page.waitForTimeout(50);
   assert.ok(condition(), message);
 }
 
-/** Wait until `path` receives one write that includes `key`, and return that request body. */
+/** 等到 `path` 收到一次带 `key` 的写入，返回那一次的请求体。 */
 async function posted(page: Page, server: Server, path: string, key: string): Promise<Record<string, unknown>> {
   const find = () => server.posts.find((post) => post.path === path && key in post.body);
-  await until(page, () => !!find(), `${path} did not receive a write for ${key}`);
+  await until(page, () => !!find(), `${path} 没有收到 ${key} 的写入`);
   return find()!.body;
 }
 
@@ -31,7 +31,7 @@ async function pick(page: Page, field: string, value: string): Promise<void> {
   await page.locator(`${field} [data-select-option="${value}"]`).click();
 }
 
-/** A context of its own. The starting settings are written once, only when the browser has none, so a reload does not wipe them. */
+/** 自建一份上下文：起始设置只在本地还没有时写一次，刷新之后不会被冲掉。 */
 async function persistentContext(browser: Browser): Promise<BrowserContext> {
   const context = await browser.newContext({
     viewport: { width: DESKTOP.width, height: DESKTOP.height }, reducedMotion: 'reduce', colorScheme: 'light',
@@ -55,10 +55,10 @@ describe('设置面板', () => {
     try {
       await openPanel(page);
       assert.deepEqual(await page.locator(PANEL).getByRole('tab').allTextContents(),
-        ['Appearance and navigation', 'Browse and playback', 'JAV and new works', 'Search and recommendations', 'Content display']);
+        ['外观与导航', '浏览与播放', 'JAV 与新作', '搜索与推荐', '内容显示']);
       for (const [name, field] of [
-        ['Appearance and navigation', '#themeSetting'], ['Browse and playback', '#detailAutoplaySetting'],
-        ['JAV and new works', '#javImageSetting'], ['Search and recommendations', '#relatedLimitSetting'], ['Content display', '#censorSetting'],
+        ['外观与导航', '#themeSetting'], ['浏览与播放', '#detailAutoplaySetting'],
+        ['JAV 与新作', '#javImageSetting'], ['搜索与推荐', '#relatedLimitSetting'], ['内容显示', '#censorSetting'],
       ]) {
         await page.locator(PANEL).getByRole('tab', { name, exact: true }).click();
         await page.locator(field!).waitFor({ state: 'visible' });
@@ -133,7 +133,7 @@ describe('设置面板', () => {
     const opened = await visit(browser, '/', DESKTOP);
     const { page } = opened;
     try {
-      /* Every sound has to create an oscillator or a noise source. Counting those shows whether a sound played. */
+      /* 每一声都要新建一枚振荡器或噪声源；数它们就知道响没响。 */
       await page.context().addInitScript(() => {
         const counted = window as unknown as { __uiTones: number };
         counted.__uiTones = 0;
@@ -156,12 +156,12 @@ describe('设置面板', () => {
       assert.equal(await box.isChecked(), false);
       assert.equal((await stored(page)).uiSounds, false);
       const silent = await tones();
-      await page.locator(PANEL).getByRole('tab', { name: 'Browse and playback', exact: true }).click();
-      await page.locator(PANEL).getByRole('tab', { name: 'Appearance and navigation', exact: true }).click();
+      await page.locator(PANEL).getByRole('tab', { name: '浏览与播放', exact: true }).click();
+      await page.locator(PANEL).getByRole('tab', { name: '外观与导航', exact: true }).click();
       assert.equal(await tones(), silent, '关掉界面音效之后点分区还在出声');
       await box.click();
       assert.equal((await stored(page)).uiSounds, true);
-      await page.locator(PANEL).getByRole('tab', { name: 'Browse and playback', exact: true }).click();
+      await page.locator(PANEL).getByRole('tab', { name: '浏览与播放', exact: true }).click();
       assert.ok(await tones() > silent, '打开界面音效之后点分区不出声');
       assert.deepEqual(opened.problems, []);
     } finally {
@@ -185,7 +185,7 @@ describe('设置面板', () => {
       assert.equal(await page.locator('#homeGlowControls [data-glow-preset-name]').textContent(), label);
       assert.equal((await stored(page)).homeGlow.preset, key);
 
-      /* The glass-color preset hides strength. Pick a preset that has three glows, then move strength. */
+      /* 「玻璃原色」那一档收起强度；挑一档有三枚光晕的，再动强度。 */
       if (await page.locator('[data-glow-field="strength"]').isHidden()) {
         await grid.locator('[data-glow-preset="ash"]').click();
       }
@@ -211,12 +211,12 @@ describe('设置面板', () => {
     const opened = await openHome(browser);
     const { page } = opened;
     try {
-      await openPanel(page, 'JAV and new works');
+      await openPanel(page, 'JAV 与新作');
       await page.locator('#javImageSetting label:has(input[value="thumbnail"])').click();
       assert.equal((await stored(page)).javImage, 'thumbnail');
       assert.equal(await page.locator('#javImageSetting input[value="thumbnail"]').isChecked(), true);
 
-      await page.locator(PANEL).getByRole('tab', { name: 'Browse and playback', exact: true }).click();
+      await page.locator(PANEL).getByRole('tab', { name: '浏览与播放', exact: true }).click();
       await pick(page, '#defaultSortSetting', 'seed');
       await page.locator('#defaultSortDirectionSetting').waitFor({ state: 'hidden', timeout: 5_000 });
 
@@ -280,7 +280,7 @@ describe('设置面板', () => {
       const tops = await page.locator(PANEL).getByRole('tab').evaluateAll((nodes) =>
         nodes.slice(0, 3).map((node) => Math.round(node.getBoundingClientRect().top)));
       assert.equal(new Set(tops).size, 1, '窄屏下分区没有横排');
-      await page.locator(PANEL).getByRole('tab', { name: 'JAV and new works', exact: true }).click();
+      await page.locator(PANEL).getByRole('tab', { name: 'JAV 与新作', exact: true }).click();
       await page.locator('#javImageSetting').waitFor({ state: 'visible', timeout: 5_000 });
       assert.deepEqual((await layout(page)).offenders, []);
       assert.deepEqual(opened.problems, []);

@@ -1,4 +1,4 @@
-/* Design decisions: settings, taste, stats, and the filter glass. `getComputedStyle` checks the appearance that was set. Shared stubs and the browser lifecycle are in `design-fixture.ts`. */
+/* 设计决定：设置、口味、统计与筛选玻璃。读 `getComputedStyle` 断言用户定过的外观；共用的桩与浏览器生命周期在 `design-fixture.ts`。 */
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import type { Browser, Page } from 'playwright-core';
@@ -10,7 +10,7 @@ import {
   farthestShadow, holdApi, openLightbox, installDesignBrowser,
 } from './design-fixture.ts';
 
-describe('design decisions: settings, taste, stats, and the filter glass', () => {
+describe('设计决定：设置、口味、统计与筛选玻璃', () => {
   let browser: Browser;
   installDesignBrowser((next) => { browser = next; });
 
@@ -83,7 +83,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
           assert.ok(Math.abs(shown.ranked - shown.radar) < 2,
             `排行条 ${shown.ranked}px，雷达那一栏 ${shown.radar}px，两栏不等高`);
         }
-        // 26 is the thickness left inside a 32px cell. When the chart grows, the extra height opens the gap between bars and does not enter the bar.
+        // 26 是一格 32 里默认留出的粗细；图被拉高时多出来的高度拉开条距，不进条本身。
         assert.ok(shown.thickness.every((height) => height <= 26.5), `条粗 ${shown.thickness.join('、')}px`);
         assert.deepEqual(opened.problems, []);
       } finally {
@@ -101,7 +101,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
         await page.getByRole('tablist', { name: 'Peach 口味维度' }).getByRole('tab', { name }).click();
         const img = page.getByRole('tabpanel', { name }).locator('img[data-facebox]').first();
         await img.scrollIntoViewIfNeeded();
-        // The enlargement is an inline style `avatarFrame` writes after the image loads. Measure after that step has landed.
+        // 放大是图加载后 `avatarFrame` 写进内联 style 的；等到那一步落地再量。
         await page.waitForFunction((element) => element instanceof HTMLImageElement
           && element.complete && element.naturalWidth > 0 && element.style.width !== '',
         await img.elementHandle(), { timeout: 15_000 });
@@ -144,10 +144,10 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
     }
   });
 
-  /* The not-yet-imported new-works row on the home page scrolls itself sideways and emits a scroll on every frame. On a phone the sidebar is a drawer,
-     and the two popovers meet that row as soon as they open. The demo library has no subscriptions. The row is painted from the intercepted `/api/feeds/discoveries`
-     (the fields follow `src/peach/web_feeds.py`). The fixture turns motion off, so auto-scroll does not start.
-     This case scrolls the row by hand and emits the same kind of scroll. */
+  /* 首页「未入库的新作」那一排会自己横着走，每一帧都发一次 scroll。手机上侧栏是抽屉，
+     两枚弹层一打开就碰上它；演示库没有订阅，这一排由拦下的 `/api/feeds/discoveries`
+     画出来（字段以 `src/peach/web_feeds.py` 为准）。夹具关了动效，自动滚动不起步，
+     所以这里亲手滚它，发出的是同一种 scroll。 */
   it('390px 下侧栏两枚弹层不随别处那一排横滚收起，整页滚动才收', { timeout: 60_000 }, async () => {
     const opened = await visit(browser, '/', MOBILE);
     try {
@@ -175,7 +175,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
           await opened.page.waitForTimeout(100);
         }
         assert.ok(await menu.isVisible(), `${trigger} 打开的弹层随新作那一排横滚收起了`);
-        // A menu that does not fit is supposed to scroll inside itself. A scroll listener in the capture phase also receives that scroll.
+        // 菜单装不下时本来就要在内部滚；捕获阶段的 scroll 连它自己的也收得到。
         await menu.evaluate((element) => element.dispatchEvent(new Event('scroll')));
         await opened.page.waitForTimeout(100);
         assert.ok(await menu.isVisible(), `${trigger} 打开的弹层随它自己的内部滚动收起了`);
@@ -208,8 +208,8 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       assert.deepEqual(inSettings, await chips('#boardGlowMenu'), '设置里的预设色块和侧栏配色卡不是同一组');
       const size = await grid.locator('[data-glow-ball]').first().evaluate((node) => node.getBoundingClientRect().width);
       assert.equal(size, 28, '设置里的色块和侧栏那一枚不是同一副尺寸');
-      /* This settings row is as wide as the settings block. The column count follows the available width. Each cell is one ball, packed until the row wraps.
-         The gap is the same value as the sidebar `[data-glow-grid]`. The sidebar card stays at six columns. */
+      /* 设置这一行有整块设置那么宽：列数跟着可用宽度走，每格就是一枚球，挨着排满再换行，
+         间距与侧栏那条 `[data-glow-grid]` 同一个值；侧栏那张卡仍是六列。 */
       const gridStyle = (root: string) => opened.page.locator(`${root} [data-glow-grid]`).evaluate((node) => {
         const style = getComputedStyle(node);
         return { tracks: style.gridTemplateColumns, gap: style.columnGap, inline: style.paddingLeft };
@@ -233,7 +233,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       assert.ok(settingsGrid.tracks.split(' ').every((track) => track === '28px'), '设置里的色块每格不是一枚球的宽度');
       assert.equal(settingsGrid.gap, sidebarGrid.gap, '设置里的色块间距和侧栏配色卡不同');
       assert.equal(settingsGrid.inline, '0px', '设置里的色块没有从这一行的内容左缘起');
-      // The sidebar color card is closed here, so the computed value stays at the declared `repeat(6, 1fr)`. Open, it is six resolved widths.
+      // 侧栏配色卡此刻收着，计算值停在声明式 `repeat(6, 1fr)`；展开时是六个解析后的宽度。
       assert.ok(sidebarGrid.tracks === 'repeat(6, 1fr)' || sidebarGrid.tracks.split(' ').length === 6,
         `侧栏配色卡不再是每行六枚：${sidebarGrid.tracks}`);
       const wide = await swatchLayout();
@@ -274,10 +274,10 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
     }
   });
 
-  /* ADR-0050: the settings overlay only holds controls that are one value on one row and take effect when changed. Forms with a save action live on the configuration page.
-     Long tasks that need confirmation and a progress view live on the data-management page. Feeds live on the follow-management page. */
-  /* The settings panel is a full-page overlay with the same scrim and the same enter and exit as the work-detail window. The scrim has no blur. Its value comes only from `--scrim`.
-     Keyframe names can be read only while the motion actually runs, so this case builds a context that does not reduce motion. */
+  /* ADR-0050：设置弹层只放一行一个值、改完就生效的控件；带「保存配置」的表单在配置页，
+     要确认、要看进度的长任务在数据管理页，订阅源在关注管理页。 */
+  /* 设置面板：盖住整页的弹层与作品详情浮窗同一档遮罩、同一组进出场；遮罩不带模糊，值只来自 `--scrim`。
+     动效要真跑起来才读得到关键帧名，这一条自建不减动态的上下文。 */
   it('设置面板的遮罩取 --scrim、不带模糊、压在最顶层，卡片用弹层那一组关键帧进出', { timeout: 60_000 }, async () => {
     const context = await browser.newContext({ viewport: { width: DESKTOP.width, height: DESKTOP.height } });
     await context.addInitScript(() => localStorage.setItem('peach.settings.v1', JSON.stringify({ detailAutoplay: false })));
@@ -305,9 +305,9 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       assert.equal(shown.face, scrim, '设置遮罩的颜色不是 --scrim');
       assert.deepEqual(shown.blur, ['none', 'none'], '设置遮罩或卡片带了模糊');
       assert.deepEqual(shown.backdrop, ['settings-backdrop-in', 'both']);
-      // The entrance fill is `backwards`. A filter left on the end frame would start another backdrop root, and the left-column glass would sample only the card itself.
+      // 进场填 `backwards`：终点帧留下的 filter 会另起一个 backdrop root，左栏玻璃就只采样得到卡片自己。
       assert.deepEqual(shown.card, ['board-dialog-in', 'backwards']);
-      /* The safe-area padding clears the notch and the Home indicator. A desktop has no safe area, so both ends are the 18px base. */
+      /* 安全区内边距让开刘海与 Home 指示条；桌面上没有安全区，两端都是 18px 的底。 */
       assert.deepEqual(shown.padding, ['18px', '18px']);
 
       const leaving = await page.locator(PANEL).evaluate((panel) => {
@@ -316,7 +316,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
         return { backdrop: getComputedStyle(panel).animationName, card: [card.animationName, card.animationFillMode] };
       });
       assert.equal(leaving.backdrop, 'settings-backdrop-out');
-      // The exit needs `both`. The end state, transparent, is not the element's natural state.
+      // 退场要 `both`：终点（透明）不是元素的自然状态。
       assert.deepEqual(leaving.card, ['board-dialog-out', 'both']);
       await page.locator(PANEL).waitFor({ state: 'hidden', timeout: 5_000 });
     } finally {
@@ -353,7 +353,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       assert.equal(resting.overflow, 'auto');
       assert.equal(resting.overscroll, 'contain', '滚到底之后滚动会漏给背后的页面');
       assert.equal(resting.shadow, 'none', '还没滚动标题栏就投了影');
-      // The shadow only goes downward. Upward it would smear onto the title. Leftward it would smear onto the left column.
+      // 影子只要往下那一半：往上会糊在标题自己头上、往左会糊到左栏上。
       assert.equal(resting.clip, 'inset(0px 0px -96px)');
 
       await page.locator(`${PANEL} [data-settings-scroll]`).evaluate((scroll) => { scroll.scrollTop = 4 });
@@ -377,24 +377,24 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       const glide = () => nav.locator('[data-settings-glide]').evaluate((node) => Math.round(node.getBoundingClientRect().top));
       const top = (name: string) => nav.getByRole('tab', { name, exact: true })
         .evaluate((node) => Math.round(node.getBoundingClientRect().top));
-      const selected = await nav.getByRole('tab', { name: 'Appearance and navigation', exact: true }).evaluate((node) => {
+      const selected = await nav.getByRole('tab', { name: '外观与导航', exact: true }).evaluate((node) => {
         const style = getComputedStyle(node), icon = getComputedStyle(node.querySelector('svg')!);
         return { face: style.backgroundColor, ring: style.boxShadow, icon: [icon.width, icon.height, icon.fill === style.color, icon.stroke] };
       });
       assert.equal(selected.face, 'rgba(0, 0, 0, 0)', '当前项自己铺了底，滑动的那块玻璃被盖住');
       assert.equal(selected.ring, 'none');
-      // Remix lines are outlines drawn with `fill`. The site default `stroke:currentColor;fill:none` would make the whole glyph disappear.
+      // Remix 的线条是 `fill` 画出的轮廓，全站默认的 `stroke:currentColor;fill:none` 会让它整枚消失。
       assert.deepEqual(selected.icon, ['20px', '20px', true, 'none']);
-      assert.equal(await glide(), await top('Appearance and navigation'), '玻璃没有落在当前项上');
+      assert.equal(await glide(), await top('外观与导航'), '玻璃没有落在当前项上');
 
-      await nav.getByRole('tab', { name: 'Browse and playback', exact: true }).hover();
-      const target = await top('Browse and playback');
+      await nav.getByRole('tab', { name: '浏览与播放', exact: true }).hover();
+      const target = await top('浏览与播放');
       await page.waitForFunction(([want]) => Math.round(document.querySelector(
         '#settingsPanel [data-settings-glide]')!.getBoundingClientRect().top) === want, [target]);
-      assert.equal(await nav.getByRole('tab', { name: 'Appearance and navigation', exact: true }).getAttribute('aria-selected'), 'true',
+      assert.equal(await nav.getByRole('tab', { name: '外观与导航', exact: true }).getAttribute('aria-selected'), 'true',
         '指针移上去就换了分区');
       await page.locator(`${PANEL} [data-settings-scroll]`).hover();
-      const home = await top('Appearance and navigation');
+      const home = await top('外观与导航');
       await page.waitForFunction(([want]) => Math.round(document.querySelector(
         '#settingsPanel [data-settings-glide]')!.getBoundingClientRect().top) === want, [home]);
       assert.deepEqual(opened.problems, []);
@@ -431,7 +431,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
         });
         assert.deepEqual(shown.group, [ground, '16px'], `${viewport.name}：分组不是 --ground 的 16px 圆角面`);
         assert.deepEqual(shown.toggles, ['42×24'], `${viewport.name}：开关不是同一副 42×24`);
-        // The switch is only 42px and has room on the title's row. Wrapping with the title would spend a line of height for nothing.
+        // 开关只有 42px，跟标题同一行绰绰有余；跟着换行只是白占一行高度。
         assert.equal(shown.toggleOnRow, true, `${viewport.name}：开关没有留在标题那一行`);
         assert.deepEqual(shown.theme, ['32×32', '32×32', '32×32'], `${viewport.name}：主题三档不是 32px 的圆`);
         assert.equal(shown.themeIcon, '16×16');
@@ -478,7 +478,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       assert.deepEqual(shown.face, shown.expected, '「添加」没有穿主按钮那一身');
       assert.equal(shown.cursor, 'pointer');
 
-      /* Add the entries back one by one until the list has nothing left to add. */
+      /* 一项一项加回去，直到清单里没有可加的入口。 */
       const add = row.locator('[data-sidebar-add]'), trigger = row.locator('[data-sidebar-add-trigger]');
       for (let left = 30; left > 0 && await add.isEnabled(); left -= 1) await add.click();
       assert.equal(await trigger.isDisabled(), true, '全部入口都加回侧栏之后触发器还能点');
@@ -499,7 +499,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       server.schedule.available = false;
       await page.goto(new URL('/settings/library', page.url()).href, { waitUntil: 'load' });
       await settle(page);
-      const source = () => page.getByRole('tablist', { name: 'Settings sections' }).getByRole('tab', { name: 'Sources and subscriptions', exact: true });
+      const source = () => page.getByRole('tablist', { name: '配置分区' }).getByRole('tab', { name: '来源与订阅', exact: true });
       await source().click();
       const toggle = page.getByRole('switch', { name: '自动检查更新', exact: true });
       await toggle.and(page.locator(':disabled:checked')).waitFor({ state: 'attached', timeout: 10_000 });
@@ -574,7 +574,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
         const after = getComputedStyle(element, '::after');
         const footer = element.querySelector('small')!;
         const other = document.querySelector('#stats [role="tab"]:not([data-selected])')!;
-        // `shadow-none` is five transparent 0px layers, not the literal none. Look for a layer that has color.
+        // `shadow-none` 是五层透明的 0px，不是字面的 none：看有没有一层带颜色。
         const shadowVisible = [...card.boxShadow.matchAll(/rgba?\([^)]*\)/g)]
           .some((match) => !/, 0\)$/.test(match[0]));
         return {
@@ -624,8 +624,8 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
   });
 
   it('标签页骨架里就铺着那块筛选玻璃，React 落地时玻璃与开头那组内容都留在原位', { timeout: 60_000 }, async () => {
-    /* Measure the skeleton and the real page: the glass position and size, and the top of the first group of content. Pills, counts, and the first letter wait for data.
-       In the skeleton they are placeholders. The view switch is already the final one. */
+    /* 骨架与真页面各量一遍：玻璃的位置与大小、开头那组内容的上沿。药丸、读数与首字要等数据，
+       骨架里是占位；视图切换此刻就是最终那一档。 */
     const opened = await visit(browser, '/tags', DESKTOP);
     try {
       const page = opened.page;
@@ -755,7 +755,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       assert.equal(resting.stuck, false, '还没滚就标成吸顶');
       assert.equal(farthestShadow(resting.shadow), farthestShadow(resting.rest), '静止态的影不是 --glass-shadow');
       assert.equal((await readStrip()).content, 'none', '静止态就画了遮带');
-      // The stub has only two tags, so the page is not long enough to scroll. Add a block of height, then scroll.
+      // 桩数据只有两枚标签，页面不够长滚不动：垫一块高度再滚。
       await page.evaluate(() => document.body.insertAdjacentHTML('beforeend', '<div style="height:200vh"></div>'));
       await page.evaluate(() => window.scrollTo(0, 600));
       await page.waitForFunction(() => document.querySelector('[data-filter-glass]')!.hasAttribute('data-stuck'),
@@ -839,7 +839,7 @@ describe('design decisions: settings, taste, stats, and the filter glass', () =>
       for (const icon of read) {
         assert.ok(icon.off <= .5, `${icon.selector} 的图标偏离圆心 ${icon.off}px`);
         assert.equal(icon.fill, 'none', `${icon.selector} 的描边图标被填实了`);
-        // Lucide's info dot is a stroke of length .01. Without a round cap it shrinks into an invisible dash.
+        // Lucide 的 info 圆点是长度 .01 的短线，没有圆头就缩成看不见的一横。
         assert.equal(icon.cap, 'round', `${icon.selector} 的线头不是圆的`);
       }
       const [close, back, fwd, info] = read;

@@ -54,7 +54,7 @@ describe('馆藏 JAV 官方预览', () => {
       await page.waitForFunction(() => document.querySelector<HTMLVideoElement>('[data-item-gallery] video')?.readyState === 4);
       await frame.locator('[data-media-thumbnail] img').first().waitFor({ state: 'visible' });
       assert.ok(samples.some(url => new URL(url).pathname === '/sample-thumb'), '小图使用样图缩略图入口');
-      const stats = frame.getByRole('button', { name: 'Playback stats', exact: true });
+      const stats = frame.getByRole('button', { name: '播放统计', exact: true });
       await stats.waitFor({ state: 'visible' });
       const statsBox = await stats.boundingBox(), toggleBox = await frame.getByRole('button', { name: '查看图片', exact: true }).boundingBox();
       assert.ok(statsBox && toggleBox && toggleBox.x >= statsBox.x + statsBox.width, '图片入口与播放统计并列');

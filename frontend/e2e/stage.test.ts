@@ -229,7 +229,7 @@ describe('舞台岛', () => {
       await page.locator('#stage .video-js').click({ button: 'right' });
       await page.locator('#stage #playerMenu:popover-open').waitFor();
       assert.deepEqual((await labels()).filter((label) => label !== '画中画'),
-        ['Loop', 'Miniplayer', 'Copy video link', 'Copy video link at current time', 'Playback stats']);
+        ['循环播放', '迷你播放器', '复制视频网址', '复制当前时间的视频网址', '播放统计']);
       await page.keyboard.press('Escape');
       await page.locator('#playerMenu:popover-open').waitFor({ state: 'detached' }).catch(() => {});
       assert.equal(await page.locator('#playerMenu:popover-open').count(), 0, 'Escape 没关掉菜单');

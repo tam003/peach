@@ -1088,7 +1088,7 @@ describe('设计决定：人物与厂牌资料页', () => {
       try {
         const page = opened.page;
         await page.getByRole('button', { name: /^来源与订阅设置/ }).click();
-        await page.getByRole('tab', { name: 'Sources and subscriptions', exact: true, selected: true }).waitFor();
+        await page.getByRole('tab', { name: '来源与订阅', exact: true, selected: true }).waitFor();
         await page.getByRole('region', { name: '可配置凭据', exact: true }).waitFor();
         await settle(page);
         for (const theme of ['light', 'dark']) {
