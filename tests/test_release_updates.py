@@ -26,6 +26,15 @@ class ReleaseUpdateTests(unittest.TestCase):
         self.assertEqual((result["state"], result["latest_version"]), ("available", "0.10.0"))
         self.assertEqual(result["release_url"], release_updates.RELEASES_URL + "/tag/v0.10.0")
 
+    def test_updates_come_from_this_deployment_release_repository(self):
+        transport = Mock(return_value=HttpResponse(200, {}, json.dumps([release("1.0.0")]).encode()))
+        with patch.object(release_updates, "__version__", "0.9.0"):
+            result = release_updates.check(transport=transport)
+        self.assertEqual(transport.call_args.args[0].url,
+                         "https://api.github.com/repos/tam003/peach/releases?per_page=100")
+        self.assertEqual(result["asset_url"],
+                         "https://github.com/tam003/peach/releases/download/v1.0.0/Peach-1.0.0-windows-x64.zip")
+
     def test_unpublished_or_incomplete_packages_are_not_offered(self):
         draft = release("8.0.0"); draft["draft"] = True
         incomplete = release("9.0.0"); incomplete["assets"] = []

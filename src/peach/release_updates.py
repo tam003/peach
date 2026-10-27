@@ -9,8 +9,10 @@ from . import __version__, distribution
 from .http import HttpRequest, HttpxTransport
 from .update_packages import TOOL_PATHS
 
-RELEASES_URL = "https://github.com/peach-mitao/peach/releases"
-API_URL = "https://api.github.com/repos/peach-mitao/peach/releases?per_page=100"
+#: 这一份部署的发行仓库：检查更新、下载更新包与安装器取工具包都认它。
+RELEASE_REPOSITORY = "tam003/peach"
+RELEASES_URL = f"https://github.com/{RELEASE_REPOSITORY}/releases"
+API_URL = f"https://api.github.com/repos/{RELEASE_REPOSITORY}/releases?per_page=100"
 
 
 def snapshot() -> dict:
