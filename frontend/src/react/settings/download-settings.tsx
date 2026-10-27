@@ -20,7 +20,7 @@ import { Input } from '@/components/base/input/input';
 import { Select, SelectItem } from '@/components/base/select/select';
 
 import { apiGet, apiSend, errorMessage } from '../../api';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 import type {
   ConfigurationPanel, DownloadCheckReport, DownloadConfig, DownloadSaveResult, DownloadSettingsState, PikPakLoginResult,
 } from '../bundle';
@@ -269,7 +269,7 @@ function CheckReport({ report, detected, suggested, create, creating }: {
         {report.permissions.length ? (
           <Fact term={phrase('离线权限')}>
             <Chip variant="caption" color={report.missing.length ? 'yellow' : 'lime'}>
-              {report.missing.length ? phrase('缺少：{items}', { items: report.missing.join('、') }) : phrase('齐全')}
+              {report.missing.length ? phrase('缺少：{items}', { items: report.missing.join(listSeparator()) }) : phrase('齐全')}
             </Chip>
           </Fact>
         ) : null}

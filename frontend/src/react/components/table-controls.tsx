@@ -2,6 +2,7 @@ import { RiArrowDownLine, RiArrowUpLine } from '@remixicon/react';
 import type { SortingState } from '@tanstack/react-table';
 import { Button } from '@/components/base/buttons/button';
 import { Select, SelectItem } from '@/components/base/select/select';
+import { phrase } from '../../i18n/phrase';
 import { Pagination } from './table-pagination';
 
 export function DataTableSort({ label, options, sorting, onChange }: {
@@ -19,7 +20,7 @@ export function DataTableSort({ label, options, sorting, onChange }: {
     </Select>
     <Button variant="secondary" iconOnly disabled={!current}
       leadingIcon={current?.desc ? RiArrowDownLine : RiArrowUpLine}
-      aria-label={`${label}改为${current?.desc ? '升序' : '降序'}`}
+      aria-label={phrase(current?.desc ? '{label}改为升序' : '{label}改为降序', { label })}
       onClick={() => { if (current) onChange([{ ...current, desc: !current.desc }]); }} />
   </span>;
 }

@@ -12,7 +12,7 @@ import { coverUrl } from '@peach/card-art';
 import type { MediaPage } from '../catalog-grid/types';
 import type { DownloadPrefill } from './cloud-download-dialog';
 import { sameWorkCode } from './work-code';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 interface Candidate {
   id: string; uri: string; name: string; size: number; seeders: number; origins: string[];
@@ -64,7 +64,7 @@ export function ResourceSearch({ initialCode, reason, choose, onSearch, onWork }
       void apiGet<MediaPage>(`/api/items?jav=1&q=${encodeURIComponent(requested)}&limit=10`, controller.signal).then(page => {
         if (controller.signal.aborted) return;
         const item = (page.items || []).find(row => sameWorkCode(row.code, requested));
-        onWork(item ? { code: item.code, title: String(item.catalog_title || item.name || ''), performers: item.performers?.join('、'),
+        onWork(item ? { code: item.code, title: String(item.catalog_title || item.name || ''), performers: item.performers?.join(listSeparator()),
           release_date: String(item.release_date || ''), duration: item.duration, studio: item.studio,
           cover: item.has_cover ? coverUrl(item, true) : '', origin: `asset:${item.id}` } : null);
       }, () => { if (!controller.signal.aborted) onWork(null) });
@@ -100,7 +100,7 @@ export function ResourceSearch({ initialCode, reason, choose, onSearch, onWork }
           <p className="break-words text-body-2-medium text-text-primary">{item.name}</p>
           <Help>{[item.size > 0 ? `${(item.size / 1024 ** 3).toFixed(2)} GiB` : phrase('体积未取得'), item.seeders >= 0 ? phrase('{seeders} 个做种', { seeders: item.seeders }) : phrase('做种未取得'),
             item.resolution ? `${item.resolution}p` : '', item.codec, item.chinese ? phrase('中字') : '',
-            item.uncensored ? phrase('无码') : '', item.origins.join('、')].filter(Boolean).join(' · ')}</Help>
+            item.uncensored ? phrase('无码') : '', item.origins.join(listSeparator())].filter(Boolean).join(' · ')}</Help>
           <div><Button type="button" variant="secondary" onClick={() => {
             choose(item.uri, searched); setSelected(item.id);
           }}>{selected === item.id ? phrase('已填入磁力') : phrase('选用此资源')}</Button></div>

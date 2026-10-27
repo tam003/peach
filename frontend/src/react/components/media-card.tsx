@@ -25,6 +25,7 @@ import {
 } from '@peach/card-art';
 import { esc, fmtDur, fmtSize } from '@peach/legacy/core';
 import { spinnerHtml } from '@peach/legacy/ui';
+import { phrase } from '../../i18n/phrase';
 
 import type { MediaCardActions, MediaCardHelpers, MediaCardLayout, MediaItem } from '../catalog-grid/types';
 import { ArtSlot } from './art-slot';
@@ -276,7 +277,7 @@ function VideoCard({ item, variant, layout, selected, selectMode, seekSeconds, h
       data-pending-delete={item.disposal === 'trash' ? '' : undefined} data-selected={selected ? '' : undefined}
       onClick={click} onMouseDown={suppressShiftTextSelection}>
       <button type="button" data-media-open="" data-open=""
-        aria-label={`打开 ${shownName}${editions ? '版本' : parts ? '分卷' : '详情'}`} />
+        aria-label={phrase(editions ? '打开 {name}版本' : parts ? '打开 {name}分卷' : '打开 {name}详情', { name: shownName })} />
       {stacked ? <div data-media-stack="">{pic}</div> : pic}
       <div data-media-meta="">
         {avatar}

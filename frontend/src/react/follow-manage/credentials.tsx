@@ -24,7 +24,7 @@ import {
 } from './follow-manage';
 import { SourceIcon } from './source-view';
 import { RiKey2Line } from '@remixicon/react';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 const CLEAR_BODY = '将清除这个来源在本机和共享副本中的登录凭据。';
 const WORLD_READABLE = '文件权限过宽。在运行 Peach 的 POSIX 主机上收紧为 0600。';
@@ -99,7 +99,7 @@ function CredentialForm({ row, readOnly, toast }:
       </div>
       {problem ? <ErrorText>{phrase(problem)}</ErrorText> : null}
       {(row.shared_fields || []).length
-        ? <Help>{phrase('{shared_fields} 是从共享副本回填的，本机没有单独存。清除会把两边一起删。', { shared_fields: row.shared_fields!.join('、') })}</Help>
+        ? <Help>{phrase('{shared_fields} 是从共享副本回填的，本机没有单独存。清除会把两边一起删。', { shared_fields: row.shared_fields!.join(listSeparator()) })}</Help>
         : null}
       {row.path
         ? <Disclosure summary={phrase('凭据文件')}><PathLine path={row.path} className="font-mono text-caption-1-regular text-text-tertiary" onRevealed={toast} /></Disclosure>
@@ -118,7 +118,7 @@ function CredentialSection({ row, readOnly, toast }:
       <b className="min-w-0 text-body-medium wrap-anywhere text-text-primary">{row.provider_label}</b>
       <StateChip row={row} />
       {row.missing.length
-        ? <Chip variant="caption" color="rose">{phrase('缺 {missing}', { missing: row.missing.join('、') })}</Chip>
+        ? <Chip variant="caption" color="rose">{phrase('缺 {missing}', { missing: row.missing.join(listSeparator()) })}</Chip>
         : null}
     </span>
   );

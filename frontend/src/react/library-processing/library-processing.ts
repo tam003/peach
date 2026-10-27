@@ -6,7 +6,7 @@
 import { apiGet } from '../../api';
 import { elapsedText, progressText } from '../activity/tasks';
 import { queryClient } from '../query';
-import { phrase } from '../../i18n/phrase';
+import { listSeparator, phrase } from '../../i18n/phrase';
 
 export const LIBRARY_PROCESSING_URL = '/api/library-processing';
 
@@ -155,7 +155,7 @@ export function notesLine(notes: Record<string, number>): string {
   const parts = Object.entries(notes)
     .filter(([key, count]) => NOTE_LABELS[key] && count > 0)
     .map(([key, count]) => phrase('{label} {count} 部', { label: NOTE_LABELS[key], count: count.toLocaleString() }));
-  return parts.length ? phrase('外部来源{parts}，7 天内不再问。', { parts: parts.join('、') }) : '';
+  return parts.length ? phrase('外部来源{parts}，7 天内不再问。', { parts: parts.join(listSeparator()) }) : '';
 }
 
 /** 此刻在做什么：哪个文件、哪一步、等了多久。 */

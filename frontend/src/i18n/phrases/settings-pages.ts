@@ -546,8 +546,6 @@ export const phrases: PhrasePack = {
     vi: 'Đã đặt mật khẩu. Thiết bị mới phải đăng nhập. Chọn Giữ đăng nhập để giữ 30 ngày.',
   },
   '请输入当前访问密码': { en: 'Enter the current access password', vi: 'Nhập mật khẩu truy cập hiện tại' },
-  '访问密码需为 8–256 个字符': { en: 'Use 8–256 characters', vi: 'Mật khẩu cần từ 8 đến 256 ký tự' },
-  '两次输入的密码不一致': { en: 'The two passwords don’t match', vi: 'Hai lần nhập không khớp' },
   '已关闭访问密码': { en: 'Access password turned off', vi: 'Đã tắt mật khẩu truy cập' },
   '访问密码': { en: 'Access password', vi: 'Mật khẩu truy cập' },
   '未设置访问密码': { en: 'No access password', vi: 'Chưa đặt mật khẩu truy cập' },

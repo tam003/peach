@@ -6,6 +6,7 @@
 import { EvilBarChart } from '@/registry/charts/recharts-bar-chart';
 
 import { CategoryTick, categoryAxisWidth, CHART_CARD, ChartEmpty, ChartHead, tone } from './chart-card';
+import { getLocale } from '../../i18n/translate';
 import { ChartTip } from './chart-tip';
 
 /** 一根柱子：显示的名字和它的数。写成类型别名，EvilCharts 的 `data` 要能当 `Record` 收。 */
@@ -17,13 +18,16 @@ export const BAR_DOMAIN: [number, (max: number) => number] = [0, (max) => max * 
 /** 横条右侧给柱端那个数留的位置（像素）：最长那一条的数落在这一截里，不被图框切掉。 */
 export const BAR_LABEL_ROOM = 56;
 
-/** 柱端的数：十万以上读成「万」「亿」，柱端那一小截放得下；全数在悬停浮层里。 */
+/** 柱端的数：十万以上读成「万」「亿」，其它语言用本地的紧凑写法，柱端那一小截放得下；全数在悬停浮层里。 */
 export function shortCount(value: number): string {
   const abs = Math.abs(value);
   const scaled = (unit: number, name: string) => {
     const figure = value / unit;
     return `${figure.toLocaleString(undefined, { maximumFractionDigits: Math.abs(figure) < 100 ? 1 : 0 })}${name}`;
   };
+  if (abs >= 1e5 && getLocale() !== 'zh') {
+    return value.toLocaleString(getLocale(), { notation: 'compact', maximumFractionDigits: 1 });
+  }
   if (abs >= 1e8) return scaled(1e8, '亿');
   if (abs >= 1e5) return scaled(1e4, '万');
   return value.toLocaleString();
