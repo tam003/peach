@@ -5,8 +5,13 @@ based on Accept-Language header, cookie, or environment variable.
 """
 from __future__ import annotations
 
+from functools import lru_cache
+import json
 import os
+import re
 from typing import Any
+
+from .settings_file import PROJECT_ROOT
 
 TRANSLATIONS: dict[str, dict[str, str]] = {
     # General / HTTP errors
@@ -222,14 +227,86 @@ def request_language(request: Any = None) -> str:
     return "zh"
 
 
+#: The interface phrase table, exported from `frontend/src/i18n/phrases` by `frontend/scripts/export-phrases.mjs`.
+PHRASES_FILE = PROJECT_ROOT / "resources" / "locale" / "phrases.json"
+_HAN = re.compile(r"[一-鿿]")
+#: `ValueError: 馆藏未找到这个番号` keeps the exception name and translates the sentence after it.
+_EXCEPTION_PREFIX = re.compile(r"^([A-Za-z_][\w.]*(?:Error|Exception|Warning)): (.+)$", re.S)
+
+
+@lru_cache(maxsize=1)
+def _phrases() -> dict[str, dict[str, str]]:
+    try:
+        table = json.loads(PHRASES_FILE.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        table = {}
+    # Messages written for the server win over interface phrases with the same key.
+    return {**table, **TRANSLATIONS}
+
+
+@lru_cache(maxsize=1)
+def _patterns() -> tuple[tuple[re.Pattern[str], tuple[str, ...], dict[str, str]], ...]:
+    """Sentences with `{name}` slots also match the finished text: `3 项需要处理` meets `{n} 项需要处理`."""
+    found = []
+    for source, entry in _phrases().items():
+        if not re.search(r"\{\w+\}", source):
+            continue
+        names, body = [], []
+        for part in re.split(r"(\{\w+\})", source):
+            slot = re.fullmatch(r"\{(\w+)\}", part)
+            if slot:
+                names.append(slot.group(1))
+                body.append(r"(.+?)")
+            else:
+                body.append(re.escape(part))
+        found.append((re.compile("^" + "".join(body) + "$", re.S), tuple(names), entry))
+    # A longer literal part is the more specific sentence.
+    found.sort(key=lambda item: -len(item[0].pattern))
+    return tuple(found)
+
+
+def _pick(entry: dict[str, str], lang: str) -> str | None:
+    return (entry.get(lang) or entry.get("en")) if lang == "vi" else entry.get(lang)
+
+
+def _translate(message: str, lang: str) -> str | None:
+    """The sentence in `lang`, or None when nothing in the tables covers it."""
+    entry = _phrases().get(message)
+    if entry:
+        return _pick(entry, lang)
+    prefixed = _EXCEPTION_PREFIX.match(message)
+    if prefixed:
+        rest = _translate(prefixed.group(2).strip(), lang)
+        return f"{prefixed.group(1)}: {rest}" if rest is not None else None
+    parts = message.split("；")
+    if len(parts) > 1:
+        lines = [_translate(part.strip(), lang) if _HAN.search(part) else part.strip() for part in parts]
+        if all(line is not None for line in lines):
+            return "; ".join(lines)
+    for pattern, names, entry in _patterns():
+        matched = pattern.match(message)
+        if not matched:
+            continue
+        template = _pick(entry, lang)
+        if not template:
+            return None
+        values = {}
+        for name, value in zip(names, matched.groups()):
+            values[name] = (_translate(value, lang) or value) if _HAN.search(value) else value
+        return re.sub(r"\{(\w+)\}", lambda slot: values.get(slot.group(1), slot.group(0)), template)
+    return None
+
+
 def localize_string(message: str, lang: str) -> str:
     """Translate a message to the target language if known, otherwise return unchanged."""
-    if not message or lang == "zh":
+    if not message or lang == "zh" or not isinstance(message, str) or not _HAN.search(message):
         return message
-    entry = TRANSLATIONS.get(message)
-    if entry:
-        return entry.get(lang) or entry.get("en") or message
-    return message
+    stripped = message.strip()
+    translated = _translate(stripped, lang)
+    if translated is None:
+        return message
+    start = message.index(stripped)
+    return message[:start] + translated + message[start + len(stripped):]
 
 
 def localize_value(val: Any, lang: str) -> Any:
@@ -242,4 +319,26 @@ def localize_value(val: Any, lang: str) -> Any:
         return {k: localize_value(v, lang) for k, v in val.items()}
     if isinstance(val, list):
         return [localize_value(item, lang) for item in val]
+    return val
+
+
+#: Fields that carry sentences for people to read. Titles, names, tags, paths and other data keep
+#: their stored text, so nothing translated here can be written back into the ledger.
+MESSAGE_KEYS = frozenset({
+    "error", "message", "reason", "detail", "details", "note", "notes", "hint", "warning", "notice",
+    "label", "task_label", "progress_label", "status_label", "summary", "description", "explanation",
+})
+
+
+def localize_messages(val: Any, lang: str, *, inside: bool = False) -> Any:
+    """Translate only the sentence fields of an API payload (`MESSAGE_KEYS`), at any depth."""
+    if lang == "zh":
+        return val
+    if isinstance(val, str):
+        return localize_string(val, lang) if inside else val
+    if isinstance(val, dict):
+        return {key: localize_messages(item, lang, inside=inside or key in MESSAGE_KEYS)
+                for key, item in val.items()}
+    if isinstance(val, list):
+        return [localize_messages(item, lang, inside=inside) for item in val]
     return val
