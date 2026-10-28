@@ -21,6 +21,16 @@ Removed / Fixed / Security。
 
 ## [未发布]
 
+## [0.47.1] - 2026-10-28
+
+### 修复
+
+- **界面**：Every API response, including settings, media, subtitles and health checks, follows the interface language
+- **界面**：Messages built from several sentences no longer come back half in Chinese
+- **采集**：The source connection check reads fully in the interface language
+- **关注**：JavDB record type chips, edition labels and subscription counts are translated
+- **桌面**：Every release bundles the amane bridge
+
 ## [0.47.0] - 2026-10-27
 
 ### 新增
@@ -640,7 +650,8 @@ Removed / Fixed / Security。
 - **桌面**：独立包使用 UTF-8 启动日志。
 - **配置**：首次设置后的跳转目标取新鲜读到的 mDNS 名。
 
-[未发布]: https://github.com/tam003/peach/compare/v0.47.0...HEAD
+[未发布]: https://github.com/tam003/peach/compare/v0.47.1...HEAD
+[0.47.1]: https://github.com/tam003/peach/compare/v0.47.0...v0.47.1
 [0.47.0]: https://github.com/tam003/peach/compare/v0.46.1...v0.47.0
 [0.46.1]: https://github.com/peach-mitao/peach/compare/v0.45.0...v0.46.1
 [0.45.0]: https://github.com/peach-mitao/peach/compare/v0.43.0...v0.45.0
