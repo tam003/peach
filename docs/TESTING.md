@@ -66,6 +66,7 @@ Python 静态检查使用开发依赖 Ruff，随每个正式测试域扫描全�
 文档与文案检查包含 seiso 稳定规则和最终状态检查，随正式入口执行。分类、范围、独立检查与预览规则用法见 [文档与界面文案](WRITING.md#检查与复核)。seiso 由开发依赖与锁文件固定，运行 Peach 不需要它。
 
 不是每次都跑全量：本机按改动涉及的域选测，CI 按提交类型决定覆盖多宽。
+本分发（`tam003/peach`）不带 Test 与 Docker 工作流，下表的 PR、主线与手动 CI 只在上游仓库运行；这里的验证以本机正式入口为准，Release 不等 CI（ADR-0114）。
 调试先跑相关用例，冻结代码后运行一次 `auto`；不要手写逐域循环重复执行公共用例。测试失败先定向复现，修复后由 `auto` 判断哪些域需要补测。
 
 | 场景 | 验证 |
@@ -76,7 +77,7 @@ Python 静态检查使用开发依赖 Ruff，随每个正式测试域扫描全�
 | 实际依赖、迁移、共享测试设施、未知影响面 | Windows 与 macOS 的 Python 3.14 全量 |
 | 手动 CI | 完整系统矩阵 |
 | wheel | Windows 与 macOS 各一次 Python 3.14 独立最小安装 |
-| Release | 复用同 SHA 主线成功 CI；Windows 独立 EXE 与 Apple Silicon、Intel DMG 分别构建和验收 |
+| Release | 上游复用同 SHA 主线成功 CI，本分发只核对标签提交在 master 上；Windows 独立 EXE 与 Apple Silicon、Intel DMG 分别构建和验收 |
 
 Python 全量按文件稳定分片，Windows 四片、macOS 两片，每片使用独立 runner；汇总任务要求所有分片和计划选择的任务成功。分片子进程不签发记录。
 

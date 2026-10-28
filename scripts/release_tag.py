@@ -4,10 +4,11 @@
 
     python scripts/release_tag.py --bump auto --apply   # 推版本号、起草那一节
     #  → 人看一眼 `CHANGELOG.md` 新那一节的措辞，这是使用者唯一读到的说明
-    python scripts/release_tag.py --ship --apply        # 提交、推送、等 CI、打标签
+    python scripts/release_tag.py --ship --apply        # 提交、推送、打标签
 
-确认点只有一个，剩下的判据都由脚本挡：`--ship` 拒绝夹带别的改动，拒绝在 Test 转绿前
-打标签，中途停下再跑一次就接着走。人要决定的只是措辞对不对，不是流程走到哪一步了。
+确认点只有一个，剩下的判据都由脚本挡：`--ship` 拒绝夹带别的改动，标签只打在已推到远端
+master 的提交上，中途停下再跑一次就接着走。人要决定的只是措辞对不对，不是流程走到哪一步了。
+这个分发不跑 Test 工作流，发布不等 CI（ADR-0114）。
 
 版本号只在这里动：每个 `X.Y.Z` 都对应一份可下载的制品，日常集成的提交由 commit
 标识（ADR-0012）。
@@ -20,7 +21,6 @@ from pathlib import Path
 import re
 import subprocess
 import sys
-import time
 
 if not __package__:
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -39,10 +39,6 @@ MASTER_WRITER = "peach.masterWriter"
 #: 定版只该改这两份：版本号一行，变更日志一节。`--ship` 拒绝夹带别的文件。
 RELEASE_FILES = (version_bump.VERSION_FILE, changelog.CHANGELOG)
 
-#: `--ship` 等 Test 工作流的默认秒数上限，以及两次查询之间的间隔。
-TEST_TIMEOUT = 1800.0
-TEST_POLL = 30.0
-
 
 def command(*args: str, strip: bool = True) -> str:
     """`strip=False` 给首列本身就是空格的输出用：`git status --porcelain` 的第一行是
@@ -56,55 +52,12 @@ def api(repo: str, endpoint: str):
     return json.loads(command("gh", "api", f"repos/{repo}/{endpoint}"))
 
 
-def latest_run(runs: list[dict], sha: str) -> dict | None:
-    """这个提交在 master 上最新的一次 Test；没有记录时是 None。"""
-    matching = [run for run in runs if run.get("head_sha") == sha
-                and run.get("head_branch") == "master" and run.get("event") == "push"]
-    if not matching:
-        return None
-    return max(matching, key=lambda run: (run["id"], run.get("run_attempt", 1)))
-
-
-def require_success(runs: list[dict], sha: str) -> dict:
-    latest = latest_run(runs, sha)
-    if latest is None:
-        raise ValueError("此提交没有 master 的 Test 工作流记录")
-    if latest.get("status") != "completed" or latest.get("conclusion") != "success":
-        raise ValueError(f"此提交最新 Test 尚未通过：{latest.get('html_url', '')}")
-    return latest
-
-
-def test_runs(repo: str, sha: str) -> list[dict]:
-    endpoint = f"actions/workflows/test.yml/runs?head_sha={sha}&event=push&per_page=100"
-    return api(repo, endpoint)["workflow_runs"]
-
-
-def await_test(repo: str, sha: str, *, timeout: float = TEST_TIMEOUT, poll: float = TEST_POLL,
-               sleep=time.sleep, clock=time.monotonic) -> dict:
-    """等这个提交的 Test 出结果。
-
-    跑完了但不是绿的立刻抛，不耗到超时——红的等多久都不会变绿。超时也抛，那时版本
-    提交已经在 master 上，等 CI 自己跑完再跑一次 `--ship --apply` 就接着走。
-    """
-    deadline = clock() + timeout
-    while True:
-        runs = test_runs(repo, sha)
-        latest = latest_run(runs, sha)
-        if latest is not None and latest.get("status") == "completed":
-            return require_success(runs, sha)
-        if clock() >= deadline:
-            raise ValueError(
-                f"等了 {timeout / 60:.0f} 分钟，{sha[:8]} 的 Test 还没有结果；"
-                "版本提交已在 master 上，等它跑完再跑一次 --ship --apply")
-        sleep(poll)
-
-
 def verify(repo: str, sha: str) -> dict:
+    """发布提交必须已在远端 master 历史上；这个分发不跑 Test 工作流，不等 CI（ADR-0114）。"""
     comparison = api(repo, f"compare/master...{sha}")
     if comparison["status"] not in {"identical", "behind"}:
         raise ValueError("发布提交不属于远端 master 历史")
-    checked = require_success(test_runs(repo, sha), sha)
-    return {"sha": sha, "test": checked["html_url"]}
+    return {"sha": sha}
 
 
 def _require_clean_master() -> None:
@@ -182,11 +135,11 @@ def _staged_release(repo: str) -> tuple[str, str, list[str]]:
     return version, tag, pending
 
 
-def ship(repo: str, *, apply: bool, timeout: float = TEST_TIMEOUT) -> dict:
-    """把定好版的工作区一路送到标签：提交、推送、等 Test 转绿、打标签。
+def ship(repo: str, *, apply: bool) -> dict:
+    """把定好版的工作区一路送到标签：提交、推送、打标签。
 
-    每一步先看当下的状态再决定做不做，所以中途停下（网络断、CI 还在跑、超时）再跑一次
-    就接着走：已提交的不重提，已推送的不重推，Test 没绿绝不打标签。
+    每一步先看当下的状态再决定做不做，所以中途停下（比如网络断）再跑一次就接着走：
+    已提交的不重提，已推送的不重推。
     """
     version, tag, pending = _staged_release(repo)
     head = command("git", "rev-parse", "HEAD")
@@ -202,11 +155,9 @@ def ship(repo: str, *, apply: bool, timeout: float = TEST_TIMEOUT) -> dict:
     sha = command("git", "rev-parse", "HEAD")
     if api(repo, "git/ref/heads/master")["object"]["sha"] != sha:
         command("git", "push", f"https://github.com/{repo}.git", "refs/heads/master")
-    checked = await_test(repo, sha, timeout=timeout)
     command("git", "tag", "-a", tag, sha, "-m", f"Peach {tag} Windows 测试版")
     command("git", "push", f"https://github.com/{repo}.git", f"refs/tags/{tag}")
-    return {**result, "sha": sha, "test": checked["html_url"],
-            "release": f"https://github.com/{repo}/releases/tag/{tag}"}
+    return {**result, "sha": sha, "release": f"https://github.com/{repo}/releases/tag/{tag}"}
 
 
 def plan(repo: str) -> dict:
@@ -256,15 +207,13 @@ def main(argv=None) -> int:
     parser.add_argument("--apply", action="store_true",
                         help="真的动手：带 --bump 时写版本号与变更日志，带 --ship 时走完发布，"
                              "都不带时创建并推送标签")
-    parser.add_argument("--timeout", type=float, default=TEST_TIMEOUT,
-                        help=f"--ship 等 Test 工作流的秒数上限，默认 {TEST_TIMEOUT:.0f}")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--bump", choices=("auto", "patch", "minor", "major"),
                       help="推进 __version__ 并起草变更日志，为下一次发布做准备")
     mode.add_argument("--ship", action="store_true",
-                      help="把定好版的工作区送到标签：提交、推送、等 Test 转绿、打标签")
-    mode.add_argument("--verify-sha", help="仅核对指定提交的主线归属与 CI，供 Release 工作流使用")
-    mode.add_argument("--release-sha", help="为完整 SHA 指定的已通过 CI 的主线提交补打标签")
+                      help="把定好版的工作区送到标签：提交、推送、打标签")
+    mode.add_argument("--verify-sha", help="仅核对指定提交的主线归属，供 Release 工作流使用")
+    mode.add_argument("--release-sha", help="为完整 SHA 指定的主线提交补打标签")
     args = parser.parse_args(argv)
     try:
         if args.verify_sha:
@@ -275,13 +224,13 @@ def main(argv=None) -> int:
                              ensure_ascii=False, indent=2))
             return 0
         if args.ship:
-            print(json.dumps(ship(args.repo, apply=args.apply, timeout=args.timeout),
+            print(json.dumps(ship(args.repo, apply=args.apply),
                              ensure_ascii=False, indent=2))
             return 0
         result = (plan_commit(args.repo, args.release_sha)
                   if args.release_sha is not None else plan(args.repo))
         if args.apply:
-            # 固定提交在动手前复核归属、CI、版本说明与标签占用。
+            # 固定提交在动手前复核归属、版本说明与标签占用。
             if args.release_sha is not None:
                 result = plan_commit(args.repo, args.release_sha)
             elif api(args.repo, "git/ref/heads/master")["object"]["sha"] != result["sha"]:

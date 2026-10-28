@@ -38,7 +38,7 @@ description: 在用户说并行、工作树、暂存、提交、ready、集成�
    版本号不在这里动，`integrate` 只报当前值：推进与打标签都走 `scripts/release_tag.py`，
    它是唯一入口。`--bump auto --apply` 推版本、定版变更日志并把那一节带在输出里给人确认，
    落盘前自动检查上游、依赖与非 manual 参考来源；审阅 `build/release-review.json`，采用范围见 `docs/TESTING.md`。
-   确认后 `--ship --apply` 一次做完提交、推送、等 Test 转绿、打标签（ADR-0012 修订）。
+   确认后 `--ship --apply` 一次做完提交、推送、打标签（ADR-0012 修订，本分发不等 Test，见 ADR-0114）。
    人只判断措辞，不记流程；停在半路就再跑一次同一条命令。
    「该发一版了」由 `release_due.py` 的 Stop 钩子一家说，收尾那段不要跟着说第二遍：
    `integrate` 输出里的 `release`（`changelog.due()`）与它同一个判据，而钩子按 master 的 sha
