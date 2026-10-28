@@ -37442,13 +37442,13 @@ var $n = /* #__PURE__ */ Object.assign({
 }), er = /* @__PURE__ */ new Map();
 for (let e of Object.values($n)) for (let [t, n] of Object.entries(e.phrases ?? {})) er.set(t, n);
 function V(e, t) {
-	let n = er.get(e), r = Jn(), i = r === "zh" || !n ? e : r === "vi" && n.vi || n.en;
-	return t ? i.replace(/\{(\w+)\}/g, (e, n) => {
-		let i = t[n];
+	let n = Jn(), r = e.trim(), i = er.get(e) ?? (r === e ? void 0 : er.get(r)), a = i ? n === "vi" && i.vi || i.en : void 0, o = n === "zh" || !a ? e : er.has(e) ? a : e.slice(0, e.indexOf(r)) + a + e.slice(e.indexOf(r) + r.length);
+	return t ? o.replace(/\{(\w+)\}/g, (e, r) => {
+		let i = t[r];
 		if (i === void 0) return e;
-		let a = typeof i == "string" && r !== "zh" ? er.get(i) : void 0;
-		return a ? r === "vi" && a.vi || a.en : String(i);
-	}) : i;
+		let a = typeof i == "string" && n !== "zh" ? er.get(i) : void 0;
+		return a ? n === "vi" && a.vi || a.en : String(i);
+	}) : o;
 }
 var tr = null;
 function nr() {

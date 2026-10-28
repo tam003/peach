@@ -12,9 +12,13 @@ for (const mod of Object.values(packs)) {
 }
 
 export function phrase(source: string, vars?: Record<string, string | number>): string {
-  const line = table.get(source);
   const locale = getLocale();
-  const template = locale === 'zh' || !line ? source : locale === 'vi' ? line.vi || line.en : line.en;
+  // A key written with the spacing it is glued on by (`' · {new} 条未看'`) shares the line of the bare sentence.
+  const core = source.trim();
+  const line = table.get(source) ?? (core !== source ? table.get(core) : undefined);
+  const said = !line ? undefined : locale === 'vi' ? line.vi || line.en : line.en;
+  const template = locale === 'zh' || !said ? source
+    : table.has(source) ? said : source.slice(0, source.indexOf(core)) + said + source.slice(source.indexOf(core) + core.length);
   if (!vars) return template;
   return template.replace(/\{(\w+)\}/g, (match, name: string) => {
     const value = vars[name];

@@ -24,6 +24,13 @@ describe('screen translation', () => {
     expect(translateScreenText('厂牌分目录')).toBeNull();
   });
 
+  it('keeps the spacing a phrase is glued on by and translates the sentence inside it', () => {
+    applyLocale('vi');
+    expect(phrase(' · {new} 条未看', { new: 152 })).toBe(' · 152 chưa xem');
+    applyLocale('zh');
+    expect(phrase(' · {new} 条未看', { new: 152 })).toBe(' · 152 条未看');
+  });
+
   it('rewrites text nodes and attributes added to the page, and restores Chinese on the way back', async () => {
     applyLocale('vi');
     const button = document.createElement('button');
