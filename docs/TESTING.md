@@ -4,7 +4,7 @@
 
 Windows 发布制品的覆盖升级在 Actions 的「Windows overlay upgrade acceptance」手动执行：填写已发布的起始版本、目标版本及目标制品的完整构建提交。工作流分别验证 ZIP 原位解压和安装包原位安装，每种路径覆盖默认数据目录与 `PEACH_DATA_ROOT` 指定目录，并上传日志。它使用已发布制品，不重新构建或发布；在线更新和失败回滚仍由 `scripts/smoke_online_update.py` 单独验证。
 
-Release 工作流还在干净的 Windows runner 上运行 `smoke_update_tasks.py --apply`，使用临时账本验证安装接受正在运行的采集任务、暂停并保留任务标识、覆盖后自动续跑，以及配置保留。脚本默认只预演；本机可以验证 ZIP 与安装助手协议，安装包实装限干净的 Actions runner。
+上游的 Release 工作流还在干净的 Windows runner 上运行 `smoke_update_tasks.py --apply`（本分发的 Release 不跑制品验收，见 ADR-0114），使用临时账本验证安装接受正在运行的采集任务、暂停并保留任务标识、覆盖后自动续跑，以及配置保留。脚本默认只预演；本机可以验证 ZIP 与安装助手协议，安装包实装限干净的 Actions runner。
 
 ## 环境与锁文件
 
@@ -77,7 +77,7 @@ Python 静态检查使用开发依赖 Ruff，随每个正式测试域扫描全�
 | 实际依赖、迁移、共享测试设施、未知影响面 | Windows 与 macOS 的 Python 3.14 全量 |
 | 手动 CI | 完整系统矩阵 |
 | wheel | Windows 与 macOS 各一次 Python 3.14 独立最小安装 |
-| Release | 上游复用同 SHA 主线成功 CI，本分发只核对标签提交在 master 上；Windows 独立 EXE 与 Apple Silicon、Intel DMG 分别构建和验收 |
+| Release | 上游复用同 SHA 主线成功 CI 并验收制品；本分发只核对标签提交在 master 上，构建 Windows 独立 EXE 与 Apple Silicon、Intel DMG 后直接发布 |
 
 Python 全量按文件稳定分片，Windows 四片、macOS 两片，每片使用独立 runner；汇总任务要求所有分片和计划选择的任务成功。分片子进程不签发记录。
 
@@ -89,7 +89,7 @@ PR 计划按改动选择前端、vendor、wheel 与浏览器任务，文档 PR �
 
 Python 分片上传完整测试输出；浏览器分片上传 TAP、服务日志及已脱敏网络日志，保留 14 天。npm 审计遇到 high 或 critical 漏洞直接失败；只有临时网络错误最多请求三次，在前两次失败后分别等待 15 与 30 秒，未知响应不当成通过。
 
-Release 在媒体工具编译前核对同 SHA 主线 CI，缓存键绑定媒体工具源码清单与构建脚本，缓存内容同时含二进制和对应源码包；制品与独立开箱验收仍是发布前置。Docker 只在镜像相关主线改动、匹配 PR、版本标签或手动请求时运行，验收后推送同一个本地镜像。版本发布与覆盖升级验收不取消进行中的同目标运行；覆盖升级需明确选择目标版本及完整构建提交。
+Release 在媒体工具编译前核对同 SHA 主线 CI，缓存键绑定媒体工具源码清单与构建脚本，缓存内容同时含二进制和对应源码包；上游以制品与独立开箱验收为发布前置，本分发不跑这些验收。Docker 只在镜像相关主线改动、匹配 PR、版本标签或手动请求时运行，验收后推送同一个本地镜像。版本发布与覆盖升级验收不取消进行中的同目标运行；覆盖升级需明确选择目标版本及完整构建提交。
 
 浏览器用例覆盖 `frontend/e2e` 下全部 `*.test.ts`，包括子目录。`setup.test.ts` 由 `SetupE2ETests` 在首次设置服务上执行，其余文件在已配置的演示库服务上按文件并发、文件内串行。并发数取 `PEACH_E2E_CONCURRENCY`；未设时本机取逻辑核数的四分之一、上限 4，CI（`GITHUB_ACTIONS=true`）为 1。并发批最多 12 个文件，串行批每批一个文件，各自取得完整 TAP 结果。测量动画、密度切换与等待态替换的文件（`tests/test_web_e2e.py` 的 `TIMING_SENSITIVE_SUITES`）在并发批之后串行；并发为 1 时按设计决定、交互回归和路由冒烟排序。每批限时 600 秒，任一批失败，整轮验证失败。并发的文件共用一个服务和演示库：用例触发的写请求只能落在别的用例不断言的状态上，否则用 `page.route` 拦下或归进串行批。控制台逐批输出文件名；完整 TAP 日志与服务访问日志 `serve.log` 保存在 `build/agent-verification/browser/`，CI 在测试结束后上传其中的 TAP 日志。
 
@@ -187,7 +187,7 @@ macOS/Linux 的相同入口：
 
 浏览器沿用 Playwright 的默认进程模型与静音设置，不限制渲染进程数，也不把 GPU 或音频服务强制并入浏览器进程。原生浏览器启动限时 60 秒，页面主体等待限时 15 秒，每批限时 600 秒；进程启动与页面行为分别验收。需要任务状态桩的页面通过 `visit` 的准备回调在首次导航前安装响应，等对应的 React 主体出现后再检查任务状态；进行中的任务不作为主体等待态。页面主体等待失败时保留 URL、关闭状态、已收集的运行期问题与无障碍树，夹具关闭本次浏览器上下文。
 
-Windows Release 工作流使用 `uv sync --locked --all-extras` 准备完整依赖。安装目录回归与 PyInstaller 构建共用这份 venv，测试入口按完整锁文件核验依赖。
+Windows Release 工作流使用 `uv sync --locked --all-extras` 准备完整依赖。PyInstaller 构建使用这份 venv；本分发的 Release 不在构建前跑安装目录回归。
 
 macOS Release 使用 `macos-15`（Apple Silicon）和 `macos-15-intel`（Intel）分别构建，解释器、依赖与目标架构必须一致。独立验收任务只下载候选制品与冒烟脚本，挂载只读 DMG，核对 Applications 链接、许可证、签名与原生架构，再执行 `scripts/smoke_macos.py`。该脚本将应用移到源码树外，在移除开发工具的 PATH 下验证首次设置、迁移、单机账本、登录、前端资源与配置保存，数据全部使用临时目录。所有平台验收成功才发布；普通 push 不构建安装包，手动运行 Release 不上传公开资产。
 
