@@ -451,6 +451,43 @@ def q_entity_shapes(contract, args) -> dict:
                 names.append(alias["alias"])
     return {"ok": True, "home": home, "entities": list(entities.values())}
 
+
+#: 只由拉丁字母、空格与 `.'-` 组成的写法才算罗马字名；假名、汉字别名不在这里。
+_LATIN_NAME = re.compile(r"[A-Za-z][A-Za-z .'\-]*")
+
+
+def _latin_display(name: str) -> str:
+    """来源给的罗马字原样用；整串小写的（资料站常这么写）按词首大写。"""
+    name = " ".join(str(name or "").split())
+    return name.title() if name.islower() else name
+
+
+def q_entity_latin_names(contract, args) -> dict:
+    """出演者与厂牌的罗马字显示名：`{规范名: 罗马字}`，只收规范名本身不是罗马字的实体。
+
+    界面语言不是中文时，页面把整段等于规范名的文字换成这个写法；账本、链接与筛选仍用规范名。
+    取值先看来源别名（r18dev、1pondo 给的罗马字，名在前、姓在后），再看资料站的 `romaji`；
+    同一实体有几个罗马字别名时，取置信度最高、最短的那一个。
+    """
+    def build() -> dict:
+        found: dict[str, str] = {}
+        with contract.database.read_connection() as connection:
+            rows = connection.execute(
+                "SELECT e.canonical_name, a.alias AS latin FROM entity e "
+                "JOIN entity_alias a ON a.entity_id = e.id WHERE e.kind IN ('performer','studio') "
+                "ORDER BY e.id, a.confidence DESC, length(a.alias), a.alias").fetchall()
+            rows += connection.execute(
+                "SELECT e.canonical_name, p.romaji AS latin FROM entity e "
+                "JOIN performer_profile p ON p.entity_id = e.id "
+                "WHERE e.kind = 'performer' AND p.romaji IS NOT NULL").fetchall()
+        for row in rows:
+            name, latin = row["canonical_name"], _latin_display(row["latin"])
+            if name in found or _LATIN_NAME.fullmatch(name) or not _LATIN_NAME.fullmatch(latin):
+                continue
+            found[name] = latin
+        return {"ok": True, "names": found}
+    return contract.cached_until_changed("entity-latin-names", build)
+
 # ────────────────────────────── 照片 ──────────────────────────────
 # 图集就是目录：账本没有图集实体，一个目录下的图片本来就是一份图集，
 # `<作品目录>\P\001.jpg` 这种约定在 A:/B: 上到处都是。图集的 id 用目录里最小的

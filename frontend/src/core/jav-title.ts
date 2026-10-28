@@ -1,8 +1,10 @@
 /* JAV 标题：从 item 计算番号、版本徽章与标题。
- * 纯字符串逻辑，只依赖 core 的 esc，不碰 DOM、不读 state。
+ * 纯字符串逻辑，只依赖 core 的 esc 与当前界面语言，不碰 DOM。
  * Application 与 React 页面直接引用本模块，标题规则只有一份。
- * 后缀只对 is_jav 剥离；官方标题优先取含日文的一条，再按字段顺序回落。 */
+ * 后缀只对 is_jav 剥离；界面语言不是中文时先用来源英文标题（ADR-0115），
+ * 否则官方标题优先取含日文的一条，再按字段顺序回落。 */
 
+import { getLocale } from '../i18n/translate';
 import { esc } from './index';
 
 /** 算标题要读的那几个字段。 */
@@ -13,6 +15,8 @@ export interface JavTitleSource {
   is_jav?: boolean | number | null;
   catalog_title?: string | null;
   original_title?: string | null;
+  /** 来源快照里的英文标题，只给显示用。 */
+  title_en?: string | null;
   display_title?: string | null;
   edition_badges?: string[] | null;
   width?: number | null;
@@ -30,6 +34,8 @@ export const javFileDisplayName=(it:Item,value=it?.name)=>{
 export const hasJapaneseText=(value:unknown)=>/[぀-ヿ㐀-鿿]/.test(String(value||''));
 
 export const javPreferredTitle=(it:Item)=>{
+  const english=getLocale()==='zh'?'':String(it?.title_en||'').trim();
+  if(english)return english;
   const titles=[it?.catalog_title,it?.original_title].map(value=>String(value||'').trim()).filter(Boolean);
   return titles.find(hasJapaneseText)||titles[0]||'';
 };

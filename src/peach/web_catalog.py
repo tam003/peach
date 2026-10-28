@@ -12,7 +12,7 @@ from __future__ import annotations
 import hashlib
 import random
 import time
-from . import entities, media_libraries, sample_images, settings_file
+from . import entities, media_libraries, sample_images, settings_file, source_titles
 
 from .catalog_rules import (
     LENGTH_TAGS,
@@ -48,11 +48,15 @@ CARD_PERFORMERS = 6
 
 
 def attach_artwork_fields(contract: WebContract, item: dict) -> None:
-    """列表、详情与推荐共用本地官方封面和版本投影。"""
+    """列表、详情与推荐共用本地官方封面、版本投影和英文显示标题（ADR-0115）。"""
     from .strm import is_pointer
     if is_pointer(item.get('path') or item.get('name') or ''):
         item['size'] = None
         item['is_strm'] = True
+    if item.get('code'):
+        title = source_titles.titles_for(contract.follow_sources_root / 'library-metadata').get(item['code'])
+        if title:
+            item['title_en'] = title
     key = artwork_key(item['id'], item.get('code'))
     item['has_cover'] = contract.has_cover(key)
     item['cover_key'] = key if item['has_cover'] else ''

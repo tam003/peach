@@ -3,7 +3,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { applyLocale } from '../../src/appearance/locale';
-import { listSeparator, phrase, translateScreenText } from '../../src/i18n/phrase';
+import { listSeparator, phrase, registerScreenNames, translateScreenText } from '../../src/i18n/phrase';
 
 const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -50,6 +50,31 @@ describe('screen translation', () => {
     applyLocale('zh');
     expect(button.title).toBe('厂牌分目录');
     expect(button.firstChild!.nodeValue).toBe('番号 标题');
+  });
+
+  it('shows a catalog tag chip in the chosen language and keeps the tag name it filters by', async () => {
+    applyLocale('en');
+    const chip = document.createElement('span');
+    chip.dataset.k = '中出内射';
+    chip.title = '中出内射';
+    chip.textContent = '中出内射';
+    document.body.append(chip);
+    await settle();
+    expect(chip.textContent).toBe('Creampie');
+    expect(chip.title).toBe('Creampie');
+    expect(chip.dataset.k).toBe('中出内射');
+
+    applyLocale('vi');
+    expect(translateScreenText('JK制服')).toBe('Đồng phục nữ sinh (JK)');
+  });
+
+  it('shows a performer name in romaji once the server gave one, and leaves other names alone', () => {
+    registerScreenNames({ 三上悠亜: 'Yua Mikami' });
+    applyLocale('en');
+    expect(translateScreenText('三上悠亜')).toBe('Yua Mikami');
+    expect(translateScreenText('河北彩花')).toBeNull();
+    applyLocale('zh');
+    expect(translateScreenText('三上悠亜')).toBeNull();
   });
 
   it('fills a slot holding a known label in the same language and joins lists with the local separator', () => {

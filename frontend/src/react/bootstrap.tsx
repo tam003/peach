@@ -1,7 +1,9 @@
 import './styles.css';
 import { installErrorReporting } from '../error-reporting';
+import { installScreenNames } from '../i18n/names';
 import { mountApplication } from './application';
 installErrorReporting();
+installScreenNames();
 const host = document.getElementById('appRoot');
 if (!host) throw new Error('主界面宿主缺失');
 mountApplication(host);
