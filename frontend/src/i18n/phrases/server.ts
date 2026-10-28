@@ -2286,4 +2286,9 @@ export const phrases: PhrasePack = {
   '换二进制失败，且旧托盘未能重开：': { en: 'Swapping the binary failed and the old tray could not reopen:', vi: 'Thay bản nhị phân thất bại và không mở lại được khay cũ:' },
   '「{a}」有 {b} 张人物页都列着': { en: '"{a}": {b} person pages list it', vi: '"{a}": có {b} trang nhân vật cùng ghi' },
   '「{a}」没有人物页列着': { en: '"{a}": no person page lists it', vi: '"{a}": không có trang nhân vật nào ghi' },
+  '可选分组的 `]` 没有配对的 `[`': { en: 'The optional group\'s `]` has no matching `[`', vi: 'Dấu `]` của nhóm tùy chọn không có `[` đi kèm' },
+  '可选分组的 `[` 没有配对的 `]`': { en: 'The optional group\'s `[` has no matching `]`', vi: 'Dấu `[` của nhóm tùy chọn không có `]` đi kèm' },
+  '诊断报告': { en: 'Diagnostic report', vi: 'Báo cáo chẩn đoán' },
+  '错误日志': { en: 'Error log', vi: 'Nhật ký lỗi' },
+  'Peach {a}（{b}）\n未配置更新源；当前为本地开发版。': { en: 'Peach {a} ({b})\nNo update source is configured; this is a local development build.', vi: 'Peach {a} ({b})\nChưa cấu hình nguồn cập nhật; đây là bản phát triển cục bộ.' },
 };

@@ -195,7 +195,7 @@ def w_scraping_check(contract, body):
     if source not in SOURCES:
         raise ValueError("未知采集来源")
     if not SOURCES[source]["login"]:
-        return {"ok": True, "results": [{"label": "来源页面", "ok": False, "kind": "unavailable",
+        return {"ok": True, "results": [{"label": "来源页面", "target": "page", "ok": False, "kind": "unavailable",
                 "reason": "needs_code", "message": "片商官网按番号选择，请输入馆藏番号检查高清封面。"}],
                 "session_verified": False}
     targets = [("来源页面", SOURCES[source]["login"])]
@@ -205,7 +205,8 @@ def w_scraping_check(contract, body):
     transport = SourceTransport(contract.follow_secrets_root)
     try:
         for label, url in targets:
-            result = {"label": label, "ok": False}
+            # `label` 按请求语言输出，页面靠 `target` 分辨这一跳查的是来源页面还是图片主机。
+            result = {"label": label, "target": "page" if label == "来源页面" else "image", "ok": False}
             started = time.monotonic()
             try:
                 response = transport(HttpRequest("GET", url, {"Range": "bytes=0-65535"}), 10, 65536)

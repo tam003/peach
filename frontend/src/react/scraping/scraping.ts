@@ -6,7 +6,7 @@
 import { apiGet } from '../../api';
 import { queryClient } from '../query';
 import { CUSTOM_SOURCES_KEY, fetchCustomSources } from './custom-source-data';
-import { phrase } from '../../i18n/phrase';
+import { labelSeparator, phrase, sentenceSeparator } from '../../i18n/phrase';
 
 export const SCRAPING_URL = '/api/scraping';
 export const SCRAPING_SETTINGS_URL = '/api/scraping/settings';
@@ -43,6 +43,8 @@ export interface ScrapingData {
 /** 一次连接检查的一项结果：来源页面，以及部分来源另有的高清图片地址。 */
 export interface Check {
   label: string;
+  /** 这一跳查的是来源页面还是高清图片主机；`label` 随请求语言变化，不能拿来分辨。 */
+  target?: 'page' | 'image';
   ok: boolean;
   status?: number;
   message?: string;
@@ -101,11 +103,11 @@ export async function prefetchScraping(signal: AbortSignal): Promise<void> {
 
 /** 一条检查结果说成一句话：谁、通不通、图有多大、服务端补充了什么。
  *
- * 结果里的 `label` 是这一跳查的是什么；只有一跳时它就是来源页面本身，句子里不必再说一遍。 */
+ * 结果里的 `target` 是这一跳查的是什么；查来源页面时它就是来源本身，句子里不必再说一遍。 */
 export function checkText(check: Check, sourceLabel: string): string {
-  return `${sourceLabel}${check.label === '来源页面' ? '' : phrase(' 高清图片')}`
-    + `：${check.ok ? phrase('可连接') : phrase('不能连接')}`
+  return `${sourceLabel}${check.target === 'image' ? ` ${phrase('高清图片')}` : ''}`
+    + `${labelSeparator()}${check.ok ? phrase('可连接') : phrase('不能连接')}`
     + (check.width ? ` · ${check.width} × ${check.height}` : '')
     + (check.elapsed_s !== undefined ? phrase(' · {elapsed_s} 秒', { elapsed_s: check.elapsed_s.toFixed(2) }) : '')
-    + (check.message ? `。${check.message}` : '');
+    + (check.message ? `${sentenceSeparator()}${check.message}` : '');
 }

@@ -269,32 +269,91 @@ def _pick(entry: dict[str, str], lang: str) -> str | None:
     return (entry.get(lang) or entry.get("en")) if lang == "vi" else entry.get(lang)
 
 
-def _translate(message: str, lang: str) -> str | None:
-    """The sentence in `lang`, or None when nothing in the tables covers it."""
+#: Sentence-final marks a composed message adds after a table phrase: `f"{reason}。"`.
+_FINAL_MARKS = {"。": ".", "！": "!", "？": "?"}
+#: How composed messages join their sentences, and what the join reads as outside Chinese.
+_JOINS = (("；", "; "), ("\n\n", "\n\n"), ("\n", "\n"), ("。", ". "), ("：", ": "), ("，", ", "))
+
+#: A translation and how many Chinese fragments in it found no line in the tables.
+_Attempt = tuple[str, int]
+
+
+def _part(text: str, lang: str) -> _Attempt:
+    """One piece of a composed message: translated when covered, else kept and counted as missed."""
+    if not _HAN.search(text):
+        return text, 0
+    found = _attempt(text, lang)
+    return found if found is not None else (text, 1)
+
+
+def _fill(matched: re.Match[str], names: tuple[str, ...], template: str, lang: str) -> _Attempt:
+    values, missed = {}, 0
+    for name, value in zip(names, matched.groups()):
+        values[name], miss = _part(value.strip(), lang) if _HAN.search(value) else (value, 0)
+        missed += miss
+    text = re.sub(r"\{(\w+)\}", lambda slot: values.get(slot.group(1), slot.group(0)), template)
+    return text, missed
+
+
+def _joined(message: str, separator: str, glue: str, lang: str) -> _Attempt | None:
+    """Sentences joined by `separator`, translated one by one; None when no part is covered."""
+    body = message.rstrip(separator) if separator == "。" else message
+    pieces = [piece.strip() for piece in body.split(separator, 1 if separator == "：" else -1)]
+    if len(pieces) < 2 or not all(pieces):
+        return None
+    parts = [_part(piece, lang) for piece in pieces]
+    missed = sum(miss for _, miss in parts)
+    if missed == sum(bool(_HAN.search(piece)) for piece in pieces):
+        return None
+    text = glue.join(line for line, _ in parts)
+    return (text + "." if body != message else text), missed
+
+
+@lru_cache(maxsize=8192)
+def _attempt(message: str, lang: str) -> _Attempt | None:
+    """The best translation the tables give, with its untranslated fragment count; None for none.
+
+    A slot holding a title or a name stays as it is, so a sentence may keep some Chinese; among
+    the ways to read a message the one leaving the fewest fragments untranslated wins.
+    """
     entry = _phrases().get(message)
     if entry:
-        return _pick(entry, lang)
+        line = _pick(entry, lang)
+        return (line, 0) if line else None
     prefixed = _EXCEPTION_PREFIX.match(message)
     if prefixed:
-        rest = _translate(prefixed.group(2).strip(), lang)
-        return f"{prefixed.group(1)}: {rest}" if rest is not None else None
-    parts = message.split("；")
-    if len(parts) > 1:
-        lines = [_translate(part.strip(), lang) if _HAN.search(part) else part.strip() for part in parts]
-        if all(line is not None for line in lines):
-            return "; ".join(lines)
+        rest, missed = _part(prefixed.group(2).strip(), lang)
+        return (f"{prefixed.group(1)}: {rest}", missed) if rest != prefixed.group(2).strip() else None
+    candidates: list[_Attempt] = []
     for pattern, names, entry in _patterns():
         matched = pattern.match(message)
-        if not matched:
-            continue
-        template = _pick(entry, lang)
-        if not template:
-            return None
-        values = {}
-        for name, value in zip(names, matched.groups()):
-            values[name] = (_translate(value, lang) or value) if _HAN.search(value) else value
-        return re.sub(r"\{(\w+)\}", lambda slot, values=values: values.get(slot.group(1), slot.group(0)), template)
-    return None
+        template = _pick(entry, lang) if matched else None
+        if template:
+            found = _fill(matched, names, template, lang)
+            if not found[1]:
+                return found
+            candidates.append(found)
+    mark = message[-1:]
+    if mark in _FINAL_MARKS and _HAN.search(message[:-1]):
+        core = _attempt(message[:-1].rstrip(), lang)
+        if core is not None:
+            line = core[0] if core[0][-1:] in ".!?。！？" else core[0] + _FINAL_MARKS[mark]
+            if not core[1]:
+                return line, 0
+            candidates.append((line, core[1]))
+    for separator, glue in _JOINS:
+        found = _joined(message, separator, glue, lang)
+        if found is not None:
+            if not found[1]:
+                return found
+            candidates.append(found)
+    return min(candidates, key=lambda found: found[1]) if candidates else None
+
+
+def _translate(message: str, lang: str) -> str | None:
+    """The sentence in `lang`, or None when nothing in the tables covers it."""
+    found = _attempt(message, lang)
+    return found[0] if found else None
 
 
 def localize_string(message: str, lang: str) -> str:
@@ -327,6 +386,8 @@ def localize_value(val: Any, lang: str) -> Any:
 MESSAGE_KEYS = frozenset({
     "error", "message", "reason", "detail", "details", "note", "notes", "hint", "warning", "notice",
     "label", "task_label", "progress_label", "status_label", "summary", "description", "explanation",
+    "field_label", "term", "why", "howto", "usage", "errors", "problems", "headline", "desktop_message",
+    "download_label", "eta_scope", "eta_basis", "instagram_status",
 })
 
 
@@ -342,3 +403,21 @@ def localize_messages(val: Any, lang: str, *, inside: bool = False) -> Any:
     if isinstance(val, list):
         return [localize_messages(item, lang, inside=inside) for item in val]
     return val
+
+
+def localize_json_body(body: bytes, lang: str) -> bytes | None:
+    """A JSON response body with its sentence fields in `lang`; None when nothing changes."""
+    if lang == "zh" or not _HAN_UTF8.search(body):
+        return None
+    try:
+        payload = json.loads(body)
+    except ValueError:
+        return None
+    localized = localize_messages(payload, lang)
+    if localized == payload:
+        return None
+    return json.dumps(localized, ensure_ascii=False, allow_nan=False, separators=(",", ":")).encode("utf-8")
+
+
+#: UTF-8 lead bytes of `一`–`鿿`: a body without them has nothing to translate and is not parsed.
+_HAN_UTF8 = re.compile(rb"[\xe4-\xe9][\x80-\xbf]{2}")

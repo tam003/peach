@@ -36,7 +36,7 @@ README 保留开始使用所需的信息。字段定义放参考文档，操作�
 
 共享请求错误由 [requestErrorMessage](../frontend/src/core/index.ts) 提供，React 的 [API 封装](../frontend/src/api.ts) 复用它；页面在错误标题中补充操作对象。文案编辑不改变字段值、路由、任务状态或数据写入条件。
 
-英语与越南语译文写在 `frontend/src/i18n/phrases/` 的短语包里，以界面上的中文原句为键。服务端 API 的提示与报错用同一份译文：改完短语包运行 `node frontend/scripts/export-phrases.mjs` 重新导出 `resources/locale/phrases.json`，不一致时前端测试拒绝。服务端只翻译给人读的字段（`error`、`message`、`task_label` 等，见 `i18n.MESSAGE_KEYS`），标题、名字、标签与路径保持原值。
+英语与越南语译文写在 `frontend/src/i18n/phrases/` 的短语包里，以界面上的中文原句为键。服务端 API 的提示与报错用同一份译文：改完短语包运行 `node frontend/scripts/export-phrases.mjs` 重新导出 `resources/locale/phrases.json`，不一致时前端测试拒绝。服务端在每个 JSON 响应出口按请求语言翻译，只翻给人读的字段（`error`、`message`、`task_label` 等，见 `i18n.MESSAGE_KEYS`），标题、名字、标签与路径保持原值；页面要拿来分辨类别的值另给稳定字段，不比较可能被翻译的文字。拼接出来的句子（`{原因}。`、`标签：原因`、`；` 连接）按片段分别查表，所以服务端新句子只需把每个片段登记进短语包。
 
 配置页外部入口说明由 [configuration-copy.ts](../frontend/src/configuration-copy.ts) 维护，首屏骨架和正式表单共用。修改说明时，两处的换行和高度也须一致，由浏览器几何用例验证。
 

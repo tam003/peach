@@ -1,7 +1,11 @@
 import type { PhrasePack } from '../phrase';
 
 export const phrases: PhrasePack = {
-  " · {elapsed_s} 秒": { en: " · {elapsed_s} s", vi: " · {elapsed_s} giây" },
+  "無碼": { en: "Uncensored", vi: "Không che" },
+  "有碼": { en: "Censored", vi: "Có che" },
+  "流出": { en: "Leaked", vi: "Rò rỉ" },
+  "破解": { en: "Decensored", vi: "Bản gỡ che" },
+  " · {elapsed_s} 秒":{ en: " · {elapsed_s} s", vi: " · {elapsed_s} giây" },
   "/云下载": { en: "/Cloud downloads", vi: "/Tải đám mây" },
   "1 个": { en: "1 item", vi: "1 mục" },
   "115 目标目录": { en: "115 Target Directory", vi: "Thư mục đích 115" },

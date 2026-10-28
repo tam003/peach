@@ -29,12 +29,12 @@ from contextlib import asynccontextmanager
 from urllib.parse import quote
 
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, JSONResponse, PlainTextResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.gzip import DEFAULT_EXCLUDED_CONTENT_TYPES, GZipMiddleware
 
-from . import (__version__, browser_transport, feeds, tunnel, web_batch, web_contract,
+from . import (__version__, browser_transport, feeds, i18n, tunnel, web_batch, web_contract,
                web_feeds, web_follow, web_settings)
 from . import routes_api, routes_auth, routes_configuration, routes_jav_browser, routes_media, routes_pages, routes_subtitles
 from .buildinfo import frozen_build
@@ -526,6 +526,22 @@ def create_app(
         StaticFiles(directory=settings.vendor_path, check_dir=False),
         name="vendor",
     )
+
+    # 提示与报错按请求语言输出。每个 JSON 响应都走这一道，不靠各个路由自己记得翻：
+    # 只译 `i18n.MESSAGE_KEYS` 那些给人读的字段，标题、名字、路径保持原文。
+    # 这一层在压缩之内（GZip 最后加，在最外层），看到的是未压缩的正文。
+    @app.middleware("http")
+    async def localize_json(request: Request, call_next):
+        response = await call_next(request)
+        lang = i18n.request_language(request)
+        if (lang == "zh" or "content-encoding" in response.headers
+                or not response.headers.get("content-type", "").startswith("application/json")):
+            return response
+        body = b"".join([chunk async for chunk in response.body_iterator])
+        localized = await asyncio.to_thread(i18n.localize_json_body, body, lang)
+        headers = {key: value for key, value in response.headers.items() if key != "content-length"}
+        return Response(localized if localized is not None else body, status_code=response.status_code,
+                        headers=headers, background=response.background)
 
     @app.middleware("http")
     async def no_store(request: Request, call_next):

@@ -2577,6 +2577,22 @@ var f = /* @__PURE__ */ s({ phrases: () => p }), p = {
 		vi: "Chuyển {a} vào thùng rác"
 	}
 }, g = /* @__PURE__ */ s({ phrases: () => _ }), _ = {
+	無碼: {
+		en: "Uncensored",
+		vi: "Không che"
+	},
+	有碼: {
+		en: "Censored",
+		vi: "Có che"
+	},
+	流出: {
+		en: "Leaked",
+		vi: "Rò rỉ"
+	},
+	破解: {
+		en: "Decensored",
+		vi: "Bản gỡ che"
+	},
 	" · {elapsed_s} 秒": {
 		en: " · {elapsed_s} s",
 		vi: " · {elapsed_s} giây"
@@ -22257,6 +22273,26 @@ var f = /* @__PURE__ */ s({ phrases: () => p }), p = {
 	"「{a}」没有人物页列着": {
 		en: "\"{a}\": no person page lists it",
 		vi: "\"{a}\": không có trang nhân vật nào ghi"
+	},
+	"可选分组的 `]` 没有配对的 `[`": {
+		en: "The optional group's `]` has no matching `[`",
+		vi: "Dấu `]` của nhóm tùy chọn không có `[` đi kèm"
+	},
+	"可选分组的 `[` 没有配对的 `]`": {
+		en: "The optional group's `[` has no matching `]`",
+		vi: "Dấu `[` của nhóm tùy chọn không có `]` đi kèm"
+	},
+	诊断报告: {
+		en: "Diagnostic report",
+		vi: "Báo cáo chẩn đoán"
+	},
+	错误日志: {
+		en: "Error log",
+		vi: "Nhật ký lỗi"
+	},
+	"Peach {a}（{b}）\n未配置更新源；当前为本地开发版。": {
+		en: "Peach {a} ({b})\nNo update source is configured; this is a local development build.",
+		vi: "Peach {a} ({b})\nChưa cấu hình nguồn cập nhật; đây là bản phát triển cục bộ."
 	}
 }, D = /* @__PURE__ */ s({ phrases: () => O }), O = {
 	采集来源与登录状态: {

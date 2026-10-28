@@ -49,7 +49,7 @@ function CandidateRow({ card, picked, onPick }: { card: FeedCandidate; picked: b
       <Checkbox isSelected={picked} onChange={onPick}>
         <span className="flex min-w-0 flex-wrap items-center gap-1.5">
           <span className="min-w-0 break-words">{card.names.join(listSeparator())}</span>
-          {card.record ? <Chip variant="caption" color="neutral">{card.record}</Chip> : null}
+          {card.record ? <Chip variant="caption" color="neutral">{phrase(card.record)}</Chip> : null}
           {card.held_by ? (
             <small className="text-caption-1-regular text-text-secondary">{phrase('已在「{name}」名下', { name: card.held_by.name })}</small>
           ) : null}

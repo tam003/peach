@@ -313,7 +313,7 @@ def api_get(request: Request, route: str, args: dict[str, str] = Depends(require
             state.web_contract, f"/api/{route}", args)
         if route == "review" and sync is not None and sync.read_only:
             payload = state.review_mirror.resolve(payload)
-        return i18n.localize_messages(payload, i18n.request_language(request))
+        return payload
     except TaskRunConflict as exc:
         return _conflict(exc, request)
     except UpdateBusy as exc:
@@ -355,8 +355,7 @@ def api_post(
             status_code=409,
         )
     try:
-        return i18n.localize_messages(web_contract.dispatch_api_post(
-            request.app.state.web_contract, route_path, body), lang)
+        return web_contract.dispatch_api_post(request.app.state.web_contract, route_path, body)
     except TaskRunConflict as exc:
         return _conflict(exc, request)
     except UpdateBusy as exc:

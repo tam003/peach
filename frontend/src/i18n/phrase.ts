@@ -85,3 +85,13 @@ export function translateScreenText(text: string): string | null {
 export function listSeparator(): string {
   return getLocale() === 'zh' ? '、' : ', ';
 }
+
+/** The mark between a label and what follows it: `：` in Chinese, a colon and a space elsewhere. */
+export function labelSeparator(): string {
+  return getLocale() === 'zh' ? '：' : ': ';
+}
+
+/** The mark between two sentences: `。` in Chinese, a full stop and a space elsewhere. */
+export function sentenceSeparator(): string {
+  return getLocale() === 'zh' ? '。' : '. ';
+}

@@ -269,7 +269,7 @@ function Queue({ queue, itemId, helpers, actions }: {
     <MixQueue kind={queue.kind} title={copy.title} summary={copy.summary} onClose={actions.close} actions={head} listRef={listRef}>
       {queue.items.map((row) => {
         const edition = queue.kind === 'editions' && row.edition_label
-          ? <i className={`javedition ${EDITION_TONE[row.edition_label] || 'censored'}`} data-queue-edition="">{row.edition_label}</i> : null;
+          ? <i className={`javedition ${EDITION_TONE[row.edition_label] || 'censored'}`} data-queue-edition="">{phrase(row.edition_label)}</i> : null;
         // 已消失的条目照旧列在播放列表里、能移出，但文件不在盘上，这一行不能点开去播放。
         const gone = queue.kind === 'playlist' && isVanished(row);
         return (
