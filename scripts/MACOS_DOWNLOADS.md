@@ -2,10 +2,10 @@
 kind: howto
 ---
 
-### macOS 测试包
+### macOS beta packages
 
-Apple Silicon 下载文件名含 `macos-arm64.dmg` 的安装镜像；Intel 下载含 `macos-x86_64.dmg` 的安装镜像。在「关于本机」中查看芯片或处理器。打开镜像，将 Peach 拖入「应用程序」，再打开应用完成首次设置。
+On Apple Silicon, download the disk image whose name contains `macos-arm64.dmg`; on Intel, the one containing `macos-x86_64.dmg`. Check your chip or processor in About This Mac. Open the image, drag Peach into Applications, then open the app to finish first-run setup.
 
-应用内置 Python，可独立运行；单机使用不依赖 Windows。测试包使用 ad-hoc 签名，尚未完成 Developer ID 签名与 Apple 公证。媒体工具需另行准备，macOS 暂无在线更新安装器。系统版本下限以包内 `LSMinimumSystemVersion` 为准。
+The app bundles Python and runs on its own; single-machine use does not need Windows. The beta packages are ad-hoc signed and not yet signed with a Developer ID or notarized by Apple. Media tools must be installed separately, and macOS has no in-app update installer yet. The minimum macOS version is the package's `LSMinimumSystemVersion`.
 
-安装、来源挂载与双机复制见 [macOS 使用说明](https://github.com/peach-mitao/peach/blob/master/docs/OPERATIONS.md#macos-独立测试包)。各架构的原生构建、镜像挂载与独立运行通过后，两个 DMG 才会随同一 Release 上传；哈希包含在 `SHA256SUMS.txt`。
+For installation, mounting sources and two-machine replication, see the [macOS guide](https://github.com/tam003/peach/blob/master/docs/OPERATIONS.md#macos-独立测试包). Each architecture is built natively, and both disk images are uploaded to the same release; their hashes are in `SHA256SUMS.txt`.
