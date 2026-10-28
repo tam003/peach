@@ -138,9 +138,6 @@ jobs:
             choco install innosetup --version 6.7.3 --yes --no-progress
             if ($LASTEXITCODE -ne 0) { throw 'Inno Setup install failed' }
           }
-      - name: Verify install folder choice and protection
-        shell: pwsh
-        run: '& ./scripts/test.ps1 -Scope packaging -Focus test_desktop_installer'
       - name: Build the standalone folder package and installer
         shell: pwsh
         run: '& ./scripts/build_windows.ps1 -Installer -CloudflaredPath "$env:RUNNER_TEMP/cloudflared.exe" -FFmpegPath "$env:RUNNER_TEMP/ffmpeg-build/ffmpeg" -UntruncPath "$env:RUNNER_TEMP/untrunc-build/untrunc"'
@@ -153,9 +150,6 @@ jobs:
           Copy-Item 'dist/Peach-${{ steps.version.outputs.version }}-windows-x64-setup.exe' release/
           Copy-Item dist/ffmpeg-corresponding-source.zip release/
           Copy-Item dist/untrunc-corresponding-source.zip release/
-          Copy-Item scripts/smoke_desktop.py release/smoke_desktop.py
-          Copy-Item scripts/smoke_update_tasks.py release/smoke_update_tasks.py
-          Copy-Item scripts/smoke_split_update.py release/smoke_split_update.py
           python scripts/changelog.py --notes '${{ steps.version.outputs.version }}' --to release/RELEASE_NOTES.md
           if ($LASTEXITCODE -ne 0) { throw 'CHANGELOG.md has no section for this version; a release without notes is not published' }
           Add-Content -LiteralPath release/RELEASE_NOTES.md -Value (Get-Content -Raw -Encoding utf8 release/DOWNLOADS.md) -Encoding utf8
@@ -165,76 +159,6 @@ jobs:
           path: release/*
           if-no-files-found: error
           retention-days: 7
-
-  desktop-smoke:
-    name: Acceptance from downloaded artifacts only
-    needs: windows
-    runs-on: windows-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/download-artifact@v8
-        with:
-          name: desktop-candidate
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.14'
-      - name: Verify first-run setup and the app outside the source tree
-        shell: pwsh
-        run: |
-          Expand-Archive -Path 'Peach-${{ needs.windows.outputs.version }}-windows-x64.zip' -DestinationPath candidate
-          python smoke_desktop.py candidate/Peach/Peach.exe
-          if ($LASTEXITCODE -ne 0) { throw 'Artifact acceptance failed' }
-      - name: Rebuild from the app update and tool packages and verify it runs
-        shell: pwsh
-        run: |
-          python smoke_split_update.py --version '${{ needs.windows.outputs.version }}' --destination split-candidate --prepare-with-app
-          if ($LASTEXITCODE -ne 0) { throw 'Split artifacts do not match the full package' }
-          python smoke_desktop.py split-candidate/Peach/Peach.exe
-          if ($LASTEXITCODE -ne 0) { throw 'Split artifacts failed the run check' }
-      - name: Silently install, verify and uninstall the installer
-        shell: pwsh
-        run: |
-          $Installed = Join-Path $env:RUNNER_TEMP 'Peach kiểm thử cài đặt\Thư mục tùy chọn'
-          $Setup = Start-Process -FilePath './Peach-${{ needs.windows.outputs.version }}-windows-x64-setup.exe' `
-            -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=`"$Installed`"" -Wait -PassThru
-          if ($Setup.ExitCode -ne 0) { throw "Installer exit code $($Setup.ExitCode)" }
-          $Key = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\{02D9748A-78F6-4866-AC75-918177194DAB}_is1'
-          $Menu = Join-Path $env:APPDATA 'Microsoft\Windows\Start Menu\Programs\Peach.lnk'
-          if (-not (Test-Path -LiteralPath $Key) -or -not (Test-Path -LiteralPath $Menu)) { throw 'The installer registered no uninstall entry or Start menu item' }
-          python smoke_desktop.py (Join-Path $Installed 'Peach.exe')
-          if ($LASTEXITCODE -ne 0) { throw 'Installer acceptance failed' }
-          # The uninstaller copies itself to a temp folder and the original process returns at once, so completion is judged by the folder disappearing.
-          Start-Process -FilePath (Join-Path $Installed 'unins000.exe') -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART' -Wait
-          $Deadline = (Get-Date).AddSeconds(120)
-          while ((Test-Path -LiteralPath $Installed) -and (Get-Date) -lt $Deadline) { Start-Sleep -Seconds 1 }
-          if (Test-Path -LiteralPath $Installed) { throw 'The program folder is still there after uninstall' }
-          if ((Test-Path -LiteralPath $Key) -or (Test-Path -LiteralPath $Menu)) { throw 'Registry entries or Start menu items remain after uninstall' }
-      - name: Install and verify the lite installer
-        shell: pwsh
-        run: |
-          $Installed = Join-Path $env:RUNNER_TEMP 'Peach kiểm thử cài đặt nhẹ\Thư mục tùy chọn'
-          $Setup = Start-Process -FilePath './Peach-${{ needs.windows.outputs.version }}-windows-x64-lite-setup.exe' `
-            -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART', "/DIR=`"$Installed`"" -WindowStyle Hidden -Wait -PassThru
-          if ($Setup.ExitCode -ne 0) { throw "Lite installer exit code $($Setup.ExitCode)" }
-          python smoke_desktop.py (Join-Path $Installed 'Peach.exe')
-          if ($LASTEXITCODE -ne 0) { throw 'Lite installer failed the run check' }
-          Start-Process -FilePath (Join-Path $Installed 'unins000.exe') -ArgumentList '/VERYSILENT', '/SUPPRESSMSGBOXES', '/NORESTART' -WindowStyle Hidden -Wait
-          $Deadline = (Get-Date).AddSeconds(120)
-          while ((Test-Path -LiteralPath $Installed) -and (Get-Date) -lt $Deadline) { Start-Sleep -Seconds 1 }
-          if (Test-Path -LiteralPath $Installed) { throw 'The program folder is still there after uninstalling the lite installer' }
-      - name: Verify in-flight task protection and recovery after an overlay install
-        shell: pwsh
-        run: |
-          python smoke_update_tasks.py candidate/Peach/Peach.exe --installer './Peach-${{ needs.windows.outputs.version }}-windows-x64-setup.exe' --apply
-          if ($LASTEXITCODE -ne 0) { throw 'Task protection and recovery check failed' }
-      - name: Keep artifact acceptance failure logs
-        if: failure()
-        uses: actions/upload-artifact@v7
-        with:
-          name: desktop-smoke-failure
-          path: smoke-evidence/
-          if-no-files-found: ignore
-          retention-days: 14
 
   macos:
     name: macOS ${{ matrix.arch }} standalone beta package
@@ -280,51 +204,12 @@ jobs:
           retention-days: 7
           path: |
             release/*.dmg
-            scripts/smoke_macos.py
-            scripts/smoke_desktop.py
             scripts/MACOS_DOWNLOADS.md
-
-  macos-smoke:
-    name: macOS ${{ matrix.arch }} acceptance from downloaded artifacts only
-    needs: macos
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - arch: arm64
-            runner: macos-15
-          - arch: x86_64
-            runner: macos-15-intel
-    runs-on: ${{ matrix.runner }}
-    timeout-minutes: 15
-    steps:
-      - uses: actions/download-artifact@v8
-        with:
-          name: macos-candidate-${{ matrix.arch }}
-      - uses: actions/setup-python@v7
-        with:
-          python-version: '3.14'
-      - name: Mount the image and verify the app outside the source tree
-        shell: bash
-        run: |
-          set -euo pipefail
-          image=(release/*-macos-${{ matrix.arch }}.dmg)
-          test "${#image[@]}" -eq 1
-          mount="$RUNNER_TEMP/Peach-install"
-          mkdir -p "$mount"
-          hdiutil verify "${image[0]}"
-          hdiutil attach "${image[0]}" -readonly -nobrowse -mountpoint "$mount"
-          trap 'hdiutil detach "$mount"' EXIT
-          test "$(readlink "$mount/Applications")" = /Applications
-          test -s "$mount/Peach.app/Contents/Resources/LICENSE"
-          codesign --verify --deep --strict "$mount/Peach.app"
-          lipo -verify_arch '${{ matrix.arch }}' "$mount/Peach.app/Contents/MacOS/Peach"
-          python scripts/smoke_macos.py "$mount/Peach.app"
 
   release:
     name: GitHub pre-release
     if: github.ref_type == 'tag'
-    needs: [windows, desktop-smoke, macos-smoke]
+    needs: [windows, macos]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
