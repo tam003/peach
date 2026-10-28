@@ -185,6 +185,14 @@ class NotesTests(unittest.TestCase):
         self.assertEqual(changelog.notes(DOCUMENT, "0.27.1"),
                          f"第四个预发布。\n\n{changelog.INSTALL_NOTE}\n")
 
+    def test_the_notes_render_groups_and_area_labels_in_english(self):
+        document = ("## [0.8.0] - 2026-09-19\n\n### 新增\n\n- **界面**：Added a thing\n"
+                    "\n### 修复\n\n- **播放**：Fixed a thing\n")
+        self.assertEqual(changelog.notes(document, "0.8.0"),
+                         "### Added\n\n- **Interface**: Added a thing\n\n### Fixed\n\n"
+                         f"- **Playback**: Fixed a thing\n\n{changelog.INSTALL_NOTE}\n")
+        self.assertEqual(set(changelog.NOTE_AREAS), set(changelog.AREAS))
+
     def test_a_version_without_a_section_cannot_be_released(self):
         with self.assertRaisesRegex(VersionError, "0.28.0"):
             changelog.notes(DOCUMENT, "0.28.0")

@@ -39,9 +39,15 @@ UNRELEASED = "未发布"
 
 #: Release 页正文里跟在变更日志后面的安装提示。每一版都一样，所以只写在这里一处，
 #: 工作流不再自己抄一份。
-INSTALL_NOTE = ("Windows x64，支持本机和局域网浏览器访问；无需另装 Python 或媒体工具。"
-                "安装与使用见 [Windows 使用说明](https://github.com/peach-mitao/peach/blob/master/docs/TESTING_DESKTOP.md)，"
-                "macOS 见 [源码运行](https://github.com/peach-mitao/peach/blob/master/docs/OPERATIONS.md#从源码运行windowsmacos)。")
+INSTALL_NOTE = ("Windows x64, used from a browser on this computer or across the LAN; no separate Python or "
+                "media tools needed. For install and use, see the [Windows guide](https://github.com/tam003/peach/blob/master/docs/TESTING_DESKTOP.md); "
+                "for macOS, see [running from source](https://github.com/tam003/peach/blob/master/docs/OPERATIONS.md#从源码运行windowsmacos).")
+
+#: Release 页用英文：`CHANGELOG.md` 保留中文分组与区域标签（解析与历史版本都靠它们），生成正文时再换成英文。
+NOTE_GROUPS = {"破坏性变化": "Breaking changes", "新增": "Added", "变更": "Changed",
+               "弃用": "Deprecated", "移除": "Removed", "修复": "Fixed", "安全": "Security"}
+NOTE_AREAS = {"界面": "Interface", "播放": "Playback", "馆藏": "Library", "采集": "Scraping", "复核": "Review",
+              "关注": "Follows", "配置": "Settings", "更新": "Updates", "桌面": "Desktop", "账本": "Ledger"}
 
 #: Conventional Commits 的主题形状：`type(scope)!: 描述`。
 SUBJECT = re.compile(r"^(?P<type>[a-z]+)(?:\((?P<scope>[^)]*)\))?(?P<bang>!)?:\s*(?P<text>.+)$")
@@ -250,6 +256,10 @@ def notes(document: str, version: str) -> str:
     section = section_of(document, version)
     if not section:
         raise version_bump.VersionError(f"{CHANGELOG} 里没有 {version} 这一节，Release 正文无从生成")
+    section = re.sub(r"^### (.+)$", lambda match: f"### {NOTE_GROUPS.get(match[1], match[1])}",
+                     section, flags=re.M)
+    section = re.sub(r"^- \*\*(.+?)\*\*：", lambda match: f"- **{NOTE_AREAS.get(match[1], match[1])}**: ",
+                     section, flags=re.M)
     return f"{section}\n\n{INSTALL_NOTE}\n"
 
 

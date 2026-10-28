@@ -25,24 +25,24 @@ Removed / Fixed / Security。
 
 ### 新增
 
-- **界面**：支持前端界面多语言本地化与越南语
-- **桌面**：将双架构 macOS 安装镜像接入统一发版
-- **桌面**：构建双架构 macOS 独立应用并精简托盘状态
+- **界面**：The interface supports multiple languages, including Vietnamese
+- **桌面**：macOS disk images for Apple Silicon and Intel ship in the same release
+- **桌面**：Standalone macOS app for both architectures, with a simpler tray status
 
 ### 修复
 
-- **更新**：kiểm tra và tải bản cập nhật từ repo phát hành tam003/peach
-- **界面**：dịch toàn bộ chữ tiếng Trung còn sót trên giao diện sang tiếng Việt
-- **界面**：bản địa hóa toàn bộ thông báo lỗi và phản hồi API sang tiếng Việt
-- **配置**：bản địa hóa tiêu đề hộp thoại chọn thư mục và hỗ trợ tham số prompt
-- **界面**：bản địa hóa nút hủy modal, thông báo gỡ cài đặt và các bước quét
-- **配置**：bản địa hóa tiếng Việt cho trang thiết lập lần đầu và tiêu đề tab
-- **桌面**：hỗ trợ đa ngôn ngữ tiếng Việt và tạo bộ cài đặt Windows Installer
-- **配置**：简化媒体目录配置并统一说明文案
-- **界面**：保持同级宽字形的视觉比例
-- **界面**：提示说明与右侧操作垂直居中
-- **界面**：宽容器中的补全提示与操作并排显示
-- **播放**：自动探测硬件后端并支持 Linux VAAPI 转码
+- **更新**：Updates are checked for and downloaded from the tam003/peach release repository
+- **界面**：Translated the remaining Chinese interface text into Vietnamese
+- **界面**：Localized error messages and API responses into Vietnamese
+- **配置**：Localized the folder picker dialog title
+- **界面**：Localized the dialog cancel button, uninstall messages and scan steps
+- **配置**：The first-run setup page and tab titles are available in Vietnamese
+- **桌面**：The tray and the Windows installer are available in Vietnamese
+- **配置**：Simpler media folder settings with consistent help text
+- **界面**：Wide glyphs at the same level keep balanced proportions
+- **界面**：Hints are vertically centered with the actions on their right
+- **界面**：In wide containers, completion hints sit beside their actions
+- **播放**：Hardware transcoding backends are detected automatically, with VAAPI transcoding on Linux
 
 ## [0.46.1] - 2026-10-19
 
