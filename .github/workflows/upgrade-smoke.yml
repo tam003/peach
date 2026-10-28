@@ -1,17 +1,17 @@
-name: Windows 覆盖升级验收
+name: Windows overlay upgrade acceptance
 
 on:
   workflow_dispatch:
     inputs:
       from_version:
-        description: 已发布的起始版本
+        description: Published starting version
         required: true
         default: '0.39.0'
       to_version:
-        description: 已发布的目标版本
+        description: Published target version
         required: true
       to_commit:
-        description: 目标制品的完整构建提交
+        description: Full build commit of the target artifacts
         required: true
 
 permissions:
@@ -23,7 +23,7 @@ concurrency:
 
 jobs:
   overlay:
-    name: ${{ matrix.kind }} / ${{ matrix.data_location }} 原位覆盖
+    name: ${{ matrix.kind }} / ${{ matrix.data_location }} in-place overlay
     runs-on: windows-latest
     timeout-minutes: 30
     strategy:
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.14'
-      - name: 下载正式制品并验证覆盖升级
+      - name: Download the published artifacts and verify the overlay upgrade
         env:
           GH_TOKEN: ${{ github.token }}
           FROM_VERSION: ${{ inputs.from_version }}
@@ -50,8 +50,8 @@ jobs:
         shell: pwsh
         run: |
           python -X utf8 scripts/smoke_overlay_upgrade.py --from-version "$env:FROM_VERSION" --to-version "$env:TO_VERSION" --to-commit "$env:TO_COMMIT" --kind "$env:PACKAGE_KIND" --data-location "$env:DATA_LOCATION" --apply 2>&1 | Tee-Object -FilePath overlay.log
-          if ($LASTEXITCODE -ne 0) { throw '覆盖升级验收失败' }
-      - name: 保留验收结果与失败日志
+          if ($LASTEXITCODE -ne 0) { throw 'Overlay upgrade acceptance failed' }
+      - name: Keep acceptance results and failure logs
         if: always()
         uses: actions/upload-artifact@v7
         with:

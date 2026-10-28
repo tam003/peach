@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   image:
-    name: Linux amd64 镜像验收
+    name: Linux amd64 image acceptance
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -27,13 +27,13 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.14'
-      - name: 核对标签提交的主线 CI
+      - name: Verify mainline CI for the tagged commit
         if: github.ref_type == 'tag'
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/release_tag.py --repo "$GITHUB_REPOSITORY" --verify-sha "$GITHUB_SHA"
       - uses: docker/setup-buildx-action@v4
-      - name: 构建候选镜像
+      - name: Build the candidate image
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -41,15 +41,15 @@ jobs:
           tags: longmeidao/peach:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
-      - name: 验收临时容器
+      - name: Verify a temporary container
         run: python3 scripts/smoke_docker.py longmeidao/peach:test
-      - name: 登录 Docker Hub
+      - name: Sign in to Docker Hub
         if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) && vars.DOCKERHUB_USERNAME != ''
         uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: 计算镜像标签
+      - name: Compute image tags
         id: tags
         env:
           REF_TYPE: ${{ github.ref_type }}
@@ -60,7 +60,7 @@ jobs:
           else
             echo 'value=longmeidao/peach:edge' >> "$GITHUB_OUTPUT"
           fi
-      - name: 发布已验收镜像
+      - name: Publish the verified image
         if: github.event_name != 'pull_request' && (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v')) && vars.DOCKERHUB_USERNAME != ''
         env:
           PUBLISH_TAG: ${{ steps.tags.outputs.value }}

@@ -2,7 +2,7 @@
 
 这份文档讲三件事：依赖怎么装、怎么升级；改完代码要跑哪些测试、CI 怎么分；新测试该写成什么样。
 
-Windows 发布制品的覆盖升级在 Actions 的「Windows 覆盖升级验收」手动执行：填写已发布的起始版本、目标版本及目标制品的完整构建提交。工作流分别验证 ZIP 原位解压和安装包原位安装，每种路径覆盖默认数据目录与 `PEACH_DATA_ROOT` 指定目录，并上传日志。它使用已发布制品，不重新构建或发布；在线更新和失败回滚仍由 `scripts/smoke_online_update.py` 单独验证。
+Windows 发布制品的覆盖升级在 Actions 的「Windows overlay upgrade acceptance」手动执行：填写已发布的起始版本、目标版本及目标制品的完整构建提交。工作流分别验证 ZIP 原位解压和安装包原位安装，每种路径覆盖默认数据目录与 `PEACH_DATA_ROOT` 指定目录，并上传日志。它使用已发布制品，不重新构建或发布；在线更新和失败回滚仍由 `scripts/smoke_online_update.py` 单独验证。
 
 Release 工作流还在干净的 Windows runner 上运行 `smoke_update_tasks.py --apply`，使用临时账本验证安装接受正在运行的采集任务、暂停并保留任务标识、覆盖后自动续跑，以及配置保留。脚本默认只预演；本机可以验证 ZIP 与安装助手协议，安装包实装限干净的 Actions runner。
 
