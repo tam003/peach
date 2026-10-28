@@ -25,7 +25,7 @@ from browserexport.common import BrowserexportError
 from fastapi import APIRouter, Body, Depends, HTTPException, Request, Response
 from fastapi.responses import JSONResponse
 
-from . import push_discovery, web_contract, web_tasks
+from . import i18n, push_discovery, web_contract, web_tasks
 from .field_owners import RevisionConflict
 from .folder_rules import FolderRuleConflict
 from .interaction import reveal_path
@@ -313,7 +313,7 @@ def api_get(request: Request, route: str, args: dict[str, str] = Depends(require
             state.web_contract, f"/api/{route}", args)
         if route == "review" and sync is not None and sync.read_only:
             payload = state.review_mirror.resolve(payload)
-        return payload
+        return i18n.localize_messages(payload, i18n.request_language(request))
     except TaskRunConflict as exc:
         return _conflict(exc, request)
     except UpdateBusy as exc:
@@ -323,7 +323,9 @@ def api_get(request: Request, route: str, args: dict[str, str] = Depends(require
     except KeyError:
         return JSONResponse({"error": "not found"}, status_code=404)
     except (TypeError, ValueError) as exc:
-        return JSONResponse({"error": f"{type(exc).__name__}: {exc}"}, status_code=400)
+        return JSONResponse({"error": i18n.localize_string(f"{type(exc).__name__}: {exc}",
+                                                             i18n.request_language(request))},
+                            status_code=400)
     except Exception:
         LOGGER.exception("unhandled GET contract error for /api/%s", route)
         return JSONResponse({"error": "internal server error"}, status_code=500)
@@ -338,6 +340,7 @@ def api_post(
 ):
     sync = request.app.state.sync
     route_path = f"/api/{route}"
+    lang = i18n.request_language(request)
     if (sync is not None and sync.read_only
             and route_path not in web_contract.READ_ONLY_POST_ROUTES):
         # 非写入端或冲突状态都只读；继续写只会产生无法自动合并的分叉。
@@ -347,17 +350,18 @@ def api_post(
             {
                 "error": "ledger read-only",
                 "detail": sync.detail,
-                "message": sync.read_only_message,
+                "message": i18n.localize_string(sync.read_only_message, lang),
             },
             status_code=409,
         )
     try:
-        return web_contract.dispatch_api_post(
-            request.app.state.web_contract, route_path, body)
+        return i18n.localize_messages(web_contract.dispatch_api_post(
+            request.app.state.web_contract, route_path, body), lang)
     except TaskRunConflict as exc:
         return _conflict(exc, request)
     except UpdateBusy as exc:
-        return JSONResponse({'error': 'update in progress', 'message': str(exc)}, status_code=409)
+        return JSONResponse({'error': 'update in progress', 'message': i18n.localize_string(str(exc), lang)},
+                            status_code=409)
     except KeyError:
         return JSONResponse({"error": "not found"}, status_code=404)
     except RevisionConflict as exc:
@@ -366,14 +370,15 @@ def api_post(
         return JSONResponse(
             {
                 "error": "field revision conflict",
-                "message": str(exc),
+                "message": i18n.localize_string(str(exc), lang),
                 "expected_revision": exc.expected,
                 "revisions": {str(key): value for key, value in exc.revisions.items()},
             },
             status_code=409,
         )
     except (TypeError, ValueError) as exc:
-        return JSONResponse({"error": f"{type(exc).__name__}: {exc}"}, status_code=400)
+        return JSONResponse({"error": i18n.localize_string(f"{type(exc).__name__}: {exc}", lang)},
+                            status_code=400)
     except Exception:
         LOGGER.exception("unhandled POST contract error for /api/%s", route)
         return JSONResponse({"error": "internal server error"}, status_code=500)
