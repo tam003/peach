@@ -4702,18 +4702,6 @@ class ReleaseTagTests(unittest.TestCase):
     def setUpClass(cls):
         cls.release = load_script("release_tag")
 
-    def test_latest_matching_master_run_must_finish_successfully(self):
-        success = dict(id=1, head_sha="abc", head_branch="master", event="push",
-                       status="completed", conclusion="success", html_url="test-url")
-        self.assertEqual(self.release.require_success([success], "abc"), success)
-        for changes in ({"head_sha": "other"}, {"head_branch": "feature"},
-                        {"event": "pull_request"}, {"status": "in_progress"},
-                        {"conclusion": "failure"}, {"conclusion": "cancelled"}):
-            with self.subTest(changes=changes), self.assertRaises(ValueError):
-                self.release.require_success([{**success, **changes}], "abc")
-        with self.assertRaises(ValueError):
-            self.release.require_success([success, {**success, "id": 2, "conclusion": "failure"}], "abc")
-
     def test_default_is_read_only_and_apply_stops_if_master_moves(self):
         planned = dict(sha="abc", tag="v1.2.3", repo="owner/repo")
         with mock.patch.object(self.release, "plan", return_value=planned), \
@@ -4849,26 +4837,21 @@ class PinnedReleaseTests(unittest.TestCase):
         return mock.patch.object(self.release, "command",
                                  side_effect=lambda *args, **_: answers.get(args, ""))
 
-    def _api(self, *, status="behind", conclusion="success", tags=()):
+    def _api(self, *, status="behind", tags=()):
         def answer(_repo, endpoint):
             if endpoint.startswith("git/matching-refs/tags/"):
                 return list(tags)
             if endpoint == f"compare/master...{self.SHA}":
                 return {"status": status}
-            if endpoint.startswith("actions/workflows/test.yml/runs"):
-                return {"workflow_runs": [dict(
-                    id=1, head_sha=self.SHA, head_branch="master", event="push",
-                    status="completed", conclusion=conclusion, html_url="selected-test")]}
             raise AssertionError(endpoint)
         return mock.patch.object(self.release, "api", side_effect=answer)
 
-    def test_plan_reads_version_notes_and_ci_from_the_selected_commit(self):
+    def test_plan_reads_version_and_notes_from_the_selected_commit(self):
         with self._shell() as command, self._api(), \
                 mock.patch.object(self.release.version_bump, "read_version") as local_version, \
                 mock.patch.object(Path, "read_text") as local_notes:
             result = self.release.plan_commit("owner/repo", self.SHA)
-        self.assertEqual((result["sha"], result["tag"], result["test"]),
-                         (self.SHA, "v0.37.0", "selected-test"))
+        self.assertEqual((result["sha"], result["tag"]), (self.SHA, "v0.37.0"))
         self.assertIn("统计页布局稳定", result["section"])
         local_version.assert_not_called()
         local_notes.assert_not_called()
@@ -4943,22 +4926,17 @@ class ShipTests(unittest.TestCase):
              ("git", "rev-parse", "HEAD"): "abc",
              ("git", "tag", "--list", "v0.8.0"): ""}
 
-    SUCCESS = dict(id=1, head_sha="abc", head_branch="master", event="push",
-                   status="completed", conclusion="success", html_url="test-url")
-
     def _shell(self, changes=None):
         answers = {**self.SHELL, **(changes or {})}
         return mock.patch.object(self.release, "command",
                                  side_effect=lambda *args, **_: answers.get(args, ""))
 
-    def _api(self, *, tags=(), remote="old", runs=(SUCCESS,)):
+    def _api(self, *, tags=(), remote="old"):
         def answer(_repo, endpoint):
             if endpoint.startswith("git/matching-refs/tags/"):
                 return list(tags)
             if endpoint == "git/ref/heads/master":
                 return {"object": {"sha": remote}}
-            if endpoint.startswith("actions/workflows/test.yml/runs"):
-                return {"workflow_runs": list(runs)}
             raise AssertionError(f"没预料到的调用：{endpoint}")
         return mock.patch.object(self.release, "api", side_effect=answer)
 
@@ -5024,7 +5002,7 @@ class ShipTests(unittest.TestCase):
                     self.assertRaisesRegex(ValueError, message):
                 self.release.ship("owner/repo", apply=True)
 
-    def test_apply_commits_pushes_waits_then_tags_in_that_order(self):
+    def test_apply_commits_pushes_then_tags_in_that_order(self):
         with self._shell() as command, self._api(), self._version(), self._document():
             result = self.release.ship("owner/repo", apply=True)
         self.assertEqual(self._writes(command), [
@@ -5034,17 +5012,7 @@ class ShipTests(unittest.TestCase):
             ("git", "tag", "-a", "v0.8.0", "abc", "-m", "Peach v0.8.0 Windows 测试版"),
             ("git", "push", "https://github.com/owner/repo.git", "refs/tags/v0.8.0"),
         ])
-        self.assertEqual(result["test"], "test-url")
-
-    def test_a_red_test_run_never_becomes_a_tag(self):
-        red = {**self.SUCCESS, "conclusion": "failure"}
-        with self._shell() as command, self._api(runs=(red,)), self._version(), \
-                self._document(), self.assertRaisesRegex(ValueError, "尚未通过"):
-            self.release.ship("owner/repo", apply=True)
-        issued = self._writes(command)
-        self.assertIn(("git", "-c", "peach.masterWriter=release", "commit",
-                       "-m", "chore(release): 版本 0.8.0"), issued)
-        self.assertFalse([args for args in issued if "refs/tags/v0.8.0" in args], issued)
+        self.assertEqual(result["release"], "https://github.com/owner/repo/releases/tag/v0.8.0")
 
     def test_running_it_again_skips_what_is_already_done(self):
         """网络断在半路就再跑一次：已提交的不重提，已推送的不重推。"""
@@ -5056,46 +5024,6 @@ class ShipTests(unittest.TestCase):
             ("git", "tag", "-a", "v0.8.0", "abc", "-m", "Peach v0.8.0 Windows 测试版"),
             ("git", "push", "https://github.com/owner/repo.git", "refs/tags/v0.8.0"),
         ])
-
-
-class AwaitTestTests(unittest.TestCase):
-    """等 Test 出结果：绿了才回来，红了不等，超时说清楚接下来怎么办。"""
-
-    @classmethod
-    def setUpClass(cls):
-        cls.release = load_script("release_tag")
-
-    RUNNING = dict(id=1, head_sha="abc", head_branch="master", event="push",
-                   status="in_progress", conclusion=None, html_url="test-url")
-
-    def _runs(self, *rounds):
-        answers = iter(rounds)
-        return mock.patch.object(self.release, "test_runs",
-                                 side_effect=lambda *_: list(next(answers)))
-
-    def test_polling_continues_until_the_run_completes(self):
-        done = {**self.RUNNING, "status": "completed", "conclusion": "success"}
-        naps = []
-        with self._runs((), (self.RUNNING,), (done,)):
-            checked = self.release.await_test(
-                "owner/repo", "abc", timeout=90, poll=30,
-                sleep=naps.append, clock=lambda: len(naps) * 30)
-        self.assertEqual(checked["html_url"], "test-url")
-        self.assertEqual(naps, [30, 30])
-
-    def test_a_finished_red_run_is_not_worth_waiting_out(self):
-        red = {**self.RUNNING, "status": "completed", "conclusion": "failure"}
-        naps = []
-        with self._runs((red,)), self.assertRaisesRegex(ValueError, "尚未通过"):
-            self.release.await_test("owner/repo", "abc", timeout=3600, poll=30,
-                                    sleep=naps.append, clock=lambda: 0)
-        self.assertEqual(naps, [], "红的等多久都不会变绿")
-
-    def test_giving_up_says_the_commit_is_already_pushed(self):
-        with self._runs((self.RUNNING,), (self.RUNNING,)), \
-                self.assertRaisesRegex(ValueError, "--ship --apply"):
-            self.release.await_test("owner/repo", "abc", timeout=30, poll=30,
-                                    sleep=lambda _: None, clock=iter([0, 30, 60]).__next__)
 
 
 class Fc2SellerAndDescriptiveNameRepairTests(unittest.TestCase):

@@ -2,7 +2,7 @@
 
 这份文档讲三件事：依赖怎么装、怎么升级；改完代码要跑哪些测试、CI 怎么分；新测试该写成什么样。
 
-Windows 发布制品的覆盖升级在 Actions 的「Windows 覆盖升级验收」手动执行：填写已发布的起始版本、目标版本及目标制品的完整构建提交。工作流分别验证 ZIP 原位解压和安装包原位安装，每种路径覆盖默认数据目录与 `PEACH_DATA_ROOT` 指定目录，并上传日志。它使用已发布制品，不重新构建或发布；在线更新和失败回滚仍由 `scripts/smoke_online_update.py` 单独验证。
+Windows 发布制品的覆盖升级在 Actions 的「Windows overlay upgrade acceptance」手动执行：填写已发布的起始版本、目标版本及目标制品的完整构建提交。工作流分别验证 ZIP 原位解压和安装包原位安装，每种路径覆盖默认数据目录与 `PEACH_DATA_ROOT` 指定目录，并上传日志。它使用已发布制品，不重新构建或发布；在线更新和失败回滚仍由 `scripts/smoke_online_update.py` 单独验证。
 
 Release 工作流还在干净的 Windows runner 上运行 `smoke_update_tasks.py --apply`，使用临时账本验证安装接受正在运行的采集任务、暂停并保留任务标识、覆盖后自动续跑，以及配置保留。脚本默认只预演；本机可以验证 ZIP 与安装助手协议，安装包实装限干净的 Actions runner。
 
@@ -66,6 +66,7 @@ Python 静态检查使用开发依赖 Ruff，随每个正式测试域扫描全�
 文档与文案检查包含 seiso 稳定规则和最终状态检查，随正式入口执行。分类、范围、独立检查与预览规则用法见 [文档与界面文案](WRITING.md#检查与复核)。seiso 由开发依赖与锁文件固定，运行 Peach 不需要它。
 
 不是每次都跑全量：本机按改动涉及的域选测，CI 按提交类型决定覆盖多宽。
+本分发（`tam003/peach`）不带 Test 与 Docker 工作流，下表的 PR、主线与手动 CI 只在上游仓库运行；这里的验证以本机正式入口为准，Release 不等 CI（ADR-0114）。
 调试先跑相关用例，冻结代码后运行一次 `auto`；不要手写逐域循环重复执行公共用例。测试失败先定向复现，修复后由 `auto` 判断哪些域需要补测。
 
 | 场景 | 验证 |
@@ -76,7 +77,7 @@ Python 静态检查使用开发依赖 Ruff，随每个正式测试域扫描全�
 | 实际依赖、迁移、共享测试设施、未知影响面 | Windows 与 macOS 的 Python 3.14 全量 |
 | 手动 CI | 完整系统矩阵 |
 | wheel | Windows 与 macOS 各一次 Python 3.14 独立最小安装 |
-| Release | 复用同 SHA 主线成功 CI；Windows 独立 EXE 与 Apple Silicon、Intel DMG 分别构建和验收 |
+| Release | 上游复用同 SHA 主线成功 CI，本分发只核对标签提交在 master 上；Windows 独立 EXE 与 Apple Silicon、Intel DMG 分别构建和验收 |
 
 Python 全量按文件稳定分片，Windows 四片、macOS 两片，每片使用独立 runner；汇总任务要求所有分片和计划选择的任务成功。分片子进程不签发记录。
 
