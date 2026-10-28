@@ -29,6 +29,13 @@ export function phrase(source: string, vars?: Record<string, string | number>): 
   });
 }
 
+/* Romaji display names of performers and studios, keyed by the canonical name the ledger keeps. */
+const screenNames = new Map<string, string>();
+
+export function registerScreenNames(names: Record<string, string>): void {
+  for (const [name, latin] of Object.entries(names)) if (name && latin) screenNames.set(name, latin);
+}
+
 export function knownPhrase(source: string): boolean {
   return table.has(source);
 }
@@ -63,6 +70,8 @@ export function translateScreenText(text: string): string | null {
   const pick = (line: PhraseLine) => (locale === 'vi' ? line.vi || line.en : line.en) || null;
   const exact = table.get(text);
   if (exact) return pick(exact);
+  const name = screenNames.get(text);
+  if (name) return name;
   // Several reasons joined by `；` read in the current language when every reason has a line.
   // This runs before slot patterns, whose slots would otherwise swallow the separator.
   const parts = text.split('；');

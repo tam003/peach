@@ -3,7 +3,7 @@
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { applyLocale } from '../../src/appearance/locale';
-import { listSeparator, phrase, translateScreenText } from '../../src/i18n/phrase';
+import { listSeparator, phrase, registerScreenNames, translateScreenText } from '../../src/i18n/phrase';
 
 const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -66,6 +66,15 @@ describe('screen translation', () => {
 
     applyLocale('vi');
     expect(translateScreenText('JK制服')).toBe('Đồng phục nữ sinh (JK)');
+  });
+
+  it('shows a performer name in romaji once the server gave one, and leaves other names alone', () => {
+    registerScreenNames({ 三上悠亜: 'Yua Mikami' });
+    applyLocale('en');
+    expect(translateScreenText('三上悠亜')).toBe('Yua Mikami');
+    expect(translateScreenText('河北彩花')).toBeNull();
+    applyLocale('zh');
+    expect(translateScreenText('三上悠亜')).toBeNull();
   });
 
   it('fills a slot holding a known label in the same language and joins lists with the local separator', () => {

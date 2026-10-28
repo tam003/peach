@@ -1942,6 +1942,25 @@ class FastApiContractTests(unittest.IsolatedAsyncioTestCase):
         removed = await self.client.get("/entity/performer/Alice")
         self.assertEqual(removed.status_code, 404)
 
+    async def test_latin_names_pick_the_romaji_alias_and_skip_names_already_in_latin(self):
+        await self.client.post('/login', content='token=secret&next=%2F',
+                               headers={'Content-Type': 'application/x-www-form-urlencoded'})
+        with closing(sqlite3.connect(self.db)) as connection, connection:
+            connection.executemany(
+                "INSERT INTO entity(id,kind,canonical_name,normalized_name) VALUES(?,?,?,?)",
+                [(911, 'performer', '三上悠亜', '三上悠亜'), (912, 'performer', '河北彩花', '河北彩花'),
+                 (913, 'performer', 'RARA', 'rara'), (914, 'studio', 'プレステージ', 'プレステージ'),
+                 (915, 'performer', '无罗马字', '无罗马字')])
+            connection.executemany(
+                "INSERT INTO entity_alias VALUES(?,?,?,'test',?)",
+                [(911, 'みかみゆあ', 'みかみゆあ', 1), (911, 'Yua Mikami', 'yua mikami', 1),
+                 (913, 'Rara Anzai', 'rara anzai', 1), (914, 'Prestige', 'prestige', 1)])
+            connection.execute("INSERT INTO performer_profile(entity_id,romaji,source) VALUES(912,'kawakita saika','test')")
+        names = (await self.client.get('/api/entity/latin-names')).json()['names']
+        self.assertEqual({name: names.get(name) for name in ('三上悠亜', '河北彩花', 'プレステージ', 'RARA', '无罗马字')},
+                         {'三上悠亜': 'Yua Mikami', '河北彩花': 'Kawakita Saika', 'プレステージ': 'Prestige',
+                          'RARA': None, '无罗马字': None})
+
     async def test_entity_deep_link_carries_the_api_shape_in_its_document(self):
         await self.client.post('/login', content='token=secret&next=%2F',
                                headers={'Content-Type': 'application/x-www-form-urlencoded'})

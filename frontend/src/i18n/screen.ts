@@ -92,6 +92,11 @@ function sync(): void {
   else element(root);
 }
 
+/** Translate the page again after the tables learned new lines, such as names fetched from the server. */
+export function refreshScreenTranslation(): void {
+  if (observer) sync();
+}
+
 /** Start once per page. Safe to call again. */
 export function installScreenTranslation(): void {
   if (observer || typeof MutationObserver === 'undefined' || typeof document === 'undefined') return;
