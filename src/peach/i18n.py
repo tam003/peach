@@ -293,7 +293,7 @@ def _translate(message: str, lang: str) -> str | None:
         values = {}
         for name, value in zip(names, matched.groups()):
             values[name] = (_translate(value, lang) or value) if _HAN.search(value) else value
-        return re.sub(r"\{(\w+)\}", lambda slot: values.get(slot.group(1), slot.group(0)), template)
+        return re.sub(r"\{(\w+)\}", lambda slot, values=values: values.get(slot.group(1), slot.group(0)), template)
     return None
 
 
