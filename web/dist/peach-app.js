@@ -62510,8 +62510,10 @@ var y_e = /\.(?:mp4|mkv|avi|wmv|mov|m4v|webm|ts|m2ts|mts|mpg|mpeg|flv|rm|rmvb|is
 	let n = String(t || "").trim();
 	return e?.is_jav ? n.replace(y_e, "") : n;
 }, x_e = (e) => /[぀-ヿ㐀-鿿]/.test(String(e || "")), S_e = (e) => {
-	let t = [e?.catalog_title, e?.original_title].map((e) => String(e || "").trim()).filter(Boolean);
-	return t.find(x_e) || t[0] || "";
+	let t = xe() === "zh" ? "" : String(e?.title_en || "").trim();
+	if (t) return t;
+	let n = [e?.catalog_title, e?.original_title].map((e) => String(e || "").trim()).filter(Boolean);
+	return n.find(x_e) || n[0] || "";
 };
 function C_e(e, t = e?.name) {
 	let n = b_e(e, t), r = String(e?.code || "").trim().toUpperCase();
