@@ -71,7 +71,7 @@ SCOPES: dict[str, tuple[str, ...]] = {
     "sync": ("test_sync*.py", "test_platform.py", "test_mount.py", "test_tray*.py", "test_macos_standalone.py", "test_log_retention.py",
              "test_mdns.py", "test_netwatch.py", "test_certs.py",
              "test_review_mirror.py", "test_runtime_prepare.py"),
-    "metadata": ("test_custom_metadata.py", "test_scraping_access.py", "test_browser_transport.py", "test_metadata*.py", "test_genre_taxonomy.py", "test_processing_control.py",
+    "metadata": ("test_custom_metadata.py", "test_scraping_access.py", "test_browser_transport.py", "test_metadata*.py", "test_genre_taxonomy.py", "test_processing_control.py", "test_source_titles.py",
                  "test_fc2*.py", "test_local_poster.py",
                  "test_community_catalog.py",
                  "test_babepedia_match.py",
@@ -281,6 +281,8 @@ AUTO_SCOPE_PREFIXES: tuple[tuple[str, str | tuple[str, ...]], ...] = (
     # 站点解析器契约与套了契约的站（ADR-0044）：测试住在 `test_metadata_sources.py` 与
     # `test_community_catalog.py`，都在 metadata 域；按包内模块名推不出来。
     ("src/peach/sources/", "metadata"),
+    # 英文显示标题读 r18dev 快照，测试在 metadata 域；卡片载荷经 web 层带出去。
+    ("src/peach/source_titles.py", ("metadata", "web")),
     ("scripts/localize_performer_names.py", ("metadata", "tooling")),
     ("scripts/localize_series_names.py", ("metadata", "tooling")),
     ("scripts/localize_studio_names.py", ("metadata", "tooling")),
