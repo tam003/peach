@@ -5,7 +5,7 @@ from pathlib import Path
 
 from fastapi.testclient import TestClient
 
-from peach import i18n
+from peach import catalog_rules, i18n
 from peach.api import create_app
 from peach.config import PeachSettings
 from support.ledger import fresh_ledger
@@ -56,6 +56,22 @@ class LocalizeMessagesTests(unittest.TestCase):
         self.assertEqual(result["runs"][0]["progress_label"], "Organizing")
         self.assertEqual(result["runs"][0]["tags"], ["正在整理"])
         self.assertIs(i18n.localize_messages(payload, "zh"), payload)
+
+
+class TagDisplayNameTests(unittest.TestCase):
+    """规范标签在页面上按界面语言显示；账本、筛选与 API 的 `tags` 字段仍是中文规范名。"""
+
+    def test_every_chinese_catalog_tag_has_an_english_and_a_vietnamese_name(self):
+        groups = ("LENGTH_TAGS", "TECH_TAGS", "ATTRIBUTE_TAGS", "RELATIONSHIP_TAGS", "ROLE_TAGS",
+                  "APPEARANCE_TAGS", "SCENE_TAGS", "STORY_TAGS", "POSITION_TAGS")
+        table = i18n._phrases()
+        missing = sorted(tag for group in groups for tag in getattr(catalog_rules, group)
+                         if i18n._HAN.search(tag) and not (table.get(tag, {}).get("en") and table.get(tag, {}).get("vi")))
+        self.assertEqual(missing, [])
+
+    def test_a_tag_in_a_sentence_field_reads_in_the_request_language_and_the_tags_field_stays(self):
+        result = i18n.localize_messages({"label": "巨乳", "tags": ["巨乳"]}, "vi")
+        self.assertEqual(result, {"label": "Ngực khủng", "tags": ["巨乳"]})
 
 
 class ResponseLanguageTests(unittest.TestCase):

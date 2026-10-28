@@ -38,6 +38,8 @@ README 保留开始使用所需的信息。字段定义放参考文档，操作�
 
 英语与越南语译文写在 `frontend/src/i18n/phrases/` 的短语包里，以界面上的中文原句为键。服务端 API 的提示与报错用同一份译文：改完短语包运行 `node frontend/scripts/export-phrases.mjs` 重新导出 `resources/locale/phrases.json`，不一致时前端测试拒绝。服务端在每个 JSON 响应出口按请求语言翻译，只翻给人读的字段（`error`、`message`、`task_label` 等，见 `i18n.MESSAGE_KEYS`），标题、名字、标签与路径保持原值；页面要拿来分辨类别的值另给稳定字段，不比较可能被翻译的文字。拼接出来的句子（`{原因}。`、`标签：原因`、`；` 连接）按片段分别查表，所以服务端新句子只需把每个片段登记进短语包。
 
+`catalog_rules` 规范标签的显示名写在短语包 `tags.ts`。账本、筛选参数与 API 的 `tags` 字段都保留中文规范名，页面按界面语言显示整段标签文字。新增含中文的规范标签时，要在 `tags.ts` 补英语与越南语，缺了 `tests/test_i18n_messages.py` 会拒绝。来源原词、复核时手填的新标签和标题、人名不在这张表里，原样显示。
+
 配置页外部入口说明由 [configuration-copy.ts](../frontend/src/configuration-copy.ts) 维护，首屏骨架和正式表单共用。修改说明时，两处的换行和高度也须一致，由浏览器几何用例验证。
 
 ## 检查与复核

@@ -52,6 +52,22 @@ describe('screen translation', () => {
     expect(button.firstChild!.nodeValue).toBe('番号 标题');
   });
 
+  it('shows a catalog tag chip in the chosen language and keeps the tag name it filters by', async () => {
+    applyLocale('en');
+    const chip = document.createElement('span');
+    chip.dataset.k = '中出内射';
+    chip.title = '中出内射';
+    chip.textContent = '中出内射';
+    document.body.append(chip);
+    await settle();
+    expect(chip.textContent).toBe('Creampie');
+    expect(chip.title).toBe('Creampie');
+    expect(chip.dataset.k).toBe('中出内射');
+
+    applyLocale('vi');
+    expect(translateScreenText('JK制服')).toBe('Đồng phục nữ sinh (JK)');
+  });
+
   it('fills a slot holding a known label in the same language and joins lists with the local separator', () => {
     applyLocale('vi');
     expect(phrase('{label}空间使用率', { label: '系统盘' })).toBe('Mức dùng chỗ của Ổ hệ thống');
