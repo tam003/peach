@@ -49,6 +49,7 @@ class WindowsUpdateInstallerTests(unittest.TestCase):
         for path in (
             "src/peach/web.py", "web/index.html", "migrations/0021.sql",
             "resources/peach.ico", "scripts/build_windows.ps1", "pyproject.toml",
+            "tools/amane-bridge/uv.lock",
         ):
             self.assertTrue(windows_tray_rebuild_required((path,)), path)
 

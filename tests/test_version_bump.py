@@ -38,6 +38,7 @@ class BumpPartTests(unittest.TestCase):
         self.assertTrue(runtime_inputs_changed(["frontend/src/main.ts"]))
         self.assertTrue(runtime_inputs_changed(["migrations/0042_thing.sql"]))
         self.assertTrue(runtime_inputs_changed(["resources/peach.ico"]))
+        self.assertTrue(runtime_inputs_changed(["tools/amane-bridge/bridge.py"]))
         self.assertTrue(runtime_inputs_changed(["scripts/build_windows.ps1"]))
         self.assertTrue(runtime_inputs_changed(["scripts/build_app_entry.py"]))
         self.assertTrue(runtime_inputs_changed(["pyproject.toml"]))

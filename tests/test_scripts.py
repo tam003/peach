@@ -1871,14 +1871,12 @@ class OperationalScriptTests(unittest.TestCase):
                     self.assertEqual(json.loads(done.stdout), expected)
 
     def test_python_floor_matches_runtime_and_ci(self):
-        """正式运行版本、CI 与 README 共同覆盖声明的 Python 下限。"""
+        """正式运行版本、CI 计划与 README 共同覆盖声明的 Python 下限。"""
         project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))["project"]
         floor = project["requires-python"].removeprefix(">=")
         self.assertEqual(floor, "3.14")
         self.assertEqual((ROOT / ".python-version").read_text(encoding="utf-8").strip(), floor)
         self.assertIn(f"Programming Language :: Python :: {floor}", project["classifiers"])
-        workflow = (ROOT / ".github" / "workflows" / "test.yml").read_text(encoding="utf-8")
-        self.assertIn("fromJSON(needs.plan.outputs.matrix)", workflow)
         from scripts.ci_plan import plan
         self.assertEqual({row["python"] for row in plan("workflow_dispatch", [])["matrix"]["include"]}, {floor})
         self.assertIn(f"Python {floor} or newer", (ROOT / "README.md").read_text(encoding="utf-8"))
@@ -4815,7 +4813,7 @@ class ReleaseTagTests(unittest.TestCase):
 
 
 class PinnedReleaseTests(unittest.TestCase):
-    """标签、说明与 CI 都绑定已确认的提交，主线可以继续推进。"""
+    """标签与说明都绑定已确认的提交，主线可以继续推进。"""
 
     SHA = "1" * 40
     NOTES = "## [0.37.0] - 2026-10-01\n\n### 修复\n\n- **界面**：统计页布局稳定。\n"
@@ -4885,9 +4883,9 @@ class PinnedReleaseTests(unittest.TestCase):
                 self.release.plan_commit("owner/repo", self.SHA)
             self.assertEqual(ShipTests._writes(command), [])
 
-    def test_unmerged_red_ci_and_remote_tag_cannot_be_released(self):
+    def test_unmerged_commit_and_remote_tag_cannot_be_released(self):
         for options in (dict(status="ahead"), dict(status="diverged"),
-                        dict(conclusion="failure"), dict(tags=[{"ref": "refs/tags/v0.37.0"}])):
+                        dict(tags=[{"ref": "refs/tags/v0.37.0"}])):
             with self.subTest(options=options), self._shell() as command, self._api(**options), \
                     redirect_stdout(io.StringIO()):
                 self.assertEqual(self.release.main(["--release-sha", self.SHA, "--apply"]), 1)

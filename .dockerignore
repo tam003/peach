@@ -13,5 +13,8 @@
 !web/**
 !resources/
 !resources/**
+!tools/
+!tools/amane-bridge/
+!tools/amane-bridge/**
 **/__pycache__/
 **/*.pyc

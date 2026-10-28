@@ -358,6 +358,13 @@ def assert_requires_login(opener, base: str) -> None:
         assert error.code == 401, f"未登录访问 /api/items 应为 401，实际 {error.code}"
 
 
+def assert_amane_bridge(opener, base: str) -> None:
+    """设置页的 amane 桥卡片要读包里的清单；漏打包时这条接口直接 500。"""
+    with opener.open(base + "/api/scraping/amane-bridge", timeout=10) as response:
+        revision = json.load(response)["revision"]
+    assert len(revision) == 40, revision
+
+
 def assert_standalone_tunnel(configuration: dict) -> None:
     tunnel = configuration['tunnel']
     assert tunnel['enabled'] is False
@@ -439,6 +446,7 @@ def main() -> int:
                 for path in ("/", "/app.css", "/dist/peach-app.js", "/dist/peach-app.css", "/api/items"):
                     with opener.open(base + path, timeout=10) as response:
                         assert response.status == 200, path
+                assert_amane_bridge(opener, base)
                 with opener.open(base + "/api/configuration", timeout=5) as response:
                     configuration = json.load(response)
                 assert not any(row["term"] in ("FFmpeg", "untrunc") for row in configuration["facts"]), configuration["facts"]
@@ -459,7 +467,7 @@ def main() -> int:
                 assert (data / "config.previous.toml").is_file()
                 assert (data / "state" / "configuration-reload.request").is_file()
                 print(json.dumps({"ok": True, "version": health.get("version"),
-                                  "checks": ["oobe", "migrations", "lan-bind", "mdns", "password-login", "unauthenticated-api", "pages", "island", "items", "clouddrive-configuration", "cloudflared-sidecar", "bundled-media-tools", "public-resources"]}))
+                                  "checks": ["oobe", "migrations", "lan-bind", "mdns", "password-login", "unauthenticated-api", "pages", "island", "items", "clouddrive-configuration", "cloudflared-sidecar", "bundled-media-tools", "public-resources", "amane-bridge"]}))
             finally:
                 process.terminate()
                 process.wait(timeout=15)

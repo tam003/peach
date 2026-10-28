@@ -29,6 +29,7 @@ WINDOWS_TRAY_INPUTS = (
     "web/",
     "migrations/",
     "resources/",
+    "tools/amane-bridge/",
     "pyproject.toml",
 )
 
