@@ -29,6 +29,7 @@ RUNTIME_INPUTS = (
     "frontend/",
     "migrations/",
     "resources/",
+    "tools/amane-bridge/",
     "scripts/build_app_entry.py",
     "scripts/build_windows.ps1",
     "pyproject.toml",

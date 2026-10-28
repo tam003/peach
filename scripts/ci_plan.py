@@ -91,7 +91,8 @@ def plan(event: str, paths: list[str], contents: dict | None = None) -> dict:
     vendor = shared or any(path.startswith(("web/vendor/", ".github/workflows/test.yml"))
                            or path in {"package.json", "package-lock.json", "web/index.html",
                                        "scripts/vendor_web_dependencies.mjs"} for path in effective)
-    wheel = shared or "packaging" in scopes or any(path.startswith(("src/", "migrations/", "web/", "resources/"))
+    wheel = shared or "packaging" in scopes or any(path.startswith(("src/", "migrations/", "web/", "resources/",
+                                                                  "tools/amane-bridge/"))
                                                  for path in effective)
     required = ["plan", "python", "workflow-lint", "frontend-ready"]
     required += [name for enabled, names in ((browser, ["web-e2e"]), (frontend, ["web-bundle"]),

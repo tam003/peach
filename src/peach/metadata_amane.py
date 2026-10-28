@@ -27,6 +27,7 @@ from pathlib import Path
 from typing import Callable, Mapping, Sequence
 
 from .metadata import MetadataProviderError, identifies_code, validate_provider_code
+from .settings_file import PROJECT_ROOT
 from .sources.base import (COOLDOWN_ACTIONS, REASON_KINDS, FailureReason, SiteConfig, SiteRecord,
                            SourceFailure)
 from .user_agent import USER_AGENT
@@ -34,7 +35,8 @@ from .user_agent import USER_AGENT
 AMANE_REPOSITORY = "https://github.com/sqzw-x/amane"
 AMANE_LICENSE = "GPL-3.0"
 #: 桥的源码目录：清单、锁与脚本都在仓库里，随 Peach 分发的只有这三个文件，不含 amane 源码。
-BRIDGE_ROOT = Path(__file__).resolve().parents[2] / "tools" / "amane-bridge"
+#: 与 `migrations/` 同样挂在资源根下：源码树、wheel 的 `_resources` 与 PyInstaller 的 `_MEIPASS` 都认。
+BRIDGE_ROOT = PROJECT_ROOT / "tools" / "amane-bridge"
 BRIDGE_SCRIPT = BRIDGE_ROOT / "bridge.py"
 #: 桥的 venv 建在数据目录的工具区，和 FFmpeg 同一层；名字与源码目录一致。
 BRIDGE_TOOL_NAME = "amane-bridge"

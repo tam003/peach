@@ -14,7 +14,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from smoke_desktop import assert_requires_login, complete_first_run, smoke_environment, wait_health
+from smoke_desktop import (assert_amane_bridge, assert_requires_login, complete_first_run,
+                           smoke_environment, wait_health)
 
 
 def main() -> int:
@@ -61,6 +62,7 @@ def main() -> int:
                              "/healthz?ready=1"):
                     with opener.open(base + path, timeout=30) as response:
                         assert response.status == 200, path
+                assert_amane_bridge(opener, base)
                 with opener.open(base + "/api/configuration", timeout=15) as response:
                     configuration = json.load(response)
                 second = root / "second-media"
@@ -75,7 +77,7 @@ def main() -> int:
                 assert (data / "config.previous.toml").is_file()
                 print(json.dumps({"ok": True, "version": health.get("version"),
                     "checks": ["relocated-app", "no-development-tools", "first-run", "migrations",
-                               "standalone-ledger", "login", "frontend", "configuration-write"]}))
+                               "standalone-ledger", "login", "frontend", "amane-bridge", "configuration-write"]}))
             except BaseException as error:
                 if isinstance(error, urllib.error.HTTPError):
                     print(error.read().decode("utf-8", "replace"))

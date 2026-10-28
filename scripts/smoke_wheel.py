@@ -9,6 +9,13 @@ import time
 from pathlib import Path
 
 
+def assert_amane_bridge(client, headers):
+    """设置页的 amane 桥卡片要读包里的清单；漏打包时这条接口直接 500。"""
+    bridge = client.get("/api/scraping/amane-bridge", headers=headers)
+    assert bridge.status_code == 200, bridge.text
+    assert len(bridge.json()["revision"]) == 40, bridge.json()
+
+
 def main():
     with tempfile.TemporaryDirectory(prefix="peach-wheel-") as directory:
         root = Path(directory).resolve()
@@ -48,8 +55,10 @@ def main():
             for name in ("peach-app.js", "peach-app.css", "peach-pages.js", "peach-pages.css"):
                 assert (settings.page_path.parent / "dist" / name).is_file()
             assert any(settings.vendor_path.iterdir())
+            assert_amane_bridge(client, headers)
             print(json.dumps({"module": peach.__file__, "ready": ready.json(),
-                              "checks": ["migrations", "web", "vendor", "frontend", "auth", "items"]}))
+                              "checks": ["migrations", "web", "vendor", "frontend", "auth", "items",
+                                         "amane-bridge"]}))
         finally:
             client.close()
         with socket.socket() as reservation:

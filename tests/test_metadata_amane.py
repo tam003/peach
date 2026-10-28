@@ -12,7 +12,7 @@ import time
 import unittest
 from unittest.mock import patch
 
-from peach import metadata_amane
+from peach import metadata_amane, settings_file
 from peach.jav_cover_fetch import NotFound, Unavailable
 from peach.library_processing import LibraryMetadataProvider, PROVIDER_NAMES, SOURCE_LABELS
 from peach.metadata import MetadataProviderError, extract_peach_fields
@@ -50,6 +50,10 @@ class ManifestTests(unittest.TestCase):
         self.assertTrue(metadata_amane.locked_version())
         lock = (metadata_amane.BRIDGE_ROOT / "uv.lock").read_text(encoding="utf-8")
         self.assertIn(revision, lock)
+
+    def test_the_bridge_sits_under_the_resource_root_packaged_builds_unpack(self):
+        """PyInstaller 与 wheel 都会换掉资源根；按 `__file__` 上溯的路径打包后指到包外。"""
+        self.assertEqual(metadata_amane.BRIDGE_ROOT, settings_file.PROJECT_ROOT / "tools" / "amane-bridge")
 
     def test_every_opened_site_is_a_registered_source_of_its_tier_and_a_bridge_site(self):
         spec = importlib.util.spec_from_file_location("amane_bridge_sites", metadata_amane.BRIDGE_SCRIPT)
