@@ -2,11 +2,12 @@ import { useState } from 'react';
 
 import { SettingsRow } from '@/components/application/settings/settings-rows';
 import { Switch } from '@/components/base/switch/switch';
+import { StatusLabel } from '../components/status-label';
 
 import { apiSend } from '../../api';
-import { phrase } from '../../i18n/phrase';
-import { ErrorText, Help, Rows, Stack } from './section';
+import { ErrorText, Rows, Stack } from './section';
 import { busyProps, useAction } from './use-action';
+import { phrase } from '../../i18n/phrase';
 
 export interface RemoteReportingState {
   usage: boolean; errors: boolean; available: boolean;
@@ -23,7 +24,7 @@ export function ReportingChoices({ value, onChange, busy = false }: {
           onChange={(enabled) => onChange({ ...value, usage: enabled, errors: enabled })} {...busyProps(busy)} />
       </SettingsRow>
     </Rows>
-    {!value.available ? <Stack divided><Help>{phrase('上传服务未配置。')}</Help></Stack> : null}
+    {!value.available ? <Stack divided><span className="self-start"><StatusLabel>上传服务未配置</StatusLabel></span></Stack> : null}
   </>;
 }
 

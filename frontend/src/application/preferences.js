@@ -1,7 +1,8 @@
 /* Preferences domain controller: this domain's state and actions. Startup is installed by Application's lifecycle. */
 import { loadMediaSources } from './../query/media-sources';
-import { buildBars, dropOfflineFromDefaultLoc, homePath, loadCatalog, paintCatalogFilter, repaintCatalogGrid } from './catalog.js';
+import { buildBars, catalogState, dropOfflineFromDefaultLoc, homePath, loadCatalog, paintCatalogFilter, repaintCatalogGrid } from './catalog.js';
 import { appSettingsStore } from './../appearance/settings';
+import { entityDisplayName, setNameLanguage } from '../core/entity-names';
 import { playUiSound, setUiSoundsEnabled, wireUiSounds } from '../ui-kit/sounds';
 import { applyLocale } from './../appearance/locale';
 import { applyTheme, watchSystemTheme } from './../appearance/theme';
@@ -13,11 +14,13 @@ import { notifyShell, selectMode, selected, state } from './../shell/index';
 import { preferredDirection } from './../sort-preferences';
 import { releaseHoverPreviews, setHoverState } from './../card-art/hover';
 import { reloadCurrentSurface } from './layout.js';
+import { refreshPageNavigation } from '../history/page-navigation';
 import { refreshFeedRows, syncFeedAutoScroll } from './feed.js';
 import { stageApi } from '../react/application-residents';
 import { syncJavImages } from './../jav-artwork';
 import { coverAnchor } from './../card-art/framing';
 import { mediaState, repaintDetailPoster } from './media.js';
+import { loadingState } from './loading.js';
 import { updateManagedRoute } from './../history/managed';
 import { MEDIA_SOURCE_ICONS, emptyStateHtml, wireHorizontalScroller } from '../ui-kit';
 import { tagLabel } from '../core/tags';
@@ -32,8 +35,9 @@ export async function loadSourceStatus(){
   try{
     const d=await loadMediaSources(effects.signal);
     if(!effects.isActive)return preferencesState.sourceOnline;
-    preferencesState.sourceOnline=Object.fromEntries((d.sources||[]).map(s=>[s.location,s.online]));
-    preferencesState.sourceProblems=Object.fromEntries((d.sources||[]).map(s=>[s.location,s.message||'']));
+    const roots=(d.sources||[]).flatMap(s=>s.roots||[]).filter(r=>r.root_id);
+    preferencesState.sourceOnline=Object.fromEntries([...(d.sources||[]).map(s=>[s.location,s.online]),...roots.map(r=>[r.root_id,r.online])]);
+    preferencesState.sourceProblems=Object.fromEntries([...(d.sources||[]).map(s=>[s.location,s.message||'']),...roots.map(r=>[r.root_id,r.message||''])]);
   }catch{if(!effects.isActive)return preferencesState.sourceOnline;preferencesState.sourceOnline={};preferencesState.sourceProblems={}}
   document.body.classList.toggle('offline-source',Object.values(preferencesState.sourceOnline).includes(false));
   dropOfflineFromDefaultLoc();
@@ -64,8 +68,8 @@ export function sidebarFacets(facetData,context){
   return {
     locations:(facetData.locations||[]).map(row=>({value:row.k,label:LOC[row.k]||row.k,n:row.n??null,dot:sidebarDot(row.k),
       ...(preferencesState.sourceOffline(row.k)?{offline:preferencesState.OFFLINE_HINT}:{})})),
-    regions:rows(facetData.regions),orientations:rows(facetData.orientations),
-    creators:rows(creators),tags:rows(facetData.tags),tech:rows(facetData.tech),
+    regions:rows(facetData.regions),orientations:rows(facetData.orientations),years:rows(facetData.years),
+    creators:rows(creators,row=>entityDisplayName('creator',row.k)),tags:rows(facetData.tags),tech:rows(facetData.tech),
     followTags:rows(facetData.follow_tags,row=>tagLabel(row.k)),
     duration:!!facetData.stats?.duration,
   };
@@ -83,6 +87,7 @@ export async function refreshAll(automatic=false){
     if(refresh==='skip')return;
     if(path==='/playlists'){rereadPlaylists();return}
     const target=refresh==='reopen'?path:'/stats';
+    refreshPageNavigation();
     if(target===path)navigationState.navigatePath(location.pathname+location.search+location.hash,true,peachHistory.navigation.location.state);
     else navigationState.navigatePath(target);
     return;
@@ -96,8 +101,8 @@ export async function refreshAll(automatic=false){
      If the grid arrives first, the spinner keeps going while the tag bar is still waiting. The top three rows and the tag bar do not get a skeleton. They
      already have content on screen, and replacing it with gray bars is more jarring than swapping it. They get a shimmer. The skeleton is for a first screen that starts empty. */
   paintCatalogFilter({refreshing:true});
-  /* The catalog element starts its fetch in the microtask queued by the address rewrite. After that turn, the grid claims the surface and shows its waiting state, then the top three rows fetch. */
-  try{const loading=replaceCatalogAddress();await null;await Promise.all([loading,buildBars()])}
+  /* 目录元素在改写地址排下的那个微任务里发起取数；让过这一拍，网格先认领表面、铺好等待态，顶部三层再取。 */
+  try{refreshPageNavigation();const loading=replaceCatalogAddress();await null;await Promise.all([loading,buildBars()])}
   finally{paintCatalogFilter({refreshing:false})}
   if(!automatic)window.scrollTo({top:0,behavior:'smooth'});
   return true;
@@ -143,6 +148,7 @@ preferencesState.OFFLINE_REASON = {local:'无法读取媒体目录，请检查�
 preferencesState.offlineReason = key=>preferencesState.sourceProblems[key]||preferencesState.OFFLINE_REASON[key]||'无法读取这个来源的媒体目录，请检查目录权限及挂载状态。';
 preferencesState.settingsStore = appSettingsStore();
 preferencesState.appSettings = preferencesState.settingsStore.value;
+setNameLanguage(preferencesState.appSettings.performerNameLanguage);
 preferencesState.saveSettings = ()=>preferencesState.settingsStore.save();
 document.documentElement.style.setProperty('--hover-delay',`${preferencesState.appSettings.hoverDelaySeconds}s`);
 setUiSoundsEnabled(preferencesState.appSettings.uiSounds);
@@ -157,6 +163,11 @@ preferencesState.catalogLoadWaiters = [];
 preferencesState.nextCatalogLoad = ()=>new Promise(resolve=>preferencesState.catalogLoadWaiters.push(resolve));
 preferencesState.handOff = loading=>{preferencesState.catalogLoadWaiters.splice(0).forEach(resolve=>resolve(loading));return loading};
 preferencesState.settingsEffects = {
+  performerNameLanguage:()=>{
+    setNameLanguage(preferencesState.appSettings.performerNameLanguage);
+    loadingState.syncPageTitle(location.href);
+    catalogState.barsRendered='';buildBars();
+  },
   theme:()=>applyTheme(),
   locale:()=>applyLocale(),
   /* Turning this on plays the switch sound immediately, so the change is audible. The sound for turning it off comes from the change listener on document.
@@ -185,6 +196,7 @@ preferencesState.settingsEffects = {
   /* Folding happens while rendering. Without a refetch, cards that were skipped do not appear on their own. */
   groupCollapse:()=>reloadCurrentSurface(),
   feedAutoScroll:()=>syncFeedAutoScroll(),
+  feedLimit:()=>refreshFeedRows(),
   feedCompilations:()=>refreshFeedRows(),
   /* The setting says leaving the detail page no longer opens the small window. Leaving an already open small window up would look like the setting did nothing. */
   miniplayer:()=>{if(!preferencesState.appSettings.miniplayer)stageApi()?.closeMiniplayer()},

@@ -8,6 +8,7 @@
 /** 服务端明确回了非 2xx。`status` 留给调用方区分 401／409／404 这类需要不同处置的情况。 */
 import { requestErrorMessage } from './core/request-error';
 import { registerResponseEntities } from './core/entity-links';
+import { libraryScopedPath } from './core/library-scope';
 import { phrase } from './i18n/phrase';
 import { getLocale } from './i18n/translate';
 
@@ -42,6 +43,7 @@ export const errorMessage = (cause: unknown): string => phrase(requestErrorMessa
 
 /** GET 一个 `/api/...` 契约端点。`signal` 中止时抛出 `AbortError`，调用方据此放弃写 DOM。 */
 export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> {
+  path = libraryScopedPath(path);
   const response = await fetch(path, {
     headers: { Accept: 'application/json', 'Accept-Language': getLocale() },
     // 页面口令是 httponly cookie，取数必须带上；跨源请求不在此列。
@@ -52,6 +54,7 @@ export async function apiGet<T>(path: string, signal?: AbortSignal): Promise<T> 
   try {
     payload = await response.json();
   } catch {
+    signal?.throwIfAborted();
     // 失败响应不一定是 JSON（例如 401 的登录页），下面用状态码兜底。
   }
   if (!response.ok) {
@@ -73,6 +76,7 @@ export async function apiSend<T>(path: string, body: unknown, method = 'POST', s
   try {
     payload = await response.json();
   } catch {
+    signal?.throwIfAborted();
     // 同上：失败响应不一定是 JSON。
   }
   if (!response.ok) {

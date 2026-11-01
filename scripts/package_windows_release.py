@@ -25,20 +25,26 @@ def archive(destination: Path, root: Path, files: list[Path], manifest: dict | N
             package.writestr("Peach/" + MANIFEST, json.dumps(manifest, ensure_ascii=False, sort_keys=True))
 
 
-def download_notes(version: str, *, lite_installer: bool = False) -> str:
+def download_notes(version: str, *, lite_installer: bool = False,
+                   download_base: str | None = None, macos: bool = False) -> str:
     """发布页的下载入口与包类型说明。"""
-    base = f"https://github.com/tam003/peach/releases/download/v{version}/Peach-{version}-windows-x64"
+    directory = (download_base or f"https://github.com/tam003/peach/releases/download/v{version}").rstrip('/')
+    base = f"{directory}/Peach-{version}-windows-x64"
+    mac = (f"| [macOS Apple Silicon (DMG)]({directory}/Peach-{version}-macos-arm64.dmg) | Apple Silicon Mac |\n"
+           f"| [macOS Intel (DMG)]({directory}/Peach-{version}-macos-x86_64.dmg) | Intel Mac |\n" if macos else "")
     lite = (f"| [Lite installer (lite-setup.exe)]({base}-lite-setup.exe) | No tools bundled; reuses installed tools or downloads them when needed |\n"
             if lite_installer else "")
     return (
         "\n## Downloads\n\n"
         "| Download | Use |\n| --- | --- |\n"
+        + mac +
         f"| [Installer (setup.exe)]({base}-setup.exe) | All tools bundled; recommended for a first install |\n"
         + lite +
         f"| [Portable package (ZIP)]({base}.zip) | All tools bundled; extract and run `Peach.exe` |\n"
         f"| [App update package (update.zip)]({base}-update.zip) | No tools; installed by the Peach updater, not for a first install |\n"
         f"| Tool packages (tools-*.zip): [FFmpeg]({base}-tools-ffmpeg.zip) / "
-        f"[untrunc]({base}-tools-untrunc.zip) / [cloudflared]({base}-tools-cloudflared.zip) "
+        f"[untrunc]({base}-tools-untrunc.zip) / [cloudflared]({base}-tools-cloudflared.zip) / "
+        f"[face models]({base}-tools-face-models.zip) "
         "| Downloaded by the updater when needed; no need to pick them by hand |\n"
         "| `*-corresponding-source.zip` | Source of the third-party tools; not needed for normal use |\n\n"
         "Already running Peach: check for updates under Settings → App and maintenance, then confirm the restart to install. "

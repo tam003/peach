@@ -13,8 +13,11 @@ import { icon } from '@peach/legacy/core';
 
 import { FilterGlassRows, FilterIconButton, FilterPill } from '../components/filter-glass';
 import { LibraryShortcuts } from '../library-shortcuts/shortcut-controls';
+import { AsyncText } from '../components/async-text';
+import { FolderBrowseToggle } from '../catalog-folders/catalog-folders-page';
 import { SEGMENTED_GLASS_TRACK, SEGMENT_GLASS } from '../components/segmented';
 import { spriteGlyph } from '../components/sprite-glyph';
+import { IconSwap } from '../components/icon-swap';
 import { useViewGlide } from '../components/use-view-glide';
 import { useCatalogView } from '../catalog-grid/catalog-view';
 import { CatalogViewToggle } from '../catalog-grid/catalog-view-toggle';
@@ -26,6 +29,8 @@ import {
 import { phrase } from '../../i18n/phrase';
 
 const Sep = () => <span data-entity-sep="" aria-hidden="true" />;
+const ShuffleIcon = spriteGlyph('shuffle');
+const SortUpIcon = spriteGlyph('arrow-up'), SortDownIcon = spriteGlyph('arrow-down');
 
 export function EntityFilterPage(props: EntityFilterProps) {
   const { view, views, state, states, tags, combo, actions, helpers } = props;
@@ -232,13 +237,12 @@ function Head(props: EntityFilterProps) {
   );
 }
 
-/** 读数：`视频 · N`、`艺人 · N`、`照片 · N 张`。等这一趟取数时换成一条微光，宽度同骨架那一条。 */
+/** 读数等待时保留旧文字，筛选框及其它控件保持原位。 */
 function Readout({ text, busy }: { text: string; busy: boolean }) {
   return (
     <h3 data-entity-readout="">
-      {busy
-        ? <span data-skeleton="count" aria-hidden className="relative inline-block h-3.5 w-24 rounded-md align-middle skeleton-sheen" />
-        : text}
+      <AsyncText text={busy ? undefined : text} busy={busy} placeholder={<span data-skeleton="count" aria-hidden
+        className="relative inline-block h-3.5 w-24 rounded-md align-middle skeleton-sheen" />} />
     </h3>
   );
 }
@@ -265,7 +269,7 @@ export function Segments({ name, label, value, options, onChange }: {
 
 export function Shuffle({ onPress, busy = false }: { onPress(): void; busy?: boolean }) {
   return (
-    <FilterIconButton data-entity-batch="" label={phrase('换一批')} busy={busy} icon={spriteGlyph('shuffle')} onPress={onPress} />
+    <FilterIconButton data-entity-batch="" label="换一批" busy={busy} busyStyle="strand" icon={ShuffleIcon} onPress={onPress} />
   );
 }
 
@@ -279,7 +283,8 @@ function VideoControls({ head, actions }: { head: EntityVideoHead; actions: Enti
         <Segments label={phrase('JAV 卡片版式')} value={head.jav.layout} options={head.jav.options} onChange={actions.setJavLayout} />
       ) : null}
       <CatalogViewToggle />
-      {view === 'cards' ? <SortKeys sorts={head.sorts} onSort={actions.setSort} /> : null}
+      <FolderBrowseToggle />
+      <SortKeys sorts={head.sorts} onSort={actions.setSort} />
     </span>
   );
 }
@@ -290,11 +295,10 @@ export function SortKeys({ sorts, onSort }: { sorts: readonly EntitySortKey[]; o
   return (
     <>
       {sorts.map((sort) => {
-        const Arrow = spriteGlyph(sort.dir === 'asc' ? 'arrow-up' : 'arrow-down');
         return (
           <button key={sort.key} type="button" data-entity-sort={sort.key} data-entity-press=""
-            aria-pressed={sort.pressed} aria-label={sort.ariaLabel ? phrase(sort.ariaLabel) : undefined} onClick={() => onSort(sort.key)}>
-            {phrase(sort.label)}{sort.pressed && sort.dir ? <Arrow className="size-3.5" /> : null}
+            aria-pressed={sort.pressed} aria-label={sort.ariaLabel || undefined} onClick={() => onSort(sort.key)}>
+            {sort.label}{sort.pressed && sort.dir ? <IconSwap a={SortUpIcon} b={SortDownIcon} state={sort.dir === 'asc' ? 'a' : 'b'} className="size-(--icon-inline)" /> : null}
           </button>
         );
       })}

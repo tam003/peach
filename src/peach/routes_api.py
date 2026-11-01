@@ -35,6 +35,7 @@ from .platform import is_unmapped, translate_ledger_path
 from .providers import ProviderUnavailable
 from .routes_auth import require_auth
 from .task_runs import task_label
+from .task_control import Cancelled as TaskCancelled
 from .taste_history import analyze_history, import_history_exports, write_manifest
 
 router = APIRouter()
@@ -57,6 +58,8 @@ def source_health(request: Request, args: dict[str, str] = Depends(require_auth)
         "ok": True,
         "sources": rows,
         "offline": [row["location"] for row in rows if row["online"] is False],
+        "offline_roots": [root["root_id"] for row in rows for root in row.get("roots", [])
+                          if root.get("root_id") and root["online"] is False],
     }
 
 
@@ -66,6 +69,8 @@ def media_library_list(request: Request, args: dict[str, str] = Depends(require_
     from .media_sources import cost_for
     config = settings_file.active()
     return {"libraries": [{"id": row["id"], "name": row["name"], "icon": row["icon"], "folders": len(row["roots"]),
+                           "color": row["color"], "policy": row["policy"], "stages": row["stages"],
+                           "roots": [{"root_id": root["root_id"], "location": root["location"]} for root in row["roots"]],
                            "metered": any(cost_for(root['location'], root['root'], config) == 'metered'
                                           for root in row['roots'])}
                           for row in media_libraries.libraries(config)]}
@@ -248,6 +253,33 @@ def task_run_detail(request: Request, run_id: int,
         return JSONResponse({"error": str(exc.args[0])}, status_code=404)
 
 
+@router.post('/api/tasks/{run_id}/control')
+def task_run_control(request: Request, run_id: int, body: dict = Body(default_factory=dict),
+                     _args: dict[str, str] = Depends(require_auth)):
+    from . import task_control
+    contract = request.app.state.web_contract
+    try:
+        run = contract.task_runs.get(run_id)
+        if run is not None and run.active and run.task_key == 'library-processing':
+            from .web_library_processing import _current, w_library_processing
+            current = _current(contract)
+            if current.get('run_id') != run_id:
+                raise ValueError('任务已变化，请刷新后重试')
+            if not contract.task_runs.enabled or run.host != contract.task_runs.host:
+                raise PermissionError('请在执行这轮任务的写入端操作')
+            w_library_processing(contract, {'action': body.get('action'), 'job_id': current.get('job_id')})
+        else:
+            task_control.request(contract.task_runs, run_id, body.get('action'))
+        contract.followups.wake()
+        return web_tasks.q_task(contract, run_id)
+    except KeyError as exc:
+        return JSONResponse({'error': str(exc.args[0])}, status_code=404)
+    except PermissionError as exc:
+        return JSONResponse({'error': str(exc)}, status_code=403)
+    except ValueError as exc:
+        return JSONResponse({'error': str(exc)}, status_code=409)
+
+
 @router.post(push_discovery.WEBHOOK_PATH, status_code=204)
 def clouddrive_inbox(request: Request, body: dict[str, Any] = Body(default_factory=dict)):
     """CloudDrive2 的文件变更通知。
@@ -279,6 +311,21 @@ def clouddrive_inbox(request: Request, body: dict[str, Any] = Body(default_facto
     return Response(status_code=204)
 
 
+@router.get("/api/background-issues")
+def background_issues(request: Request, _args: dict[str, str] = Depends(require_auth)):
+    """任务中心「需要处理」：各后台服务此刻存在的问题。只读，不出网，不启动任何服务。"""
+    from . import settings_file
+    state = request.app.state
+    try:
+        config = settings_file.load_config()
+    except settings_file.SettingsFileError:
+        # 设置文件本身坏了由配置页报；依赖它的几项这一次读不出来，其余照常。
+        config = None
+    if config is not None and not config.present:
+        config = None
+    return {"issues": state.background_issues.collect(state, state.web_contract, config)}
+
+
 def _conflict(error: TaskRunConflict, request: Request | None = None) -> JSONResponse:
     """手动触发撞上在跑的那一轮：409，并带上挡路那一轮的 id。
 
@@ -304,8 +351,16 @@ def _conflict(error: TaskRunConflict, request: Request | None = None) -> JSONRes
         status_code=409)
 
 
+#: 走通用契约入口、却是运行 Peach 那台电脑的配置：生成预览与编解码方式、时间轴缩略图档位。
+#: 只有配置页读写它们，读写都按 `/api/configuration/*` 的本机判据放行，非本机一律 403。
+#: 判据由组装点 `api.create_app` 挂在 `app.state.local_only`：路由模块之间只许依赖 `routes_auth`。
+LOCAL_ONLY_ROUTES = frozenset({"/api/media-processing", "/api/thumbnail-jobs"})
+
+
 @router.get("/api/{route:path}")
 def api_get(request: Request, route: str, args: dict[str, str] = Depends(require_auth)):
+    if f"/api/{route}" in LOCAL_ONLY_ROUTES:
+        request.app.state.local_only(request)
     state = request.app.state
     sync = state.sync
     try:
@@ -316,6 +371,8 @@ def api_get(request: Request, route: str, args: dict[str, str] = Depends(require
         return payload
     except TaskRunConflict as exc:
         return _conflict(exc, request)
+    except TaskCancelled:
+        return JSONResponse({'error': '任务已取消，已保存的结果保留'}, status_code=409)
     except UpdateBusy as exc:
         return JSONResponse({'error': 'update in progress', 'message': str(exc)}, status_code=409)
     except FolderRuleConflict as exc:
@@ -341,6 +398,8 @@ def api_post(
     sync = request.app.state.sync
     route_path = f"/api/{route}"
     lang = i18n.request_language(request)
+    if route_path in LOCAL_ONLY_ROUTES:
+        request.app.state.local_only(request)
     if (sync is not None and sync.read_only
             and route_path not in web_contract.READ_ONLY_POST_ROUTES):
         # 非写入端或冲突状态都只读；继续写只会产生无法自动合并的分叉。
@@ -355,7 +414,10 @@ def api_post(
             status_code=409,
         )
     try:
-        return web_contract.dispatch_api_post(request.app.state.web_contract, route_path, body)
+        return web_contract.dispatch_api_post(
+            request.app.state.web_contract, route_path, body)
+    except TaskCancelled:
+        return JSONResponse({'error': '任务已取消，已保存的结果保留'}, status_code=409)
     except TaskRunConflict as exc:
         return _conflict(exc, request)
     except UpdateBusy as exc:
@@ -376,6 +438,9 @@ def api_post(
             status_code=409,
         )
     except (TypeError, ValueError) as exc:
+        # 拒收原因只落本机错误日志，诊断包据此解释页面上的 400；4xx 不远程上报。
+        from .error_reporting import event
+        event('http-request', exc, method='POST', route=route_path.lstrip('/'), status_code=400)
         return JSONResponse({"error": i18n.localize_string(f"{type(exc).__name__}: {exc}", lang)},
                             status_code=400)
     except Exception:

@@ -1,11 +1,12 @@
 /* JAV 标题：从 item 计算番号、版本徽章与标题。
- * 纯字符串逻辑，只依赖 core 的 esc 与当前界面语言，不碰 DOM。
+ * 纯字符串逻辑，只依赖 core 的 esc、语言标记与当前界面语言，不碰 DOM、不读 state。
  * Application 与 React 页面直接引用本模块，标题规则只有一份。
- * 后缀只对 is_jav 剥离；界面语言不是中文时先用来源英文标题（ADR-0115），
+ * 后缀只对 is_jav 剥离；界面语言不是中文时先用来源英文标题（ADR-0131），
  * 否则官方标题优先取含日文的一条，再按字段顺序回落。 */
 
 import { getLocale } from '../i18n/translate';
 import { esc } from './index';
+import { langAttr } from './text-lang';
 
 /** 算标题要读的那几个字段。 */
 export interface JavTitleSource {
@@ -72,5 +73,5 @@ export function javTitleHtml(it:Item,value=it?.name){
   const {code,title,badges=[]}=javTitleParts(it,value);
   if(!code)return esc(title);
   const edition=badges.map(label=>`<small class="javedition ${label==='中字'?'subtitle':label==='无码'?'uncensored':label==='无码破解'?'cracked':'quality'}">${esc(label)}</small>`).join('');
-  return `<span class="ui-javidentity"><strong class="ui-javcode">${esc(code)}</strong>${edition}</span>${title?` <span class="ui-javtitle">${esc(title)}</span>`:''}`;
+  return `<span class="ui-javidentity"><strong class="ui-javcode">${esc(code)}</strong>${edition}</span>${title?` <span class="ui-javtitle"${langAttr(title)}>${esc(title)}</span>`:''}`;
 }

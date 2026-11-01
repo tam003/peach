@@ -12,6 +12,7 @@
  * 各卡各自失败各自算：复核接口出错不该把回收站那张卡也变成「读取失败」，所以是五个
  * `useQuery`，不是一次 `Promise.all`。 */
 import type { QueryKey } from '@tanstack/react-query';
+import type { CleanupToolKey } from '../../cleanup-tools';
 
 import { apiGet } from '../../api';
 import { DUPLICATES_KEY, fetchDuplicates } from '../duplicates/duplicates';
@@ -25,7 +26,9 @@ import {
   fetchLinkCheck, fetchLinkPrune, fetchLinkStats, LINK_CHECK_KEY, LINK_PRUNE_KEY, LINKS_KEY,
 } from './links';
 import { prefetchOrganize } from './organize';
+import { fetchOrphanRecords, ORPHAN_RECORDS_KEY } from './orphan-records';
 import { prefetchResourceSync } from './resource-sync';
+import { fetchDeletePerformers, PERFORMER_DELETE_KEY } from './performer-delete';
 import { phrase } from '../../i18n/phrase';
 
 export const REVIEW_COUNTS_URL = '/api/review?counts=1';
@@ -91,41 +94,38 @@ export function junkBreakdown(summary: JunkSummary | undefined): string {
   return parts.join(' · ');
 }
 
-/** 首屏不等的那几份：各自的 `useQuery` 挂载时取。 */
+/** 状态摘要独立读取；某一份失败时只影响对应入口的读数。 */
 const LAZY_QUERIES: [QueryKey, (context: { signal: AbortSignal }) => Promise<unknown>][] = [
   [REVIEW_COUNTS_KEY, ({ signal }) => fetchReviewCounts(signal)],
   [QUALITY_GOALS_KEY, ({ signal }) => fetchQualityGoals(signal)],
   [TRASH_KEY, ({ signal }) => fetchTrashSummary(signal)],
-  [LINKS_KEY, ({ signal }) => fetchLinkStats(signal)],
-  [LINK_CHECK_KEY, ({ signal }) => fetchLinkCheck(signal)],
-  [LINK_PRUNE_KEY, ({ signal }) => fetchLinkPrune(signal)],
+  [JUNK_KEY, ({ signal }) => fetchJunkSummary(signal)],
+  [DUPLICATES_KEY, ({ signal }) => fetchDuplicates(signal)],
 ];
 
-/** 首屏：顶上那排读数、这次会扫哪几个来源，以及两张后台任务卡、整理卡与资源同步。
- *
- *  等的是画出第一屏必需的那几份：遗留壳已经铺了骨架，页面自己再转一次圈就是同一次进入里
- *  两段等待态。复核与高清版那两个数和链接统计各读各的，慢的时候不该拖住整页，所以不等。
- *
- *  不等的那几份在缓存里已经有一版时（又一次进这一页）要重取：共用的 `queryClient` 挂载时
- *  不重取已缓存的键，不在这里推一把，读数就停在上一次进来时的样子。第一次进来时它们还
- *  没有缓存，由各自的 `useQuery` 挂载时取。
- *
- *  直达页底的资源同步（`#resource-sync`）时这几份也要等：链接管理在它上面，读数与检查结果
- *  在滚动之后才接上的话，落点会被撑下去几百像素。 */
+/** 首页等待日常扫描状态；维护工具的表单、任务和清单进入二级页后再读取。 */
 export async function prefetchDataCleanup(signal: AbortSignal): Promise<void> {
-  const anchored = location.hash === '#resource-sync';
-  const lazy = LAZY_QUERIES.map(([queryKey, queryFn]) => {
-    if (anchored) return queryClient.fetchQuery({ queryKey, queryFn: () => queryFn({ signal }) }).catch(() => undefined);
-    if (queryClient.getQueryState(queryKey)) void queryClient.prefetchQuery({ queryKey, queryFn });
-    return undefined;
-  });
-  await Promise.all([
-    ...lazy,
-    queryClient.fetchQuery({ queryKey: JUNK_KEY, queryFn: () => fetchJunkSummary(signal) }),
-    queryClient.fetchQuery({ queryKey: DUPLICATES_KEY, queryFn: () => fetchDuplicates(signal) }),
-    prefetchMediaSources(signal).then(() => prefetchResourceSync(signal)),
-    prefetchLibraryProcessing(signal),
-    prefetchMediaRepair(signal),
-    prefetchOrganize(signal),
-  ]);
+  for (const [queryKey, queryFn] of LAZY_QUERIES) {
+    void queryClient.prefetchQuery({ queryKey, queryFn: () => queryFn({ signal }) });
+  }
+  await prefetchLibraryProcessing(signal);
+}
+
+/** 进入维护工具时才读取它的状态、配置与结果。 */
+export async function prefetchDataCleanupTool(tool: CleanupToolKey, signal: AbortSignal): Promise<void> {
+  switch (tool) {
+    case 'organize': await prefetchOrganize(signal); break;
+    case 'media-repair': await prefetchMediaRepair(signal); break;
+    case 'resource-sync': await prefetchMediaSources(signal); await prefetchResourceSync(signal); break;
+    case 'orphan-records':
+      await queryClient.prefetchQuery({ queryKey: ORPHAN_RECORDS_KEY, queryFn: () => fetchOrphanRecords(signal) }); break;
+    case 'batch-delete':
+      await queryClient.prefetchQuery({ queryKey: PERFORMER_DELETE_KEY, queryFn: () => fetchDeletePerformers(signal) }); break;
+    case 'links':
+      await Promise.all([
+        queryClient.prefetchQuery({ queryKey: LINKS_KEY, queryFn: () => fetchLinkStats(signal) }),
+        queryClient.prefetchQuery({ queryKey: LINK_CHECK_KEY, queryFn: () => fetchLinkCheck(signal) }),
+        queryClient.prefetchQuery({ queryKey: LINK_PRUNE_KEY, queryFn: () => fetchLinkPrune(signal) }),
+      ]); break;
+  }
 }

@@ -1,4 +1,5 @@
 """Web 组合入口为可恢复任务装配领域处理器。"""
+from datetime import timezone
 from .job_recovery import resume
 from .web_library_processing import w_library_processing
 from .web_scraping import w_scraping_cover, w_scraping_amane_rebuild
@@ -15,6 +16,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 
 
 def restore(contract):
+    from .jav_discovery_metadata import discovery_metadata
+    from .job_recovery import read
     return resume(contract.db_path, {
         "library-processing": lambda body: w_library_processing(contract, body, resume=True),
         "timeline-thumbnails": lambda body: w_thumbnail_jobs(contract, body),
@@ -30,6 +33,9 @@ def restore(contract):
         "taste-refresh": lambda body: w_taste_refresh(contract, body),
         "media-repair": lambda body: w_media_repair(contract, body),
         "amane-bridge": lambda body: w_scraping_amane_rebuild(contract, body),
+        'jav-discovery-metadata': lambda body: discovery_metadata(contract).ensure(
+            body['codes'], refresh=body.get('refresh', False),
+            _resume=read(contract.db_path, 'jav-discovery-metadata').get('checkpoint')),
         "organize": lambda body: (w_organize_rollback(contract, body) if body.get('action') == 'rollback'
                                     else w_organize_apply(contract, body)),
     })
@@ -41,7 +47,7 @@ class RecoveryService:
     def __init__(self, contract, *, available):
         self.contract = contract
         self.available = available
-        self.scheduler = BackgroundScheduler()
+        self.scheduler = BackgroundScheduler(timezone=timezone.utc)
 
     def start(self):
         if self.available and not self.scheduler.running:

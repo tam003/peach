@@ -39,9 +39,11 @@ UNRELEASED = "未发布"
 
 #: Release 页正文里跟在变更日志后面的安装提示。每一版都一样，所以只写在这里一处，
 #: 工作流不再自己抄一份。
-INSTALL_NOTE = ("Windows x64, used from a browser on this computer or across the LAN; no separate Python or "
-                "media tools needed. For install and use, see the [Windows guide](https://github.com/tam003/peach/blob/master/docs/TESTING_DESKTOP.md); "
-                "for macOS, see [running from source](https://github.com/tam003/peach/blob/master/docs/OPERATIONS.md#从源码运行windowsmacos).")
+INSTALL_NOTE = ("Windows x64 comes as an installer and a portable package, both with Python and the media tools bundled; "
+                "macOS comes as Apple Silicon and Intel DMGs, with the media tools prepared separately. "
+                "The macOS beta uses a local ad-hoc signature and is not notarized by Apple. "
+                "For install and use, see the [Windows guide](https://github.com/tam003/peach/blob/master/docs/TESTING_DESKTOP.md); "
+                "for macOS, see the [macOS guide](https://github.com/tam003/peach/blob/master/docs/OPERATIONS.md).")
 
 #: Release 页用英文：`CHANGELOG.md` 保留中文分组与区域标签（解析与历史版本都靠它们），生成正文时再换成英文。
 NOTE_GROUPS = {"破坏性变化": "Breaking changes", "新增": "Added", "变更": "Changed",

@@ -197,7 +197,7 @@ describe('播放墙的浏览与详情', () => {
       const attempts = failures, position = await camera(page);
       await page.waitForTimeout(400);
       assert.equal(failures, attempts, '失败后不连续触发新请求');
-      recover = true; await page.getByRole('button', { name:'重试',exact:true }).click();
+      recover = true; await page.getByRole('button', { name:'立即重试',exact:true }).click();
       await page.locator('[data-wall-error]').waitFor({ state:'hidden' });
       await page.waitForFunction(() => [...document.querySelectorAll<HTMLElement>('[data-wall-id]')].some(node => Number(node.dataset.wallId) >= 1060));
       assert.deepEqual(await camera(page), position);
@@ -501,6 +501,8 @@ describe('播放墙的浏览与详情', () => {
       await page.getByRole('button', { name: '详情', exact: true }).click();
       await page.locator('#stage[open] [data-item-side]').waitFor();
       await page.keyboard.press('Escape'); await page.locator('#stage[open]').waitFor({ state: 'hidden' });
+      await page.waitForURL(url => url.pathname === '/wall');
+      await page.locator('[data-video-wall]').waitFor({ state: 'visible' });
       await page.locator('[data-wall-tile]').first().waitFor();
       await page.evaluate(async () => {
         for (let frame = 0; frame < 2; frame++) await new Promise(requestAnimationFrame);
@@ -576,7 +578,7 @@ describe('播放墙的浏览与详情', () => {
       await page.locator('[data-wall-error]').waitFor();
       assert.equal(await page.getByRole('button', { name:'退出播放墙' }).isVisible(), true);
       fail = false;
-      await page.getByRole('button', { name:'重试', exact:true }).click();
+      await page.getByRole('button', { name:'立即重试', exact:true }).click();
       await page.locator('[data-wall-empty]').waitFor();
       assert.equal(await page.locator('[data-wall-error]').count(), 0);
     } finally { await opened.close() }

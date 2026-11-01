@@ -8,7 +8,7 @@
 
 确认点只有一个，剩下的判据都由脚本挡：`--ship` 拒绝夹带别的改动，标签只打在已推到远端
 master 的提交上，中途停下再跑一次就接着走。人要决定的只是措辞对不对，不是流程走到哪一步了。
-这个分发不跑 Test 工作流，发布不等 CI（ADR-0114）。
+这个分发不跑 Test 工作流，发布不等 CI（ADR-0130）。
 
 版本号只在这里动：每个 `X.Y.Z` 都对应一份可下载的制品，日常集成的提交由 commit
 标识（ADR-0012）。
@@ -28,6 +28,7 @@ if not __package__:
 from . import changelog, version_bump
 
 ROOT = Path(__file__).resolve().parents[1]
+GITLAB = None
 
 #: 主检出的 master 上该落提交的只有本脚本与 `agent_worktree.py integrate`。它们调用 git 时
 #: 带上这个配置，`scripts/githooks/pre-commit` 据此放行，别的提交与手工 merge 一律拒收。
@@ -52,11 +53,26 @@ def api(repo: str, endpoint: str):
     return json.loads(command("gh", "api", f"repos/{repo}/{endpoint}"))
 
 
+def master_sha(repo: str) -> str:
+    return GITLAB.master_sha(repo) if GITLAB else api(repo, "git/ref/heads/master")["object"]["sha"]
+
+
+def remote_url(repo: str) -> str:
+    return GITLAB.remote_url(repo) if GITLAB else f"https://github.com/{repo}.git"
+
+
+def release_url(repo: str, tag: str) -> str:
+    return GITLAB.release_url(repo, tag) if GITLAB else f"https://github.com/{repo}/releases/tag/{tag}"
+
+
 def verify(repo: str, sha: str) -> dict:
-    """发布提交必须已在远端 master 历史上；这个分发不跑 Test 工作流，不等 CI（ADR-0114）。"""
-    comparison = api(repo, f"compare/master...{sha}")
-    if comparison["status"] not in {"identical", "behind"}:
-        raise ValueError("发布提交不属于远端 master 历史")
+    """发布提交必须已在远端 master 历史上；这个分发不跑 Test 工作流，不等 CI（ADR-0130）。"""
+    if GITLAB:
+        GITLAB.require_ancestor(repo, sha)
+    else:
+        comparison = api(repo, f"compare/master...{sha}")
+        if comparison["status"] not in {"identical", "behind"}:
+            raise ValueError("发布提交不属于远端 master 历史")
     return {"sha": sha}
 
 
@@ -68,12 +84,27 @@ def _require_clean_master() -> None:
 
 
 def _require_free_tag(repo: str, tag: str) -> None:
+    if GITLAB:
+        GITLAB.require_free_tag(repo, tag)
+        return
     # matching-refs 返回空列表代表不存在；网络或权限错误不能被当成空列表。
     if any(ref["ref"] == f"refs/tags/{tag}" for ref in api(repo, f"git/matching-refs/tags/{tag}")):
         raise ValueError(f"{tag} 已存在，不覆盖；发布新版本请先推进 __version__")
 
 
-def prepare(repo: str, part: str, *, apply: bool) -> dict:
+def require_clean_dependencies(root: Path = None) -> None:
+    """标签前复核依赖审计：标签流水线第一件事就是同一套 npm 审计，新公布的高危漏洞
+    会让已经打出去的标签什么也发不出。在打标签之前先查，有漏洞就不定版、不打标签。"""
+    from . import npm_audit
+    root = root or ROOT
+    failed = [str(project.relative_to(root)) or "." for project in (root, root / "frontend")
+              if npm_audit.audit(project) != 0]
+    if failed:
+        raise ValueError("依赖审计发现高危漏洞（" + "、".join(failed) + "）；先升级依赖再发布")
+
+
+def prepare(repo: str, part: str, *, apply: bool,
+            reference_evidence: dict[str, Path] | None = None) -> dict:
     """为下一次发布推进版本号并起草变更日志。
 
     只写文件，不提交：变更日志的措辞要人过一遍，脚本自己提交等于鼓励不看。
@@ -86,8 +117,12 @@ def prepare(repo: str, part: str, *, apply: bool) -> dict:
     result = {**planned, "tag": tag, "repo": repo, "applied": apply}
     if not apply:
         return result
+    require_clean_dependencies()
     from .release_review import review
-    result["upstream_review"] = review(ROOT, repo)
+    options = {"public_github": True} if GITLAB else {}
+    if reference_evidence:
+        options["reference_evidence"] = reference_evidence
+    result["upstream_review"] = review(ROOT, repo, **options)
     version_bump.write_version(ROOT, str(planned["bump"]))
     changelog.release(ROOT, version, repo=repo, spec=str(planned["range"]))
     # 那一节原样带在输出里：确认措辞的人不该再去翻文件才知道自己在确认什么。
@@ -143,7 +178,7 @@ def ship(repo: str, *, apply: bool) -> dict:
     """
     version, tag, pending = _staged_release(repo)
     head = command("git", "rev-parse", "HEAD")
-    remote = api(repo, "git/ref/heads/master")["object"]["sha"]
+    remote = master_sha(repo)
     result = {"version": version, "tag": tag, "repo": repo, "applied": apply,
               "commit": bool(pending), "push": bool(pending) or remote != head}
     if not apply:
@@ -153,18 +188,19 @@ def ship(repo: str, *, apply: bool) -> dict:
         command("git", "-c", f"{MASTER_WRITER}=release", "commit",
                 "-m", f"chore(release): 版本 {version}")
     sha = command("git", "rev-parse", "HEAD")
-    if api(repo, "git/ref/heads/master")["object"]["sha"] != sha:
-        command("git", "push", f"https://github.com/{repo}.git", "refs/heads/master")
+    if master_sha(repo) != sha:
+        command("git", "push", remote_url(repo), "refs/heads/master")
+    require_clean_dependencies()
     command("git", "tag", "-a", tag, sha, "-m", f"Peach {tag} Windows 测试版")
-    command("git", "push", f"https://github.com/{repo}.git", f"refs/tags/{tag}")
-    return {**result, "sha": sha, "release": f"https://github.com/{repo}/releases/tag/{tag}"}
+    command("git", "push", remote_url(repo), f"refs/tags/{tag}")
+    return {**result, "sha": sha, "release": release_url(repo, tag)}
 
 
 def plan(repo: str) -> dict:
     _require_clean_master()
     sha = command("git", "rev-parse", "HEAD")
-    if api(repo, "git/ref/heads/master")["object"]["sha"] != sha:
-        raise ValueError("本地 HEAD 与 GitHub master 不一致，请先完成同步")
+    if master_sha(repo) != sha:
+        raise ValueError("本地 HEAD 与发布平台 master 不一致，请先完成同步")
     version = version_bump.read_version(ROOT)
     tag = "v" + version
     document = (ROOT / changelog.CHANGELOG).read_text(encoding="utf-8")
@@ -196,14 +232,18 @@ def plan_commit(repo: str, sha: str) -> dict:
     _require_free_tag(repo, tag)
     if command("git", "tag", "--list", tag):
         raise ValueError(f"本地 {tag} 已存在，请先检查它的归属")
-    return {**verify(repo, sha), "tag": tag, "version": version, "repo": repo,
-            "section": changelog.section_of(document, version)}
+    return {**verify(repo, sha), "tag": tag, "version": version,
+            "repo": repo, "section": changelog.section_of(document, version)}
 
 
 def main(argv=None) -> int:
+    global GITLAB
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--repo", default="tam003/peach")
+    parser.add_argument("--gitlab-host", help="使用此 GitLab 主机发布，例如 gitgud.io；默认使用 GitHub")
+    parser.add_argument("--reference-evidence", action="append", default=[], metavar="SOURCE=FILE",
+                        help="为 --bump 明确提供本次参考正文，报告保留用户取证渠道")
     parser.add_argument("--apply", action="store_true",
                         help="真的动手：带 --bump 时写版本号与变更日志，带 --ship 时走完发布，"
                              "都不带时创建并推送标签")
@@ -216,11 +256,18 @@ def main(argv=None) -> int:
     mode.add_argument("--release-sha", help="为完整 SHA 指定的主线提交补打标签")
     args = parser.parse_args(argv)
     try:
+        from .release_forge import GitLabForge
+        GITLAB = GitLabForge(args.gitlab_host, command) if args.gitlab_host else None
+        if args.reference_evidence and not args.bump:
+            raise ValueError("--reference-evidence 仅用于 --bump 的参考检查")
         if args.verify_sha:
             print(json.dumps(verify(args.repo, args.verify_sha), ensure_ascii=False, indent=2))
             return 0
         if args.bump:
-            print(json.dumps(prepare(args.repo, args.bump, apply=args.apply),
+            from .release_review import local_reference_files
+            options = ({"reference_evidence": local_reference_files(args.reference_evidence)}
+                       if args.reference_evidence else {})
+            print(json.dumps(prepare(args.repo, args.bump, apply=args.apply, **options),
                              ensure_ascii=False, indent=2))
             return 0
         if args.ship:
@@ -233,18 +280,20 @@ def main(argv=None) -> int:
             # 固定提交在动手前复核归属、版本说明与标签占用。
             if args.release_sha is not None:
                 result = plan_commit(args.repo, args.release_sha)
-            elif api(args.repo, "git/ref/heads/master")["object"]["sha"] != result["sha"]:
+            elif master_sha(args.repo) != result["sha"]:
                 raise ValueError("检查期间 master 已更新，请重新执行")
             command("git", "tag", "-a", result["tag"], result["sha"],
                     "-m", f"Peach {result['tag']} Windows 测试版")
-            command("git", "push", f"https://github.com/{args.repo}.git",
+            command("git", "push", remote_url(args.repo),
                     f"refs/tags/{result['tag']}")
         print(json.dumps({**result, "applied": args.apply}, ensure_ascii=False, indent=2))
         return 0
-    except (ValueError, version_bump.VersionError, subprocess.CalledProcessError) as exc:
+    except (OSError, ValueError, version_bump.VersionError, subprocess.CalledProcessError) as exc:
         detail = exc.stderr if isinstance(exc, subprocess.CalledProcessError) else str(exc)
         print(f"发布检查未通过：{detail}")
         return 1
+    finally:
+        GITLAB = None
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""作品的英文显示标题：从已保存的 r18dev 来源快照里读，不碰账本、不发请求（ADR-0115）。
+"""作品的英文显示标题：从已保存的 r18dev 来源快照里读，不碰账本、不发请求（ADR-0131）。
 
 快照是 `library_processing` 落在 `<sources>/library-metadata/<番号>-r18dev.json` 的那一份。
 英文页的标题在 `raw.title`，combined 页另有 `title_en`；只交英文页时顶层 `title` 本身就是英文。

@@ -2,14 +2,19 @@
  *
  * 取数与筛选（状态、来源、标签、排序、视频／图片）归资料页（`entity-page-view.tsx`），筛选浮层与这一格
  * 读的是同一份；这里只画当前媒体那一档的组。查询键同关注页一族：详情里换状态、检查更新跑完时按
- * `['follow-feed']` 前缀失效与改写缓存，这一屏跟着变。换筛选时资料页按查询键给这一格换键，骨架从头铺。 */
+ * `['follow-feed']` 前缀失效与改写缓存，这一屏跟着变。换筛选时保留宿主，内容与骨架原位交叉淡化。 */
 import type { UseInfiniteQueryResult, InfiniteData } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { requestErrorMessage } from '@peach/legacy/core';
-import { emptyStateHtml } from '@peach/legacy/ui';
+import { Button, ButtonLink } from '@/components/base/buttons/button';
+import { EmptyState } from '../components/empty-state';
+import { spriteGlyph } from '../components/sprite-glyph';
+import { FollowCheckButton } from '../follow-feed/follow-check-button';
+import { entityCheckSources } from '../follow-feed/follow-check';
 
 import { LoadMore } from '../catalog-grid/catalog-grid-page';
-import { RetryNote, useSkeletonReveal } from '../components/grid-reveal';
+import { RetryNote } from '../components/grid-reveal';
+import { SkeletonContent } from '../components/skeleton-content';
 import { FollowCard } from '../follow-feed/follow-card';
 import {
   itemForMedia, type FollowContext, type FollowFeedActions, type FollowFeedHelpers, type FollowGroup, type FollowMedia,
@@ -17,7 +22,6 @@ import {
 } from '../follow-feed/follow-feed';
 import { useFollowWrite } from '../follow-feed/follow-feed-page';
 import type { PhotoLayout, PhotoSize } from './entity-body';
-import { phrase } from '../../i18n/phrase';
 
 export interface EntityOnlineProps {
   view: FollowView;
@@ -33,29 +37,30 @@ export interface EntityOnlineProps {
   helpers: FollowFeedHelpers;
   actions: FollowFeedActions;
   canLoadMore?: () => boolean;
+  clearFilters(): void;
 }
 
 export function EntityOnline(props: EntityOnlineProps) {
   const { result, data, media, helpers } = props;
   /* 换筛选时先借着上一份数据（`keepPreviousData`），那一份不能当这一份画出来。 */
   const pending = result.isPending || result.isPlaceholderData;
-  const reveal = useSkeletonReveal(pending, () => helpers.listSkeletonHtml(media));
   if (!data && result.isError) {
     return <RetryNote message={requestErrorMessage(result.error)} onRetry={() => { void result.refetch() }} />;
   }
   return (
-    <div data-follow-list-body="" data-entity-online="" data-grid-reveal={reveal.fading ? '' : undefined}>
-      {reveal.layer}
+    <div data-follow-list-body="" data-entity-online="">
+      <SkeletonContent pending={pending} skeletonHtml={() => helpers.listSkeletonHtml(media)}>
       {pending || !data ? null : <Cards {...props} data={data} />}
       {!pending && data?.has_more ? (
         <LoadMore key={result.data?.pages.length} entity enabled={() => props.canLoadMore?.() !== false}
           load={async () => { await result.fetchNextPage({ throwOnError: true }) }} />
       ) : null}
+      </SkeletonContent>
     </div>
   );
 }
 
-function Cards({ view, media, data, visible, context, photoSize, photoLayout, imagesOnly, actions }:
+function Cards({ view, media, data, visible, context, photoSize, photoLayout, imagesOnly, actions, clearFilters }:
   EntityOnlineProps & { data: FollowPage }) {
   const write = useFollowWrite({ view, revision: 0, actions });
   const sources = useMemo(() => {
@@ -79,13 +84,19 @@ function Cards({ view, media, data, visible, context, photoSize, photoLayout, im
         selected={false} selectMode={false} busy={write.busy.get(id) || ''} failure={write.failures.get(id) || ''}
         actions={actions} onStatus={write.status} onSave={write.save} />
     );
-  }) : <Empty searched={!!(data.groups || []).length || !!(view.status || view.provider || view.tags.length)} />;
+  }) : <Empty searched={!!(data.groups || []).length || !!(view.status || view.provider || view.tags.length || view.durMin || view.durMax)}
+    clear={clearFilters} actions={actions} sources={entityCheckSources(data.sources || [], view.author)} />;
   return <div data-follow-list="" data-follow-wall={images ? '' : undefined} {...wall}>{body}</div>;
 }
 
-function Empty({ searched }: { searched: boolean }) {
-  const html = searched
-    ? emptyStateHtml('search-x', phrase('当前筛选下没有更新'), phrase('切换媒体类型、状态、来源或标签后再试。'))
-    : emptyStateHtml('rss', phrase('还没有抓到更新'), phrase('关注页检查更新之后，这位创作者的新内容会出现在这里。'));
-  return <div data-follow-empty="" className="contents" dangerouslySetInnerHTML={{ __html: html }} />;
+function Empty({ searched, clear, actions, sources }: {
+  searched: boolean; clear(): void; actions: FollowFeedActions; sources: number[];
+}) {
+  return <div data-follow-empty="" className="contents"><EmptyState
+    icon={spriteGlyph(searched ? 'search-x' : 'rss')} title={searched ? '当前筛选下没有更新' : '还没有抓到更新'}
+    actions={searched ? <Button size="small" onClick={clear}>清除筛选</Button>
+      : sources.length ? <FollowCheckButton sources={sources} report={actions.checkReport} />
+      : <ButtonLink size="small" href="/subscriptions?tab=add">添加关注</ButtonLink>}>
+    {searched ? '切换媒体类型、状态、来源或标签后再试。' : '检查来源更新后，这位创作者的新内容会出现在这里。'}
+  </EmptyState></div>;
 }

@@ -21,6 +21,8 @@ from dataclasses import dataclass
 from pathlib import Path, PureWindowsPath
 
 from .mp4repair import RepairUnavailable, _top_level
+from .ffmpeg import bundled_tools_root
+from .task_control import run as run_task_process
 
 UNTRUNC_ENV = "PEACH_UNTRUNC"
 #: 一部坏片最多试几个参照。每试一个都要把坏片完整读一遍，网盘上是实打实的流量。
@@ -51,7 +53,7 @@ def untrunc_path(tools_root: Path) -> Path | None:
         return Path(configured).expanduser().resolve()
     name = f"untrunc{'.exe' if os.name == 'nt' else ''}"
     if getattr(sys, 'frozen', False):
-        bundled = Path(sys.executable).resolve().parent / 'tools' / 'untrunc' / name
+        bundled = bundled_tools_root() / 'untrunc' / name
         if bundled.is_file():
             return bundled.resolve()
     managed = Path(tools_root) / "untrunc" / name
@@ -88,7 +90,7 @@ def pick_references(broken: str, candidates: list[str], limit: int = REFERENCE_L
 
 
 def _run(command: list[str], timeout: float) -> subprocess.CompletedProcess:
-    return subprocess.run(command, capture_output=True, stdin=subprocess.DEVNULL, timeout=timeout,
+    return run_task_process(command, capture_output=True, stdin=subprocess.DEVNULL, timeout=timeout,
                           creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
 
 
