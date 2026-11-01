@@ -1,8 +1,11 @@
-"""GitHub 测试版查询；传输复用共享 HTTPX，安装入口指向正式发行页。"""
+"""公开测试版查询；传输复用共享 HTTPX，发行包来自发行仓库，可另配同版本镜像。"""
 from __future__ import annotations
 
 import json
+import platform
 import re
+import sys
+
 import httpx
 
 from . import __version__, distribution
@@ -13,11 +16,27 @@ from .update_packages import TOOL_PATHS
 RELEASE_REPOSITORY = "tam003/peach"
 RELEASES_URL = f"https://github.com/{RELEASE_REPOSITORY}/releases"
 API_URL = f"https://api.github.com/repos/{RELEASE_REPOSITORY}/releases?per_page=100"
+#: 同版本、同文件名的另一公开源。上游镜像只收上游的发行包，这一份部署不设镜像，只认发行仓库。
+DOWNLOADS_BASE: str | None = None
+DOWNLOADS_API: str | None = None
+
+
+def download_sources(url: str) -> tuple[str, ...]:
+    """发行包保留同版本、同文件名的另一公开源；校验沿用原发布摘要。"""
+    if DOWNLOADS_BASE is None:
+        return (url,)
+    github = RELEASES_URL + "/download/"
+    mirror = DOWNLOADS_BASE + "/"
+    for primary, backup in ((github, mirror), (mirror, github)):
+        if url.startswith(primary):
+            return url, backup + url.removeprefix(primary)
+    return (url,)
 
 
 def snapshot() -> dict:
     return {"current_version": __version__, "latest_version": None,
             "channel": "测试版", "installation": "独立测试包" if distribution.standalone() else "源码运行",
+            "in_app_update": distribution.in_app_update(),
             "state": "unchecked", "message": "尚未检查", "release_url": RELEASES_URL}
 
 
@@ -27,48 +46,84 @@ def _version(value: object) -> tuple[int, ...] | None:
     return tuple(map(int, value.removeprefix("v").split(".")))
 
 
-def check(*, transport=None) -> dict:
-    result = snapshot()
-    client = transport or HttpxTransport()
-    try:
-        response = client(HttpRequest("GET", API_URL, {"Accept": "application/vnd.github+json",
-                          "X-GitHub-Api-Version": "2022-11-28"}), 12.0, 2_000_000)
-        if response.status != 200:
-            message = "GitHub 请求受限，请稍后重试。" if response.status in (403, 429) else "无法连接 GitHub，请重试。"
-            return dict(result, state="error", message=message)
-        rows = json.loads(response.body)
-        if not isinstance(rows, list):
-            raise ValueError("release list required")
-        releases = []
-        for row in rows:
-            if not isinstance(row, dict) or row.get("draft"):
+def _release_candidates(rows: list, endpoint: str, system: str = "win32", machine: str = "") -> list[tuple]:
+    """从一个公开发行源选择本机平台的完整包，并构造受信任的下载地址。
+
+    macOS 选与本机架构同名的 DMG（`build_macos_standalone.py` 按 `platform.machine()` 命名），
+    没有分包与工具包；其余平台沿用 Windows 包判断有无新版本。
+    """
+    releases = []
+    for row in rows:
+        if not isinstance(row, dict) or row.get("draft"):
+            continue
+        version = _version(row.get("tag_name"))
+        if version is None:
+            continue
+        tag = row["tag_name"]
+        assets = row.get("assets") or []
+        uploaded = {a.get("name"): a for a in assets if isinstance(a, dict) and a.get("state") == "uploaded"}
+        if system == "darwin":
+            full = asset = uploaded.get(f"Peach-{tag.removeprefix('v')}-macos-{machine}.dmg")
+            if full is None:
                 continue
-            version = _version(row.get("tag_name"))
-            if version is None:
-                continue
-            tag = row["tag_name"]
-            assets = row.get("assets") or []
+        else:
             prefix = f"Peach-{tag.removeprefix('v')}-windows-x64"
-            uploaded = {a.get("name"): a for a in assets if isinstance(a, dict) and a.get("state") == "uploaded"}
             full = uploaded.get(prefix + ".zip")
             if full is None:
                 continue
             complete_tools = all(prefix + f"-tools-{tool}.zip" in uploaded for tool in TOOL_PATHS)
             asset = uploaded.get(prefix + "-update.zip", full) if complete_tools else full
-            releases.append((version, tag, asset, full))
+        if endpoint == DOWNLOADS_API:
+            if not all(re.fullmatch(r"sha256:[0-9a-f]{64}", item.get("digest") or "") for item in (asset, full)):
+                continue
+            directory = f"{DOWNLOADS_BASE}/{tag}"
+        else:
+            directory = f"{RELEASES_URL}/download/{tag}"
+        release_url = f"{RELEASES_URL}/tag/{tag}"
+        releases.append((version, tag, asset, full, directory, release_url))
+    return releases
+
+
+def check(*, transport=None, system: str | None = None, machine: str | None = None) -> dict:
+    result = snapshot()
+    system = system or sys.platform
+    machine = machine or platform.machine()
+    client = transport or HttpxTransport()
+    try:
+        releases = []
+        obtained = False
+        for endpoint in filter(None, (API_URL, DOWNLOADS_API)):
+            try:
+                headers = {"Accept": "application/json"}
+                if endpoint == API_URL:
+                    headers.update(Accept="application/vnd.github+json", **{"X-GitHub-Api-Version": "2022-11-28"})
+                response = client(HttpRequest("GET", endpoint, headers), 12.0, 2_000_000)
+                if response.status != 200:
+                    continue
+                rows = json.loads(response.body)
+                if not isinstance(rows, list):
+                    continue
+                obtained = True
+                releases.extend(_release_candidates(rows, endpoint, system, machine))
+            except (OSError, ValueError, TypeError, TimeoutError, httpx.HTTPError):
+                continue
         if not releases:
-            return dict(result, state="empty", message="暂未找到可下载的测试版。")
-        version, tag, asset, full = max(releases, key=lambda item: item[0])
+            return dict(result, state="empty" if obtained else "error",
+                        message="暂未找到可下载的测试版。" if obtained else "未能取得版本信息，请重试。")
+        version, tag, asset, full, directory, release_url = max(releases, key=lambda item: item[0])
         current = _version(result["current_version"])
         if current is None:
             raise ValueError("current version required")
         state = "available" if version > current else "ahead" if version < current else "current"
         message = {"available": "有新版本可下载。", "ahead": "当前版本高于已发布测试版。", "current": "已是最新测试版。"}[state]
         return dict(result, latest_version=tag.removeprefix("v"), state=state, message=message,
-                    asset_url=f"{RELEASES_URL}/download/{tag}/{asset['name']}",
+                    asset_url=f"{directory}/{asset['name']}",
                     asset_size=asset.get("size", 0), asset_digest=asset.get("digest"),
-                    package_kind="update" if asset is not full else "full",
-                    release_url=f"{RELEASES_URL}/tag/{tag}")
+                    package_kind="installer" if system == "darwin" else "update" if asset is not full else "full",
+                    # 应用更新包准备不下去（清单或工具包与本版更新器对不上）时改下的同版本完整包。
+                    full_url=f"{directory}/{full['name']}", full_size=full.get("size", 0),
+                    full_digest=full.get("digest"),
+                    release_url=release_url)
     except (OSError, ValueError, TypeError, TimeoutError, httpx.HTTPError):
         return dict(result, state="error", message="未能取得版本信息，请重试。")
     finally:

@@ -1,3 +1,5 @@
+import io
+import json
 import os
 import shutil
 import subprocess
@@ -5,7 +7,10 @@ import sys
 import tempfile
 import time
 import unittest
+from concurrent.futures import ThreadPoolExecutor
+from contextlib import contextmanager, redirect_stdout
 from pathlib import Path
+from threading import Event
 from unittest import mock
 
 from scripts import agent_worktree, release_tag
@@ -71,10 +76,18 @@ def commit(repo: Path, message: str) -> None:
 
 
 class _WorktreeCase(unittest.TestCase):
+    mock_pull_request = True
+
     def setUp(self):
         self.verification = mock.patch.object(agent_worktree, "require_verified")
         self.verification.start()
         self.addCleanup(self.verification.stop)
+        if self.mock_pull_request:
+            pull_request = mock.patch.object(agent_worktree, "require_pull_request", side_effect=
+                lambda worker, branch, target, head: {"url": "https://github.com/example/peach/pull/1",
+                                                      "head": head, "base": target})
+            pull_request.start()
+            self.addCleanup(pull_request.stop)
         self.tmp = tempfile.TemporaryDirectory()
         # 先 resolve：prune 报告的是 git worktree list 给出的真实路径，而 CI runner 的
         # 临时目录是别名（macOS /var 软链到 /private/var，Windows 的 RUNNER~1 短名展开
@@ -91,6 +104,94 @@ class _WorktreeCase(unittest.TestCase):
         self.tmp.cleanup()
 
 class AgentWorktreeTests(_WorktreeCase):
+    def test_document_integration_keeps_its_checks_without_waiting_for_full_suite(self):
+        result = create(self.repo, "Codex", "readme", self.root / "worktrees")
+        worker = Path(result["path"])
+        (worker / "README.md").write_text("# Example\n", encoding="utf-8")
+        _git(worker, "add", "README.md")
+        _git(worker, "commit", "-m", "docs: example")
+        folder = agent_worktree.test_evidence.evidence_dir(self.repo)
+        with agent_worktree.test_evidence.held(folder / "full-suite.lock", scope="full"):
+            report = integrate(self.repo, str(result["branch"]), lock_timeout=0)
+        self.assertEqual(report["files"], ["README.md"])
+        agent_worktree.require_verified.assert_called_once_with(worker, "master", {"README.md"})
+        self.assertEqual((self.repo / "README.md").read_text(encoding="utf-8"), "# Example\n")
+
+    def test_other_document_paths_use_the_same_checks_boundary(self):
+        for index, name in enumerate(("CONTRIBUTING.md", ".github/PULL_REQUEST_TEMPLATE.md")):
+            with self.subTest(path=name):
+                result = create(self.repo, "Codex", f"document-{index}", self.root / "worktrees")
+                worker = Path(result["path"])
+                (worker / name).parent.mkdir(parents=True, exist_ok=True)
+                (worker / name).write_text("# Example\n", encoding="utf-8")
+                _git(worker, "add", name)
+                _git(worker, "commit", "-m", "docs: example")
+                folder = agent_worktree.test_evidence.evidence_dir(self.repo)
+                with agent_worktree.test_evidence.held(folder / "full-suite.lock", scope="full"):
+                    report = integrate(self.repo, str(result["branch"]), lock_timeout=0)
+                self.assertEqual(report["files"], [name])
+
+    def test_runtime_markdown_still_waits_for_full_suite(self):
+        result = create(self.repo, "Codex", "runtime-document", self.root / "worktrees")
+        worker = Path(result["path"])
+        name = "frontend/src/react/boardui/ORIGIN.md"
+        (worker / name).parent.mkdir(parents=True)
+        (worker / name).write_text("# Origin\n", encoding="utf-8")
+        _git(worker, "add", name)
+        _git(worker, "commit", "-m", "docs: origin")
+        folder = agent_worktree.test_evidence.evidence_dir(self.repo)
+        with agent_worktree.test_evidence.held(folder / "full-suite.lock", scope="full"), \
+                self.assertRaisesRegex(WorkspaceError, "全量验证"):
+            integrate(self.repo, str(result["branch"]), lock_timeout=0)
+        self.assertFalse((self.repo / name).exists())
+
+    def test_waiting_code_integration_does_not_block_documents(self):
+        code = create(self.repo, "Codex", "queued-code", self.root / "worktrees")
+        worker = Path(code["path"])
+        (worker / "worker.txt").write_text("code\n", encoding="utf-8")
+        commit(worker, "worker change")
+        docs = create(self.repo, "Codex", "parallel-docs", self.root / "worktrees")
+        (Path(docs["path"]) / "README.md").write_text("# Example\n", encoding="utf-8")
+        _git(Path(docs["path"]), "add", "README.md")
+        _git(Path(docs["path"]), "commit", "-m", "docs: example")
+        folder = agent_worktree.test_evidence.evidence_dir(self.repo)
+        waiting = Event()
+        held = agent_worktree.test_evidence.held
+
+        @contextmanager
+        def observed(lock, **kwargs):
+            if kwargs.get("branch") == code["branch"] and lock.name == "full-suite.lock":
+                waiting.set()
+            with held(lock, **kwargs):
+                yield
+
+        with ThreadPoolExecutor() as executor, mock.patch.object(
+                agent_worktree.test_evidence, "held", observed):
+            with held(folder / "full-suite.lock", scope="full"):
+                future = executor.submit(integrate, self.repo, str(code["branch"]), lock_timeout=120)
+                self.assertTrue(waiting.wait(5), "代码集成尚未进入全量锁等待")
+                report = integrate(self.repo, str(docs["branch"]), lock_timeout=0)
+                self.assertEqual(report["files"], ["README.md"])
+                self.assertFalse(future.done())
+            self.assertEqual(future.result(timeout=60)["files"], ["worker.txt"])
+        self.assertEqual((self.repo / "worker.txt").read_text(encoding="utf-8"), "code\n")
+
+    def test_code_integration_waits_for_full_suite_without_changing_master(self):
+        result = create(self.repo, "Codex", "code", self.root / "worktrees")
+        worker = Path(result["path"])
+        (worker / "worker.txt").write_text("worker\n", encoding="utf-8")
+        (worker / "README.md").write_text("# Example\n", encoding="utf-8")
+        _git(worker, "add", "README.md")
+        commit(worker, "worker change")
+        before = _git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        folder = agent_worktree.test_evidence.evidence_dir(self.repo)
+        with agent_worktree.test_evidence.held(folder / "full-suite.lock", scope="full"), \
+                self.assertRaisesRegex(WorkspaceError, "全量验证"):
+            integrate(self.repo, str(result["branch"]), lock_timeout=0)
+        self.assertEqual(_git(self.repo, "rev-parse", "HEAD").stdout.strip(), before)
+        self.assertEqual((self.repo / "worker.txt").read_text(encoding="utf-8"), "base\n")
+        self.assertFalse((self.repo / "README.md").exists())
+
     def test_create_ready_and_integrate_non_overlapping_branch(self):
         result = create(self.repo, "Claude", "metadata batch", self.root / "worktrees")
         worker = Path(result["path"])
@@ -118,6 +219,145 @@ class AgentWorktreeTests(_WorktreeCase):
         commit(self.repo, "main overlap")
         with self.assertRaisesRegex(WorkspaceError, "same-file"):
             integrate(self.repo, str(result["branch"]))
+
+
+class PullRequestIntegrationTests(_WorktreeCase):
+    mock_pull_request = False
+
+    def setUp(self):
+        super().setUp()
+        result = create(self.repo, "Codex", "pr-boundary", self.root / "worktrees")
+        self.worker = Path(result["path"])
+        self.branch = result["branch"]
+        (self.worker / "worker.txt").write_text("worker\n", encoding="utf-8")
+        commit(self.worker, "fix(tooling): 示例变更")
+        self.head = _git(self.worker, "rev-parse", "HEAD").stdout.strip()
+        self.pr = {"url": "https://github.com/example/peach/pull/12", "state": "OPEN",
+                   "headRefOid": self.head, "baseRefName": "master"}
+
+    @contextmanager
+    def github(self, stdout=None, returncode=0, stderr=""):
+        run = subprocess.run
+        query = mock.Mock(return_value=subprocess.CompletedProcess(
+            ["gh"], returncode, json.dumps(self.pr) if stdout is None else stdout, stderr))
+
+        def call(command, *args, **kwargs):
+            return query(command, *args, **kwargs) if command[0] == "gh" else run(command, *args, **kwargs)
+
+        with mock.patch.object(agent_worktree.subprocess, "run", side_effect=call):
+            yield query
+
+    def assert_refused(self, message):
+        before = _git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        with self.assertRaisesRegex(WorkspaceError, message):
+            integrate(self.repo, self.branch)
+        self.assertEqual(_git(self.repo, "rev-parse", "HEAD").stdout.strip(), before)
+        self.assertEqual((self.repo / "worker.txt").read_text(encoding="utf-8"), "base\n")
+        entry = next(row for row in agent_worktree._worktree_entries(self.repo) if row.get("branch") == self.branch)
+        self.assertIn("locked", entry)
+
+    def test_missing_pull_request_preserves_master(self):
+        with self.github(returncode=1, stderr="no pull requests found for branch"):
+            self.assert_refused("未取得 PR")
+
+    def test_open_matching_pull_request_is_bound_to_the_merge(self):
+        with self.github() as query:
+            result = integrate(self.repo, self.branch)
+        self.assertEqual(result["pull_request"], {"url": self.pr["url"], "head": self.head, "base": "master"})
+        self.assertEqual((self.repo / "worker.txt").read_text(encoding="utf-8"), "worker\n")
+        command = query.call_args.args[0]
+        self.assertEqual(command[:4], ["gh", "pr", "view", self.branch])
+        self.assertEqual(query.call_args.kwargs["cwd"], self.worker)
+
+    def test_an_older_remote_head_and_another_base_are_refused(self):
+        for field, value, message in (("headRefOid", "0" * 40, "提交.*不一致"),
+                                      ("baseRefName", "other", "目标分支"),
+                                      ("state", "CLOSED", "必须开放"),
+                                      ("state", "MERGED", "必须开放")):
+            with self.subTest(field=field, value=value), self.github(json.dumps({**self.pr, field: value})):
+                self.assert_refused(message)
+
+    def test_unreadable_or_invalid_receipts_never_count_as_a_pull_request(self):
+        cases = (("", "有效 JSON"), ("{", "有效 JSON"), ("[]", "字段无效"),
+                 (json.dumps({**self.pr, "headRefOid": None}), "字段无效"),
+                 (json.dumps({**self.pr, "url": "file:///private"}), "链接无效"))
+        for stdout, message in cases:
+            with self.subTest(stdout=stdout), self.github(stdout):
+                self.assert_refused(message)
+
+    def test_an_unavailable_client_and_a_timeout_preserve_master(self):
+        for error in (FileNotFoundError("gh"), subprocess.TimeoutExpired(["gh"], 60)):
+            with self.subTest(error=type(error).__name__), self.github() as query:
+                query.side_effect = error
+                self.assert_refused("未取得 PR")
+
+    def test_a_worker_change_during_the_remote_read_prevents_merge(self):
+        before = _git(self.repo, "rev-parse", "HEAD").stdout.strip()
+        with self.github() as query:
+            reply = query.return_value
+
+            def advance(*_args, **_kwargs):
+                (self.worker / "worker.txt").write_text("parallel\n", encoding="utf-8")
+                commit(self.worker, "fix(tooling): 并行变更")
+                return reply
+
+            query.side_effect = advance
+            with self.assertRaisesRegex(WorkspaceError, "工作者分支改变"):
+                integrate(self.repo, self.branch)
+        self.assertEqual(_git(self.repo, "rev-parse", "HEAD").stdout.strip(), before)
+        self.assertNotEqual(_git(self.worker, "rev-parse", "HEAD").stdout.strip(), self.head)
+
+    def test_the_requested_target_branch_is_preserved(self):
+        _git(self.repo, "branch", "-m", "master", "develop")
+        with self.github(json.dumps({**self.pr, "baseRefName": "develop"})):
+            result = integrate(self.repo, self.branch, "develop")
+        self.assertEqual(result["pull_request"]["base"], "develop")
+
+
+class PreflightTests(_WorktreeCase):
+    def worker(self, *, declaration=True):
+        item = create(self.repo, "Codex", "preflight", self.root / "worktrees")
+        worker = Path(item["path"])
+        path = worker / "src/peach/module.py"
+        path.write_text("VALUE = 1\n", encoding="utf-8")
+        _git(worker, "add", "src/peach/module.py")
+        trailers = ("README-Impact: none; 内部规则，使用方式不变\n" if declaration else "") + AUTHOR
+        _git(worker, "commit", "-m", "fix(tooling): 示例规则", "-m", trailers)
+        return worker
+
+    def test_the_cli_checks_metadata_without_reading_or_signing_test_proof(self):
+        worker = self.worker()
+        output = io.StringIO()
+        with mock.patch.object(sys, "argv", ["agent_worktree.py", "--repo", str(worker), "preflight"]), \
+                mock.patch.object(agent_worktree.test_evidence, "key") as key, redirect_stdout(output):
+            self.assertEqual(agent_worktree.main(), 0)
+        result = json.loads(output.getvalue())
+        self.assertEqual((result["action"], result["metadata"], result["tests"]),
+                         ("preflight", "passed", "not_checked"))
+        self.assertEqual(result["head"], _git(worker, "rev-parse", "HEAD").stdout.strip())
+        key.assert_not_called()
+        agent_worktree.require_verified.assert_not_called()
+        agent_worktree.require_pull_request.assert_not_called()
+        self.assertFalse((self.repo / "build/agent-verification").exists())
+
+    def test_a_missing_final_declaration_is_rejected_before_test_proof(self):
+        worker = self.worker(declaration=False)
+        with mock.patch.object(agent_worktree.test_evidence, "key") as key:
+            with self.assertRaisesRegex(WorkspaceError, "README"):
+                agent_worktree.preflight(worker)
+        key.assert_not_called()
+
+    def test_dirty_content_and_a_newer_target_require_preparation(self):
+        worker = self.worker()
+        path = worker / "src/peach/module.py"
+        path.write_text("VALUE = 2\n", encoding="utf-8")
+        with self.assertRaisesRegex(WorkspaceError, "dirty"):
+            agent_worktree.preflight(worker)
+        path.write_text("VALUE = 1\n", encoding="utf-8")
+        (self.repo / "tracked.txt").write_text("parallel\n", encoding="utf-8")
+        commit(self.repo, "docs(tooling): 并行变更")
+        with self.assertRaisesRegex(WorkspaceError, "已前进"):
+            agent_worktree.preflight(worker)
 
 
 class MasterCommitGuardTests(_WorktreeCase):
@@ -208,13 +448,13 @@ class CommitMessageGuardTests(_WorktreeCase):
                 self.assertIn("README-Impact", result.stderr)
 
     def test_counterpart_review_trailer_requires_a_file_reason_and_contiguous_block(self):
-        for declaration in ("README-Reviewed: README.en.md; 已核对\n\n",
-                            "README-Reviewed: README.en.md;\n",
+        for declaration in ("README-Reviewed: README.zh-CN.md; 已核对\n\n",
+                            "README-Reviewed: README.zh-CN.md;\n",
                             "README-Reviewed: unknown.md; 已核对\n"):
             result = self.attempt("test: 核对声明\n\n" + declaration + AUTHOR)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn("README-Reviewed", result.stderr)
-        result = self.attempt("test: 核对声明\n\nREADME-Reviewed: README.en.md; 英文正确\n" + AUTHOR)
+        result = self.attempt("test: 核对声明\n\nREADME-Reviewed: README.zh-CN.md; 中文正确\n" + AUTHOR)
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_valid_trailers_and_amend_preserve_the_message(self):
@@ -294,6 +534,33 @@ class PruneTests(_WorktreeCase):
         self.assertNotIn("reclaimable",
                          _git(self.repo, "branch", "--list", "agent/codex/reclaimable").stdout,
                          "已并入的分支也应一并删掉")
+
+    def test_a_worktree_with_files_under_build_is_kept_even_when_clean_and_merged(self):
+        """`build/` 被 Git 忽略，`status` 看不见它；里面却是会话的日志、报告和派单，删了没有备份。"""
+        (self.repo / ".git" / "info").mkdir(exist_ok=True)
+        (self.repo / ".git" / "info" / "exclude").write_text("build/\n", encoding="utf-8")
+        worker = self._integrated("has-build")
+        (worker / "build").mkdir()
+        (worker / "build" / "report.md").write_text("复盘报告\n", encoding="utf-8")
+        report = prune(self.repo, apply=True)
+        self.assertTrue((worker / "build" / "report.md").is_file())
+        self.assertEqual(report["reclaimed"], [])
+        self.assertIn("build/", next(row["why"] for row in report["kept"] if row["path"] == str(worker)))
+
+    def test_a_worktree_a_process_is_working_in_is_kept(self):
+        """会话、终端或预览服务还开在里面的工作树不回收：分支合入了，人还在用。"""
+        worker = self._integrated("in-use")
+        # Windows 的 venv python.exe 只是启动器，会再拉起真解释器；直接用真解释器，进程号才对得上。
+        interpreter = getattr(sys, "_base_executable", None) or sys.executable
+        process = subprocess.Popen([interpreter, "-c", "import time; time.sleep(60)"], cwd=worker)
+        try:
+            report = prune(self.repo, apply=True)
+        finally:
+            process.kill()
+            process.wait(timeout=15)
+        self.assertTrue(worker.is_dir())
+        why = next(row["why"] for row in report["kept"] if row["path"] == str(worker))
+        self.assertIn(str(process.pid), why)
 
     def test_a_dirty_worktree_is_refused_even_when_its_branch_is_merged(self):
         """分支已合入不等于工作区里没东西。
@@ -587,8 +854,8 @@ class ReadmeImpactTests(unittest.TestCase):
         git(self.repo, "init", "-b", "master")
         git(self.repo, "config", "user.name", "Test")
         git(self.repo, "config", "user.email", "test@example.invalid")
-        self.save("README.md", "中文")
-        self.save("README.en.md", "English")
+        self.save("README.md", "English")
+        self.save("README.zh-CN.md", "中文")
         git(self.repo, "commit", "-m", "base")
         self.base = git(self.repo, "rev-parse", "HEAD").strip()
         git(self.repo, "checkout", "-b", "worker")
@@ -618,23 +885,23 @@ class ReadmeImpactTests(unittest.TestCase):
     def test_single_language_typo_accepts_explicit_counterpart_review(self):
         self.save("README.md", "修正错字")
         self.assertEqual(self.commit("README-Impact: updated; 中文错字\n"
-                                     "README-Reviewed: README.en.md; 英文表述正确，无需修改"), [])
+                                     "README-Reviewed: README.zh-CN.md; 中文表述正确，无需修改"), [])
 
     def test_counterpart_review_requires_correct_file_and_reason(self):
         self.save("README.md", "修正错字")
-        for trailer in ("README-Reviewed: README.md; 已核对", "README-Reviewed: README.en.md;",
-                        "README-Reviewed: README.en.md; 已核对\nREADME-Reviewed: README.en.md; 重复"):
+        for trailer in ("README-Reviewed: README.md; 已核对", "README-Reviewed: README.zh-CN.md;",
+                        "README-Reviewed: README.zh-CN.md; 已核对\nREADME-Reviewed: README.zh-CN.md; 重复"):
             self.assertTrue(self.commit("README-Impact: updated; 中文错字\n" + trailer))
             git(self.repo, "reset", "--soft", "HEAD^")
 
     def test_bilingual_update_accepts_review(self):
         self.save("README.md", "新内容")
-        self.save("README.en.md", "New content")
+        self.save("README.zh-CN.md", "New content")
         self.assertEqual(self.commit("README-Impact: updated; 功能说明"), [])
 
     def test_none_cannot_describe_document_changes(self):
         self.save("README.md", "新内容")
-        self.save("README.en.md", "New content")
+        self.save("README.zh-CN.md", "New content")
         self.assertTrue(self.commit("README-Impact: none; 内部改动"))
 
     def test_test_only_change_needs_no_declaration(self):
@@ -645,7 +912,7 @@ class ReadmeImpactTests(unittest.TestCase):
         self.save("frontend/package.json", "{}")
         self.commit("README-Impact: updated; 工具要求")
         self.save("README.md", "新内容")
-        self.save("README.en.md", "New content")
+        self.save("README.zh-CN.md", "New content")
         self.assertTrue(check(self.repo, self.base))
 
     def test_missing_reason_and_duplicate_trailers_are_rejected(self):

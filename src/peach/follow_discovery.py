@@ -14,6 +14,7 @@ import re
 import time
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
@@ -431,7 +432,7 @@ def _simpcity_candidates(term: str, transport,
                          credential: Credential | None = None) -> list[Candidate]:
     """simpcity 只有站内搜索这一条路，而它必须登录。
 
-    没有 cookie 就静默跳过：来源筛选菜单里已经标着「需要配置凭据」，每查一个名字
+    没有 cookie 就静默跳过：来源筛选菜单里缺凭据的站已经挂着「打开凭据设置」，每查一个名字
     都在结果里再报一次只是噪音。裸数字不去试——simpcity 的线程页对游客是 403，
     对登录用户任何数字都可能存在，「存在」不构成「就是他」的证据。
     """
@@ -765,5 +766,7 @@ def _tag_types(connector, names: list[str]) -> dict[str, str]:
     if pending:
         with ThreadPoolExecutor(max_workers=min(TAG_TYPE_WORKERS,
                                                 len(pending))) as pool:
-            list(pool.map(ask, pending))
+            futures = [pool.submit(copy_context().run, ask, name) for name in pending]
+            for future in futures:
+                future.result()
     return {name: _TAG_TYPES[name] for name in names if name in _TAG_TYPES}

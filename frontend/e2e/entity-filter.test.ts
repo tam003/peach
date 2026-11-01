@@ -174,12 +174,16 @@ describe('实体页筛选浮层', () => {
       const pressed = await page.evaluate(() => ({
         state: document.querySelector('[data-entity-state="fresh"]')?.getAttribute('aria-pressed'),
         busy: document.querySelector('[data-entity-filter-glass] [data-filter-row="bottom"]')?.getAttribute('aria-busy'),
-        shimmer: !!document.querySelector('[data-entity-readout] [data-skeleton="count"]'),
+        shimmer: !!document.querySelector('[data-entity-readout] [data-async-text][aria-busy="true"] > [data-async-text-skeleton]'),
+        retained: document.querySelector('[data-entity-readout] [data-async-text-value]')?.getAttribute('aria-hidden'),
       }));
-      assert.deepEqual(pressed, { state: 'true', busy: 'true', shimmer: true }, '按下态要等请求回来才到位');
+      assert.deepEqual(pressed, { state: 'true', busy: 'true', shimmer: true, retained: 'true' }, '按下态和读数等待态当场到位');
+      await page.waitForFunction(() => getComputedStyle(document.querySelector('[data-entity-readout] [data-async-text-skeleton]')!).opacity === '1');
       assertCovers(await glideOver(page, '[data-view-glide=""]', '[data-entity-state="fresh"]'), '换过去的观看状态');
       stubs.release();
       await page.locator('[data-entity-readout]', { hasText: '视频 · 24' }).waitFor({ timeout: 15_000 });
+      await page.waitForFunction(() => !document.querySelector('[data-entity-readout] [data-async-text][aria-busy="true"]')
+        && getComputedStyle(document.querySelector('[data-entity-readout] [data-async-text-skeleton]')!).opacity === '0');
       assert.match(page.url(), /[?&]state=fresh/);
       assert.match(stubs.itemQueries.at(-1)!, /state=fresh/);
       assert.deepEqual(unexpected(opened), []);
@@ -196,7 +200,9 @@ describe('实体页筛选浮层', () => {
       await page.locator('[data-entity-sort="rating"]').click();
       assert.equal(await page.locator('[data-entity-sort="rating"]').getAttribute('aria-pressed'), 'true');
       assert.equal(await page.locator('[data-entity-sort="new"]').getAttribute('aria-pressed'), 'false');
-      assert.equal(await page.locator('[data-entity-sort="rating"] svg').count(), 1, '选中的排序键没有方向箭头');
+      const visibleArrows = await page.locator('[data-entity-sort="rating"] svg').evaluateAll(nodes =>
+        nodes.filter(node => getComputedStyle(node.closest('[data-icon]') || node).opacity === '1').length);
+      assert.equal(visibleArrows, 1, '选中的排序键应显示一个方向');
       stubs.release();
       await page.locator('[data-entity-readout]', { hasText: '视频 · 24' }).waitFor({ timeout: 15_000 });
       assert.equal(await page.locator('[data-entity-sort="rating"]').getAttribute('aria-label'), '按评分从低到高排序');
@@ -222,12 +228,12 @@ describe('实体页筛选浮层', () => {
     try {
       const { page } = opened;
       assert.equal(await page.locator('[data-entity-combo] [data-combo-chip]').count(), 0);
-      // 标签跟首页筛选条上那枚同一张脸：30px 高、`--tag-radius` 那一档 8px 圆角、一圈 1px 实线。
+      // 标签跟首页筛选条上那枚同一张脸：`--control-h-compact` 那一档 32px 高、`--tag-radius` 那一档 8px 圆角、一圈 1px 实线。
       const face = await page.locator('[data-entity-tag="中出"]').evaluate((el) => {
         const css = getComputedStyle(el);
         return [el.getBoundingClientRect().height, css.borderTopLeftRadius, css.borderTopWidth, css.borderTopStyle];
       });
-      assert.deepEqual(face, [30, '8px', '1px', 'solid']);
+      assert.deepEqual(face, [32, '8px', '1px', 'solid']);
       await page.locator('[data-entity-tag="中出"]').click();
       assert.equal(await page.locator('[data-entity-tag="中出"]').getAttribute('aria-pressed'), 'true');
       await page.locator('[data-entity-combo] [data-combo-chip]', { hasText: '中出' }).waitFor();

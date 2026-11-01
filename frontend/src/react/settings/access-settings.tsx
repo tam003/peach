@@ -63,7 +63,7 @@ export function AccessSettings({ initial, receipt }: AccessSettingsProps) {
   const help = getHelp()[state.mode];
   const editable = state.mode !== 'locked';
   return (
-    <Section title={phrase('访问密码')} onSubmit={submit}>
+    <Section guide="access" title="访问密码" onSubmit={submit}>
       <div ref={body}>
         <Stack>
           {help ? <Help>{phrase(help)}</Help> : null}
@@ -78,12 +78,11 @@ export function AccessSettings({ initial, receipt }: AccessSettingsProps) {
                 value={current} onChange={setCurrent} isRequired validationBehavior="aria"
                 isInvalid={Boolean(fields.current_password)} hint={fields.current_password ? phrase(fields.current_password) : undefined} />
             : null}
-          {editable
-            ? <PasswordPair label={state.mode === 'password' ? phrase('新访问密码') : phrase('设置访问密码')}
+          {editable && !disable
+            ? <PasswordPair label={state.mode === 'password' ? '新访问密码' : '设置访问密码'}
                 password={password} confirmation={confirmation} onPassword={setPassword} onConfirmation={setConfirmation}
-                disabled={disable} passwordError={fields.password ? phrase(fields.password) : undefined}
-                confirmationError={fields.confirmation ? phrase(fields.confirmation) : undefined}
-                passwordHint={disable ? phrase('关闭访问密码时无需填写。') : phrase('至少 8 个字符。保存后其他设备需要重新登录。')} />
+                passwordError={fields.password} confirmationError={fields.confirmation}
+                passwordHint="至少 8 个字符。保存后其他设备需要重新登录。" />
             : null}
           {disable ? <Note tone="warning" title={phrase('访问范围')}>{phrase('保存后，能连接到 Peach 的设备将直接访问馆藏。')}</Note> : null}
           {action.error ? <ErrorText>{action.error}</ErrorText> : null}

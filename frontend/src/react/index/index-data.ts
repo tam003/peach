@@ -1,8 +1,8 @@
-/* 五张索引页的数据契约：艺人、创作者、厂牌、事务所四份名册与标签词表。
+/* 索引页的数据契约：艺人、创作者、厂牌、事务所、系列名册与标签词表。
  *
  * 本地那一档读 `/api/index?kind=`（`src/peach/web_entity.py` 的 `q_index`），在线那一档读
  * 关注来源上的两份词表（`../follow/online-vocab.ts`）。四种形状一样：`items` 加 `has_more`，
- * `limit`／`offset` 翻页，所以一页一个 `useInfiniteQuery`，「载入更多」就是取下一页。
+ * `limit`／`offset` 翻页；标签按页替换，人物名册按「载入更多」追加。
  *
  * 索引页自己不调 `/api/items`：点一个标签或按所选标签显示结果，是回目录按它筛选，那一次
  * 取数归遗留壳的目录网格。 */
@@ -11,15 +11,16 @@ import type { InfiniteData, QueryKey } from '@tanstack/react-query';
 import { firstGrapheme } from '@peach/legacy/core';
 
 import { apiGet } from '../../api';
-import { phrase } from '../../i18n/phrase';
+import { TAG_PAGE_SIZE } from '../../tag-skeleton';
 import { IDENTITY_CATEGORIES } from '../../identity-filter';
 import {
   fetchOnlineAuthors, fetchOnlineTags, onlineAuthorsKey, onlineTagsKey,
   type OnlineAuthor, type OnlineTag,
 } from '../follow/online-vocab';
 import { queryClient } from '../query';
+import { phrase } from '../../i18n/phrase';
 
-export type IndexKind = 'performers' | 'creators' | 'studios' | 'agencies' | 'tags';
+export type IndexKind = 'performers' | 'creators' | 'studios' | 'agencies' | 'series' | 'tags';
 export type IndexScope = 'local' | 'online';
 export type TagView = 'alphabet' | 'cloud';
 export type PeopleLayout = 'big' | 'compact';
@@ -28,12 +29,12 @@ export const INDEX_URL = '/api/index';
 
 /** 页头标题与名册口径。 */
 export const INDEX_TITLES: Record<IndexKind, string> = {
-  performers: '艺人', creators: '卖家', studios: '厂牌', agencies: '事务所', tags: '标签',
+  performers: '艺人', creators: '卖家', studios: '厂牌', agencies: '事务所', series: '系列', tags: '标签',
 };
 
 /** 索引格对应的实体类型，资料页与取图链都按它分。 */
 export const ENTITY_KINDS: Record<Exclude<IndexKind, 'tags'>, string> = {
-  performers: 'performer', creators: 'creator', studios: 'studio', agencies: 'agency',
+  performers: 'performer', creators: 'creator', studios: 'studio', agencies: 'agency', series: 'series',
 };
 
 /** 本地标签的九类。次序就是浮层上排药丸的次序。 */
@@ -51,8 +52,8 @@ export const ONLINE_TAG_CATEGORIES: readonly (readonly [string, string])[] = [
 /** 本地艺人名册的身份分类；卖家名册不分类。词表与壳的骨架共用一份。 */
 export { IDENTITY_CATEGORIES };
 
-/** 每页条数：一屏头像 120 格，标签 180 枚。 */
-export const PAGE_SIZE = { people: 120, tags: 180 } as const;
+/** 名册批次与标签默认页大小。 */
+export const PAGE_SIZE = { people: 120, tags: TAG_PAGE_SIZE } as const;
 
 export const isPeople = (kind: IndexKind): kind is Exclude<IndexKind, 'tags'> => kind !== 'tags';
 export const isCompany = (kind: IndexKind) => kind === 'studios' || kind === 'agencies';
@@ -78,6 +79,9 @@ export interface IndexPerson {
 }
 
 export interface IndexTag {
+  id?: string;
+  aliases?: string[];
+  hidden?: boolean;
   entity_id?: number;
   favorite?: boolean;
   k: string;
@@ -88,6 +92,7 @@ export interface IndexTag {
 export interface IndexPage<T> {
   items: T[];
   has_more: boolean;
+  total?: number;
   /** 分类的命中数量；筛选条只显示有内容的分类。 */
   categories?: Record<string, number>;
 }
@@ -186,8 +191,8 @@ export interface IndexQuery {
 }
 
 /** 四份数据共用一副分页：下一页的 offset 就是已经取到的条数。 */
-export function indexQuery(source: IndexSource): IndexQuery {
-  const limit = source.what === 'people' || source.what === 'online-authors' ? PAGE_SIZE.people : PAGE_SIZE.tags;
+export function indexQuery(source: IndexSource, pageSize: number = PAGE_SIZE.tags): IndexQuery {
+  const limit = source.what === 'people' || source.what === 'online-authors' ? PAGE_SIZE.people : pageSize;
   const next = (last: IndexPage<AnyItem>, pages: IndexPage<AnyItem>[]) =>
     last.has_more ? pages.reduce((sum, page) => sum + page.items.length, 0) : undefined;
   const base = { initialPageParam: 0, getNextPageParam: next };
@@ -207,16 +212,15 @@ export function indexQuery(source: IndexSource): IndexQuery {
   }
 }
 
-/** 首屏：遗留壳挂载前先取回第一页。每次进入都从第一页开始：缓存里上一次载入过几页，
- *  `fetchInfiniteQuery` 就会把那几页挨个重取一遍再返回，首屏等的是几个来回而不是一个。 */
+/** 首屏在页面提交前预取，已访问的集合沿用同一标签页里的分页。 */
 export async function prefetchIndex(props: IndexRoute, signal: AbortSignal) {
   const query = indexQuery(indexSource(indexRoute(props)));
-  queryClient.removeQueries({ queryKey: query.queryKey, exact: true });
   await queryClient.fetchInfiniteQuery({
     queryKey: query.queryKey,
     queryFn: ({ pageParam }) => query.queryFn({ pageParam: pageParam as number, signal }),
     initialPageParam: 0,
     getNextPageParam: query.getNextPageParam,
+    staleTime: Infinity,
   });
 }
 

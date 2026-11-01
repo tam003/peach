@@ -45,27 +45,20 @@ jobs:
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v7
-      - name: Reuse media tools built from pinned source, with the source bundle
-        id: media-cache
-        uses: actions/cache@v6.1.0
-        with:
-          key: windows-media-v1-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('scripts/build_ffmpeg_windows.sh', 'scripts/dav1d-mingw64.ini', 'scripts/build_untrunc_windows.sh', 'scripts/fetch_ffmpeg_sources.py', 'scripts/fetch_untrunc_sources.py', 'scripts/ffmpeg-sources.json', 'scripts/untrunc-sources.json') }}
-          path: |
-            build/ffmpeg-windows/ffmpeg
-            build/ffmpeg-windows/ffmpeg-corresponding-source.zip
-            build/untrunc-windows/untrunc
-            build/untrunc-windows/untrunc-corresponding-source.zip
       - name: Install cross-compilation tools
-        if: steps.media-cache.outputs.cache-hit != 'true'
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential gcc-mingw-w64-x86-64-posix g++-mingw-w64-x86-64-posix mingw-w64-x86-64-dev nasm pkg-config python3 clang meson ninja-build ca-certificates curl xz-utils
-      - name: Build the pinned media tools
-        if: steps.media-cache.outputs.cache-hit != 'true'
-        run: bash scripts/build_ffmpeg_windows.sh build/ffmpeg-windows
-      - name: Build the pinned index repair tool
-        if: steps.media-cache.outputs.cache-hit != 'true'
-        run: bash scripts/build_untrunc_windows.sh build/untrunc-windows
+          sudo apt-get install -y build-essential gcc-mingw-w64-x86-64-posix g++-mingw-w64-x86-64-posix mingw-w64-x86-64-dev nasm pkg-config python3 clang meson ninja-build cmake ca-certificates curl xz-utils
+      - name: Read the media build identity
+        id: media-identity
+        run: echo "key=$(python3 scripts/media_build_cache.py windows --github-key)" >> "$GITHUB_OUTPUT"
+      - name: Reuse media tools built from pinned source, with the source bundle
+        uses: actions/cache@v6.1.0
+        with:
+          key: ${{ steps.media-identity.outputs.key }}
+          path: build/media-cache/windows-x86_64
+      - name: Verify or build the media tools and source bundles
+        run: python3 scripts/media_build_cache.py windows
       - uses: actions/upload-artifact@v7
         with:
           name: ffmpeg-windows
@@ -109,7 +102,7 @@ jobs:
           if ($env:GITHUB_REF_TYPE -eq 'tag' -and $env:GITHUB_REF_NAME -ne "v${ReleaseVersion}") { throw 'Tag does not match the version' }
           "version=${ReleaseVersion}" >> $env:GITHUB_OUTPUT
       - name: Install build dependencies
-        uses: astral-sh/setup-uv@v10.3.0
+        uses: astral-sh/setup-uv@v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
@@ -172,7 +165,8 @@ jobs:
           - arch: x86_64
             runner: macos-15-intel
     runs-on: ${{ matrix.runner }}
-    timeout-minutes: 30
+    # A media tool cache miss compiles FFmpeg and untrunc from source on the runner; the first cold build takes long.
+    timeout-minutes: 180
     env:
       MACOSX_DEPLOYMENT_TARGET: '11.0'
       ARCHFLAGS: '-arch ${{ matrix.arch }}'
@@ -186,7 +180,7 @@ jobs:
           node-version: '24'
           cache: npm
           cache-dependency-path: frontend/package-lock.json
-      - uses: astral-sh/setup-uv@v10.3.0
+      - uses: astral-sh/setup-uv@v10.3.2
         with:
           enable-cache: true
           cache-dependency-glob: uv.lock
@@ -195,6 +189,24 @@ jobs:
           uv sync --locked --all-extras --python python
           uv pip check --python .venv/bin/python
           npm ci --prefix frontend
+      - name: Install the pinned media build tools
+        run: |
+          .venv/bin/python scripts/setup_macos_media_tools.py --root build/macos-media-toolchain
+          echo "$PWD/build/macos-media-toolchain/env/bin" >> "$GITHUB_PATH"
+      - name: Read the media build identity
+        id: media-identity
+        run: echo "key=$(.venv/bin/python scripts/media_build_cache.py macos --arch '${{ matrix.arch }}' --github-key)" >> "$GITHUB_OUTPUT"
+      - name: Reuse macOS media tools built from pinned source, with the source bundle
+        uses: actions/cache@v6.1.0
+        with:
+          key: ${{ steps.media-identity.outputs.key }}
+          path: build/media-cache/macos-${{ matrix.arch }}
+      - name: Build or reuse the media tools and fetch cloudflared
+        run: |
+          for tool in ffmpeg untrunc; do
+            .venv/bin/python scripts/media_build_cache.py macos --tool "$tool" --arch '${{ matrix.arch }}'
+          done
+          .venv/bin/python scripts/fetch_cloudflared_macos.py --arch '${{ matrix.arch }}' --destination "build/media-macos/${{ matrix.arch }}/cloudflared"
       - name: Build the standalone app and drag-to-install disk image
         run: .venv/bin/python scripts/build_macos_standalone.py --target-arch '${{ matrix.arch }}' --destination release
       - uses: actions/upload-artifact@v7

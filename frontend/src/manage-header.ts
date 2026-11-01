@@ -8,6 +8,8 @@
  * `configurable` 与目录计数都还在壳里。 */
 
 /** `[键, 名称, 字形]`，同壳的 `MANAGE_SECTIONS`。 */
+import { CLEANUP_CRUMB_PAGES } from './cleanup-tools';
+
 export type ManageEntry = readonly [key: string, label: string, glyph: string];
 
 /** 回收站说明行的读数：目录网格每接一页报一次。 */
@@ -30,9 +32,10 @@ export interface ManageHeaderProps {
 }
 
 /* 数据管理那几张卡通往的子页（vercel.com/geist/breadcrumbs：有上一级页面的子页才画面包屑）。
-   人工复核、回收站、高清版虽也保留侧栏直达入口，层级上仍从数据管理进；资源同步是 hub 上的
-   就地操作，没有独立页面。数据管理之下的页面标题也取这里的名字，「数据管理」让给面包屑的上一级。 */
+   人工复核、回收站、高清版保留侧栏快捷入口；维护工具各有独立二级页。
+   子页标题取这里的名字，「数据管理」显示在面包屑的上一级。 */
 export const MANAGE_CRUMB_PAGES: Readonly<Record<string, string>> = {
+  ...CLEANUP_CRUMB_PAGES,
   '/junk-files': '垃圾文件',
   '/duplicates': '重复文件',
   '/review': '人工复核',
@@ -99,9 +102,8 @@ export function manageHeaderSkeletonHtml(props: ManageHeaderProps): string {
   if (!view) return '';
   const menu = props.menu.map(([key, label, mark]) => {
     const on = key === view.pressed;
-    const name = phrase(label);
-    return `<button type="button" data-manage="${escape(key)}" aria-pressed="${on}"${on ? ' aria-current="page"' : ''}>`
-      + `${glyph(mark)}<span>${escape(name)}</span></button>`;
+    return `<button type="button" data-manage="${escape(key)}" data-pill-variant="gray" aria-pressed="${on}"${on ? ' aria-current="page" data-pill-selected=""' : ''}>`
+      + `${glyph(mark)}<span>${escape(label)}</span></button>`;
   }).join('');
   const crumb = view.crumb
     ? `<nav data-manage-crumb="" aria-label="Breadcrumb"><ol><li><a href="/data-cleanup">${escape(phrase('数据管理'))}</a>${glyph('chevron-right')}</li>`
@@ -110,7 +112,7 @@ export function manageHeaderSkeletonHtml(props: ManageHeaderProps): string {
   const lede = view.lede.kind === 'none' ? ''
     : `<p class="mono" data-manage-lede="">${view.lede.kind === 'skeleton' ? TRASH_LEDE_SKELETON_HTML
       : `<span data-lede-text="">${escape(view.lede.text)}</span>${view.lede.total ? emptyTrashHtml() : ''}`}</p>`;
-  return `<nav data-manage-bar="" aria-label="${escape(phrase('管理'))}"><div data-manage-menu="">${menu}</div></nav>`
+  return `<nav data-manage-bar="" aria-label="管理"><div data-manage-menu="" data-pill-nav="" role="group">${menu}</div></nav>`
     + crumb
     + `<h2 data-manage-title=""${view.compact ? ' data-compact=""' : ''}>${escape(phrase(view.title))}</h2>`
     + lede;

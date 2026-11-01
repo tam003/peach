@@ -52,7 +52,8 @@ def plan(config, *, delete_data: bool, program: Path | None = None) -> dict:
             raise ValueError("卸载目录与媒体目录重叠，请手动检查")
     files: list[Path] = []
     if delete_data:
-        generated = [config.path.resolve(), root / "config.previous.toml", root / "config.pending.toml"]
+        generated = [config.path.resolve(), root / "config.previous.toml", root / "config.pending.toml",
+                     root / "config.pre-media-identity.toml"]
         generated.extend(_generated_backups(root))
         files = sorted(set(generated), key=lambda path: os.path.normcase(str(path)))
     return {"program": str(target), "data_root": str(root), "directories": [str(p) for p in directories],
@@ -62,6 +63,9 @@ def plan(config, *, delete_data: bool, program: Path | None = None) -> dict:
 def snapshot(config) -> dict:
     result = {"available": False, "message": "这个系统上先退出 Peach，再手动移除程序与数据目录", "data_root": str(config.data_root),
               "directories": [str(config.directory(key)) for key in settings_file.DIRECTORY_KEYS], "full_available": False}
+    if sys.platform == "darwin" and distribution.standalone():
+        # macOS 应用按系统惯例拖进废纸篓卸载，不另做卸载器；LaunchAgent 不随应用删除，要先关掉。
+        result["message"] = "先关闭开机自启并退出 Peach，再把「应用程序」中的 Peach 移到废纸篓；完全卸载时一并删除下列数据目录"
     if sys.platform != "win32":
         return result
     try:

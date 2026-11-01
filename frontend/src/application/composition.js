@@ -1,12 +1,12 @@
 /* composition 域控制器：本域状态与动作，启动由 Application 的生命周期统一安装。 */
 import { loadingState, renderInitialSurfaceLoading } from './loading.js';
-import { clearHomeFeed, installEntityShapeBootstrap, loadEntityShapes } from './feed.js';
+import { clearHomeFeed, installEntityShapeBootstrap, isFeedNewPath, loadEntityShapes, prepareHomeFeed } from './feed.js';
 import { buildManageBar, closeStats, enterManagementSurface, loadSyncedSettings, mountManageHeader, mountSidebar, openManage, openSettings, paintListTitle, scheduleStickySurfaces, showHomeSurfaces, showManagementBody, syncHeaderActions } from './layout.js';
 import { disposeStage, mediaState, openItem, openJavMovie, openPlaylist, openQueue, openTok } from './media.js';
 import { currentBarsContext, entityState, openEntity, revealForIsland, routeEntityPage, showEntityMissing } from './entity.js';
 import { applyFilterStateInPlace, buildBars, catalogState, clearCatalogGrid, gridTaken, loadCatalog, onlineDefaultLoc, paintCatalogGrid, refreshFacetCounts, syncCatalogFilterScreen, toggleTag } from './catalog.js';
 import { openTasteSignal, routeReview } from './playlists.js';
-import { navigationState, syncNavigation, syncRouteChrome } from './navigation.js';
+import { navigationState, requestOverlay, syncNavigation, syncRouteChrome } from './navigation.js';
 import { enterFollow, followState, openFollowDetail } from './follow.js';
 import { receiptsState } from './receipts.js';
 import { reopenPostSetupTutorial } from './tutorial.js';
@@ -18,7 +18,9 @@ import { releaseHoverPreviews } from './../card-art/hover';
 import { bootEntry, peachHistory } from './../history/index';
 import { $ } from '../core';
 import { dropBars } from './../catalog-bars';
-import { isOverlayPath } from './../history/overlay';
+import { isOverlayPath, overlayTarget } from './../history/overlay';
+import { navigationLinkPath } from './../history/links';
+import { scrollToAnchor } from '../ui-kit/anchor-scroll';
 import { loadRouter, settingsPanelApi } from '../react/application-residents';
 import { applicationEffects } from './effects';
 export const compositionState = { shellActions: undefined, routing: undefined };
@@ -27,9 +29,22 @@ export const compositionState = { shellActions: undefined, routing: undefined };
 
 export function installComposition24() {
 const effects=applicationEffects;
+const openOverlayTarget=target=>{
+  if(target.kind==='item')void openItem(target.id,false);
+  else if(target.kind==='jav')void openJavMovie(target.code,false);
+  else if(target.kind==='follow')void openFollowDetail(target.id,false);
+  else void openQueue(target.queue,target.key,target.item,false);
+};
 installEntityShapeBootstrap();
 loadingState.entityShapesReady=loadEntityShapes();
 renderInitialSurfaceLoading();
+/* 首页标题随首屏骨架一起出现：等路由打开目录后再显示，会把骨架整页往下推一跳。其余状态页的标题仍由 `paintListTitle` 定。 */
+if(location.pathname==='/'){
+  const query=new URLSearchParams(location.search);
+  if(!query.has('state')&&query.get('jav')!=='1')$('#catalogPageHeading').hidden=false;
+}
+/* 新作那一行按本机记着的结论随首屏一起铺骨架，卡片与列表两种显示方式都一样。 */
+if(isFeedNewPath(decodeURIComponent(location.pathname)))prepareHomeFeed($('#feedNew'));
 mountSidebar();
 compositionState.shellActions = {
   openSettings:section=>openSettings(section,true),
@@ -40,9 +55,15 @@ compositionState.shellActions = {
   openTag:key=>{closeStats();toggleTag(key)},
   openTasteSignal,
   navigate:path=>{
-    const movie=/^\/works\/([A-Za-z0-9_-]{2,64})$/.exec(path);
-    const item=/^\/assets\/(\d+)$/.exec(path);
-    if(movie)void openJavMovie(movie[1]);else if(item)void openItem(+item[1]);else navigationState.navigatePath(path);
+    const url=new URL(path,location.href),target=overlayTarget(url.pathname,url.search);
+    if(target){
+      const kind=target.kind==='queue'?'item':target.kind;
+      requestOverlay(url.pathname+url.search+url.hash,kind,()=>openOverlayTarget(target));
+    }else if(url.hash&&url.pathname===location.pathname&&url.search===location.search&&!isOverlayPath(location.pathname)){
+      navigationState.route(path);
+      const seq=peachHistory.navigation.seq;
+      void scrollToAnchor(url.hash,()=>peachHistory.navigation.seq===seq);
+    }else navigationState.navigatePath(path);
   },
   openManage,
   managePath:section=>navigationState.routePathOf('section',section)||'',
@@ -52,7 +73,6 @@ compositionState.shellActions = {
   failure:receiptsState.actionFailure,
   revealSource:revealForIsland,
   reopenTutorial:reopenPostSetupTutorial,
-  requestConfigurationSection:section=>{writeShell({configurationRequestedSection:section})},
   routeReview,
   routeFollowManage,
   saveFollowPreference:patch=>{
@@ -102,14 +122,11 @@ compositionState.shellActions = {
     const requested=navigationState.requestedOverlay;
     navigationState.requestedOverlay=null;
     if(peachHistory.navigation.claimed&&(!bootEntry()||navigationState.initialOverlayOpened)){
-      if(requested?.path===location.pathname)void requested.open();
+      if(requested?.path===location.pathname+location.search+location.hash)void requested.open();
       return;
     }
     if(bootEntry())navigationState.initialOverlayOpened=true;
-    if(target.kind==='item')void openItem(target.id,false);
-    else if(target.kind==='jav')void openJavMovie(target.code,false);
-    else if(target.kind==='follow')void openFollowDetail(target.id,false);
-    else void openQueue(target.queue,target.key,target.item,false);
+    openOverlayTarget(target);
   },
   closeStage:()=>{if(mediaState.stageOpen())disposeStage(false)},
   grid:{helpers:catalogState.gridHelpers,actions:catalogState.gridActions},
@@ -147,12 +164,12 @@ compositionState.shellActions = {
     open:(path,{entering=false,retitle=false}={})=>{
       if(retitle){syncRouteChrome();syncHeaderActions();paintListTitle()}
       if(entering)dropBars();
-      if(path==='/trash'){catalogState.clearSearchField();showHomeSurfaces()}
+      if(path==='/trash'){catalogState.clearSearchField()}
       else{$('#q').value=state.q;catalogState.rememberSearchValue()}
-      syncNavigation();buildBars();preferencesState.handOff(loadCatalog());
+      syncNavigation();buildBars();return preferencesState.handOff(loadCatalog());
     },
     /* 壳认领写了地址、筛选已在 `state` 里：只重取。 */
-    load:()=>{preferencesState.handOff(loadCatalog())},
+    load:()=>preferencesState.handOff(loadCatalog()),
     /* 没有背景的作品与队列地址（深链、刷新）：详情下面那份列表一次请求都没发过，补发一次，不留一张写着在读、
        其实没有请求在跑的骨架。走 `paintCatalogGrid` 直接挂网格：`loadCatalog` 开头就 `disposeStage()`，会把这一屏
        详情一起收掉。网格已经画上（哪怕还在取第一页）就不再补发；不是启动那一条时只接着那张骨架。 */
@@ -167,6 +184,11 @@ compositionState.shellActions = {
   },
 };
 compositionState.routing = false;
+effects.listen(document,'click',event=>{
+  const path=navigationLinkPath(event);
+  if(!path)return;
+  event.preventDefault();compositionState.shellActions.navigate(path);
+});
 applicationEffects.own(peachHistory.listen(navigation=>{
   /* 取齐前地址仍在源页：任何非覆盖历史变化（包括同地址 POP）都撤回这一趟，晚到的包或响应不能再开舞台。 */
   if(navigationState.queueOpenRequest&&navigation.seq!==navigationState.queueOpenRequest.seq&&!isOverlayPath(navigation.location.pathname))disposeStage(false);
@@ -178,9 +200,10 @@ mountManageHeader();
 mountBatchDock();
 buildManageBar();
 Promise.all([loadSourceStatus(),loadSyncedSettings(),loadingState.entityShapesReady])
-  .then(()=>effects.isActive&&loadingState.wantsDiscoveryBars()?buildBars():null)
   .then(()=>{
     if(!effects.isActive)return;
+    /* 顶部两排与筛选栏的两个聚合自带骨架、取回后自己落位，页面打开不等它们：作品列表与它们同时去取。 */
+    if(loadingState.wantsDiscoveryBars())buildBars().catch(error=>console.error('首页横条装载失败',error));
     syncNavigation();wireAllDrag();
     // 路由树里按匹配打开的页面等这一下才开始打开：壳的状态到这时才齐。
     compositionState.routing=true;writeShell({pageOpens:1});syncRouteChrome();

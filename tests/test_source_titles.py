@@ -1,4 +1,4 @@
-"""作品的英文显示标题从 r18dev 快照读出，快照改了、删了，索引跟着变（ADR-0115）。"""
+"""作品的英文显示标题从 r18dev 快照读出，快照改了、删了，索引跟着变（ADR-0131）。"""
 import json
 import os
 import tempfile

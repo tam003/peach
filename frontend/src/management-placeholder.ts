@@ -4,12 +4,11 @@
  *
  * 版式照 `boardPageSkeleton` 画的那几页之外，数据管理、复核、诊断与采集来源各有一张，其余路径落到通用面板。 */
 import { esc } from '@peach/legacy/core';
-import { configurationSkeletonHtml, fitSkeleton, skeletonHtml } from '@peach/legacy/ui';
+import { fitSkeleton, skeletonHtml } from '@peach/legacy/ui';
 
 import { phrase } from './i18n';
 import { boardPageSkeleton } from './board-skeleton';
-import { cleanupSkeletonHtml } from './management';
-import { CONFIGURATION_SECTIONS } from './history/settings-route';
+import { cleanupSkeletonHtml, repairCardSkeletonHtml } from './management';
 
 export interface PageSkeletonOptions {
   cards?: boolean;
@@ -47,8 +46,8 @@ const reviewSkeletonHtml = (label = phrase('正在读取复核队列')): string 
     '<div class="skeletoncard" aria-hidden="true"><i></i><b></b><em></em></div>'.repeat(6)}</div></section></div>`;
 
 const PLACEHOLDERS: Record<string, () => string> = {
-  ...Object.fromEntries(Object.keys(CONFIGURATION_SECTIONS).map(key => [`/settings/${key}`, () => configurationSkeletonHtml()])),
   '/data-cleanup': () => cleanupSkeletonHtml(),
+  '/data-cleanup/media-repair': () => `<div class="peach-react" data-skeleton="cleanup/media-repair" aria-busy="true" role="status" aria-label="正在读取媒体修复状态"><div aria-hidden="true" inert class="mx-auto flex w-full max-w-board flex-col gap-8">${repairCardSkeletonHtml()}</div></div>`,
   // /resource-sync 只是数据管理页上的一个锚点，占位也该是数据管理那张。
   '/resource-sync': () => cleanupSkeletonHtml(),
   '/review': () => reviewSkeletonHtml(),

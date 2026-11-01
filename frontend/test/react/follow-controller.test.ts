@@ -10,7 +10,7 @@ const view = (patch: Partial<FollowView> = {}): FollowView => ({ status: '', med
   work: '', tags: [], durMin: 0, durMax: 0, sort: 'new', dir: 'desc', seed: 7, ...patch });
 const helpers: FollowFeedHelpers = { workMark: () => '', tagLabel: tag => tag, wireDrag: vi.fn(), wireScroller: vi.fn(),
   listSkeletonHtml: () => '', jobProgress: vi.fn() };
-const delegated: Omit<FollowFeedActions, 'route' | 'shuffle'> = { loaded: vi.fn(), openDetail: vi.fn(), openAuthor: vi.fn(), openManage: vi.fn(),
+const delegated: Omit<FollowFeedActions, 'route' | 'shuffle'> = { loaded: vi.fn(), openDetail: vi.fn(), openAuthor: vi.fn(),
   toggleSelection: vi.fn(), setImagesOnly: vi.fn(), setPhotoLayout: vi.fn(), canFlip: () => true, toast: vi.fn(),
   failure: vi.fn(), checkReport: vi.fn() };
 
@@ -46,13 +46,13 @@ describe('关注域地址与会话控制', () => {
     expect(readFollowView(followViewPath(target).split('?')[1]!, 0, () => 1)).toEqual(target);
   });
 
-  it('换媒体保滚动，改变服务端筛选才滚到顶，props 动作身份固定且选择快照独立', () => {
+  it('筛选提交不提前定位，props 动作身份固定且选择快照独立', () => {
     const { controller, ports, selected } = setup();
     const first = controller.props();
     controller.route(view({ media: 'images' }));
     expect(ports.scrollTop).not.toHaveBeenCalled();
     controller.route(view({ media: 'images', tags: ['x'] }));
-    expect(ports.scrollTop).toHaveBeenCalledOnce();
+    expect(ports.scrollTop).not.toHaveBeenCalled();
     expect(controller.props().actions).toBe(first.actions);
     expect(controller.props().helpers).toBe(first.helpers);
     selected.add(14);
@@ -71,7 +71,7 @@ describe('关注域地址与会话控制', () => {
     expect(ports.push).not.toHaveBeenCalled();
   });
 
-  it('返回关注页保留会话与滚动，重新进入才清滚动并按宿主推进代次', () => {
+  it('普通进入保留会话与滚动，主动重新进入才换种子并推进代次', () => {
     const { controller, ports, location, live } = setup();
     controller.route(view({ author: 'one' }));
     location('/performers');
@@ -80,14 +80,15 @@ describe('关注域地址与会话控制', () => {
     expect(ports.session()).toEqual({ discoverySeed: 11, revision: 2, scrollY: 600 });
     location('/follow');
     controller.enter();
-    expect(ports.session()).toEqual({ discoverySeed: 41, revision: 2, scrollY: 0 });
+    expect(ports.session()).toEqual({ discoverySeed: 11, revision: 2, scrollY: 600 });
     live(false);
     controller.enter(true);
     expect(ports.session().revision).toBe(3);
+    expect(ports.session().discoverySeed).toBe(41);
     expect(ports.openPage).toHaveBeenLastCalledWith('/follow');
   });
 
-  it('refresh 总是按 URL 读筛选，仅当前关注宿主接收重取与滚动', () => {
+  it('refresh 按 URL 恢复筛选，当前宿主复用原有代次', () => {
     const { controller, ports, location, live } = setup();
     location('/follow', '?tag=one&media=images');
     live(false);
@@ -96,9 +97,9 @@ describe('关注域地址与会话控制', () => {
     expect(ports.session().revision).toBe(2);
     live(true);
     expect(controller.refresh()).toBe(true);
-    expect(ports.session().revision).toBe(3);
+    expect(ports.session().revision).toBe(2);
     expect(ports.revealFeed).toHaveBeenCalledOnce();
-    expect(ports.scrollTop).toHaveBeenCalledOnce();
+    expect(ports.scrollTop).not.toHaveBeenCalled();
   });
 
   it('索引作者重置题材，在线标签保持题材，资料页在线卡不接管页级操作', () => {
@@ -113,7 +114,10 @@ describe('关注域地址与会话控制', () => {
 
   it('管理页非法页码和页签归默认，重新进入保持页签并清排序', () => {
     expect(followManageParams('?page=-4&tab=invalid')).toEqual({ tab: 'list', page: 1, sort: '', dir: '' });
-    expect(followManageParams('?page=3.9&tab=feeds&sort=added&dir=asc')).toEqual({ tab: 'feeds', page: 3, sort: 'added', dir: 'asc' });
+    expect(followManageParams('?page=3.9&tab=feeds&sort=added&dir=asc')).toEqual({ tab: 'list', page: 3, sort: 'added', dir: 'asc' });
+    expect(followManageEntry('?tab=feeds')).toBe('/subscriptions');
+    expect(followManageParams('?tab=tags').tab).toBe('tags');
+    expect(followManageEntry('?tab=tags')).toBe('/subscriptions?tab=tags');
     expect(followManagePath({ tab: 'list', page: 1, sort: '', dir: '' })).toBe('/subscriptions');
     expect(followManageEntry('?tab=wants&page=4&sort=x')).toBe('/jav?tab=wants');
     expect(followManageEntry('?tab=wants', 'add')).toBe('/subscriptions?tab=add');
