@@ -18,17 +18,18 @@ FILES = {
 
 
 def installation_contracts(repo: Path) -> list[str]:
-    """README 的 Python 下限与语言入口须和安装声明一致。"""
+    """README 的 Python 下限与语言入口须和安装声明一致；每份 README 都链到其余各语言版本。"""
     project = tomllib.loads((repo / 'pyproject.toml').read_text(encoding='utf-8'))['project']
     floor = project['requires-python'].removeprefix('>=')
     problems = []
     for name in sorted(READMES):
         text = (repo / name).read_text(encoding='utf-8')
-        if not re.search(rf'\bPython {re.escape(floor)}(?:\+| or newer| 或更高)', text):
+        if not re.search(rf'\bPython {re.escape(floor)}(?:\+| or newer| 或更高| trở lên)', text):
             problems.append(f'{name}: Python 下限须为 {floor}')
-        counterpart, = READMES - {name}
-        if counterpart not in re.findall(r'\]\(([^)\s]+)\)', text):
-            problems.append(f'{name}: 缺少语言入口 {counterpart}')
+        links = {target for pair in re.findall(r'\]\(([^)\s]+)\)|href="([^"]+)"', text) for target in pair if target}
+        for counterpart in sorted(READMES - {name}):
+            if counterpart not in links:
+                problems.append(f'{name}: 缺少语言入口 {counterpart}')
     return problems
 
 

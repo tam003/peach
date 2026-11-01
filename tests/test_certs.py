@@ -168,7 +168,7 @@ class CertificateTests(unittest.TestCase):
             self.assertFalse(worker.is_alive())
             self.assertEqual(failures, [])
 
-    @unittest.skipUnless(os.name == "nt", "需要 Windows PowerShell 签发入口")
+    @unittest.skipUnless(os.name == "nt" and shutil.which("pwsh"), "需要 Windows 上的 PowerShell 7（pwsh）签发入口")
     def test_powershell_setup_issues_a_strict_leaf(self):
         tls = (Path(self._tmp.name) / "powershell").resolve()
         script = Path(__file__).resolve().parents[1] / "scripts" / "setup_local_tls.ps1"

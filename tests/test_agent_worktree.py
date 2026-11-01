@@ -550,7 +550,9 @@ class PruneTests(_WorktreeCase):
     def test_a_worktree_a_process_is_working_in_is_kept(self):
         """会话、终端或预览服务还开在里面的工作树不回收：分支合入了，人还在用。"""
         worker = self._integrated("in-use")
-        process = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"], cwd=worker)
+        # Windows 的 venv python.exe 只是启动器，会再拉起真解释器；直接用真解释器，进程号才对得上。
+        interpreter = getattr(sys, "_base_executable", None) or sys.executable
+        process = subprocess.Popen([interpreter, "-c", "import time; time.sleep(60)"], cwd=worker)
         try:
             report = prune(self.repo, apply=True)
         finally:

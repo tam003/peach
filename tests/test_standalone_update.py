@@ -19,11 +19,41 @@ from scripts.package_windows_release import package as package_release
 from scripts.smoke_split_update import verify as verify_split
 from support.ledger import fresh_ledger
 
+MIRROR = 'https://downloads.peach.video'
+
+
+def mirror():
+    """配置同版本镜像：这一份部署默认不设，镜像逻辑按配置后的行为验证。"""
+    return patch.multiple(update.release_updates, DOWNLOADS_BASE=MIRROR, DOWNLOADS_API=MIRROR + '/releases.json')
+
 
 class ReleaseDownloadFailoverTests(unittest.TestCase):
+    def setUp(self):
+        configured = mirror()
+        configured.start()
+        self.addCleanup(configured.stop)
+
+    def test_without_a_mirror_only_the_release_repository_is_downloaded(self):
+        url = 'https://github.com/tam003/peach/releases/download/v1.0.0/Peach-1.0.0-windows-x64.zip'
+        calls = []
+
+        def respond(request):
+            calls.append(str(request.url))
+            return httpx.Response(503)
+
+        def client(**_kwargs):
+            return httpx.Client(transport=httpx.MockTransport(respond))
+
+        with patch.multiple(update.release_updates, DOWNLOADS_BASE=None, DOWNLOADS_API=None), \
+                tempfile.TemporaryDirectory() as folder, patch('peach.peach_proxy.http_client', side_effect=client):
+            with self.assertRaises(httpx.HTTPStatusError):
+                update.download(url, Path(folder).resolve() / 'package.zip', 3, hashlib.sha256(b'yes').hexdigest(),
+                                lambda _count: None)
+        self.assertEqual(calls, [url])
+
     def test_both_sources_fall_back_to_identical_verified_bytes(self):
         suffix = 'v1.0.0/Peach-1.0.0-windows-x64-update.zip'
-        urls = ('https://github.com/peach-mitao/peach/releases/download/' + suffix,
+        urls = ('https://github.com/tam003/peach/releases/download/' + suffix,
                 'https://downloads.peach.video/' + suffix)
         content = b'verified release bytes'
         for primary in urls:
@@ -59,7 +89,7 @@ class ReleaseDownloadFailoverTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as folder, patch('peach.peach_proxy.http_client', side_effect=client):
             with self.assertRaisesRegex(ValueError, '校验失败'):
-                update.download('https://github.com/peach-mitao/peach/releases/download/v1.0.0/Peach-1.0.0-windows-x64.zip',
+                update.download('https://github.com/tam003/peach/releases/download/v1.0.0/Peach-1.0.0-windows-x64.zip',
                                 Path(folder).resolve() / 'package.zip', 3, hashlib.sha256(b'yes').hexdigest(), lambda _count: None)
         self.assertEqual(len(calls), 2)
 
@@ -294,7 +324,7 @@ class StandaloneUpdateTests(unittest.TestCase):
         archive = output / "Peach-1.0.0-windows-x64-update.zip"
         release = dict(state="available", latest_version="1.0.0", asset_size=archive.stat().st_size,
                        asset_digest="sha256:" + update_packages.digest(archive),
-                       asset_url="https://github.com/peach-mitao/peach/releases/download/v1.0.0/" + archive.name,
+                       asset_url="https://github.com/tam003/peach/releases/download/v1.0.0/" + archive.name,
                        package_kind="update")
         return source, output, manifest, target, archive, release
 
@@ -418,7 +448,7 @@ class StandaloneUpdateTests(unittest.TestCase):
             bad = outcome == 'both-corrupt' or (not r2 and outcome == 'mismatch')
             return httpx.Response(200, content=b'corrupt' if bad else (output / name).read_bytes())
 
-        with patch('peach.__version__', '1.0.0'), patch.object(update.httpx, 'Client', side_effect=lambda **kwargs:
+        with patch('peach.__version__', '1.0.0'), mirror(), patch.object(update.httpx, 'Client', side_effect=lambda **kwargs:
                 original_client(**{**kwargs, 'transport': httpx.MockTransport(respond), 'trust_env': False, 'proxy': None})):
             result = prepare_install_tools(target, self.root / 'empty-cache', error, stage=stage)
         self.assertFalse(target.exists())
@@ -428,7 +458,7 @@ class StandaloneUpdateTests(unittest.TestCase):
         result, requests, manifest, stage, error = self.prepare_online_lite()
         self.assertEqual(result, 0, error.read_text(encoding='utf-8') if error.exists() else '')
         self.assertEqual(len(requests), len(update_packages.TOOL_PATHS))
-        self.assertTrue(all(url.startswith('https://github.com/peach-mitao/peach/releases/download/v1.0.0/') for url in requests))
+        self.assertTrue(all(url.startswith('https://github.com/tam003/peach/releases/download/v1.0.0/') for url in requests))
         for bundle in manifest['tools'].values():
             self.assertTrue(update_packages.matches(stage, bundle['files']))
 

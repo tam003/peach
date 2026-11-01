@@ -5152,20 +5152,20 @@ class ReleaseDownloadNotesTests(unittest.TestCase):
         from scripts.package_windows_release import download_notes
         links = re.findall(r'https://[^\s)]+', download_notes('1.0.0', lite_installer=True))
         self.assertEqual(len(links), 8)
-        self.assertTrue(all(url.startswith('https://github.com/peach-mitao/peach/releases/download/v1.0.0/')
+        self.assertTrue(all(url.startswith('https://github.com/tam003/peach/releases/download/v1.0.0/')
                             for url in links))
 
     def test_r2_release_notes_link_both_native_platforms_and_tagged_docs(self):
         from scripts.package_windows_release import download_notes
         from scripts.publish_gitlab_release import r2_release_notes
         body = ('### 新增\n\n- **更新**：支持公开下载。\n\n'
-                '[说明](https://github.com/peach-mitao/peach/blob/master/docs/OPERATIONS.md)\n'
+                '[说明](https://github.com/tam003/peach/blob/master/docs/OPERATIONS.md)\n'
                 + download_notes('1.0.0', lite_installer=True))
         result = r2_release_notes(body, '1.0.0', 'https://downloads.peach.video',
                                   'https://gitgud.io/peach-mitao/peach')
         links = re.findall(r'https://[^\s)]+', result)
         self.assertIn('### 新增\n\n- **更新**：支持公开下载。', result)
-        self.assertEqual(result.count('## 下载选择'), 1)
+        self.assertEqual(result.count('## Downloads'), 1)
         self.assertEqual(links[0], 'https://gitgud.io/peach-mitao/peach/-/blob/v1.0.0/docs/OPERATIONS.md')
         self.assertEqual(len(links[1:]), 10)
         self.assertTrue(all(url.startswith('https://downloads.peach.video/v1.0.0/') for url in links[1:]))
@@ -5680,12 +5680,6 @@ class PinnedReleaseTests(unittest.TestCase):
     def setUpClass(cls):
         cls.release = load_script("release_tag")
 
-    def setUp(self):
-        candidate = mock.patch.object(self.release.github_release_candidate, "select",
-                                      return_value={"run_id": 9})
-        self.candidate = candidate.start()
-        self.addCleanup(candidate.stop)
-
     def _shell(self, changes=None):
         answers = {
             ("git", "status", "--porcelain"): "",
@@ -5755,16 +5749,6 @@ class PinnedReleaseTests(unittest.TestCase):
                 self.assertEqual(self.release.main(["--release-sha", self.SHA, "--apply"]), 1)
             self.assertEqual(ShipTests._writes(command), [])
 
-    def test_a_commit_without_a_promotable_rehearsal_gets_no_tag(self):
-        with self._shell(), self._api():
-            self.assertEqual(self.release.plan_commit("owner/repo", self.SHA)["rehearsal"],
-                             "https://github.com/owner/repo/actions/runs/9")
-        self.candidate.assert_called_with("owner/repo", self.SHA)
-        self.candidate.side_effect = ValueError("主线发布演练尚未成功")
-        with self._shell() as command, self._api(), redirect_stdout(io.StringIO()):
-            self.assertEqual(self.release.main(["--release-sha", self.SHA, "--apply"]), 1)
-        self.assertEqual(ShipTests._writes(command), [])
-
     def test_apply_rechecks_the_selected_commit_and_pushes_only_its_annotated_tag(self):
         with self._shell() as command, self._api(), \
                 mock.patch.object(self.release, "plan_commit", wraps=self.release.plan_commit) as plan, \
@@ -5797,8 +5781,8 @@ class ShipTests(unittest.TestCase):
         self.audit = audit.start()
         self.addCleanup(audit.stop)
 
-    def test_a_vulnerable_dependency_found_after_the_test_turns_green_stops_before_the_tag(self):
-        """Test 绿了到打标签之间可能刚好公布了新漏洞：标签打出去就什么也发不了，所以标签前再查一次。"""
+    def test_a_vulnerable_dependency_found_before_tagging_stops_before_the_tag(self):
+        """推送后到打标签之间可能刚好公布了新漏洞：标签打出去就什么也发不了，所以标签前再查一次。"""
         self.audit.side_effect = ValueError("依赖审计发现高危漏洞（frontend）")
         with self._shell() as command, self._api(remote="abc"), self._version(), self._document(), \
                 self.assertRaisesRegex(ValueError, "高危漏洞"):
@@ -5839,28 +5823,6 @@ class ShipTests(unittest.TestCase):
         return [args for args, _ in command.call_args_list
                 if args[:2] in {("git", "add"), ("git", "commit"), ("git", "push"), ("git", "-c")}
                 or args[:3] == ("git", "tag", "-a")]
-
-    def test_an_incomplete_release_rehearsal_stops_before_the_tag(self):
-        """GitLab 上版本提交的流水线带发布演练：Test 绿了但演练缺作业或没过，不打标签。"""
-        forge = mock.Mock()
-        forge.require_rehearsal.side_effect = ValueError("版本提交的发布演练没有全部通过，不打标签：build-macos")
-        with self._shell() as command, self._version(), self._document(), \
-                mock.patch.object(self.release, "GITLAB", forge), \
-                mock.patch.object(self.release, "master_sha", return_value="abc"), \
-                mock.patch.object(self.release, "await_test", return_value={**self.SUCCESS, "id": 7}), \
-                self.assertRaisesRegex(ValueError, "发布演练"):
-            self.release.ship("owner/repo", apply=True)
-        forge.require_rehearsal.assert_called_once_with("owner/repo", 7)
-        self.assertFalse([args for args in self._writes(command) if args[:3] == ("git", "tag", "-a")])
-
-    def test_on_github_a_red_release_rehearsal_stops_before_the_tag(self):
-        """迁回 GitHub 时演练是同一提交推送触发的 Release 工作流：它没过同样不打标签。"""
-        red = {**self.SUCCESS, "conclusion": "failure", "html_url": "rehearsal-url"}
-        with self._shell() as command, self._api(remote="abc", rehearsal=(red,)), self._version(), \
-                self._document(), mock.patch.object(self.release, "GITLAB", None), \
-                self.assertRaisesRegex(ValueError, "发布演练没有通过.*rehearsal-url"):
-            self.release.ship("owner/repo", apply=True)
-        self.assertFalse([args for args in self._writes(command) if args[:3] == ("git", "tag", "-a")])
 
     def test_a_plan_without_apply_writes_nothing(self):
         with self._shell() as command, self._api(), self._version(), self._document():

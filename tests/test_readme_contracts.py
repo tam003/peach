@@ -1,4 +1,4 @@
-"""README 的安装要求与双语入口。"""
+"""README 的安装要求与各语言入口。"""
 from pathlib import Path
 import tempfile
 import unittest
@@ -16,11 +16,11 @@ class ReadmeContractsTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             (root / 'pyproject.toml').write_text('[project]\nrequires-python = ">=3.14"\n', encoding='utf-8')
-            for suffix in ('+', ' or newer', ' 或更高'):
+            for suffix in ('+', ' or newer', ' 或更高', ' trở lên'):
                 for name in READMES:
-                    counterpart, = READMES - {name}
-                    (root / name).write_text(f'Python 3.14{suffix}\n[Language]({counterpart})\n', encoding='utf-8')
+                    links = ''.join(f'[Language]({counterpart})\n' for counterpart in sorted(READMES - {name}))
+                    (root / name).write_text(f'Python 3.14{suffix}\n{links}', encoding='utf-8')
                 self.assertEqual(installation_contracts(root), [])
-            (root / 'README.md').write_text('Python 3.13+\n', encoding='utf-8')
+            (root / 'README.md').write_text('Python 3.13+\n<a href="README.vi.md">Tiếng Việt</a>\n', encoding='utf-8')
             self.assertEqual(installation_contracts(root), ['README.md: Python 下限须为 3.14',
                                                            'README.md: 缺少语言入口 README.zh-CN.md'])
