@@ -21,6 +21,7 @@ import { ShellActionsContext } from '../router/router';
 import { FolderRuleDialog } from './folder-rule-dialog';
 import { useFolderStickyOffset } from './use-folder-sticky-offset';
 import { folderHref, folderQuery, PURPOSES, type FolderPage, type FolderScope, type MediaFolder } from './catalog-folders';
+import { phrase } from '../../i18n/phrase';
 
 export function FolderBrowseToggle() {
   return useInRouterContext() ? <FolderBrowseControl /> : null;
@@ -103,7 +104,7 @@ export function CatalogFolders({ treeTarget, headerTarget, enabled = true }: {
           onClick={() => setEditing(true)} /> : null}
       </div>
       {query.error && !drawer ? <Note tone="error" action={<Button variant="secondary" size="small" onClick={() => { void query.refetch() }}>立即重试</Button>}>{errorMessage(query.error)}</Note> : null}
-      {data?.conflicts?.length ? <Note tone="warning" action={<Button variant="secondary" size="small" onClick={() => setEditing(true)}>查看归属冲突</Button>}>{data.conflicts.length} 项保留现有归属</Note> : null}
+      {data?.conflicts?.length ? <Note tone="warning" action={<Button variant="secondary" size="small" onClick={() => setEditing(true)}>查看归属冲突</Button>}>{phrase('{conflicts} 项保留现有归属', { conflicts: data.conflicts.length })}</Note> : null}
       {data?.selected ? <div className="folder-scope-row">
         <Checkbox size="sm" isSelected={params.get('folder_recursive') !== '0'}
           onChange={on => actions.navigate(folderHref(address, { folder_recursive: on ? null : '0' }))}>包含子文件夹</Checkbox>

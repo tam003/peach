@@ -17,6 +17,7 @@ import { busyProps, useAction } from '../settings/use-action';
 import { Disclosure } from '../settings/section';
 import { ShellActionsContext } from '../router/router';
 import { PURPOSES, type FolderPurpose, type FolderRule, type MediaFolder } from './catalog-folders';
+import { phrase } from '../../i18n/phrase';
 
 interface Preview {
   plan_version: string; total: number; applicable: number; withdrawn: number;
@@ -81,8 +82,8 @@ export function FolderRuleDialog({ folder, rule, revision, close }: {
         <Checkbox isSelected={recursive} isDisabled={busy} onChange={value => { setRecursive(value); dirty() }}>应用到子文件夹</Checkbox>
         <Checkbox isSelected={future} isDisabled={busy} onChange={value => { setFuture(value); dirty() }}>新文件沿用此规则</Checkbox>
         {preview ? <section aria-label="目录用途影响范围" className="flex flex-col gap-3">
-          <p className="text-body-medium">{preview.total} 项 · 可应用 {preview.applicable} 项{preview.conflicts.length ? ` · 保留现有归属 ${preview.conflicts.length} 项` : ''}</p>
-          {preview.withdrawn ? <p className="text-body-2-regular text-text-secondary">撤回此规则已有的 {preview.withdrawn} 项关联，再按当前范围应用。</p> : null}
+          <p className="text-body-medium">{phrase('{total} 项 · 可应用 {applicable} 项{conflicts}', { total: preview.total, applicable: preview.applicable, conflicts: preview.conflicts.length ? phrase(' · 保留现有归属 {count} 项', { count: preview.conflicts.length }) : '' })}</p>
+          {preview.withdrawn ? <p className="text-body-2-regular text-text-secondary">{phrase('撤回此规则已有的 {withdrawn} 项关联，再按当前范围应用。', { withdrawn: preview.withdrawn })}</p> : null}
           {preview.sample.length ? <ul className="flex flex-col gap-1 text-body-2-regular text-text-secondary">
             {preview.sample.map(item => <li className="wrap-anywhere" key={item.id}>{item.name}</li>)}
           </ul> : null}

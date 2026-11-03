@@ -13,6 +13,7 @@ import { errorMessage } from '../../api';
 import { fetchProcessingEstimate, type LibraryProcessingCommand, type ProcessingSpeed, type ProcessingTraffic } from './library-processing';
 import { ProcessingEffort } from './processing-effort';
 import { TrafficProgress } from './processing-traffic';
+import { phrase } from '../../i18n/phrase';
 
 interface ProcessingOption {
   label: string; description: string; command: LibraryProcessingCommand; disabled?: boolean;
@@ -73,7 +74,7 @@ function ProcessingPrompt({ command, speed, dialog, onSpeed, busy }: {
     : command.scope === 'new' ? '已登记的待补全影片'
     : command.stage === 'previews' ? '已入库的本地视频' : '整个媒体库';
   return <div className="flex flex-col gap-4">
-    <p data-processing-scope className="text-body-2-medium text-text-primary">处理范围：{scope}</p>
+    <p data-processing-scope className="text-body-2-medium text-text-primary">{phrase('处理范围：{scope}', { scope })}</p>
     <div className="flex justify-center"><ProcessingEffort value={mode} busy={busy} onChange={value => { setMode(value); onSpeed(value) }} /></div>
     {traffic ? <TrafficProgress traffic={traffic} initial /> : null}
     {failure || !traffic ? <p role="status" className="text-body-2-regular text-text-secondary">{failure ? `流量预估未取得：${failure}` : '正在估算流量…'}</p> : null}

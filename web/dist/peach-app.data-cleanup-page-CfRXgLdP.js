@@ -1,7 +1,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "9a76a099-c319-463c-b215-bc2119db6d5b", e._sentryDebugIdIdentifier = "sentry-dbid-9a76a099-c319-463c-b215-bc2119db6d5b");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "cdbdb03d-1635-4685-8aa0-070fadbf0237", e._sentryDebugIdIdentifier = "sentry-dbid-cdbdb03d-1635-4685-8aa0-070fadbf0237");
 	} catch {}
 })();
 import { Button as e, CLEANUP_ENTRY as t, CLEANUP_ENTRY_GRID as n, CLEANUP_HASH_REDIRECTS as r, CLEANUP_TOOLS as i, Chip as a, DIRECTORY_TEMPLATE_ERROR as o, DUPLICATES_KEY as s, Fieldset as c, FieldsetTitle as l, IDLE_REPAIR as u, IconButton as d, IndexSearch as f, Input as p, JUNK_KEY as m, LINKS_KEY as h, LINK_CHECK_KEY as g, LINK_KINDS as _, LINK_PRUNE_KEY as v, LOC as y, LibraryProcessingCard as b, MEDIA_REPAIR_KEY as x, MEDIA_REPAIR_URL as S, MEDIA_SOURCES_KEY as C, MEDIA_SOURCE_ICONS as w, Note as T, ORGANIZE_KEY as E, ORPHAN_RECORDS_KEY as D, PERFORMER_DELETE_KEY as O, PLAIN_STAT_STRIP as k, PlainStat as A, Progress as j, QUALITY_GOALS_KEY as M, REPAIR_CARD_TEXT as N, REPAIR_LIBRARIES_KEY as ee, RESOURCE_APPLY_KEY as P, RESOURCE_SCAN_KEY as te, RESULT_PANEL as ne, RESULT_SECTION as F, REVIEW_COUNTS_KEY as I, SOURCE_LABELS as L, SectionHeading as R, Select as re, SelectItem as ie, SourceMark as ae, StatusLabel as oe, TRASH_KEY as z, TaskProgress as se, Wt as ce, __toESM as le, apiSend as ue, applyConfirmText as de, applyLeftovers as fe, applyPlanText as pe, applyText as me, attachOrphan as B, baseName as he, busyProps as V, candidateText as H, checkLine as ge, confirmModal as U, cx as _e, deletePerformerVideos as ve, entityDisplayName as ye, entityFaceImg as be, entityPath as xe, errorMessage as W, esc as Se, fetchDeletePerformers as Ce, fetchDeletePlan as we, fetchDuplicates as Te, fetchJunkSummary as Ee, fetchLinkCheck as De, fetchLinkPrune as Oe, fetchLinkStats as ke, fetchMediaRepair as Ae, fetchMediaSources as je, fetchOrganize as Me, fetchOrganizeExample as Ne, fetchOrphanRecords as Pe, fetchQualityGoals as Fe, fetchRepairLibraries as Ie, fetchResourceApply as Le, fetchResourceScan as Re, fetchReviewCounts as ze, fetchTrashSummary as Be, firstGrapheme as Ve, fmtSize as G, hasChanges as He, hasResourceRoots as Ue, junkBreakdown as We, listSeparator as Ge, missingToolText as Ke, nameFallback as qe, organizeOutcome as Je, phrase as K, pickOrganizeFolder as Ye, plainStatClass as Xe, planSummary as Ze, previewOrganize as Qe, pruneText as $e, purgeCount as et, purgeOrphan as tt, queryClient as q, recordsText as nt, rememberTemplates as rt, require_jsx_runtime as it, require_react as at, reviewSummary as ot, scanLine as st, shellNavigate as ct, sourceMeta as lt, spriteGlyph as J, startLinkCheck as ut, startLinkPrune as dt, startOrganize as ft, startResourceApply as pt, startResourceScan as mt, statusLine as ht, useAction as gt, useBackgroundJob as Y, useEntityNames as _t, useMutation as vt, useQuery as X, withOrganizeJob as yt } from "./peach-app.js";
@@ -827,10 +827,10 @@ function Kt({ toast: t, failure: n }) {
 						className: "text-caption-1-regular text-text-secondary",
 						children: "指定路径时包含子目录，目录模板以该路径为起点。模板均留空时只清理文件名。"
 					}),
-					I.isError ? /* @__PURE__ */ (0, Q.jsxs)(T, {
+					I.isError ? /* @__PURE__ */ (0, Q.jsx)(T, {
 						tone: "error",
 						title: "目录选择失败",
-						children: [W(I.error), "；也可直接输入路径。"]
+						children: K("{error}；也可直接输入路径。", { error: W(I.error) })
 					}) : null,
 					/* @__PURE__ */ (0, Q.jsx)(p, {
 						label: "文件名模板",
@@ -1331,9 +1331,9 @@ function sn({ scan: e, partial: t = !1 }) {
 				wrapMeta: !0
 			}), e.online && e.unreadable > 0 ? /* @__PURE__ */ (0, Q.jsx)("span", {
 				className: "self-start",
-				children: /* @__PURE__ */ (0, Q.jsxs)(oe, {
+				children: /* @__PURE__ */ (0, Q.jsx)(oe, {
 					tone: "warning",
-					children: [$(e.unreadable), " 个目录未读取"]
+					children: K("{unreadable} 个目录未读取", { unreadable: $(e.unreadable) })
 				})
 			}) : null]
 		}, e.location))
@@ -1737,4 +1737,4 @@ function bn({ toast: e, open: t, navigate: a }) {
 }
 export { bn as DataCleanupPage, un as DataCleanupToolPage };
 
-//# debugId=9a76a099-c319-463c-b215-bc2119db6d5b
+//# debugId=cdbdb03d-1635-4685-8aa0-070fadbf0237

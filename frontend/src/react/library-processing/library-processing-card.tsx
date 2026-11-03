@@ -225,7 +225,7 @@ export function LibraryProcessingCard(props: LibraryProcessingProps) {
             <div className="flex flex-wrap items-center gap-2">
               <FieldsetTitle>扫描与采集</FieldsetTitle>
               {state.new_asset_count ? <Chip variant="caption" color="blue">
-                <span className="tabular-nums">{state.new_asset_count.toLocaleString()} 部待补全</span>
+                <span className="tabular-nums">{phrase('{new_asset_count} 部待补全', { new_asset_count: state.new_asset_count.toLocaleString() })}</span>
               </Chip> : null}
             </div>
             {hidden && (processingActive(state) || state.status === 'failed' || job.isError)

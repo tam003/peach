@@ -383,7 +383,7 @@ export function SetupForm({ setup, onDone, onRestore }: { setup: SetupQuestions;
         <Disclosure key={advancedOpenings} summary={phrase('高级设置')} defaultOpen={advancedOpenings > 0}>
           <div className="flex flex-col gap-4">{others.filter(visible).map(field)}</div>
         </Disclosure>
-        <Help><span className="break-all">访问地址：{address}</span></Help>
+        <Help><span className="break-all">{phrase('访问地址：{address}', { address })}</span></Help>
       </CardGroup>
 
       </div>

@@ -171,7 +171,7 @@ function SourceCard({ source, toast }: { source: Source } & ScrapingProps) {
         </SettingsRow>
       </Rows>
       {source.cooldown_until && source.cooldown_until > Date.now() / 1000 ? (
-        <Note tone="warning"><span className="inline-flex flex-wrap items-center gap-2"><StatusLabel tone="warning">冷却中</StatusLabel><span>可在 {new Date(source.cooldown_until * 1000).toLocaleString('zh-CN')} 后重试。</span></span></Note>
+        <Note tone="warning"><span className="inline-flex flex-wrap items-center gap-2"><StatusLabel tone="warning">冷却中</StatusLabel><span>{phrase('可在 {time} 后重试。', { time: new Date(source.cooldown_until * 1000).toLocaleString('zh-CN') })}</span></span></Note>
       ) : null}
       {detailed ? <Stack divided>
         {network === 'peach'
@@ -325,10 +325,7 @@ function AmaneBridgeCard({ toast }: ScrapingProps) {
           : null}
         {data.problem
           ? <Note tone="error">{data.problem}</Note>
-          : <Help>
-              amane（{data.license}）提供这些内置站点的解析能力。首次需要时，Peach 会自动准备锁定的 {data.version} 版本；安装包内已有可用环境时直接使用。
-              手动安装也使用此版本，不随上游自动升级。
-            </Help>}
+          : <Help>{phrase('amane（{license}）提供这些内置站点的解析能力。首次需要时，Peach 会自动准备锁定的 {version} 版本；安装包内已有可用环境时直接使用。 手动安装也使用此版本，不随上游自动升级。', { license: data.license, version: data.version })}</Help>}
         {running ? <LoadingDots label="正在重建运行环境" /> : null}
         {problem ? <Note tone="error">{problem}</Note> : null}
         {outcome?.status === 'complete' ? <Note tone="success">{outcome.result || phrase('amane 桥已重建')}</Note> : null}

@@ -25,6 +25,7 @@ import { Progress } from '../components/progress';
 import { ErrorText, Fact, FactList, Footer, Help, Stack, Section } from './section';
 import { CATEGORY_SWATCH, REST_SWATCH, StorageOverview } from './storage-charts';
 import { busyProps, useAction } from './use-action';
+import { phrase } from '../../i18n/phrase';
 
 const STORAGE_URL = '/api/configuration/storage';
 const POLL_MS = 1500;
@@ -54,7 +55,7 @@ function Measuring({ job }: { job: StorageState['job'] }) {
         ? <>
             {/* 文件比上次多时进度条停在 99%，等结果出来。 */}
             <Progress label="统计进度" value={Math.min(files, expected * 0.99)} max={expected} />
-            <Help>{reading}，上次共 {expected.toLocaleString()} 个</Help>
+            <Help>{reading}{phrase('，上次共 {expected} 个', { expected: expected.toLocaleString() })}</Help>
           </>
         : <LoadingDots label="正在统计占用空间" />}
       {!expected ? <Help>{reading}</Help> : null}
@@ -86,7 +87,7 @@ function CategoryRow(
       </div>
       <div className="flex shrink-0 flex-col items-end gap-0.5 text-right">
         <AnimatedNumber value={category.bytes} format={fmtSize} className="text-body-regular text-text-primary" />
-        {able ? <span className="text-caption-1-regular text-text-secondary">可释放 {fmtSize(category.reclaimable)}</span> : null}
+        {able ? <span className="text-caption-1-regular text-text-secondary">{phrase('可释放 {reclaimable}', { reclaimable: fmtSize(category.reclaimable) })}</span> : null}
       </div>
     </div>
   );

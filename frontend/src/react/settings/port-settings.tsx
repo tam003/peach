@@ -11,6 +11,7 @@ import { ConfigurationChoice, ConfigurationInput } from '../components/configura
 import { RESTART_REDIRECT_MS } from '../restart-redirect';
 import { ErrorText, Footer, Help, Section, Stack } from './section';
 import { busyProps, useAction } from './use-action';
+import { phrase } from '../../i18n/phrase';
 
 const HOST_OPTIONS = [
   { value: '0.0.0.0', label: '同一局域网的设备' },
@@ -59,7 +60,7 @@ export function PortSettings({ data, receipt }: ConfigurationGroupProps) {
       {network.lan_url || network.ip_url ? <>
         <Address label="手机连接地址" value={network.lan_url || network.ip_url} receipt={receipt} />
         {network.lan_url && network.ip_url ? <Address label="备用 IP 地址" value={network.ip_url} receipt={receipt} /> : null}
-        <Help>手机与电脑连接同一 Wi-Fi。{network.ip_url && network.lan_url ? '名称地址打不开时，可尝试备用 IP 地址。' : ''}</Help>
+        <Help>{phrase('手机与电脑连接同一 Wi-Fi。{hint}', { hint: network.ip_url && network.lan_url ? '名称地址打不开时，可尝试备用 IP 地址。' : '' })}</Help>
       </> : <Help>{network.scope === 'local'
         ? '当前只允许这台电脑访问，手机无法连接。'
         : '局域网连接地址未取得，请检查电脑的网络连接和服务启动配置。'}</Help>}

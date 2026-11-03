@@ -6,6 +6,7 @@ import { StatusLabel } from '../components/status-label';
 import { ExternalLink } from './section';
 import { busyProps } from './busy-props';
 import { useUserscriptProbe } from './userscript-probe';
+import { phrase } from '../../i18n/phrase';
 
 export function userscriptVersionSupported(version: string, minimumVersion: string) {
   const current = version.split('.').map(Number);
@@ -34,7 +35,7 @@ export function UserscriptStatus({ enabled, release }: {
     <div aria-live="polite" data-userscript-status="" className={cardClass({ variant: 'raised', bordered: 'line', className: 'flex flex-col gap-3' })}>
       <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-body-medium text-text-primary">Peach 用户脚本</span>
         <ConnectionStatus tone={tone}><span data-copy-key={`userscript.${copyState}.status`}>{label}</span></ConnectionStatus></div>
-      {installed ? <p data-copy-key="userscript.installed.version" className="text-body-regular text-text-secondary">用户脚本 v{status.version}</p> : null}
+      {installed ? <p data-copy-key="userscript.installed.version" className="text-body-regular text-text-secondary">{phrase('用户脚本 v{version}', { version: status.version })}</p> : null}
       <div className="flex flex-wrap items-center justify-between gap-3"><span className="text-body-regular text-text-secondary">浏览器添加</span>
         <StatusLabel tone={enabled ? 'success' : 'neutral'}><span data-copy-key={`userscript.adding.${enabled ? 'enabled' : 'disabled'}`}>{enabled ? '已启用' : '未启用'}</span></StatusLabel></div>
       <p data-copy-key={`userscript.${copyState}.message`} className="text-caption-1-regular text-text-secondary">{status === 'checking' ? '正在检测当前浏览器的用户脚本。' : status === 'missing'

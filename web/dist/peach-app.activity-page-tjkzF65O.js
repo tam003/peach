@@ -1,7 +1,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "c82e0b5c-19ad-41c9-a945-9fda3a6d74f6", e._sentryDebugIdIdentifier = "sentry-dbid-c82e0b5c-19ad-41c9-a945-9fda3a6d74f6");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "55ffaa01-4b89-48b3-bffe-7668dc608ff0", e._sentryDebugIdIdentifier = "sentry-dbid-55ffaa01-4b89-48b3-bffe-7668dc608ff0");
 	} catch {}
 })();
 import { Button as e, Chip as t, Disclosure as n, DownloadsPanel as r, EmptyState as i, Gg as a, HN as o, LinkButton as s, LoadingDots as c, Note as l, OV as u, Progress as d, TASKS_KEY as f, TRIGGER_LABELS as p, __toESM as m, apiGet as h, apiSend as g, busyProps as _, cardClass as v, confirmModal as y, controlTask as b, cx as x, elapsedText as S, errorMessage as C, f1 as ee, fetchEarlier as te, fetchTasks as ne, fmtSize as w, foldByKind as re, foldRoutine as ie, followupDetail as T, followupTally as E, groupFollowups as ae, hasResultProblems as D, i2 as O, isActive as k, isRoutine as oe, latestOfKind as se, mergeFinished as A, momentText as j, notifyManager as M, phrase as N, pollInterval as ce, problemDestination as P, progressText as F, replaceEqualDeep as I, require_jsx_runtime as L, require_react as R, statusLabel as z, summaryItems as B, taskIssues as V, uo as le, useMutation as H, useQuery as ue, useQueryClient as U } from "./peach-app.js";
@@ -386,13 +386,9 @@ function Z({ run: e, meta: t, children: r, footer: i, followups: a, followupTota
 					summary: `任务明细 · ${f.toLocaleString()} 项`,
 					contentClassName: "pb-2.5",
 					defaultOpen: u.some((e) => k(e)),
-					children: [d < f ? /* @__PURE__ */ (0, J.jsxs)("p", {
+					children: [d < f ? /* @__PURE__ */ (0, J.jsx)("p", {
 						className: "text-caption-1-regular text-text-secondary",
-						children: [
-							"列出其中 ",
-							d.toLocaleString(),
-							" 项，正在处理的排在前面"
-						]
+						children: N("列出其中 {shown} 项，正在处理的排在前面", { shown: d.toLocaleString() })
 					}) : null, /* @__PURE__ */ (0, J.jsx)(je, { rows: u })]
 				})
 			}) : null,
@@ -474,13 +470,9 @@ function Ne({ run: e, followups: r, runs: i, latest: a, followupTotal: o, follow
 			children: "发现问题"
 		}) : void 0,
 		children: [
-			l ? /* @__PURE__ */ (0, J.jsxs)("p", {
+			l ? /* @__PURE__ */ (0, J.jsx)("p", {
 				className: "text-caption-1-regular text-text-secondary",
-				children: [
-					"后续任务已取消 ",
-					l.toLocaleString(),
-					" 项"
-				]
+				children: N("后续任务已取消 {followupCancelled} 项", { followupCancelled: l.toLocaleString() })
 			}) : null,
 			d.length === 1 ? /* @__PURE__ */ (0, J.jsx)("p", {
 				className: "text-caption-1-regular text-text-secondary wrap-anywhere",
@@ -549,14 +541,12 @@ function Pe({ runs: e, followups: n, counts: r }) {
 				label: `${i.task_label}进度`,
 				value: c,
 				max: s
-			}), /* @__PURE__ */ (0, J.jsxs)("p", {
+			}), /* @__PURE__ */ (0, J.jsx)("p", {
 				className: "text-caption-1-regular text-text-secondary",
-				children: [
-					"已处理 ",
-					F(c, s),
-					" 项",
-					l ? ` · 其中 ${l.toLocaleString()} 项失败` : ""
-				]
+				children: N("已处理 {total} 项{failed}", {
+					total: F(c, s),
+					failed: l ? N(" · 其中 {failed} 项失败", { failed: l.toLocaleString() }) : ""
+				})
 			})]
 		})
 	});
@@ -694,4 +684,4 @@ function Fe() {
 }
 export { Fe as ActivityPage };
 
-//# debugId=c82e0b5c-19ad-41c9-a945-9fda3a6d74f6
+//# debugId=55ffaa01-4b89-48b3-bffe-7668dc608ff0

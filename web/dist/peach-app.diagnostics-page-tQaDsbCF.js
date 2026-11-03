@@ -1,7 +1,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "91c99c1e-6f7a-485c-b312-7453e0b6b717", e._sentryDebugIdIdentifier = "sentry-dbid-91c99c1e-6f7a-485c-b312-7453e0b6b717");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "a3fa7b26-8ecd-4cbe-ab52-b32737e7ab36", e._sentryDebugIdIdentifier = "sentry-dbid-a3fa7b26-8ecd-4cbe-ab52-b32737e7ab36");
 	} catch {}
 })();
 import { ApiError as e, Button as t, ButtonLink as n, Chip as r, DIAGNOSTICS_KEY as i, Disclosure as a, EmptyState as o, Fact as s, FactList as c, Fieldset as l, FieldsetTitle as u, Input as d, LOC as f, LinkButton as p, LoadingDots as m, Note as h, Progress as g, Section as _, SettingsCard as v, SettingsSectionLabel as y, Stack as b, __toESM as x, apiGet as ee, apiSend as te, busyProps as S, configurationSection as C, cx as w, diagnosticHeaders as T, diagnosticsSkeleton as E, errorMessage as D, fetchDiagnostics as O, fmtDur as k, fmtSize as A, phrase as j, queryClient as M, require_jsx_runtime as ne, require_react as re, settingsPath as ie, tl as N, useAction as P, useQuery as F } from "./peach-app.js";
@@ -209,30 +209,23 @@ function K({ kind: r, codes: i = "" }) {
 			c && l ? s.total && s.total > 0 ? /* @__PURE__ */ (0, B.jsxs)("div", {
 				className: "flex flex-col gap-2",
 				role: "status",
-				children: [/* @__PURE__ */ (0, B.jsxs)("span", {
+				children: [/* @__PURE__ */ (0, B.jsx)("span", {
 					className: "text-body-2-regular",
-					children: [
-						s.stage,
-						" · ",
-						s.done || 0,
-						" / ",
-						s.total,
-						" 项"
-					]
+					children: j("{stage} · {done} / {total} 项", {
+						stage: s.stage ?? "",
+						done: s.done || 0,
+						total: s.total
+					})
 				}), /* @__PURE__ */ (0, B.jsx)(g, {
 					label: "导出进度",
 					value: s.done || 0,
 					max: s.total
 				})]
 			}) : /* @__PURE__ */ (0, B.jsx)(m, { label: `${s.stage || "准备导出"}${s.rows ? ` · ${s.rows} 条候选` : ""}${s.files ? ` · ${s.files} 个文件` : ""}` }) : null,
-			c && s.status === "complete" ? /* @__PURE__ */ (0, B.jsxs)("p", {
+			c && s.status === "complete" ? /* @__PURE__ */ (0, B.jsx)("p", {
 				role: "status",
 				className: "text-body-2-regular text-text-secondary",
-				children: [
-					"导出已完成 · ",
-					((s.bytes || 0) / 1024 / 1024).toFixed(2),
-					" MiB"
-				]
+				children: j("导出已完成 · {bytes} MiB", { bytes: ((s.bytes || 0) / 1024 / 1024).toFixed(2) })
 			}) : null,
 			c && s.status === "cancelled" ? /* @__PURE__ */ (0, B.jsx)(h, {
 				tone: "neutral",
@@ -443,9 +436,9 @@ function se(e) {
 			/* @__PURE__ */ (0, B.jsx)(_, {
 				guide: "health",
 				title: "库健康",
-				children: /* @__PURE__ */ (0, B.jsxs)(b, { children: [f.library.issue_at ? /* @__PURE__ */ (0, B.jsxs)("p", {
+				children: /* @__PURE__ */ (0, B.jsxs)(b, { children: [f.library.issue_at ? /* @__PURE__ */ (0, B.jsx)("p", {
 					className: "text-body-2-regular text-text-secondary",
-					children: ["处理记录 · ", Y(f.library.issue_at)]
+					children: j("处理记录 · {issue_at}", { issue_at: Y(f.library.issue_at) })
 				}) : null, Object.entries(f.library.groups).map(([t, n]) => /* @__PURE__ */ (0, B.jsx)(U, {
 					group: n,
 					...e
@@ -531,4 +524,4 @@ function se(e) {
 }
 export { se as DiagnosticsPage, X as formatDiagnosticReason };
 
-//# debugId=91c99c1e-6f7a-485c-b312-7453e0b6b717
+//# debugId=a3fa7b26-8ecd-4cbe-ab52-b32737e7ab36

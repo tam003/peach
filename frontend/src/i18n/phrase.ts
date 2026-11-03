@@ -1,5 +1,6 @@
 /* Exact Chinese screen sentences, with an English and a Vietnamese line.
  * Locale `zh` shows the source sentence. A sentence with no entry stays as written. */
+import { en, vi, zh, type MessageKey } from './messages';
 import { getLocale } from './translate';
 
 export interface PhraseLine { en: string; vi: string }
@@ -9,6 +10,10 @@ const packs = import.meta.glob('./phrases/*.ts', { eager: true }) as Record<stri
 const table = new Map<string, PhraseLine>();
 for (const mod of Object.values(packs)) {
   for (const [source, line] of Object.entries(mod.phrases ?? {})) table.set(source, line);
+}
+// A sentence the `t()` catalog already says reads the same when a page writes its Chinese out directly.
+for (const key of Object.keys(zh) as MessageKey[]) {
+  if (!table.has(zh[key]) && en[key]) table.set(zh[key], { en: en[key], vi: vi[key] || en[key] });
 }
 
 export function phrase(source: string, vars?: Record<string, string | number>): string {
@@ -41,7 +46,7 @@ export function knownPhrase(source: string): boolean {
 }
 
 /* A sentence with `{name}` slots also matches the finished text on the page: `3 项需要处理` meets `{n} 项需要处理`. */
-interface PhrasePattern { match: RegExp; names: string[]; line: PhraseLine }
+interface PhrasePattern { match: RegExp; names: string[]; line: PhraseLine; literal: number }
 let patterns: PhrasePattern[] | null = null;
 
 function phrasePatterns(): PhrasePattern[] {
@@ -56,10 +61,10 @@ function phrasePatterns(): PhrasePattern[] {
       names.push(slot[1] ?? '');
       return '([\\s\\S]+?)';
     }).join('');
-    patterns.push({ match: new RegExp(`^${body}$`), names, line });
+    patterns.push({ match: new RegExp(`^${body}$`), names, line, literal: source.replace(/\{\w+\}/g, '').length });
   }
-  // A longer literal part is the more specific sentence.
-  patterns.sort((a, b) => b.match.source.length - a.match.source.length);
+  // A longer literal part is the more specific sentence; slots add no specificity.
+  patterns.sort((a, b) => b.literal - a.literal);
   return patterns;
 }
 
