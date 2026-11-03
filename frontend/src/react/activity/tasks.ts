@@ -6,7 +6,10 @@ import { apiGet, apiSend } from '../../api';
 import { fmtSize } from '@peach/legacy/core';
 import { requestErrorMessage } from '../../core/request-error';
 import { queryClient } from '../query';
-import { phrase } from '../../i18n/phrase';
+import { phrase, translateScreenText } from '../../i18n/phrase';
+
+/** 服务端写来的一句话按当前语言显示；词表里没有就原样。 */
+const screenText = (text: string): string => translateScreenText(text) ?? text;
 
 export const TASKS_URL = '/api/tasks';
 /** 整页共用这一个键：三段是同一次响应的三个字段。 */
@@ -392,12 +395,12 @@ function fieldItems(summary: Record<string, unknown>): string[] {
       && (typeof value === 'number' || typeof value === 'string')
       && String(value) !== '' && (value !== 0 || key === 'checked' || key === 'total'))
     .map(([key, value]) => {
-      if (key === 'followups') return `已安排 ${Number(value).toLocaleString()} 项补充任务`;
+      if (key === 'followups') return phrase('已安排 {value} 项补充任务', { value: Number(value).toLocaleString() });
       if (key === 'error') return readableErrorHeadline(String(value));
-      if (key === 'outcome' || key === 'result') return outcomeText(String(value));
-      if (key === 'cache_bytes' || key === 'bytes_reclaimed') return `${SUMMARY_LABELS[key]} ${fmtSize(Number(value))}`;
-      if (key === 'operation') return `操作：${OPERATION_LABELS[String(value)] || '批量操作'}`;
-      return `${SUMMARY_LABELS[key]} ${typeof value === 'number' ? value.toLocaleString() : value}`;
+      if (key === 'outcome' || key === 'result') return screenText(outcomeText(String(value)));
+      if (key === 'cache_bytes' || key === 'bytes_reclaimed') return `${phrase(SUMMARY_LABELS[key] ?? key)} ${fmtSize(Number(value))}`;
+      if (key === 'operation') return phrase('操作：{value}', { value: phrase(OPERATION_LABELS[String(value)] || '批量操作') });
+      return `${phrase(SUMMARY_LABELS[key] ?? key)} ${typeof value === 'number' ? value.toLocaleString() : screenText(String(value))}`;
     });
 }
 

@@ -32,7 +32,7 @@ export function TrafficProgress({ traffic, initial = false, detailsOpen, onDetai
   const count = (value: number) => value.toLocaleString('zh-CN');
   return <div data-processing-traffic="" className="flex min-w-0 flex-col gap-2 text-caption-1-regular text-text-secondary tabular-nums wrap-anywhere">
     {traffic.workload ? <p className="flex flex-wrap gap-x-3 gap-y-1">
-      <span>{phrase('{kind} {video_files} 个', { kind: traffic.unknown_files ? '已发现视频' : '范围内视频', video_files: count(traffic.workload.video_files) })}</span>
+      <span>{phrase(traffic.unknown_files ? '已发现视频 {video_files} 个' : '范围内视频 {video_files} 个', { video_files: count(traffic.workload.video_files) })}</span>
       <span>{phrase('JAV 文件 {jav_files} 个 · 不同番号 {jav_titles} 个', { jav_files: count(traffic.workload.jav_files), jav_titles: count(traffic.workload.jav_titles) })}</span>
     </p> : null}
     {traffic.inventory && !traffic.inventory.complete ? <p role="status">正在发现新增文件，数量和预估仍会变化…</p> : null}

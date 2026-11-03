@@ -71,8 +71,15 @@ describe('馆藏表格列宽与占位图', () => {
       }
       const beforeKeyboard = (await header.boundingBox())!.width;
       const resizer = header.getByRole('slider');
-      await resizer.focus();
-      await resizer.press('Enter');
+      // 手机视口里表格横向很宽，聚焦把手后 react-aria 会把焦点交回行；等焦点在把手上站稳再按键。
+      const settled = async () => {
+        await resizer.focus();
+        await page.waitForTimeout(300);
+        return resizer.evaluate(node => node === document.activeElement);
+      };
+      for (let attempt = 0; attempt < 5 && !await settled(); attempt += 1) { /* 再聚焦一次 */ }
+      // 直接聚焦把手时 react-aria 按当时的交互方式可能已进入调整状态；此时 Enter 是退出，只在未进入时按。
+      if (!await header.locator('.react-aria-ColumnResizer[data-resizing]').count()) await resizer.press('Enter');
       await resizer.press('ArrowRight');
       await resizer.press('ArrowRight');
       await resizer.press('Tab');

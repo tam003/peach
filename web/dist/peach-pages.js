@@ -2,7 +2,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "1d44eac6-07bd-48c8-a251-2c867acd2c78", e._sentryDebugIdIdentifier = "sentry-dbid-1d44eac6-07bd-48c8-a251-2c867acd2c78");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "0da64753-078e-481f-b227-59d47fd886f8", e._sentryDebugIdIdentifier = "sentry-dbid-0da64753-078e-481f-b227-59d47fd886f8");
 	} catch {}
 })();
 var e = Object.create, t = Object.defineProperty, n = Object.getOwnPropertyDescriptor, r = Object.getOwnPropertyNames, i = Object.getPrototypeOf, a = Object.prototype.hasOwnProperty, o = (e, t) => () => (t || (e((t = { exports: {} }).exports, t, t.exports), e = null), t.exports), s = (e, n) => {
@@ -2886,9 +2886,13 @@ var O = /* @__PURE__ */ s({ phrases: () => k }), k = {
 		en: "Processing scope: {scope}",
 		vi: "Phạm vi xử lý: {scope}"
 	},
-	"{kind} {video_files} 个": {
-		en: "{kind}: {video_files}",
-		vi: "{kind}: {video_files}"
+	"已发现视频 {video_files} 个": {
+		en: "{video_files} videos found",
+		vi: "Đã phát hiện {video_files} video"
+	},
+	"范围内视频 {video_files} 个": {
+		en: "{video_files} videos in scope",
+		vi: "{video_files} video trong phạm vi"
 	},
 	"JAV 文件 {jav_files} 个 · 不同番号 {jav_titles} 个": {
 		en: "{jav_files} JAV files · {jav_titles} distinct codes",
@@ -2989,6 +2993,38 @@ var O = /* @__PURE__ */ s({ phrases: () => k }), k = {
 	"个文件 ·": {
 		en: "files ·",
 		vi: "tệp ·"
+	},
+	"{videos} 个匹配文件": {
+		en: "{videos} matching files",
+		vi: "{videos} tệp khớp"
+	},
+	"{videos} 个同番号文件": {
+		en: "{videos} files with the same code",
+		vi: "{videos} tệp cùng mã"
+	},
+	已重命名标签: {
+		en: "Tag renamed",
+		vi: "Đã đổi tên thẻ"
+	},
+	已合并标签: {
+		en: "Tags merged",
+		vi: "Đã gộp thẻ"
+	},
+	已隐藏标签: {
+		en: "Tags hidden",
+		vi: "Đã ẩn thẻ"
+	},
+	已恢复标签: {
+		en: "Tags restored",
+		vi: "Đã khôi phục thẻ"
+	},
+	已整理重复标签: {
+		en: "Duplicate tags tidied",
+		vi: "Đã sắp xếp thẻ trùng"
+	},
+	已恢复内容: {
+		en: "Content restored",
+		vi: "Đã khôi phục nội dung"
 	}
 }, ne = /* @__PURE__ */ s({ phrases: () => re }), re = {
 	切换为小图: {
@@ -15992,10 +16028,6 @@ var O = /* @__PURE__ */ s({ phrases: () => k }), k = {
 		en: "Block content with any of the tags {names}, and their other versions, affecting {assets} items. You can restore them under “Blocked content”.",
 		vi: "Chặn nội dung có bất kỳ thẻ nào trong {names} cùng các phiên bản khác của chúng, liên quan {assets} tài nguyên. Có thể khôi phục trong “Nội dung đã chặn”."
 	},
-	"已{operation}": {
-		en: "{operation} done",
-		vi: "Đã {operation}"
-	},
 	恢复标签: {
 		en: "Restore tags",
 		vi: "Khôi phục thẻ"
@@ -16115,10 +16147,6 @@ var O = /* @__PURE__ */ s({ phrases: () => k }), k = {
 	来源依据: {
 		en: "Source evidence",
 		vi: "Căn cứ nguồn"
-	},
-	"{videos} 个{kind}": {
-		en: "{videos} {kind}",
-		vi: "{videos} {kind}"
 	},
 	与当前值比较: {
 		en: "Compare with current value",
@@ -58960,4 +58988,4 @@ D(), ct();
 var By = document.getElementById("peach-page"), Vy = By ? zy[By.dataset.page ?? ""] : void 0;
 By && Vy && (0, _t.createRoot)(By).render(/* @__PURE__ */ (0, V.jsx)(Vy, { data: { ...By.dataset } }));
 
-//# debugId=1d44eac6-07bd-48c8-a251-2c867acd2c78
+//# debugId=0da64753-078e-481f-b227-59d47fd886f8

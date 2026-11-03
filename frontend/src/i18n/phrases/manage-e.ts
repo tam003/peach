@@ -402,7 +402,6 @@ export const phrases: PhrasePack = {
     en: 'Block content with any of the tags {names}, and their other versions, affecting {assets} items. You can restore them under “Blocked content”.',
     vi: 'Chặn nội dung có bất kỳ thẻ nào trong {names} cùng các phiên bản khác của chúng, liên quan {assets} tài nguyên. Có thể khôi phục trong “Nội dung đã chặn”.',
   },
-  '已{operation}': { en: '{operation} done', vi: 'Đã {operation}' },
   '恢复标签': { en: 'Restore tags', vi: 'Khôi phục thẻ' },
   '标签名称': { en: 'Tag name', vi: 'Tên thẻ' },
   '解除{names}的内容屏蔽，涉及 {assets} 个资源。': {
@@ -439,7 +438,6 @@ export const phrases: PhrasePack = {
   '筛选资料字段': { en: 'Filter metadata fields', vi: 'Lọc trường dữ liệu' },
   '{open} {source} 的来源依据': { en: '{open} the evidence from {source}', vi: '{open} căn cứ từ nguồn {source}' },
   '来源依据': { en: 'Source evidence', vi: 'Căn cứ nguồn' },
-  '{videos} 个{kind}': { en: '{videos} {kind}', vi: '{videos} {kind}' },
   '与当前值比较': { en: 'Compare with current value', vi: 'So với giá trị hiện tại' },
   '人工确认': { en: 'Manual confirmation', vi: 'Xác nhận thủ công' },
   '候选来源': { en: 'Candidate sources', vi: 'Nguồn ứng viên' },

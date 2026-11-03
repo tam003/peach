@@ -111,6 +111,9 @@ export function initBoardTooltip() {
   });
   document.addEventListener('pointerout', event => {
     if (!target || target.contains(event.relatedTarget as Node | null)) return;
+    // 只有指针离开锚点（或可编辑提示本身）才收起；提示刚出现时浏览器重算命中补发的 pointerout 不算。
+    const from = event.target as Node;
+    if (!target.contains(from) && !(editableTip() && tip.contains(from))) return;
     if (editableTip()) {
       if (tip.contains(event.relatedTarget as Node | null) || editingTip()) return;
       clearTimeout(exitTimer); exitTimer = setTimeout(hide, 250);
