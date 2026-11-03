@@ -10,6 +10,7 @@ import { Note } from '../components/note';
 import { Progress } from '../components/progress';
 import { queryClient } from '../query';
 import { busyProps, useAction } from '../settings/use-action';
+import { phrase } from '../../i18n/phrase';
 
 const URL = '/api/diagnostics/exports';
 const KEY = ['diagnostic-export'] as const;
@@ -48,11 +49,10 @@ export function DiagnosticExportAction({ kind, codes = '' }: { kind: 'support' |
         href={state.download_url}>下载已生成的文件</ButtonLink> : null}
     </div>
     {mine && active ? state.total && state.total > 0 ? <div className="flex flex-col gap-2" role="status">
-      <span className="text-body-2-regular">{state.stage} · {state.done || 0} / {state.total} 项</span>
+      <span className="text-body-2-regular">{phrase('{stage} · {done} / {total} 项', { stage: state.stage ?? '', done: state.done || 0, total: state.total })}</span>
       <Progress label="导出进度" value={state.done || 0} max={state.total} />
     </div> : <LoadingDots label={`${state.stage || '准备导出'}${state.rows ? ` · ${state.rows} 条候选` : ''}${state.files ? ` · ${state.files} 个文件` : ''}`} /> : null}
-    {mine && state.status === 'complete' ? <p role="status" className="text-body-2-regular text-text-secondary">
-      导出已完成 · {((state.bytes || 0) / 1024 / 1024).toFixed(2)} MiB</p> : null}
+    {mine && state.status === 'complete' ? <p role="status" className="text-body-2-regular text-text-secondary">{phrase('导出已完成 · {bytes} MiB', { bytes: ((state.bytes || 0) / 1024 / 1024).toFixed(2) })}</p> : null}
     {mine && state.status === 'cancelled' ? <Note tone="neutral">导出已取消</Note> : null}
     {query.isError ? <Note tone="error" action={<Button type="button" variant="secondary"
       {...busyProps(query.isFetching)} onClick={() => { void query.refetch() }}>重新读取</Button>}>导出进度未取得</Note> : null}

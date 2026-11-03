@@ -108,7 +108,7 @@ export function ProcessingNoticePanel({ state, problem = '', measure = false, on
       </ol> : null}
       <p className="text-body-2-regular wrap-anywhere">{problem || (failed || partial ? state?.error || '请查看并处理未完成项' : <ProcessingLine state={state!} />)}</p>
       {partial ? <p className="text-body-2-regular wrap-anywhere">{PARTIAL_RESULT_TEXT}</p> : null}
-      {active && state?.stage && !state.steps?.length ? <p className="text-caption-1-regular text-text-tertiary">当前阶段 · {state.stage}</p> : null}
+      {active && state?.stage && !state.steps?.length ? <p className="text-caption-1-regular text-text-tertiary">{phrase('当前阶段 · {stage}', { stage: state.stage })}</p> : null}
       {state?.stalled && !problem && !slow ? <p className="text-caption-1-regular">当前步骤耗时较长，正在等待进展</p> : null}
     </div></div></CollapseRegion>
     <div className="flex flex-wrap items-center justify-between gap-2 pt-3">

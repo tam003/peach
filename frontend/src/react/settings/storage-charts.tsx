@@ -14,6 +14,7 @@ import type { ChartConfig } from '@/registry/ui/recharts-chart';
 import type { StorageCategory, StorageState } from '../bundle';
 import { tone } from '../charts/chart-card';
 import { ChartTip, TIP_SWATCH } from '../charts/chart-tip';
+import { phrase } from '../../i18n/phrase';
 
 /** 每一类固定一档图表色；不在表里的并进「其余」。 */
 const CATEGORY_COLORS: Record<string, string> = {
@@ -60,9 +61,7 @@ export function StorageOverview({ storage }: { storage: StorageState }) {
         </EvilPieChart>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
           <b className="text-title-2-medium tabular-nums text-text-primary">{size(usage.total_bytes)}</b>
-          <small className="text-caption-1-regular tabular-nums text-text-secondary">
-            {usage.total_files.toLocaleString()} 个文件
-          </small>
+          <small className="text-caption-1-regular tabular-nums text-text-secondary">{phrase('{total_files} 个文件', { total_files: usage.total_files.toLocaleString() })}</small>
         </div>
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-4">
@@ -99,10 +98,7 @@ function DiskBar({ storage }: { storage: StorageState }) {
   };
   return (
     <div className="flex flex-col gap-2">
-      <p className="text-caption-1-regular text-text-secondary">
-        所在磁盘共 {size(storage.total_bytes)}{storage.system_drive ? '（系统盘）' : ''}，Peach 占 {share(peach)}，
-        可用 {size(free)}
-      </p>
+      <p className="text-caption-1-regular text-text-secondary">{phrase('所在磁盘共 {total_bytes}{system_drive}，Peach 占 {peach}， 可用 {free}', { total_bytes: size(storage.total_bytes), system_drive: storage.system_drive ? '（系统盘）' : '', peach: share(peach), free: size(free) })}</p>
       <EvilBarChart data={[{ disk: '磁盘', peach, others, free }]} config={config}
         layout="horizontal" stackType="percent" barRadius={4}
         chartProps={{ margin: { top: 0, right: 0, bottom: 0, left: 0 } }}

@@ -6,6 +6,7 @@ import type { ProcessingTraffic } from './library-processing';
 import { useOverlayScrollbar } from '../components/overlay-scrollbar';
 import { SourceLabel } from '../components/source-label';
 import { SourceMark } from '../settings/section';
+import { phrase } from '../../i18n/phrase';
 
 const size = (value: number) => fmtSize(value).replace(/\s/g, '');
 const averageSize = (value: number) => value >= 1024 ** 2 && value < 1024 ** 3
@@ -31,8 +32,8 @@ export function TrafficProgress({ traffic, initial = false, detailsOpen, onDetai
   const count = (value: number) => value.toLocaleString('zh-CN');
   return <div data-processing-traffic="" className="flex min-w-0 flex-col gap-2 text-caption-1-regular text-text-secondary tabular-nums wrap-anywhere">
     {traffic.workload ? <p className="flex flex-wrap gap-x-3 gap-y-1">
-      <span>{traffic.unknown_files ? '已发现视频' : '范围内视频'} {count(traffic.workload.video_files)} 个</span>
-      <span>JAV 文件 {count(traffic.workload.jav_files)} 个 · 不同番号 {count(traffic.workload.jav_titles)} 个</span>
+      <span>{phrase('{kind} {video_files} 个', { kind: traffic.unknown_files ? '已发现视频' : '范围内视频', video_files: count(traffic.workload.video_files) })}</span>
+      <span>{phrase('JAV 文件 {jav_files} 个 · 不同番号 {jav_titles} 个', { jav_files: count(traffic.workload.jav_files), jav_titles: count(traffic.workload.jav_titles) })}</span>
     </p> : null}
     {traffic.inventory && !traffic.inventory.complete ? <p role="status">正在发现新增文件，数量和预估仍会变化…</p> : null}
     {traffic.unknown_files && traffic.inventory?.complete !== false ? <p role="status">尚有文件未确认，当前数量和预估不完整</p> : null}
@@ -48,11 +49,11 @@ export function TrafficProgress({ traffic, initial = false, detailsOpen, onDetai
       {traffic.disk ? <section aria-label="磁盘预估" className="flex min-w-0 flex-col gap-1">
         <p className="inline-flex items-center gap-1.5"><RiHardDrive3Line aria-hidden className="size-(--icon-inline) shrink-0" />
           {traffic.inventory && !traffic.inventory.complete ? '已识别占用' : '预计占用'}</p>
-        <p className="text-title-3-semibold text-text-primary">约 {size(traffic.disk.estimated_bytes)}</p>
-        {traffic.disk.temporary_bytes > 0 ? <p>抽帧临时文件约 {averageSize(traffic.disk.temporary_bytes)}</p> : null}
+        <p className="text-title-3-semibold text-text-primary">{phrase('约 {estimated_bytes}', { estimated_bytes: size(traffic.disk.estimated_bytes) })}</p>
+        {traffic.disk.temporary_bytes > 0 ? <p>{phrase('抽帧临时文件约 {temporary_bytes}', { temporary_bytes: averageSize(traffic.disk.temporary_bytes) })}</p> : null}
         {traffic.disk.volumes.map(volume => <div key={volume.path} className="flex min-w-0 flex-col gap-1">
-          <p>{volume.path} 剩余 {volume.free_bytes == null ? '未取得' : size(volume.free_bytes)}</p>
-          {volume.can_fit === false ? <p role="status">空间不足，还差 {size(volume.shortfall_bytes || 0)}</p> : null}
+          <p>{phrase('{path} 剩余 {free_bytes}', { path: volume.path, free_bytes: volume.free_bytes == null ? '未取得' : size(volume.free_bytes) })}</p>
+          {volume.can_fit === false ? <p role="status">{phrase('空间不足，还差 {shortfall_bytes}', { shortfall_bytes: size(volume.shortfall_bytes || 0) })}</p> : null}
         </div>)}
         {traffic.disk.cache_unknown ? <p role="status">网盘缓存占用待确认</p> : null}
       </section> : null}
@@ -71,11 +72,11 @@ export function TrafficProgress({ traffic, initial = false, detailsOpen, onDetai
               : <span className="inline-flex min-w-0 items-center gap-1.5"><SourceMark mark="globe" />{source.label}</span>}
             <span className="shrink-0">{source.connection === 'system' ? '跟随系统' : source.connection === 'unknown' ? '连接待确认' : source.metered ? '代理' : '直连'}</span>
           </div>
-          {source.workload?.video_files ? <p className="text-text-tertiary">视频 {count(source.workload.video_files)} 个 · JAV {count(source.workload.jav_files)} 个</p> : null}
-          {source.workload?.pending_jav_titles ? <p className="text-text-tertiary">待补资料 {count(source.workload.pending_jav_titles)} 部 · 平均约 {averageSize(source.workload.metadata_average_bytes || 0)}/部</p> : null}
+          {source.workload?.video_files ? <p className="text-text-tertiary">{phrase('视频 {video_files} 个 · JAV {jav_files} 个', { video_files: count(source.workload.video_files), jav_files: count(source.workload.jav_files) })}</p> : null}
+          {source.workload?.pending_jav_titles ? <p className="text-text-tertiary">{phrase('待补资料 {pending_jav_titles} 部 · 平均约 {metadata_average_bytes}/部', { pending_jav_titles: count(source.workload.pending_jav_titles), metadata_average_bytes: averageSize(source.workload.metadata_average_bytes || 0) })}</p> : null}
           <div className="flex flex-wrap justify-between gap-x-4 text-text-tertiary">
-            {!initial ? <span>已用{source.unobserved.length ? '约' : ''} {size(source.used_bytes)}</span> : null}
-            <span>预计 {forecast(source.estimated_bytes, source.estimated_min_bytes, source.estimated_max_bytes)}</span>
+            {!initial ? <span>{phrase(source.unobserved.length ? '已用约 {used_bytes}' : '已用 {used_bytes}', { used_bytes: size(source.used_bytes) })}</span> : null}
+            <span>{phrase('预计 {estimated_max_bytes}', { estimated_max_bytes: forecast(source.estimated_bytes, source.estimated_min_bytes, source.estimated_max_bytes) })}</span>
           </div>
         </li>)}
       </ul>

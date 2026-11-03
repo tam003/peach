@@ -270,10 +270,7 @@ function HeldAuthors({ follow, displayName, actions }: {
       {follow.held.map((group) => (
         <Note key={group.key} tone="info" title={phrase('关注里有同名作者 {name}', { name: group.name })}
           action={<Button size="small" {...busyProps(busy === group.key)}
-            onClick={() => { void confirm(group.key, group.name) }}>是同一个人</Button>}>
-          {[group.providers.join(' · '), `${group.n.toLocaleString()} 项更新`].filter(Boolean).join(' · ')}
-          。和 {displayName} 是同一个人吗？
-        </Note>
+            onClick={() => { void confirm(group.key, group.name) }}>是同一个人</Button>}>{phrase('{join} 。和 {displayName} 是同一个人吗？', { join: [group.providers.join(' · '), phrase('{n} 项更新', { n: group.n.toLocaleString() })].filter(Boolean).join(' · '), displayName })}</Note>
       ))}
     </div>
   );

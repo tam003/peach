@@ -11,6 +11,7 @@ import { Note } from './note';
 import { useOverlayScrollbar } from './overlay-scrollbar';
 import { useAction, busyProps } from '../settings/use-action';
 import { queryClient } from '../query';
+import { phrase } from '../../i18n/phrase';
 
 const Glyph = ({ name }: { name: string }) => <span className="contents" dangerouslySetInnerHTML={{ __html: icon(name) }} />;
 interface DetailTagsProps {
@@ -169,7 +170,7 @@ function TagPicker({ tags, candidates, label, onAdd, adding, scope, onOpen, load
                   return (
                     <button key="create" type="button" data-pick={sections.create} data-active={at === active ? '' : undefined}
                       onClick={() => { close(); onAdd(sections.create) }}>
-                      <Glyph name="plus" /><span data-pick-name="">新建“{sections.create}”</span>
+                      <Glyph name="plus" /><span data-pick-name="">{phrase('新建“{create}”', { create: sections.create })}</span>
                     </button>
                   );
                 })() : null}

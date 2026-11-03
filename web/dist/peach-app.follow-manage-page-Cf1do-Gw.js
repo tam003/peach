@@ -1,7 +1,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "d288ec2d-28e5-4abb-9428-670c3d5925eb", e._sentryDebugIdIdentifier = "sentry-dbid-d288ec2d-28e5-4abb-9428-670c3d5925eb");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "cb319184-a4ba-4a54-9bba-e3f22e31e20c", e._sentryDebugIdIdentifier = "sentry-dbid-cb319184-a4ba-4a54-9bba-e3f22e31e20c");
 	} catch {}
 })();
 import { createPaginatedRowModel as e } from "./peach-app.createPaginatedRowModel-ClHnhG_T.js";
@@ -551,9 +551,9 @@ function Pt({ group: e, close: t, receipt: n }) {
 				className: "text-title-2-semibold text-text-primary",
 				children: "修改统一名称"
 			}),
-			/* @__PURE__ */ (0, Q.jsxs)("p", {
+			/* @__PURE__ */ (0, Q.jsx)("p", {
 				className: "text-body-2-regular wrap-anywhere text-text-secondary",
-				children: ["当前名称：", e.canonical_name]
+				children: X("当前名称：{canonical_name}", { canonical_name: e.canonical_name })
 			}),
 			/* @__PURE__ */ (0, Q.jsx)(A, {
 				"aria-label": "统一名称",
@@ -1933,13 +1933,13 @@ function sn(e) {
 				})
 			]
 		}),
-		/* @__PURE__ */ (0, Q.jsx)("div", { children: /* @__PURE__ */ (0, Q.jsxs)(ee, {
+		/* @__PURE__ */ (0, Q.jsx)("div", { children: /* @__PURE__ */ (0, Q.jsx)(ee, {
 			variant: "secondary",
 			href: "/settings/subscriptions",
-			children: ["来源与订阅设置", B ? `（${B}）` : ""]
+			children: X("来源与订阅设置{pending}", { pending: B ? `（${B}）` : "" })
 		}) })
 	] });
 }
 export { sn as FollowManagePage };
 
-//# debugId=d288ec2d-28e5-4abb-9428-670c3d5925eb
+//# debugId=cb319184-a4ba-4a54-9bba-e3f22e31e20c

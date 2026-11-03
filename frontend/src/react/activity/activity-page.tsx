@@ -155,7 +155,7 @@ function RunCard(
           contentClassName="pb-2.5"
           defaultOpen={listed.some((row) => isActive(row))}>
           {shown < total
-            ? <p className="text-caption-1-regular text-text-secondary">列出其中 {shown.toLocaleString()} 项，正在处理的排在前面</p>
+            ? <p className="text-caption-1-regular text-text-secondary">{phrase('列出其中 {shown} 项，正在处理的排在前面', { shown: shown.toLocaleString() })}</p>
             : null}
           <FollowupList rows={listed} />
         </Disclosure>
@@ -229,9 +229,7 @@ function SettledRun(
             {followupCancelled === followupTotal ? '后续任务已取消' : '部分后续任务已取消'}
           </span></Chip>
         : batches && followupFailed ? <Chip color="yellow">发现问题</Chip> : undefined}>
-      {followupCancelled ? <p className="text-caption-1-regular text-text-secondary">
-        后续任务已取消 {followupCancelled.toLocaleString()} 项
-      </p> : null}
+      {followupCancelled ? <p className="text-caption-1-regular text-text-secondary">{phrase('后续任务已取消 {followupCancelled} 项', { followupCancelled: followupCancelled.toLocaleString() })}</p> : null}
       {/* 只有一句摘要时不加项目符号：单独一个圆点读起来像漏了下文。 */}
       {summary.length === 1
         ? <p className="text-caption-1-regular text-text-secondary wrap-anywhere">{summary[0]}</p>
@@ -281,9 +279,7 @@ function WorkingRun(
       badge={run.control ? <StatusBadge run={run} /> : <Chip color="blue">进行中</Chip>}>
       <div className="flex flex-col gap-1.5">
         <Progress label={`${run.task_label}进度`} value={settled} max={total} />
-        <p className="text-caption-1-regular text-text-secondary">
-          已处理 {progressText(settled, total)} 项{failed ? ` · 其中 ${failed.toLocaleString()} 项失败` : ''}
-        </p>
+        <p className="text-caption-1-regular text-text-secondary">{phrase('已处理 {total} 项{failed}', { total: progressText(settled, total), failed: failed ? phrase(' · 其中 {failed} 项失败', { failed: failed.toLocaleString() }) : '' })}</p>
       </div>
     </RunCard>
   );

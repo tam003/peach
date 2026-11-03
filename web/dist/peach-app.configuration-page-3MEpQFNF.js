@@ -1,7 +1,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "178e1177-b10e-4116-b527-653254acb09e", e._sentryDebugIdIdentifier = "sentry-dbid-178e1177-b10e-4116-b527-653254acb09e");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "b0133604-6054-4e9f-af4d-959533f418cc", e._sentryDebugIdIdentifier = "sentry-dbid-b0133604-6054-4e9f-af4d-959533f418cc");
 	} catch {}
 })();
 import { AnimatedItems as e, Cell as t, ChartBackground as n, ChartContainer as r, ChartLegend as i, ChartLegendContent as a, ChartTip as o, ChartTooltip as s, ChartTooltipContent as c, Curve as l, DATA_ITEM_GRAPHICAL_ITEM_ID_ATTRIBUTE_NAME as u, DATA_ITEM_INDEX_ATTRIBUTE_NAME as d, DefaultZIndexes as f, EvilBarChart as p, LabelList as m, LabelListFromLabelProp as h, Layer as g, LoadingIndicator as _, PolarChart as v, PolarLabelContextProvider as y, PolarLabelListContextProvider as b, RegisterGraphicalItemId as x, Sector as S, SetPolarGraphicalItem as C, SetPolarLegendPayload as w, SetTooltipEntrySettings as T, Shape as ee, TIP_SWATCH as te, Text as ne, ZIndexLayer as re, adaptEventsOfChild as ie, arrayTooltipSearcher as ae, createSelector as oe, defaultPolarChartProps as se, findAllByType as ce, get as le, getClassNameFromUnknown as ue, getColorsCount as de, getMaxRadius as fe, getPercentValue as pe, getTooltipNameProp as me, getValueByDataKey as he, interpolate as ge, isNumber as _e, matchAppend as ve, mathSign as ye, polarToCartesian as be, resolveDefaultProps as xe, selectActiveTooltipDataKey as Se, selectActiveTooltipGraphicalItemId as Ce, selectActiveTooltipIndex as we, selectChartDataAndAlwaysIgnoreIndexes as Te, selectChartOffsetInternal as Ee, selectUnfilteredPolarItems as De, svgPropertiesNoEvents as Oe, svgPropertiesNoEventsFromUnknown as ke, tone as Ae, useAnimationCallbacks as je, useAppSelector as Me, useMouseClickItemDispatch as Ne, useMouseEnterItemDispatch as Pe, useMouseLeaveItemDispatch as Fe, usePolarChartLayout as Ie } from "./peach-app.chart-tip-CRxYp6KT.js";
@@ -88,10 +88,10 @@ function nr({ enabled: e, release: t }) {
 					})
 				})]
 			}),
-			o ? /* @__PURE__ */ (0, Q.jsxs)("p", {
+			o ? /* @__PURE__ */ (0, Q.jsx)("p", {
 				"data-copy-key": "userscript.installed.version",
 				className: "text-body-regular text-text-secondary",
-				children: ["用户脚本 v", i.version]
+				children: J("用户脚本 v{version}", { version: i.version })
 			}) : null,
 			/* @__PURE__ */ (0, Q.jsxs)("div", {
 				className: "flex flex-wrap items-center justify-between gap-3",
@@ -1753,9 +1753,9 @@ function Yi({ storage: e }) {
 				children: [/* @__PURE__ */ (0, Q.jsx)("b", {
 					className: "text-title-2-medium tabular-nums text-text-primary",
 					children: qi(t.total_bytes)
-				}), /* @__PURE__ */ (0, Q.jsxs)("small", {
+				}), /* @__PURE__ */ (0, Q.jsx)("small", {
 					className: "text-caption-1-regular tabular-nums text-text-secondary",
-					children: [t.total_files.toLocaleString(), " 个文件"]
+					children: J("{total_files} 个文件", { total_files: t.total_files.toLocaleString() })
 				})]
 			})]
 		}), /* @__PURE__ */ (0, Q.jsxs)("div", {
@@ -1799,20 +1799,17 @@ function Xi({ storage: e }) {
 	};
 	return /* @__PURE__ */ (0, Q.jsxs)("div", {
 		className: "flex flex-col gap-2",
-		children: [/* @__PURE__ */ (0, Q.jsxs)("p", {
+		children: [/* @__PURE__ */ (0, Q.jsx)("p", {
 			className: "text-caption-1-regular text-text-secondary",
-			children: [
-				"所在磁盘共 ",
-				qi(e.total_bytes),
-				e.system_drive ? "（系统盘）" : "",
-				"，Peach 占 ",
-				((t) => {
+			children: J("所在磁盘共 {total_bytes}{system_drive}，Peach 占 {peach}， 可用 {free}", {
+				total_bytes: qi(e.total_bytes),
+				system_drive: e.system_drive ? "（系统盘）" : "",
+				peach: ((t) => {
 					let n = t / e.total_bytes * 100;
 					return n < .1 ? "不到 0.1%" : `${n.toFixed(+(n < 10))}%`;
 				})(t),
-				"， 可用 ",
-				qi(n)
-			]
+				free: qi(n)
+			})
 		}), /* @__PURE__ */ (0, Q.jsxs)(p, {
 			data: [{
 				disk: "磁盘",
@@ -1873,12 +1870,7 @@ function ra({ job: e }) {
 			label: "统计进度",
 			value: Math.min(t, n * .99),
 			max: n
-		}), /* @__PURE__ */ (0, Q.jsxs)(N, { children: [
-			r,
-			"，上次共 ",
-			n.toLocaleString(),
-			" 个"
-		] })] }) : /* @__PURE__ */ (0, Q.jsx)(ht, { label: "正在统计占用空间" }), n ? null : /* @__PURE__ */ (0, Q.jsx)(N, { children: r })]
+		}), /* @__PURE__ */ (0, Q.jsxs)(N, { children: [r, J("，上次共 {expected} 个", { expected: n.toLocaleString() })] })] }) : /* @__PURE__ */ (0, Q.jsx)(ht, { label: "正在统计占用空间" }), n ? null : /* @__PURE__ */ (0, Q.jsx)(N, { children: r })]
 	});
 }
 function ia({ category: e, selected: t, disabled: n, onToggle: r }) {
@@ -1920,9 +1912,9 @@ function ia({ category: e, selected: t, disabled: n, onToggle: r }) {
 					value: e.bytes,
 					format: q,
 					className: "text-body-regular text-text-primary"
-				}), i ? /* @__PURE__ */ (0, Q.jsxs)("span", {
+				}), i ? /* @__PURE__ */ (0, Q.jsx)("span", {
 					className: "text-caption-1-regular text-text-secondary",
-					children: ["可释放 ", q(e.reclaimable)]
+					children: J("可释放 {reclaimable}", { reclaimable: q(e.reclaimable) })
 				}) : null]
 			})
 		]
@@ -4499,7 +4491,7 @@ function To({ data: e, receipt: t }) {
 					value: n.ip_url,
 					receipt: t
 				}) : null,
-				/* @__PURE__ */ (0, Q.jsxs)(N, { children: ["手机与电脑连接同一 Wi-Fi。", n.ip_url && n.lan_url ? "名称地址打不开时，可尝试备用 IP 地址。" : ""] })
+				/* @__PURE__ */ (0, Q.jsx)(N, { children: J("手机与电脑连接同一 Wi-Fi。{hint}", { hint: n.ip_url && n.lan_url ? "名称地址打不开时，可尝试备用 IP 地址。" : "" }) })
 			] }) : /* @__PURE__ */ (0, Q.jsx)(N, { children: n.scope === "local" ? "当前只允许这台电脑访问，手机无法连接。" : "局域网连接地址未取得，请检查电脑的网络连接和服务启动配置。" })] }) : null,
 			r ? /* @__PURE__ */ (0, Q.jsxs)(Q.Fragment, { children: [n?.editable ? /* @__PURE__ */ (0, Q.jsxs)(Q.Fragment, { children: [/* @__PURE__ */ (0, Q.jsx)(So, {
 				id: "configHost",
@@ -5496,4 +5488,4 @@ function ns({ data: e, receipt: t, reopenTutorial: n, section: r, diagnostics: i
 }
 export { $o as ConfigurationPage };
 
-//# debugId=178e1177-b10e-4116-b527-653254acb09e
+//# debugId=b0133604-6054-4e9f-af4d-959533f418cc

@@ -9,6 +9,7 @@ import { SettingsDialogClose } from '../components/settings-dialog-close';
 import { useOverlayScrollbar } from '../components/overlay-scrollbar';
 import { Disclosure } from '../settings/section';
 import { GuideFieldDetails } from './guide-help';
+import { phrase } from '../../i18n/phrase';
 
 interface Props {
   step: GuideStep; position: number; total: number; missing: boolean;
@@ -44,7 +45,7 @@ function GuidePopover({ step, position, total, missing, next, previous, close, i
         <Button variant="ghost" size="small" className="ml-auto" onClick={close}>稍后再说</Button>
         <Button size="small" data-guide-next="" onClick={() => next()}>打开教程</Button>
       </> : <>
-      <span className="mr-auto text-body-2-regular tabular-nums text-text-secondary">{position + 1} / {total} 步</span>
+      <span className="mr-auto text-body-2-regular tabular-nums text-text-secondary">{phrase('{position} / {total} 步', { position: position + 1, total })}</span>
       <Button variant="ghost" size="small" onClick={close}>跳过本章</Button>
       <Button variant="secondary" size="small" disabled={position === 0} onClick={previous}>上一步</Button><Button size="small" data-guide-next="" onClick={() => next(missing)}>{position === total - 1 ? '完成本章' : '下一步'}</Button>
       </>}

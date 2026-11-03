@@ -7,6 +7,7 @@ import { Note } from '../components/note';
 import { FieldLabel } from '../settings/section';
 import { busyProps, useAction } from '../settings/use-action';
 import { renameAliasGroup, reloadFollowManage, type AliasGroup } from './follow-manage';
+import { phrase } from '../../i18n/phrase';
 
 export function AliasRenameDialog({ group, close, receipt }: { group: AliasGroup | null; close(): void; receipt(message: string): void }) {
   return <ModalFrame isOpen={Boolean(group)} onOpenChange={open => { if (!open) close() }} width="form" label="修改统一名称">
@@ -26,7 +27,7 @@ function RenameForm({ group, close, receipt }: { group: AliasGroup; close(): voi
   };
   return <form onSubmit={submit} className="flex min-h-0 flex-col gap-4 p-5">
     <Heading slot="title" className="text-title-2-semibold text-text-primary">修改统一名称</Heading>
-    <p className="text-body-2-regular wrap-anywhere text-text-secondary">当前名称：{group.canonical_name}</p>
+    <p className="text-body-2-regular wrap-anywhere text-text-secondary">{phrase('当前名称：{canonical_name}', { canonical_name: group.canonical_name })}</p>
     <Input aria-label="统一名称" autoFocus value={name} onChange={setName} />
     <div className="flex flex-col gap-2">
       <FieldLabel>选择已有别名</FieldLabel>

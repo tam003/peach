@@ -1,7 +1,7 @@
 (function() {
 	try {
 		var e = typeof globalThis < "u" ? globalThis : typeof window < "u" ? window : typeof global < "u" ? global : typeof self < "u" ? self : {}, t = new e.Error().stack;
-		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "7441750f-6a75-40b7-a91a-bf429c14c2f1", e._sentryDebugIdIdentifier = "sentry-dbid-7441750f-6a75-40b7-a91a-bf429c14c2f1");
+		t && (e._sentryDebugIds = e._sentryDebugIds || {}, e._sentryDebugIds[t] = "fdba4d11-45ac-4ac1-90a6-451ea99f7fba", e._sentryDebugIdIdentifier = "sentry-dbid-fdba4d11-45ac-4ac1-90a6-451ea99f7fba");
 	} catch {}
 })();
 import { $fe21c36db05242bb$export$d7b12c4107be0d61 as e, AMANE_BRIDGE_CHECK_URL as t, AMANE_BRIDGE_KEY as n, AMANE_BRIDGE_REBUILD_URL as r, Button as i, COVER_JOB_KEY as a, CUSTOM_SOURCES_KEY as o, CUSTOM_SOURCES_URL as s, Checkbox as c, Disclosure as l, ErrorText as u, ExternalLink as d, Fact as f, FactList as p, FieldLabel as m, Footer as h, Help as g, Input as _, LinkButton as v, LoadingDots as y, Note as b, Rows as ee, SCRAPING_CHECK_URL as te, SCRAPING_COVER_URL as x, SCRAPING_KEY as S, SCRAPING_SETTINGS_URL as ne, SEGMENT as re, SEGMENTED_TRACK as ie, Section as C, SegmentedRadioGroup as ae, Select$1 as oe, SelectField as w, SelectItem as se, SettingsRow as ce, Stack as T, StatusLabel as E, __toESM as D, apiSend as O, busyProps as k, checkText as le, confirmModal as A, errorMessage as j, esc as M, fetchAmaneBridge as N, fetchCoverJob as P, fetchCustomSources as F, fetchSources as I, i2 as ue, listSeparator as L, phrase as R, queryClient as z, require_jsx_runtime as B, require_react as V, spinnerHtml as H, useAction as U, useBackgroundJob as W, useMutation as G, useQuery as K } from "./peach-app.js";
@@ -325,11 +325,7 @@ function be({ source: t, toast: n }) {
 					children: [/* @__PURE__ */ (0, X.jsx)(E, {
 						tone: "warning",
 						children: "冷却中"
-					}), /* @__PURE__ */ (0, X.jsxs)("span", { children: [
-						"可在 ",
-						(/* @__PURE__ */ new Date(t.cooldown_until * 1e3)).toLocaleString("zh-CN"),
-						" 后重试。"
-					] })]
+					}), /* @__PURE__ */ (0, X.jsx)("span", { children: R("可在 {time} 后重试。", { time: (/* @__PURE__ */ new Date(t.cooldown_until * 1e3)).toLocaleString("zh-CN") }) })]
 				})
 			}) : null,
 			U ? /* @__PURE__ */ (0, X.jsxs)(T, {
@@ -558,13 +554,10 @@ function Se({ toast: e }) {
 					m.problem ? /* @__PURE__ */ (0, X.jsx)(b, {
 						tone: "error",
 						children: m.problem
-					}) : /* @__PURE__ */ (0, X.jsxs)(g, { children: [
-						"amane（",
-						m.license,
-						"）提供这些内置站点的解析能力。首次需要时，Peach 会自动准备锁定的 ",
-						m.version,
-						" 版本；安装包内已有可用环境时直接使用。 手动安装也使用此版本，不随上游自动升级。"
-					] }),
+					}) : /* @__PURE__ */ (0, X.jsx)(g, { children: R("amane（{license}）提供这些内置站点的解析能力。首次需要时，Peach 会自动准备锁定的 {version} 版本；安装包内已有可用环境时直接使用。 手动安装也使用此版本，不随上游自动升级。", {
+						license: m.license,
+						version: m.version
+					}) }),
 					o ? /* @__PURE__ */ (0, X.jsx)(y, { label: "正在重建运行环境" }) : null,
 					v ? /* @__PURE__ */ (0, X.jsx)(b, {
 						tone: "error",
@@ -619,4 +612,4 @@ function Ce({ toast: e }) {
 }
 export { Ce as ScrapingPage, ve as linkHost, Q as networkOptions };
 
-//# debugId=7441750f-6a75-40b7-a91a-bf429c14c2f1
+//# debugId=fdba4d11-45ac-4ac1-90a6-451ea99f7fba

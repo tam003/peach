@@ -197,7 +197,7 @@ export function FollowManagePage(props: FollowManageProps) {
         </TabPanel>
 
       </Tabs>
-      <div><ButtonLink variant="secondary" href="/settings/subscriptions">来源与订阅设置{pending ? `（${pending}）` : ''}</ButtonLink></div>
+      <div><ButtonLink variant="secondary" href="/settings/subscriptions">{phrase('来源与订阅设置{pending}', { pending: pending ? `（${pending}）` : '' })}</ButtonLink></div>
     </Page>
   );
 }

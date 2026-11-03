@@ -56,7 +56,7 @@ function ScanResult({ scan, partial = false }: { scan: ResourceScanState; partia
               figure={source.online ? `${count(source.missing)} 项` : '—'}
               meta={source.online ? sourceMeta(source) : `${sourceMeta(source)} · 本次已跳过`} wrapMeta />
             {source.online && source.unreadable > 0
-              ? <span className="self-start"><StatusLabel tone="warning">{count(source.unreadable)} 个目录未读取</StatusLabel></span> : null}
+              ? <span className="self-start"><StatusLabel tone="warning">{phrase('{unreadable} 个目录未读取', { unreadable: count(source.unreadable) })}</StatusLabel></span> : null}
           </article>
         ))}
       </div>

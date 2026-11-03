@@ -243,7 +243,7 @@ export function OrganizeCard(
           </div>
         </div>
         <p className="text-caption-1-regular text-text-secondary">指定路径时包含子目录，目录模板以该路径为起点。模板均留空时只清理文件名。</p>
-        {picker.isError ? <Note tone="error" title="目录选择失败">{errorMessage(picker.error)}；也可直接输入路径。</Note> : null}
+        {picker.isError ? <Note tone="error" title="目录选择失败">{phrase('{error}；也可直接输入路径。', { error: errorMessage(picker.error) })}</Note> : null}
         <Input label="文件名模板" placeholder="{code}[ {title}]" value={fields.file} ref={fileInput}
           spellCheck="false" isInvalid={invalid === 'file'}
           onFocus={() => { setTarget('file'); focused.current = true }}

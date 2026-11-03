@@ -110,7 +110,7 @@ export function DiagnosticsPage(props: DiagnosticsProps) {
       {attention.map(([key, check]) => <Check key={key} name={key} check={check} />)}
     </Section> : null}
     <Section guide="health" title="库健康"><Stack>
-      {data.library.issue_at ? <p className="text-body-2-regular text-text-secondary">处理记录 · {moment(data.library.issue_at)}</p> : null}
+      {data.library.issue_at ? <p className="text-body-2-regular text-text-secondary">{phrase('处理记录 · {issue_at}', { issue_at: moment(data.library.issue_at) })}</p> : null}
       {Object.entries(data.library.groups).map(([key, group]) => <HealthList key={key} group={group} {...props} />)}
     </Stack></Section>
     {other.length ? <section aria-label={phrase('系统检查')}>
